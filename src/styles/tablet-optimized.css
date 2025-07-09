@@ -1,0 +1,199 @@
+/* Tablet-optimized styles for touch interaction */
+
+/* Reset and base styles */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #f5f5f5;
+  color: #333;
+  margin: 0;
+  padding: 0;
+}
+
+/* Touch-friendly button sizing */
+button,
+.btn,
+input[type="button"],
+input[type="submit"] {
+  min-height: 44px;
+  min-width: 44px;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  cursor: pointer;
+  border: none;
+  border-radius: 4px;
+  touch-action: manipulation;
+  user-select: none;
+  transition: all 0.2s ease;
+}
+
+/* Touch-friendly form controls */
+input,
+select,
+textarea {
+  min-height: 44px;
+  padding: 0.75rem;
+  font-size: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  width: 100%;
+  touch-action: manipulation;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  border-color: #3498db;
+  box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+}
+
+/* Checkbox and radio button sizing */
+input[type="checkbox"],
+input[type="radio"] {
+  width: 24px;
+  height: 24px;
+  min-height: 24px;
+  margin-right: 0.5rem;
+  cursor: pointer;
+}
+
+/* Link styling for touch */
+a {
+  color: #3498db;
+  text-decoration: none;
+  padding: 0.25rem;
+  border-radius: 2px;
+  touch-action: manipulation;
+}
+
+a:hover,
+a:focus {
+  background-color: rgba(52, 152, 219, 0.1);
+}
+
+/* Tablet-specific responsive breakpoints */
+@media (max-width: 1024px) {
+  body {
+    font-size: 18px;
+  }
+  
+  button,
+  .btn {
+    min-height: 48px;
+    padding: 1rem 1.5rem;
+    font-size: 1.1rem;
+  }
+  
+  input,
+  select,
+  textarea {
+    min-height: 48px;
+    padding: 1rem;
+    font-size: 1.1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  body {
+    font-size: 16px;
+  }
+  
+  button,
+  .btn {
+    width: 100%;
+    margin-bottom: 0.5rem;
+  }
+  
+  input,
+  select,
+  textarea {
+    font-size: 16px; /* Prevents zoom on iOS */
+  }
+}
+
+/* Prevent text selection on UI elements */
+.no-select {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Scrollable areas */
+.scrollable {
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Loading states */
+.loading {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  button,
+  .btn {
+    border: 2px solid currentColor;
+  }
+  
+  input,
+  select,
+  textarea {
+    border: 2px solid currentColor;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: #2c3e50;
+    color: #ecf0f1;
+  }
+  
+  input,
+  select,
+  textarea {
+    background-color: #34495e;
+    color: #ecf0f1;
+    border-color: #7f8c8d;
+  }
+}
+
+/* Print styles */
+@media print {
+  body {
+    font-size: 12pt;
+    line-height: 1.4;
+    background: white;
+    color: black;
+  }
+  
+  button,
+  .btn {
+    display: none;
+  }
+  
+  .no-print {
+    display: none;
+  }
+}

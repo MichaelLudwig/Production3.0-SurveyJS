@@ -1,0 +1,623 @@
+Projektanforderungsdokument: Digitaler Fragekatalog Cannabis-Produktionsprozess (MVP)
+1. Zielsetzung und Beschreibung des MVP
+Die Zielsetzung dieses MVP (Minimum Viable Product) ist die digitale Erfassung und Dokumentation des Aufbereitungs- und Abfüllprozesses von Cannabisblüten – insbesondere des Übergangs vom GACP- zum GMP-Produkt – mittels eines strukturierten Fragenkatalogs. Aktuell werden diese Produktionsschritte vermutlich auf Papier oder in unstrukturierter Form dokumentiert. Das MVP soll dies ablösen, indem es Reinraummitarbeitern eine tablet-optimierte Webanwendung bereitstellt, um alle notwendigen Schritte systematisch, lückenlos und nachvollziehbar festzuhalten. Dadurch wird die Einhaltung der GxP-Richtlinien unterstützt und der Prozess transparenter gemacht. Beschreibung: Die Anwendung basiert auf einer React-Frontend-Lösung, in die das SurveyJS-Framework integriert wird. Reinraummitarbeiter können damit einen hierarchisch gegliederten Fragenkatalog durchlaufen, der alle Schritte von der Produktionsvorbereitung über die Abfüllung bis zur Nachbereitung digital abbildet. Jeder Prozessschritt (z.B. Vorbereitung, Materialbereitstellung, eigentlicher Herstellprozess, Nachbereitung) ist in Teilschritte und gegebenenfalls weitere Untergliederungen unterteilt. Pro Seite wird jeweils ein Abschnitt des Fragenkatalogs angezeigt, um die Benutzerführung auf Tablet-Geräten zu erleichtern. Die Applikation führt den Benutzer Schritt für Schritt durch den Prozess: von der Eingabe bzw. Auswahl des Produktionsauftrags, über die Materialbereitstellung und Gerätevorbereitung, die eigentliche Abfüllung (ggf. mit Unterbrechung/Pause), bis hin zur Nachbereitung und Fertigmeldung. Wichtige Merkmale des MVP sind u.a.:
+Geführte Dokumentation: Der Reinraummitarbeiter wird seitenweise durch alle Fragen geführt und gibt Antworten in vorgegebenen Formaten (Checkboxen, numerische Felder, Datum/Uhrzeit, Freitext, Signaturfelder etc.) ein.
+Hierarchische Struktur: Die Fragen sind entsprechend dem Prozess hierarchisch gegliedert (Prozessschritt > Teilschritt > Untergliederung > Frage), sodass der Ablauf logisch abgebildet wird.
+Bedingte Anzeige: Einige Fragen werden nur angezeigt, wenn bestimmte Bedingungen erfüllt sind (z.B. bestimmte Fragen nur bei GACP-Ausgangsmaterial oder nur wenn eine Prozessunterbrechung vorgenommen wurde). Diese Sichtbarkeitslogik ist im Fragenkatalog hinterlegt.
+Datenpersistenz im Browser: Alle eingegebenen Antworten werden während der Bearbeitung lokal im Browser zwischengespeichert. Nach Abschluss kann ein JSON-Datensatz mit allen Antworten erzeugt und gespeichert werden.
+PDF-Export: Am Ende des Fragekatalogs kann der ausgefüllte Fragenkatalog als PDF-Dokument exportiert werden, um eine prüfbare Dokumentation für Qualitätsmanagement oder Behörden bereitzustellen. Dieser PDF-Export erfolgt client-seitig (z.B. mittels SurveyJS PDF Generator Bibliothek)
+surveyjs.io
+.
+Keine Backend-Integration im MVP: Das MVP kommt ohne Anbindung an externe Systeme aus – insbesondere keine SAP-Integration. Alle benötigten Stammdaten (Fragenkatalog, Produktionsauftragsdaten) liegen in statischen JSON-Strukturen vor. Dadurch bleibt der Umfang klein und das MVP kann offline bzw. in einem Intranet betrieben werden.
+Zusammenfassend soll das MVP einen funktionsfähigen Prototyp liefern, der die Machbarkeit einer digitalen Prozessdokumentation im Reinraum zeigt, dabei aber noch ohne komplexe Schnittstellen und Persistenz auskommt. Die gewonnenen Erkenntnisse können für eine spätere Erweiterung (z.B. echte SAP-Integration, Datenbank-Anbindung, User-Management) genutzt werden.
+2. Umfang des MVP
+Im Umfang enthalten (Scope):
+Digitaler Fragekatalog: Implementierung des vollständigen Fragekatalogs „Produktionsprozess“ in der Anwendung. Alle im bereitgestellten Dokument definierten Fragen (ohne Erläuterungs-Spalte) werden in der App abgebildet, inkl. der hierarchischen Struktur (Prozessschritte, Teilschritte, Untergliederungen) und aller Antwortformate.
+Tablet-optimierte UI: Ein responsives Web-Frontend (React) optimiert für die Verwendung auf Tablets. Große Bedienelemente und eine seitenweise Navigation sorgen für einfache Handhabung mit Touch-Eingabe.
+Produktionsauftrags-Verwaltung (einfach): Möglichkeit, vor Beginn der Datenerfassung einen Produktionsauftrag auszuwählen oder neu anzulegen. Hierbei werden relevante Auftragsdaten erfasst (z.B. Material, Charge, Soll-Mengen etc.), die anschließend im Fragenkatalog anzuzeigen sind.
+Führung durch den Prozess: Der Reinraummitarbeiter wird Schritt für Schritt durch die Fragen geleitet. Pro Teilschritt wird eine Seite des Fragekatalogs angezeigt. Navigation (Weiter/Zurück) ist möglich, wobei ggf. Pflichtfragen pro Seite definiert sind.
+Verschiedene Fragetypen: Unterstützung aller benötigten Antworttypen:
+Checkbox-Fragen (Ja/Nein oder Ja/Nein/Nicht zutreffend),
+Numerische Eingaben (z.B. Gramm-Angaben mit bis zu zwei Dezimalstellen),
+Datum/Uhrzeit-Eingaben,
+Freitextfelder für Bemerkungen und Kürzel/Signaturen,
+Signaturfelder (als einfaches Freitextfeld für Mitarbeiterkürzel, da keine echte digitale Signatur im MVP).
+Zwei-Personen-Eingaben: Umsetzung des 4-Augen-Prinzips an den vorgesehenen Stellen: Bei bestimmten Kontrollfragen werden zwei Checkboxen angezeigt – eine für Mitarbeiter 1 (MA1) und eine für Mitarbeiter 2 (MA2) –, um die Prüfung durch eine zweite Person zu dokumentieren. Ebenso gibt es Felder für die Kürzel zweier Mitarbeiter (Erfasser und Prüfer).
+Bedingte Sichtbarkeiten: Implementierung der Logik, dass bestimmte Fragen/Abschnitte nur unter bestimmten Bedingungen erscheinen. Beispiele: Fragen, die nur bei GACP-Ausgangsmaterial relevant sind, oder Schritte, die nur bei tatsächlich durchgeführter Pause angezeigt werden. Die Bedingungen sind aus dem Fragenkatalog-Dokument entnommen und werden im SurveyJS-Framework (visibleIf-Bedingungen) umgesetzt.
+Lokale Zwischenspeicherung: Alle Antworten werden im Browser zunächst lokal gehalten. Der Fortschritt geht auch bei einem Seitenwechsel nicht verloren. Optional kann eine periodische Autosave-Funktion (im Local Storage) implementiert werden, um Datenverlust bei z.B. versehentlichem Tab-Schließen zu verhindern.
+Exportfunktionen:
+JSON-Export: Möglichkeit, die eingegebenen Daten als JSON-Datei herunterzuladen (z.B. durch Bereitstellen eines Download-Links nach Abschluss der Befragung). Dies dient zur Archivierung oder Weiterverarbeitung.
+PDF-Export: Auf Knopfdruck wird ein PDF des ausgefüllten Fragebogens erzeugt. Das PDF enthält alle Fragen und Antworten in einem übersichtlichen Layout, vergleichbar mit dem Papierformular. (Die PDF-Funktionalität nutzt voraussichtlich eine clientseitige Bibliothek; im MVP genügt ein einfacher, unformatierter Export, solange die Inhalte stimmen.)
+Abschluss & Hinweis an Produktionsleitung: Am Ende des Fragekatalogs gibt es eine Abschlussseite. Dort wird angezeigt, dass der Herstellprozess abgeschlossen ist. Eine Schaltfläche „Benachrichtigung der Produktionsleitung“ dient als Platzhalter, um zu signalisieren, dass nun die Qualitäts- oder Herstellungsleitung informiert werden soll. (Im MVP wird diese Schaltfläche keine echte E-Mail o.Ä. versenden, sondern ggf. nur eine Meldung „Prozess abgeschlossen“ anzeigen.)
+Nicht im Umfang enthalten (Out of Scope):
+SAP-Integration: Es erfolgt keine Anbindung an SAP oder andere externe Systeme im MVP. Das bedeutet, dass Eingaben wie z.B. Materialstammdaten, Soll-Werte oder das Melden der Fertigstellung zwar im Fragekatalog erfasst, aber nicht automatisch an SAP übertragen werden. Ebenso werden keine Daten aus SAP importiert. Alle benötigten Informationen müssen manuell eingegeben oder aus statischen JSON-Dateien geladen werden.
+Datenbank/Backend: Es gibt keinen Server und keine persistente zentrale Datenbank im MVP. Die Anwendung läuft vollständig im Browser. Dementsprechend gibt es kein Nutzer-Login, keine Rollenverwaltung und keine serverseitige Speicherung der ausgefüllten Formulare. (Die Speicherung erfolgt nur als Download im JSON/PDF-Format oder temporär im Browser-Speicher.)
+Umfangreiche Validierungen und Berechnungen: Komplexe Prüfungen (z.B. Plausibilitätschecks, Berechnung von Summen oder Wiegedifferenzen) werden im MVP nur rudimentär umgesetzt, soweit sie im Fragenkatalog explizit gefordert sind. Beispielsweise ist die Summenbildung oder Wiegebilanz aus dem Dokument im MVP nicht enthalten, da dieser Abschnitt laut Vorgabe nicht Teil des Produktions-MVP ist.
+Volle GxP-Kompatibilität (Electronic Records/Electronic Signatures): Das MVP dient primär der Datenerfassung. Es wird (noch) keine rechtsverbindliche elektronische Signatur gemäß 21 CFR Part 11 o.ä. umgesetzt. Mitarbeiterkürzel werden nur als einfache Textfelder erfasst. Ebenso wenig gibt es Audit-Trail-Funktionen im MVP.
+Konfigurations-UI für Fragenkatalog: Der Fragenkatalog ist im MVP statisch. Es gibt keine Admin-Oberfläche, um Fragen hinzuzufügen oder zu ändern. Änderungen am Katalog würden im MVP durch Anpassung der JSON-Struktur im Code erfolgen.
+Mehrsprachigkeit: Das MVP wird vollständig in Deutsch umgesetzt. Andere Sprachen oder Lokalisierungen sind nicht vorgesehen.
+Umfangreiche UI-Polish: Das Hauptaugenmerk liegt auf Funktionalität. Ein konsistentes Layout und grundlegende Bedienbarkeit auf dem Tablet sind gewährleistet, jedoch sind keine aufwändigen Design-Themes oder Animationen Teil des MVP. Ebenso werden browserübergreifend moderne Chromium-basierte Browser auf Tablets vorausgesetzt; spezielle Optimierungen für ältere Browser entfallen.
+Durch diese Eingrenzungen stellt das MVP einen klar umrissenen Funktionsumfang bereit, der konzentriert die Kernidee (digitale Prozessdokumentation) demonstriert, ohne durch periphere Features oder Integrationen verzögert zu werden.
+3. Funktionale Anforderungen
+Die folgenden funktionalen Anforderungen (FA) spezifizieren, was das System leisten muss. Jede Anforderung hat eine eindeutige ID und ist mit Akzeptanzkriterien versehen, die definieren, wann die Umsetzung als erfolgreich angesehen wird. (Alle Anforderungen sind im Kontext des MVP zu verstehen – komplexere Features können in späteren Ausbaustufen folgen.)
+ID	Funktionale Anforderung	Akzeptanzkriterien
+F-1	Anlegen/Auswählen eines Produktionsauftrags: Vor Start der Datenerfassung muss ein Produktionsauftrag erfasst oder ausgewählt werden. Dies dient dazu, eine Instanz des Fragenkatalogs zu initialisieren und auftragsbezogene Informationen bereitzustellen.	1. Beim Aufrufen der Anwendung wird der Benutzer aufgefordert, einen Produktionsauftrag zu wählen oder anzulegen.
+2. Neuen Auftrag anlegen: Der Benutzer kann eine Maske öffnen, in der relevante Auftragsdaten eingegeben werden (z.B. Auftragsnummer, Produkt, Eingangs-Materialart GMP/GACP, Artikelnummern, Chargen, Soll-Mengen usw.). Nach Speichern erscheint der neue Auftrag in der Auswahl.
+3. Auftrag auswählen: Alternativ kann der Benutzer einen vorhandenen (vorab definierten) Auftrag aus einer Liste/Dropdown auswählen. Die Liste wird aus einer JSON-Datei oder dem Browser-Speicher geladen.
+4. Wird ein Auftrag ausgewählt, werden dessen Daten im Hintergrund geladen und der Fragenkatalog für diesen Auftrag angelegt.
+F-2	Darstellung des hierarchischen Fragenkatalogs: Das System muss den kompletten Fragenkatalog gemäß der festgelegten Struktur anzeigen, unterteilt in Prozessschritte, Teilschritte und gegebenenfalls weitere Untergliederungen. Jeder Abschnitt soll übersichtlich auf einer eigenen Seite dargestellt werden.	1. Hierarchie-Abbildung: Überschriften für Prozessschritte und Teilschritte werden optisch hervorgehoben, so dass der Nutzer den Abschnitt erkennt (z.B. als Titel auf der Seite).
+2. Seitenweise Navigation: Der Fragenkatalog ist in logische Seiten aufgeteilt. In der Regel entspricht ein Teilschritt einer Seite (sofern nicht zu umfangreich). Der Nutzer kann nur zur nächsten Seite wechseln, wenn die aktuelle vollständig bearbeitet (bzw. relevante Pflichtfelder ausgefüllt) ist.
+3. Seitenanzeige: Die Anwendung zeigt jeweils nur die aktuelle Seite/den aktuellen Teilschritt. Über „Weiter“/„Zurück“-Buttons (oder Swipe-Gesten) kann navigiert werden. Die Seitennavigation ist deaktiviert (Weiter-Button grau), solange erforderliche Eingaben auf der Seite fehlen.
+4. Inhaltsabdeckung: Alle im Dokument vorgesehenen Fragen erscheinen an der richtigen Position mit dem korrekten Text (siehe Abschnitt Inhalt des Fragenkatalogs). Keine Frage fehlt, und die Reihenfolge stimmt mit dem vorgegebenen Ablauf überein.
+F-3	Eingabe von Antworten in vorgegebenem Format: Der Benutzer muss alle Fragen im passenden Antwortformat beantworten können. Das System stellt dafür die richtigen Eingabekomponenten bereit.	1. Checkboxen: Bei Ja/Nein-Fragen wird eine Checkbox (bzw. zwei Checkboxen bei 4-Augen-Prinzip) angezeigt. Der Nutzer kann diese durch einfaches Antippen setzen oder entfernen. „Nicht zutreffend“ steht, wo vorgesehen, als dritte Option zur Verfügung (ggf. als separate Checkbox oder als spezialisiertes Steuerelement).
+2. Textfelder: Für Freitext-Eingaben (z.B. Bemerkungen oder Kürzel) erscheinen einzeilige oder mehrzeilige Textfelder. Diese sind mit Platzhaltern oder Labels versehen, die den erwarteten Inhalt andeuten (z.B. „Bemerkung eingeben...“).
+3. Numerische Felder: Bei numerischen Eingaben (z.B. Gewichtsangaben in g) wird ein entsprechendes Zahlenfeld angezeigt. Das Feld validiert die Eingabeformatierung (z.B. erlaubt nur Zahlen und höchstens zwei Nachkommastellen). Wenn möglich, wird die On-Screen-Tastatur des Tablets direkt im Zahlenmodus angezeigt.
+4. Datum/Uhrzeit: Bei Bedarf (z.B. Eingabe Startzeit der Herstellung) stellt das System ein Datum-Uhrzeit-Picker-Steuerelement bereit, mit dem der Benutzer bequem Datum und Uhrzeit auswählen kann. Formatvorgabe: TT/MM/JJJJ hh:mm.
+5. Signatur/Kürzel: Felder für Mitarbeiterkürzel verhalten sich wie kurze Textfelder. Es ist ersichtlich, wessen Kürzel einzutragen ist (Label wie „MA1 Kürzel (Erfasser)“ und „MA2 Kürzel (Prüfer)“).
+F-4	Zwei-Personen-Bestätigung (4-Augen-Prinzip): An bestimmten Kontrollpunkten muss das System die Eingabe einer Bestätigung durch zwei verschiedene Personen ermöglichen (MA1 und MA2).	1. Bei Fragen, die eine doppelte Bestätigung erfordern (im Fragenkatalog entsprechend gekennzeichnet), werden zwei Checkbox-Optionen nebeneinander dargestellt, beschriftet z.B. mit „MA1“ und „MA2“.
+2. Beide Checkboxen können unabhängig voneinander gesetzt werden. Die Idee ist, dass zunächst MA1 seine Prüfung durchführt und bestätigt, anschließend MA2.
+3. Es ist sichergestellt, dass im PDF-Ausdruck ersichtlich ist, welche Person (MA1 oder MA2) welche Checkbox gesetzt hat. (Im MVP wird zwar nicht die tatsächliche Identität geprüft, aber durch das Kürzel-Feld und getrennte Häkchenfelder dokumentiert.)
+4. Signaturfelder: Wo im Prozess ein zweites Kürzel vorgesehen ist (z.B. zweite Unterschrift bei Reinigung), sind ebenfalls zwei getrennte Eingabefelder vorhanden.
+F-5	Bedingte Sichtbarkeit und dynamische Abschnitte: Das System muss bestimmte Fragen oder Abschnitte automatisch ein- oder ausblenden, abhängig von vorherigen Antworten oder Auftragsdaten (Logiksteuerung). Außerdem müssen Wiederholungsschritte (Loops) für mehrere Bulk-Einheiten realisiert werden.	1. Materialtyp (GACP vs GMP): Wenn im Produktionsauftrag angegeben ist, dass es sich um GACP-Ausgangsmaterial handelt, erscheinen alle Fragen, die mit „Nur bei GACP“ gekennzeichnet sind. Ist das Material GMP-zertifiziert, werden diese Fragen übersprungen bzw. gar nicht angezeigt. Beispiel: Die Sektion Probenzug IPK oder Felder wie Aussortiertes Material (g) werden nur bei GACP eingeblendet.
+2. Pause-Abschnitt: Wählt der Benutzer im Laufe des Fragebogens bei „Pause wird durchgeführt?“ „Ja“, so verzweigt der Fragenkatalog in den Pause-Unterabschnitt. Dort werden Beginn/Ende der Pause (Uhrzeiten) und zugehörige Kontrollfragen angezeigt. Ist keine Pause vorgesehen (Antwort „Nein“), werden diese Seiten übersprungen und der Prozess geht ohne Unterbrechung weiter.
+3. Wiederholte Teilschritte (Bulkbeutel): Der Prozessschritt Primärverpackung – Produktionslauf pro Bulkbeutel beinhaltet einen wiederholbaren Abschnitt „Gebinde produzieren“. Das System ermöglicht, für jeden Bulk-Beutel die gleichen Fragen auszufüllen. Im MVP wird das so gelöst, dass entweder für die erwartete Anzahl Bulkbeutel entsprechende Seiten/Panel bereitstehen, oder dass der Nutzer per Button einen weiteren Durchlauf hinzufügen kann. In jedem Durchlauf wird die Bulkbeutel-Nummer erfasst und die Abfüllmenge, Anzahl Gebinde etc. dokumentiert.
+4. Dynamische Steuerung: Die Umsetzung der Sichtbarkeitslogik erfolgt ohne Seitenneuladen (clientseitig durch SurveyJS). Änderungen an relevanten Antworten (z.B. das Ankreuzen „Pause = Ja“) führen sofort dazu, dass die im weiteren Verlauf irrelevanten Fragen deaktiviert oder versteckt werden.
+F-6	Lokale Speicherung der Eingaben: Der Nutzer soll seine bereits eingegebenen Antworten nicht verlieren, selbst wenn er zwischendurch die Seite wechselt oder das Tablet vorübergehend sperrt. Das System soll daher die Daten bis zum Export zwischenspeichern.	1. Zwischenspeicherung im Speicher: Alle Antworten bleiben erhalten, solange der Browser-Tab geöffnet ist. Wechselt der Nutzer die Seiten vor und zurück, so bleiben bereits gegebene Antworten stehen und können weiterbearbeitet werden.
+2. Optional: Local Storage Nutzung: Wenn möglich, werden die Antworten auch im localStorage oder einer vergleichbaren browserseitigen Speichermechanik gesichert, sodass selbst bei einem versehentlichen Browser-Neustart die letzten Daten rekonstruierbar wären. (Dies ist ein Bonus im MVP und kann auf einfache Schlüssel-Wert-Speicherung der JSON-Antworten beschränkt sein.)
+3. Expliziter Zwischen-Speichern-Button (optional): Falls nötig, gibt es einen Button „Fortschritt speichern“, der den aktuellen Stand als JSON herunterlädt. Im MVP reicht jedoch die automatische Speicherung beim Export.
+4. Fehlermeldung bei Speicherproblemen: Sollte die Datenmenge evtl. zu groß für den Local Storage werden (unwahrscheinlich im MVP-Umfang), fängt das System dies ab und informiert den Nutzer, statt still die Daten zu verlieren.
+F-7	Export des ausgefüllten Fragebogens als JSON und PDF: Nach Abschluss der Dateneingabe muss der Benutzer die Möglichkeit haben, die Ergebnisse zu exportieren – sowohl als strukturierte JSON-Datei, als auch als menschenlesbaren PDF-Bericht.	1. JSON-Export: Sobald der Fragekatalog als beendet markiert wird (z.B. auf der letzten Seite „Herstellung abgeschlossen“), bietet die App einen Download-Link oder Button an, um die Antworten als JSON-Datei herunterzuladen. Der Dateiname enthält idealerweise die Protokollnummer oder Auftrags-ID und ein Datum (z.B. Protokoll_1234_2025-07-09.json). Beim Öffnen dieser Datei sind alle Fragen-Antwort-Paare ersichtlich (technisch als Schlüssel/Wert gemäß SurveyJS-Struktur).
+2. PDF-Export: Der Nutzer kann alternativ (oder zusätzlich) ein PDF generieren. Beim Klicken auf „Export als PDF“ beginnt der Browser mit dem Download einer PDF-Datei, die den kompletten Fragebogen mit Antworten enthält. Die Formatierung soll übersichtlich sein: Prozess- und Teilschritte als Überschriften, Fragen als Text mit angehängter Antwort. Checkbox-Antworten werden im PDF z.B. als „Ja“/„Nein“ ausgewiesen oder durch ein Kreuz in einem Kästchen deutlich gemacht. Freitext-Antworten erscheinen in Textform, numerische mit Einheit.
+3. Vollständigkeit: Das PDF umfasst alle beantworteten Fragen. Nicht angezeigte oder übersprungene Fragen (aufgrund von Bedingungen) müssen im PDF nicht erscheinen, um Verwirrung zu vermeiden. Das JSON hingegen enthält evtl. auch nicht zutreffende Felder, diese können leer oder mit Null-Werten bleiben.
+4. Kein externer Dienst: Die Export-Funktionalitäten laufen komplett im Browser des Clients ab (unter Verwendung von z.B. SurveyJS PDF Generator oder einer HTML-to-PDF Library). Es werden keine sensiblen Produktionsdaten an einen Server geschickt.
+F-8	Abschluss und Prozessbeendigung: Das System soll den Abschluss der Dateneingabe deutlich machen und den Übergang an nachgelagerte Instanzen (z.B. Produktionsleitung, Qualitätssicherung) vorbereiten.	1. Abschlussseite: Nach Beantwortung der letzten Frage sieht der Benutzer eine Seite „Herstellung abgeschlossen“ o.ä. Dort werden ggf. noch einmal alle beteiligten Mitarbeiter gelistet, und es wird bestätigt, dass der Fragenkatalog vollständig ausgefüllt ist.
+2. Benachrichtigungs-Schaltfläche: Auf der Abschlussseite gibt es eine Schaltfläche „Produktionsleitung benachrichtigen“. Im MVP ist dies symbolisch – ein Klick darauf könnte z.B. eine Erfolgsmeldung „Die Produktionsleitung wurde über den Abschluss informiert.“ anzeigen. Eine echte E-Mail- oder SAP-Meldung erfolgt nicht.
+3. Keine weiteren Eingaben möglich: Ist der Fragebogen abgeschlossen und exportiert, kann er gegen versehentliche Änderungen geschützt werden. Beispielsweise werden alle Eingabefelder schreibgeschützt, und der Nutzer kann nur noch lesen oder die Session zurücksetzen, aber nicht mehr ändern (sofern nicht explizit gewünscht, im MVP optional).
+4. Neustart für nächsten Auftrag: Das System bietet nach Abschluss die Möglichkeit, einen neuen Produktionsauftrag zu beginnen (zurück zur Start-/Auswahlseite), um ggf. den nächsten Durchlauf zu starten, ohne die App neu laden zu müssen.
+
+Hinweis: Weitere Anforderungen zur Usability (z.B. Farbgestaltung, genaue Button-Benennung) werden im MVP pragmatisch erfüllt, sind aber nicht im Detail als Muss-Kriterien festgelegt. Oberstes Ziel ist die korrekte funktionale Abbildung des Fragekatalogs und die sichere Erfassung der Daten.
+4. Technische Umsetzung
+In diesem Abschnitt wird beschrieben, wie die oben genannten Funktionen im MVP implementiert werden. Dabei werden die Systemarchitektur, verwendete Komponenten/Bibliotheken, Datenhaltung und besondere technische Herausforderungen skizziert.
+4.1 Systemarchitektur und Komponenten
+Die MVP-Anwendung wird als Single-Page Application (SPA) in React umgesetzt. Alle Logik läuft im Browser des Endgeräts (Tablet); ein Server kommt lediglich zum Hosten der statischen Dateien zum Einsatz. Die Struktur teilt sich grob in folgende Frontend-Komponenten auf:
+Hauptkomponente (App): Lädt die grundlegende Anwendung und steuert die Anzeige zwischen den Hauptbereichen (z.B. Auftragsauswahl vs. Fragebogen). Hier wird auch der SurveyJS-Fragebogen initial konfiguriert.
+Auftrags-Admin-Komponente: Einfaches Formular bzw. Auswahlmenü, um einen Produktionsauftrag auszuwählen oder neu einzugeben. (Diese Komponente umfasst Eingabefelder für die Produktionsauftragsdetails wie Produktname, Charge, etc., sowie eine Option „Neuen Auftrag anlegen“.) Intern greift diese Komponente z.B. auf eine JSON-Liste vordefinierter Aufträge zurück und erlaubt das Anhängen eines neuen Eintrags für einen neu erstellten Auftrag.
+SurveyJS-Komponente: Diese enthält den eigentlichen Fragenkatalog. SurveyJS stellt eine React-Integration bereit (SurveyJS React Library), die genutzt wird, um den Fragenkatalog gemäß einer JSON-Definition zu rendern. Diese Komponente erhält die Fragenkatalog-Struktur (ggf. vorbefüllt mit Auftragsdaten als Standardwerte) und verwaltet den aktuellen Status des Fragebogens (Seite, Fortschritt, Antworten). Sie übernimmt automatisch die Anzeige der jeweiligen Fragetypen und die Validierung basaler Eingaben.
+Navigations-/Layout-Komponenten: Zusätzliche UI-Elemente wie ein Seitenkopf (Titel der Anwendung, evtl. Logo) und eine Fußzeile mit Navigationsbuttons für „Zurück“/„Weiter“ können als eigene Komponenten vorliegen. SurveyJS bietet zwar eigene Navigation, doch diese kann für Tablets ggf. angepasst werden (z.B. größere Touch-Flächen). Gegebenenfalls werden die SurveyJS-Standardbuttons durch eigene Buttons ersetzt, die die SurveyJS-API aufrufen (z.B. survey.nextPage()).
+Export-/Abschlusskomponente: Dieser Bereich der UI erscheint am Ende des Fragebogens. Er umfasst die Export-Buttons (JSON, PDF) und die Abschlusshinweise (z.B. den Benachrichtigungs-Button). Möglicherweise ist dies einfach Teil der letzten SurveyJS-Seite (als statischer Text mit eingebetteten Buttons über sogenannten „Completing Survey“ Callback), alternativ eine separate React-Komponente, die nach survey.complete() gerendert wird.
+Architekturüberblick: Das MVP ist client-seitig monolithisch; d.h. alle Daten (Fragenkatalog, Auftragsinformationen) werden im Browser verarbeitet. Beim Start werden die statischen JSON-Daten geladen (z.B. via Fetch aus einer .json-Datei im Public-Folder oder eingebettet). Dann präsentiert React zunächst die Auftragsauswahl. Nach Auswahl wird die SurveyJS-Komponente mit dem JSON des Fragenkatalogs initialisiert, wobei an passender Stelle die Auftragsdaten eingefügt werden. Während der Benutzer den Fragebogen ausfüllt, speichert SurveyJS die Antworten im internen State. Bei Abschluss kann dieser State direkt für Exporte verwendet werden.
+4.2 Datenstruktur und -haltung
+Fragenkatalog als JSON: Der gesamte Fragenkatalog wird in einer JSON-Struktur abgebildet, die von SurveyJS eingelesen werden kann. Diese JSON folgt im Wesentlichen dem vom SurveyJS-Framework erwarteten Schema:
+Es gibt ein Array von pages (Seiten). Jede Seite repräsentiert im MVP typischerweise einen Teilschritt des Prozesses.
+Jede page enthält eine Liste von elements – das können Fragen (Input-Elemente) oder auch Panel-Gruppen sein. Panels werden genutzt, um Untergliederungen oder logische Gruppen zu repräsentieren (z.B. den wiederholbaren Block „Gebinde produzieren“ oder die gruppierten Felder für „Hergestellte Zwischenprodukte“ in der Nachbereitung).
+Ein Fragen-Element besitzt Eigenschaften wie name (eindeutiger Schlüssel für die Antwortspeicherung), title (der Fragetext, Deutsch, wie im Dokument vorgegeben), type (z.B. checkbox, text, number, datepicker etc.), und ggf. choices (für Auswahloptionen).
+Für Ja/Nein-Fragen werden im SurveyJS-Kontext häufig Radiobuttons oder Dropdowns verwendet; jedoch kann man auch Checkboxen konfigurieren. Im MVP werden Boolean-Fragen als Einzel-Checkbox gelöst (angehakt = Ja, nicht angehakt = Nein). Wo „Nicht zutreffend“ als dritte Option gefordert ist, kann man alternativ eine Dropdown mit Optionen Ja/Nein/Nicht zutreffend verwenden oder drei exclusive Checkboxen. (Die genaue technische Umsetzung wird anhand der SurveyJS-Möglichkeiten entschieden – z.B. kann man type: "dropdown" mit den drei Strings nutzen.)
+Bedingte Anzeige: In der JSON-Struktur werden Bedingungen über Felder wie visibleIf realisiert. Beispiel: Eine Frage mit name: "aussortiertesMaterial_g" bekommt "visibleIf": "{materialArt} == 'GACP'" zugewiesen, sofern materialArt aus dem Produktionsauftragstyp kommt. Ähnlich wird für Pause-bedingte Panels ein visibleIf auf die Antwort der Pause-Frage gesetzt.
+Wiederholbare Panels: Der Block Gebinde produzieren pro Bulkbeutel kann über SurveyJS Dynamic Panel abgebildet werden. Dabei wird ein Panel-Template definiert (enthaltend Felder für Gebinde-Anzahl, Gewichte etc.) und der Benutzer kann per „Hinzufügen“-Button für jeden Bulkbeutel ein Panel erzeugen. Alternativ, falls die Anzahl Bulkbeutel vorab feststeht (aus Auftragsdaten), können wir die JSON auch so generieren, dass diese Anzahl Panels initial bereitsteht oder als Seiten nacheinander auftaucht. Im MVP tendieren wir zur Dynamic Panel Lösung, um flexibel zu bleiben. Das Datenmodell im Ergebnis wäre dann ein Array von Objekten (jedes Objekt = ein Bulkbeutel mit seinen Feldern). SurveyJS unterstützt dies out-of-the-box.
+Identifikatoren: Jedem Frage-Element wird ein logischer Name gegeben, der im Antwort-JSON als Schlüssel dient. Wir wählen sprechende Namen (in Englisch oder Deutsch, z.B. "eingangsmaterial_ausgebucht" für die Frage „Eingangsmaterialien ausgebucht...?“). Wichtig ist, dass diese Namen eindeutig sind. Hierarchische Kontexte (Panels) werden als verschachtelte Objekte/Arrays im JSON abgebildet.
+Produktionsauftragsdaten: Diese liegen ebenfalls in JSON-Form vor. Beispielsweise könnte ein Produktionsauftrag wie folgt strukturiert sein (Auszug):
+json
+Kopieren
+Bearbeiten
+{
+  "id": "PA12345",
+  "produkt": "Medizinalcannabis Blüten XYZ",
+  "eingangsmaterial": {
+    "typ": "GACP", 
+    "wirkstoff": { "artikelNr": "ABC123", "charge": "2025-001", "verfall": "12/2026", "menge": 5000 },
+    "schablone": { "eqNummer": "CAN-MOE-EQ-10", "charge": "SCHAB-2025-05", "anzahl": 2 }
+  },
+  "primärpackmittel": { "artikelNr": "BG100", "charge": "PACK-2025-02", "anzahl": 50 },
+  "zwischenprodukt": { "artikelNr": "ZP-001", "vorgeseheneGebinde": "ZP2025-Batch01" },
+  "probenplanFreigabe": { "anzahl": 2, "füllmengeProProbe_g": 10 },
+  "anzahlBulkbeutel": 5
+}
+(Dies ist ein beispielhaftes Schema; im MVP sollte es genau auf die im Fragenkatalog dargestellten Infos abgestimmt werden.) Diese Auftragsdaten werden nach Auswahl des Auftrags in den Fragenkatalog eingespeist:
+Einige Felder aus den Auftragsdaten dienen als Anzeigeinformationen in der ersten Sektion Information Produktionsauftrag. Hier werden sie nicht als editierbare Felder, sondern als reiner Text dargestellt (SurveyJS html Element oder als read-only text).
+Andere Felder steuern die Logik (z.B. eingangsmaterial.typ bestimmt, ob GACP-Fragen sichtbar werden).
+Wiederum andere Werte könnten als Defaultwerte in Fragen einfließen. Beispiel: Die Soll-Gebindegröße oder die Soll-Inhalte werden aus dem Auftrag vorausgefüllt, damit der Nutzer sie nicht erneut eintippen muss. (In SurveyJS kann man defaultValue oder value für Felder setzen, bevor der Nutzer ausfüllt.)
+Antwortspeicherung: Solange der Nutzer den Fragebogen bearbeitet, hält SurveyJS den Stand aller Antworten im internen State. Dieser kann jederzeit als JSON-Objekt ausgelesen werden (via survey.data). Am Ende wird dieses JSON serialisiert. Die Struktur spiegelt die name-Zuordnung der Fragen wider, z.B.:
+json
+Kopieren
+Bearbeiten
+{
+  "eingangsmaterial_ausgebucht": true,
+  "leiterUnterschrift": "XY",
+  "mitarbeiterListe": [
+    { "name": "Max Mustermann", "kürzel": "MM" },
+    { "name": "Erika Beispiel", "kürzel": "EB" }
+  ],
+  "herstellbeginn": "2025-07-09T14:30",
+  "lineClearing_ok_ma1": true,
+  "lineClearing_ok_ma2": true,
+  "waage1_nivellierung": true,
+  "waage1_isoCalc": true,
+  "waage1_kalibGewichte": true,
+  "waage1_check_ma2": true,
+  "waage2_nivellierung": true,
+  "...": "...",
+  "bulkProtokolle": [
+    {
+      "bulkNr": 1,
+      "istInhalt_g": 1000.00,
+      "gebindeProduktion": [
+        {
+           "anzahlGebinde": 10,
+           "gebinde_ok_ma1": true,
+           "gebinde_ok_ma2": true,
+           "restmenge_g": 5.00,
+           "aussortiert_g": 2.00,
+           "ipkProbe_g": 1.00,
+           "bruch_g": 0.50,
+           "kuerzel_erfasst": "AB",
+           "kuerzel_geprueft": "CD",
+           "letzterBeutel_ok": true
+        }
+      ]
+    },
+    { "... für Bulk 2 ..." }
+  ],
+  "pauseDurchgefuehrt": false,
+  "kumulierteRestmenge_g": 12.5,
+  "ipk_blutenSepariert_ma1": true,
+  "ipk_blutenSepariert_ma2": true,
+  "ipk_gesamtmenge_g": 3.00,
+  "freigabeanalytik_vorgesehen": true,
+  "freigabe_proben_sollAnzahl": 2,
+  "freigabe_proben_sollInhalt": 10,
+  "freigabe_proben_istAnzahl": 2,
+  "freigabe_proben_istInhalt": 10,
+  "reinraum_nachbereitung_ok_ma1": true,
+  "reinraum_nachbereitung_ok_ma2": true,
+  "zwischenprodukte_verpackt_ma1": true,
+  "zwischenprodukte_verpackt_ma2": true,
+  "zwischenprodukte_eingelagert_ma1": true,
+  "zwischenprodukte_eingelagert_ma2": true,
+  "proben_verpackt_ma1": true,
+  "proben_verpackt_ma2": true,
+  "proben_eingelagert_ma1": true,
+  "proben_eingelagert_ma2": true,
+  "rest_verpackt_ma1": true,
+  "rest_verpackt_ma2": true,
+  "rest_quarantäne_ma1": true,
+  "rest_quarantäne_ma2": true,
+  "müll_verpackt_ma1": true,
+  "müll_verpackt_ma2": true,
+  "müll_quarantäne_ma1": true,
+  "müll_quarantäne_ma2": true,
+  "unused_bulks_zurueck_ma1": true,
+  "unused_bulks_zurueck_ma2": true,
+  "unused_packmittel_zu_ma1": true,
+  "unused_packmittel_zu_ma2": true,
+  "unused_packmittel_vernichtet_ma1": true,
+  "unused_packmittel_vernichtet_ma2": true,
+  "unused_vernichtet_begruendung": "",
+  "schablonen_entfernt_ma1": true,
+  "schablonen_entfernt_ma2": true,
+  "schablonen_entfernt_begruendung": "",
+  "abschliessend_geraeteLogbuch": true,
+  "abschliessend_probenplan": true,
+  "abschliessend_bemerkung": "",
+  "abschluss_erfasst": "MM",
+  "abschluss_geprueft": "EB",
+  "produktion_beteiligte": [
+     { "name": "Max Mustermann", "unterschrift": "Max Mustermann" },
+     { "name": "Erika Beispiel", "unterschrift": "Erika Beispiel" }
+  ]
+}
+(Auch dies ist ein illustratives Beispiel; die tatsächlichen Schlüsselnamen und Struktur orientieren sich am implementierten SurveyJS-JSON.) Diese Daten werden im Local Storage des Browsers oder in einem globalen JS-Objekt gehalten, bis der Benutzer den Export auslöst. Bei Export als Datei wird entweder:
+für JSON: ein Blob aus diesem JSON erstellt und als .json heruntergeladen.
+für PDF: der SurveyJS PDF Generator mit dem SurveyJS-Formular und den Daten gefüttert, um ein formatiertes PDF zu erzeugen
+surveyjs.io
+. Alternativ könnte auch ein HTML-Template befüllt und via window.print() als PDF gedruckt werden – wir bevorzugen jedoch die library-basierte Variante für bessere Formatierungskontrolle.
+Speicherbedarf und Limits: Da kein Server involviert ist, liegen alle Daten im Arbeitsspeicher des Tablets. Der Fragenkatalog ist nur einige hundert KB groß. Die Antworten (JSON) werden ebenfalls überschaubar sein (wenige KB bis maximal einige hundert KB, je nach Anzahl Bulkbeutel und Textlängen). Das ist problemlos handhabbar für moderne Geräte. Sollte offline gearbeitet werden, muss darauf geachtet werden, dass der Browser zwischendurch nicht die Seite neu lädt, da sonst die State-Daten verloren gehen (außer sie liegen im Local Storage, wie oben optional vorgesehen).
+4.3 Besondere Implementierungsdetails
+SurveyJS-Einbindung: Wir verwenden SurveyJS (vielleicht in der Version 1.9.x oder 1.10.x, aktuelle stabile Version 2025) als Kern für den Fragebogen. Die JSON-Struktur wird entsprechend der Dokumentation von SurveyJS aufgebaut. Die React-Komponente <Survey model={surveyModel} /> rendert dann die Fragen. Die meisten Funktionen (Seitensteuerung, Validierung) bringt SurveyJS bereits mit, was die Implementierung deutlich beschleunigt. Anpassungen am CSS (z.B. größere Checkboxen für Touch, eigene Farben) können via CSS oder theming vorgenommen werden.
+Tablet-Optimierung: Es wird sichergestellt, dass alle Bedienelemente auf einem durchschnittlichen Tablet-Bildschirm (z.B. 10 Zoll, Auflösung 1920x1200) gut lesbar und klickbar sind. Schriftgrößen und Abstände werden ggf. per CSS angepasst. Auch die virtuelle Tastatur (bei Texteingaben) wird berücksichtigt – z.B. genug Abstand nach unten, damit Eingabefelder nicht von der Tastatur verdeckt bleiben (Sticky-Footer für Navigation).
+Validierung: SurveyJS erlaubt es, Feldern Validierungsregeln mitzugeben (z.B. numeric ranges, required). Wir markieren alle essenziellen Fragen als isRequired: true, damit der Benutzer keine Seite versehentlich unvollständig weiterblättert. Falls erforderlich, können benutzerdefinierte Validierungen (z.B. Summenprüfungen) eingebaut werden, sind aber für MVP nicht vorgesehen.
+Performance: Da die Anzahl der Fragen relativ groß ist (der Katalog umfasst viele Unterpunkte), achten wir auf Performance: SurveyJS lädt standardmäßig alle Seiten auf einmal. Das Rendering erfolgt aber seitenweise. Tests auf typischen Tablets sollten zeigen, dass die Performance ausreichend ist. Falls nicht, könnte man den Katalog in Abschnitte laden (z.B. erst Vorbereitung und Materialbereitstellung, dann Herstellprozess etc.), aber das ist eher unwahrscheinlich notwendig im MVP.
+Offline-Fähigkeit: Da sämtliche Logik im Frontend ist, kann die Anwendung prinzipiell offline laufen, nachdem sie einmal geladen wurde. Für den MVP ist aber nicht zwingend eine PWA (Progressive Web App) eingerichtet. Im Firmennetz kann die App unter einer lokalen URL gehostet sein, das Tablet greift per WLAN darauf zu. Fällt die Verbindung aus, würde ohne PWA der Fragebogen nicht neu ladbar sein – daher sollte im Zweifel vor Beginn sichergestellt sein, dass Verbindung besteht, oder man richtet die App als PWA ein, um offline-Verfügbarkeit zu ermöglichen (dies kann später entschieden werden).
+Benutzerführung & Fehlerhandling: Bei Fehleingaben (z.B. erforderliches Feld leer) zeigt SurveyJS automatisch eine Meldung an der jeweiligen Frage. Globale Fehler sind kaum zu erwarten, da kein Backend. Sollte der JSON-Export fehlschlagen (z.B. aus unbekanntem Grund), wird eine einfache Fehlermeldung angezeigt. Insgesamt ist der Flow aber straightforward.
+5. Datenmodell
+In diesem Abschnitt werden die wichtigsten Datenobjekte und ihre Attribute beschrieben, um ein gemeinsames Verständnis der Informationsstruktur zu schaffen. Das MVP hat wenige persistente Datenstrukturen, aber im Vordergrund stehen der Produktionsauftrag, der Fragenkatalog und die Antwortdaten.
+5.1 Produktionsauftrag (Entity: ProductionOrder)
+Der Produktionsauftrag enthält alle Stammdaten und geplanten Werte, die für die Dokumentation benötigt werden. Im MVP werden diese Daten entweder aus einer statischen Datei geladen oder vom Benutzer manuell eingegeben. Relevante Felder eines Produktionsauftrags sind:
+Auftrags-ID / Protokollnummer: Eindeutige Kennung des Produktionsvorgangs. (Im MVP manuell vergeben oder dummy – im echten Betrieb käme diese aus SAP). Im Fragenkatalog vorgesehen, wird aber erst am Ende durch QS final vergeben – daher bleibt dieses Feld initial leer.
+Produkt/Artikelname: Bezeichnung des Endprodukts bzw. des herzustellenden Zwischenprodukts.
+Eingangsmaterial (Wirkstoff): Informationen zum Rohstoff:
+Artikelnummer des Cannabis-Wirkstoffs,
+Charge des Wirkstoffs,
+Verfallsdatum,
+Eingangsmenge (geplant, in Gramm).
+Eingangsmaterial Schablone: Nur relevant für GACP-Material. Hier werden die Schablonen (Vorlagen zur Qualitätskontrolle) erfasst:
+Equipment-Nummer (EQ-Nummer) der Schablone,
+Charge(n) der Schablone,
+Anzahl vorhandener Schablonen.
+Primärpackmittel: Angaben zu den Verpackungsmaterialien:
+Artikelnummer der Beutel/Behältnisse,
+Charge der Packmittel,
+Anzahl der Packmittel.
+Herzustellendes Zwischenprodukt: Angaben zum Produkt, das durch den Prozess entsteht:
+Artikelnummer des Zwischenprodukts,
+vorgesehene Gebinde- oder Batch-Nummer (z.B. erste Gebinde-Nr. der Serie).
+Probenzug geplant: Ob und welche Proben für die Freigabeanalytik vorgesehen sind:
+Probenzugsplan der Kampagne (z.B. wie viele Proben insgesamt in der Produktionskampagne gezogen werden sollen),
+Geplante Anzahl an Proben für diesen Auftrag und jeweils geplante Füllmenge pro Probe. (Im Fragenkatalog werden zwei Proben vorgesehen, daher z.B. Angabe "2 Proben à 10g".)
+Anzahl Bulkbeutel: Wie viele Bulk-Beutel (Großgebinde) an Rohware werden verarbeitet. Dies beeinflusst die Anzahl der Wiederholungsdurchläufe im Fragenkatalog (für jeden Bulkbeutel einmal den Prozess Gebinde produzieren). Gibt der Admin diese Zahl ein, kann das System entsprechend viele Panel-Durchläufe vorbereiten.
+Materialtyp (GMP/GACP): Eine Angabe, ob das Eingangsmaterial GMP-konform ist oder nicht. Dies steuert viele bedingte Fragen (z.B. IPK-Schritte sind nur bei GACP nötig).
+Im MVP sind diese Daten nicht in einer relationalen DB, sondern entweder als JSON-Objekt oder im Speicher als JS-Objekt. Wenn der Benutzer einen neuen Auftrag anlegt, werden diese Felder durch Form-Eingaben gefüllt und dann dem Fragenkatalog übergeben.
+5.2 Fragenkatalog-Struktur (Entities: ProcessStep, SubStep, Question)
+Der Fragenkatalog ist im Grunde in der JSON-Struktur von SurveyJS abgebildet (siehe Abschnitt 4.2), dennoch hier ein konzeptionelles Modell:
+Prozessschritt: Oberste Gliederungsebene, entspricht einem größeren Abschnitt des Produktionsprozesses (z.B. Vorbereitung, Materialbereitstellung, Primärverpackung, Pause, Kumulierte Restmenge & Probenzug, Schleusung Ausgang, Nachbereitung Reinraum, Nachbereitung (Materialien), Abschluss). Jeder Prozessschritt dient als logischer Container, hat selbst aber keine direkte Antwort, sondern gliedert nur Teilschritte.
+Teilschritt: Unterabschnitt innerhalb eines Prozessschritts, gruppiert zusammengehörige Aktionen oder Checks. Beispielsweise ist Information Produktionsauftrag ein Teilschritt der Vorbereitung, oder Line Clearing ein Teilschritt der Vorbereitung Reinraum. Ein Teilschritt kann auf einer eigenen Formularseite dargestellt werden.
+Untergliederung Teilschritt: Eine weitere Verschachtelungsebene, die im Fragenkatalog auftaucht, um komplexe Abläufe oder Wiederholungen zu organisieren. Beispiele: Gebinde produzieren innerhalb des Produktionslaufs pro Bulkbeutel, oder in der Nachbereitung der Block Hergestellte Zwischenprodukte, Proben, Finale Restmenge jeweils als gruppierte Untergliederungen des Teilschritts Einlagern der Materialien. In SurveyJS werden diese Untergliederungen typischerweise als Panels umgesetzt, evtl. auch als dynamische Panels für Wiederholungen.
+Frage/Item: Die eigentliche Frage oder Aussage, zu der der Benutzer eine Eingabe machen muss (oder eine Information, die angezeigt wird). Jede Frage hat:
+einen Fragetext (laut Dokument, auf Deutsch),
+einen Antworttyp (siehe F-3: Checkbox, Text, Zahl, etc.),
+optional eine Bedingung für Sichtbarkeit (z.B. „Nur bei GACP-Material“),
+ggf. eine Einheit oder Format (z.B. „(g)“ für Gramm-Angaben, oder Datumsformat).
+Manche Fragen sind informatorisch (z.B. „Info: XY erfolgt?“ mit darunterliegenden Aufzählungen) – diese enthalten keinen Eingabe-Input an sich, sondern dienen als Anleitung. Solche werden teils als Info-Text oder als Überschrift im Formular wiedergegeben.
+Beziehungen/Hierarchie:
+Ein Prozessschritt besteht aus einem oder mehreren Teilschritten.
+Ein Teilschritt kann weitere Untergliederungen enthalten;
+Sowohl Teilschritte als auch Untergliederungen enthalten letztlich eine Menge von Fragen/Items.
+In der praktischen Umsetzung werden Untergliederungen benutzt, wenn mehrere Fragen zusammengehören und eventuell wiederholt werden oder gemeinsam bedingt sind.
+Identifikation von Fragen: Intern (für das JSON und die Datenauswertung) hat jede Frage einen name-Key. Dieser wird aus dem Kontext abgeleitet, z.B. eingangsmaterial_ausgebucht wie oben erwähnt. So kann man in den Antworten die Zuordnung treffen. Für den Benutzer sind diese Namen unsichtbar; er sieht nur die Fragetexte. Validierungsregeln im Modell: Schon im Datenmodell wird festgelegt, ob eine Frage erforderlich ist oder welche Eingaben zulässig sind:
+Pflichtfelder: Im Fragenkatalog-Dokument sind gewisse Felder implizit erforderlich (z.B. alles, was dokumentiert werden muss, um GxP-konform zu sein). Im Zweifel werden alle Fragen als required markiert, außer sie sind als „nicht zutreffend“ überspringbar konzipiert.
+Wertebereiche: Zahlfelder könnten Limits haben (z.B. keine negativen Gewichte; Maximalwert vielleicht 10000g?), diese sind aber eher weich – im MVP wird hauptsächlich auf sinnvolle Eingaben vertraut.
+Konsistenz: Das Datenmodell selbst prüft keine Querverbindungen (z.B. Summe der abgefüllten Menge = Ist-Inhalt Bulkbeutel - Restmenge - Bruch etc.). Solche Prüfungen könnten Thema eines späteren Releases sein.
+5.3 Antwortdaten (Entity: SurveyResult)
+Die Antwortdaten ergeben sich aus dem Ausfüllen des Fragebogens und entsprechen der Struktur im JSON-Export. Im Datenmodell kann man sie sich als Sammlung von Antwort-Objekten vorstellen, jeweils bestehend aus Frage-ID und Wert. Aufgrund der hierarchischen Natur sind das nicht alles flache Schlüssel-Werte, sondern teils geschachtelt:
+Einfache Antworten: Eine Einzel-Checkbox wird als Boolean-Wert (true/false) gespeichert, ein Text als String, eine Zahl als Number, Datum als ISO-String etc.
+Mehrfachantworten (Panels): Für wiederholte Abschnitte (z.B. Bulkbeutel oder Mitarbeiterlisten) werden Arrays in den Antworten angelegt. Jedes Array-Element ist ein Objekt mit den gleichen Feldern. Beispiel: bulkProtokolle ist Array von Länge = Anzahl Bulkbeutel. Darin hat jedes Objekt Felder bulkNr, istInhalt_g usw. Und innerhalb davon wiederum gebindeProduktion als Array (falls z.B. in einem Bulk mehrere Gebinde-Etappen, aber eigentlich ist pro Bulk eine Panel-Iteration – hier könnte man auch ohne zweites Array arbeiten; das genaue Modell hängt von der Implementation ab).
+4-Augen-Checkboxen: Diese werden im JSON meist als separate Felder erfasst (wie something_ma1: true, something_ma2: true). Alternativ könnte man als Array von Booleans speichern, aber das wäre unübersichtlicher. Wir bevorzugen separate benannte Felder pro Person.
+Signaturen/Kürzel: Da dies als Freitext eingegeben wird, landet es als String in den Antworten. Es gibt Felder wie leiterHerstellungKuerzel, erfasstDurch, geprueftDurch, etc. sowie am Ende eine Liste aller beteiligten Mitarbeiter (Namen & Unterschriften). Die Liste der beteiligten Mitarbeiter am Ende ist im Prinzip Redundanz, da wir diese schon am Anfang erfasst haben. In der Papierlogik unterschreiben am Ende vielleicht nochmals alle – im MVP könnte man diese Liste automatisch ausfüllen lassen aus den anfänglich angegebenen Mitarbeitern, oder man lässt die Mitarbeiter am Ende digital „unterschreiben“ indem sie ihren Namen eintippen. Hier wird im MVP entschieden, ob wir das doppeln oder automatisieren; vermutlich einfacher: Am Ende eine nicht-editierbare Liste der Namen aus Abschnitt "Beteiligte Mitarbeiter", und ggf. Unterschrift-Felder, die dann real von ihnen auf Papier geleistet würden. Für den MVP-Datensatz reicht die einmalige Erfassung mit Kürzel.
+Kommentare/Bemerkungen: Alle freien Textbox-Inhalte (Bemerkungen bei Abweichungen, Nachbereitungsbemerkungen etc.) werden als Strings gespeichert. Leere Textbox = leerer String im JSON.
+Persistenz: Wie beschrieben, werden diese Antworten im MVP nicht serverseitig gespeichert. Die JSON-Datei, die der Benutzer herunterlädt, ist der primäre persistente Datenträger. Allerdings könnten wir überlegen, die Ergebnisse im Browser unter dem Auftragsdatensatz im Local Storage abzulegen, sodass, wenn man den gleichen Auftrag erneut öffnet, man die alten Daten sieht. Standardmäßig wird aber jeder Durchlauf als neu angesehen. Sicherheit: Die Daten sind im MVP nicht verschlüsselt (liegt ja alles lokal vor). Für ein Produktivsystem müsste man auf Vertraulichkeit achten (hier haben wir es mit sensiblen Produktionsdaten zu tun). Im Intranet und MVP-Stadium ist das Risiko gering, aber es sollte Bewusstsein bestehen, dass z.B. jeder mit Zugriff auf das Tablet und die JSON/PDF auch die Daten sehen kann.
+6. User-Flows
+In diesem Kapitel werden typische Anwenderabläufe (User Flows) beschrieben, um zu veranschaulichen, wie ein Nutzer (Reinraummitarbeiter oder Administrator) das System bedient und welche Schritte dabei durchlaufen werden. Diese Flows decken die Nutzung der Admin-Maske, das Ausfüllen des Fragebogens und den Export ab.
+6.1 Produktionsauftrag anlegen/auswählen (Admin-Maske)
+Start der Anwendung: Der Nutzer (z.B. Produktionsleiter oder vorbereitender Mitarbeiter) öffnet die Webanwendung auf dem Tablet. Es erscheint der Begrüßungs-/Startbildschirm mit dem Titel der Anwendung und einem Hinweis „Bitte Produktionsauftrag auswählen oder neu anlegen“.
+Vorhandenen Auftrag auswählen: Der Nutzer öffnet ein Dropdown-Menü oder eine Liste, in der bereits konfigurierte Produktionsaufträge aufgeführt sind (z.B. durch Auftragsnummer oder Produktname identifiziert). Er tippt auf den gewünschten Eintrag und klickt „Laden“. Daraufhin werden die zugehörigen Auftragsdaten intern geladen. Der Fragenkatalog wird mit diesen Daten initialisiert.
+Neuen Auftrag anlegen: Ist der gewünschte Auftrag nicht gelistet oder es handelt sich um einen neuen Produktionslauf, wählt der Nutzer „Neuen Produktionsauftrag anlegen“. Ein Eingabeformular erscheint. Hier trägt er die erforderlichen Daten ein: Produktname, ggf. interne Auftrags-ID, Kennzeichnung ob GMP oder GACP Material, Materialdetails (Artikelnummer, Charge, etc.), Anzahl Bulkbeutel, usw. Pflichtfelder sind markiert. Nach Ausfüllen klickt er auf „Speichern“.
+Auftragsdaten prüfen: Das System validiert die Eingaben (alle Pflichtfelder gefüllt, Datumsformat korrekt, numerische Werte sinnvoll). Sind Daten unplausibel, wird eine Fehlermeldung in der Maske angezeigt (z.B. „Bitte Charge angeben“).
+Auftrag speichern und laden: Bei erfolgreichen Eingaben schließt sich die Eingabemaske. Der neue Auftrag wird nun ebenfalls in der Auswahlliste geführt (im MVP evtl. nur in-memory). Gleichzeitig wird dieser Auftrag gleich ausgewählt und der Benutzer fährt fort.
+Übergang zum Fragenkatalog: Nachdem ein Auftrag gewählt wurde, erscheint ein Button „Fragekatalog starten“ (oder der Übergang erfolgt automatisch nach Anlage). Der Nutzer betätigt diesen und gelangt zur ersten Seite des Fragenkatalogs, Information Produktionsauftrag.
+(Im MVP ist dieser Admin-Flow simpel gehalten. In einem erweiterten System gäbe es evtl. Benutzerrechte: ein Admin legt Aufträge an, die Produktionsmitarbeiter wählen nur aus. Für jetzt kann dieselbe Person beide Rollen ausführen.)
+6.2 Ausfüllen des Fragekatalogs (Reinraummitarbeiter mittels SurveyJS)
+Informationsseite Produktionsauftrag: Auf Seite 1 sieht der Reinraummitarbeiter die Daten des Produktionsauftrags übersichtlich aufgelistet (z.B. Produkt, Eingangs-Charge, etc.). Diese Seite dient als Info und enthält keine editierbaren Felder außer ggf. einem Feld für die Protokollnummer (die aber vorerst leer bleibt). Der Mitarbeiter überprüft, ob alles korrekt angezeigt wird. Unten am Bildschirm tippt er auf „Weiter“.
+Vorbereitung – Materialausgangsbuchung: Nächste Seite: Eingangsmaterialien ausbuchen. Hier fragt das System: „Eingangsmaterialien ausgebucht und Beleg beigefügt?“ mit Ja/Nein-Checkbox. Der Mitarbeiter hat gerade die Materialien in SAP oder manuell ausgebucht und legt den Beleg dem Protokoll bei, also kreuzt er „Ja“ an. Darunter soll die Leitung der Herstellung unterschreiben; der Mitarbeiter tippt ins entsprechende Feld das Kürzel der Leitung ein (im MVP angenommen, er hat das Kürzel vorliegen). Dann klickt er „Weiter“.
+Vorbereitung – Beteiligte Mitarbeiter: Der Mitarbeiter kommt zur Seite Beteiligte Mitarbeiter. Dort sieht er Eingabefelder, um die Namen und Kürzel aller Personen einzutragen, die an der Herstellung beteiligt sind. Er gibt z.B. für sich selbst „Max Mustermann – MM“ ein und für seine Kollegin „Erika Beispiel – EB“. Falls mehr Zeilen nötig sind (vielleicht können hier beliebig viele hinzugefügt werden), fügt er diese hinzu. Dann „Weiter“.
+Vorbereitung – Beginn der Herstellung: Die Seite Datum und Uhrzeit – Beginn der Herstellung erscheint. Der Mitarbeiter wählt mit einem Datum-Uhrzeit-Picker das aktuelle Datum und Uhrzeit aus (oder es wird automatisch vorgefüllt mit „Jetzt“, was er bestätigen kann). Anschließend geht es weiter.
+Vorbereitung – Kennzeichnung prüfen: Nun kommt der Abschnitt Vorbereitung Kennzeichnung. Der Teilschritt heißt im Formular Prüfung ob alles vorhanden ist. Hier werden mehrere Checkpunkte untereinander aufgelistet, mit Ja/Nein/N/A-Checkboxen:
+Eurocontainer für Zwischenprodukte vorhanden?
+Probenbehälter und -container (Freigabeanalytik) vorhanden?
+(Nur bei GACP:) Probenbehälter für In-Prozess-Kontrolle vorhanden?
+(Nur bei GACP:) Gebinde für „Rückfragen QK“ vorhanden?
+Gebinde für finale Restmenge vorhanden?
+(Nur bei GACP:) Behälter für Bruch/aussortiertes Material vorhanden?
+Der Mitarbeiter kontrolliert physisch, ob diese Utensilien bereitstehen, und kreuzt jeweils „Ja“ an. Wo etwas nicht zutrifft (z.B. GACP-spezifische, wenn Material GMP ist), sind die Punkte ausgegraut oder gar nicht da. Er sieht evtl. Hinweistexte, welche Container in welchem Fall gebraucht werden. Nachdem alle relevanten Häkchen gesetzt sind, geht es weiter.
+Vorbereitung – Reinraumstatus (Line Clearing): Der nächste Teilschritt ist Vorbereitung Reinraum, Seite Line Clearing. Zunächst überprüft der Mitarbeiter die Reinraumparameter:
+Die Raumtemperatur wird automatisch aus den Sensoren angezeigt (im MVP vielleicht manuell einzutragen): z.B. Soll 15–25°C, Ist-Feld [der Mitarbeiter liest am Monitor 22.0°C ab und tippt das ein]. Danach kreuzt er „Entspricht Soll? Ja“ an.
+Die Druckkaskade (Soll 25–35 Pa im Raum, 10–20 Pa in Schleusen) – hier stehen Felder für Ist-Werte (die er vom Display abliest, z.B. 30 Pa und 15 Pa) und Checkboxen „Entspricht Soll?“. Sagen wir, beide im Soll -> er kreuzt Ja an.
+Reinraum-Ampel: Er sieht, ob die Reinstraumampel grün ist. Ist sie grün, so kreuzt er „Reinraum kann genutzt werden? – Ja“ (teils zwei Checkboxen für MA1 und MA2). Hier muss tatsächlich ein 4-Augen-Prinzip gelten: Er ruft die zweite Person; beide bestätigen, dass der Reinraum in ordnungsgemäßem Zustand ist (MA1 und MA2 setzen jeweils ihr Häkchen).
+Line Clearing durchgeführt: Eine Info-Liste sagt: Arbeitsplatz sauber, Tablet geladen, nur nötige Gegenstände vorhanden. Beide schauen sich um und bejahen das (hier reicht evtl. ein Einfach-Ja von MA1, oder ebenfalls Doppelhäkchen – je nach Vorgabe; im Dokument war es ein einfacher Ja/Nein mit 4-Augen schon im Ampelstatus). Nehmen wir an, es war eine einzelne Checkbox; er hakt sie an.
+Er ergänzt ggf. Bemerkungen falls etwas aufgefallen ist (z.B. „Ein nicht benötigtes Werkzeug entfernt“).
+Dann tippt er auf „Weiter“.
+Vorbereitung – Waagen einstellen: Nächste Seite Vorbereitung Waage. Hier gibt es pro Waage (Waage 1 für Wareneingang, Waage 2 für Abfüllung) mehrere Prüfpunkte, teils mit 4-Augen:
+Nivellierung korrekt (Waage1 / Waage2): Zwei Checkboxen-Spalten – er prüft Waage1, ja -> Haken, Waage2 -> Haken.
+Wägeplatte zentriert (Waage1/Waage2): ebenso.
+ISO-Calc Kalibrierfunktion fehlerfrei (Waage1/Waage2): er führt die Kalibrierung durch, beide zeigen OK, also zwei Haken.
+Kalibriergewichte 2g/200g richtig (Waage1/Waage2): er legt die Kalibriergewichte auf, keine Abweichung -> Haken, Haken.
+Zweite Person hakt ab: Nun muss MA2 im Statusbericht der Waage Einstellungen prüfen – d.h. MA2 (die Kollegin) schaut nochmal ins Waagenprotokoll und setzt für jede Waage ein Häkchen (für MA2). Möglicherweise ist das als eigene Frage formuliert „Überprüfung durch MA2 erfolgt?“, was sie dann mit Ja/Nein beantwortet – hier sei es Ja für beide Waagen.
+Der Mitarbeiter schreibt noch in Bemerkungen z.B. „Waagen okay, siehe Waagenlog“.
+Weiter zur nächsten Seite.
+Vorbereitung – Kammerschweißgerät: Jetzt Vorbereitung Kammerschweißgerät.
+Er trägt im Feld „Verschweißprogramm Soll“ die Soll-Werte vom Verpackungsanweisungsblatt ein (z.B. Temperatur, Zeit – im MVP ein Freitextfeld).
+Dann kontrolliert er am Gerät die Ist-Einstellungen und notiert diese unter „Verschweißprogramm Ist“.
+Zwei Checkboxen: „Übereinstimmung mit Soll?“ – vermutlich eine Checkbox (Ja/Nein) für die Übereinstimmung. Angenommen, es stimmt, er setzt Haken.
+Nächster Block: Maschine funktioniert ordnungsgemäß? – enthält Unterpunkte: 3 leere Beutel verschweißt, Schweißnaht optisch geprüft, Zugtest – im MVP könnte das als Info aufgelistet sein und abschließend eine Ja/Nein-Frage „Maschine funktioniert ordnungsgemäß?“ mit Checkbox. Er testet, alles gut, setzt Haken „Ja“.
+Bemerkungen: keine, lässt er leer.
+Weiter.
+Herstellprozess – Start: Nun betritt der Mitarbeiter den Abschnitt Herstellprozess. Zunächst wird eine Uhrzeit für Beginn erfasst (ist eigentlich schon erfolgt, aber im Dokument scheint hier nochmal ein Feld „Beginn (Uhrzeit eintragen)“ zu sein – möglicherweise Start jeder Bulk-Beutel-Verarbeitung).
+Er trägt hier die Uhrzeit ein, wann er mit dem ersten Bulkbeutel beginnt (z.B. 15:00 Uhr).
+Seite weiter.
+Primärverpackung – Produktionslauf pro Bulkbeutel: Jetzt kommt der Kernprozess. Für Bulkbeutel 1 öffnet sich die Seite:
+Laufende Nummer / Bulkbeutelnummer: Der Mitarbeiter sieht hier vermutlich das Feld Nr. Bulkbeutel Eingangs und Bulkbeutelnummer. Die laufende Nummer 1 ist evtl. vorgegeben (oder er trägt „1“ ein), die Bulkbeutelnummer könnte eine ID vom Beutel-Etikett sein. Er scannt/schaut die Beutelnummer z.B. „BULK-001“ und trägt sie ein.
+Soll-Inhalt Bulkbeutel (g): Das System zeigt den Sollwert aus dem Auftrag (z.B. 1000 g).
+Ist-Inhalt Bulkbeutel (g): Er wiegt den ersten Bulkbeutel. Angenommen es sind 1002.50 g, er gibt diesen Wert ein.
+Dann geht es weiter zum Unterpanel Gebinde produzieren (für Bulk 1):
+Soll-Gebindegröße (g): angezeigt (z.B. 100 g).
+Dokumentation Anzahl produzierter Gebinde: Er füllt ab. Sagen wir, aus ~1000 g lassen sich 10 Gebinde à 100g abfüllen. Er trägt 10 ein bei „Anzahl gefüllter, verschweißter [100]g Gebinde“.
+Nur Blüten unauffälliger Identität abgefüllt? – Er prüft die Blüten visuell, keine Auffälligkeiten, kreuzt „Ja“.
+Gebinde korrekt abgewogen und verschweißt? – Wenn er gewissenhaft war, ja -> kreuzt „Ja“.
+Restmenge (g): Nach Abfüllung verbleibt im Bulkbeutel vielleicht ein kleiner Rest plus Bruch. Er wiegt die Reste: z.B. 2.00 g. Trägt „2.00“ ein.
+(Nur GACP:) Aussortiertes Material (g): Angenommen Material war GACP und beim Sortieren hat er 1.50 g Ausschuss ausgesondert (Samen, Äste etc.), er trägt „1.50“ ein. (Wenn Material GMP, erscheint diese Frage gar nicht.)
+(Nur GACP:) Probenzug IPK (g): Er hat für die In-Prozess-Kontrolle 1.00 g entnommen, erfasst „1.00“.
+Bruch (g): Kleinteile/Bruch: z.B. 0.50 g, er gibt „0.50“ an.
+Kürzel des bearbeitenden Mitarbeiters: Er gibt sein Kürzel „MM“ ein.
+Kürzel des prüfenden Mitarbeiters: Seine Kollegin kontrolliert Stichproben das Gewicht, alles ok – sie gibt ihr Kürzel „EB“ ein.
+Schweißnaht des letzten Beutels ohne Beanstandung? – Sieht die letzte Schweißnaht gut aus? Ja -> Checkbox „Ja“.
+Damit ist Bulk 1 fertig dokumentiert. Im Interface klickt er auf „+ nächster Bulkbeutel“ (wenn dynamic panels) oder geht auf Seite für Bulk 2.
+Wiederholung für Bulkbeutel 2..N: Der Mitarbeiter wiederholt Schritt 10 für jeden weiteren Bulkbeutel:
+Für Bulk 2: Er setzt Laufende Nr. 2, trägt Bulk-ID ein, Ist-Gewicht etc., füllt Gebinde aus (vielleicht auch 10 Gebinde, Rest 1.80g etc.) – all das analog.
+... bis Bulk 5 (letzter).
+Wenn der letzte Bulk verarbeitet ist, verlässt er den wiederholten Abschnitt. (Im UI eventuell „Weiter“ wenn Panel abgeschlossen, oder das System erkennt, dass alle Bulk-Panels durchlaufen sind.)
+Option: Prozessunterbrechung (Pause): Angenommen, mitten in der Produktion tritt eine Pause ein (z.B. nach Bulk 3). In dem Fall hätte der Mitarbeiter bei der Frage „Pause wird durchgeführt?“ mit „Ja“ geantwortet (diese Frage käme zwischen den Bulk-Seiten oder nach einem Bulk). Dann wäre der Pause-Prozessschritt aktiviert worden:
+Das System hätte ihn gefragt, wann die Pause beginnt (Uhrzeit eintragen) – er trägt z.B. 16:00 ein.
+Zusätzlich muss er bestätigen: „Alle vorgesehenen Herstellschritte aller vor der Pause geöffneten Bulkbeutel beendet?“ Das heißt, hat er die begonnenen Bulks fertig abgearbeitet bevor Pause? Er prüft – ja, Bulk 3 war fertig – also „Ja“. Dazu eventuell Felder für Bemerkung und zweimal Signatur (MA1, MA2) als 4-Augen-Bestätigung, dass es stimmt. Beide tragen Kürzel ein.
+Ende Pause: Er trägt Uhrzeit ein, wann es weitergeht (z.B. 16:30).
+Wiederanlauf Vorbereitung: Nach der Pause verlangt das Protokoll eine erneute Vorbereitung Waagen nach Pause und Vorbereitung Kammerschweißgerät nach Pause. Das System hätte also neue Seiten ähnlich wie vor Beginn:
+Waagen nachjustieren/kalibrieren (vmtl. dieselben Checkboxen noch einmal, um sicherzustellen, dass nach der Pause die Waagen noch korrekt sind). Er und MA2 gehen das erneut durch.
+Schweißgerät erneut testen (auch 3 leere Beutel? – vermutlich ja, die Liste war ähnlich). Er tut dies und dokumentiert wieder.
+Danach springt der Ablauf zurück in den Herstellprozess, Bulk 4, etc.
+(In unserem Beispiel nahm er aber keine Pause an; wir beschreiben es nur für Vollständigkeit. Im Flow oben war Pause = Nein, daher übersprungen.)
+Kumulierte Restmenge und Probenzug: Nachdem alle Bulks verarbeitet sind, kommt der Prozessschritt Kumulierte Restmenge und Probenzug:
+Zunächst eventuell ein Infotext, dass jetzt die Proben für die Freigabeanalytik gezogen werden müssen, und der Rest zu wiegen ist. Der Mitarbeiter liest die Anleitung (Abfüllen der Probe, Versiegeln, etc. – im MVP als reiner Text mit Stichpunkten dargestellt).
+Restmenge Eingang (g): Er sammelt alle Reste aus den Bulkbeuteln (inkl. Bruch, aussortiertes Material) in ein finales Gebinde und wiegt dieses. Angenommen es sind insgesamt 12.50 g. Er trägt „12.50“ ein. (Dies entspricht Summe aller „Restmenge + Bruch + Aussortiert“ aus den Bulk-Durchläufen, was es im besten Fall tut.)
+Probenzug IPK (nur GACP): War GACP-Material, wurde eine IPK-Probe gezogen. Jetzt kommt:
+„Blüten aus Probenzug IPK in separates Behältnis abgefüllt, gekennzeichnet und separat gelagert?“ – Zwei Checkboxen für MA1 und MA2. Er hat die IPK-Probe in ein Behältnis getan und markiert, MA1 und MA2 bestätigen (beide setzen Haken „Ja“).
+„Gesamtmenge Probenzug IPK (g) – Bestätigung MA2“: Der Mitarbeiter trägt z.B. „3.00 g“ ein (das Gesamtgewicht aller IPK-Proben, falls mehrere, aber vermutlich eine). Dann muss MA2 das bestätigen – eventuell wird das so umgesetzt, dass MA2 daneben eine Checkbox „Wert bestätigt“ ankreuzt. Also Kollegin EB schaut drauf, stimmt, Haken.
+Probenzug Analytik (Freigabe):
+Frage: „Probenzug Freigabeanalytik vorgesehen?“ – Diese Info kam vom Auftrag. Sagen wir, ja (im Beispiel 2 Proben à 10g). Er sieht hier bereits „Ja“ angekreuzt (vom System oder muss es manuell auf Ja setzen). Wenn „Nein“, würde dieser Abschnitt entfallen.
+Weil Ja: Das System zeigt eine Info-Liste der vorgesehenen Proben: Anzahl 2, Inhalt 10g. Darunter Felder „Abgefüllte Probegebinde – Anzahl: __ , Inhalt: __ g“. Er hat tatsächlich 2 Probenbeutel á 10g abgefüllt, also trägt „2“ und „10 g“ ein (wobei man annehmen könnte, beide 10, oder falls abweichend, würde er das differenziert eintragen).
+Damit ist dokumentiert, dass die erforderlichen Freigabe-Proben entnommen wurden.
+Der Probenzug-Teil ist abgeschlossen. „Weiter“.
+Schleusung (Ausgang): Nun folgt ein Prozessschritt Schleusung (Ausgang), der beschreibt, wie die Produkte und Personen den Reinraum verlassen:
+Im MVP ist dies rein informativ. Der Mitarbeiter sieht z.B. einen Hinweis: „Schleusung der MA: Mit beladenem Rollwagen durch die Materialschleuse Richtung Halle fahren“ – also schlicht eine Anweisung, kein Feld. Er führt diese Tätigkeit real aus (fährt die fertigen Produkte aus dem Reinraum).
+Kein Benutzereingriff hier außer „Weiter“.
+Nachbereitung des Reinraums: Nachdem die Produktion erledigt ist, muss der Reinraum wieder aufgeräumt und gereinigt werden:
+Teilschritt Line Clearing erfolgt: Der Mitarbeiter räumt alle Arbeitsflächen ab, reinigt sichtbare Rückstände. Wenn fertig, kreuzt er „Ja“ an für „Arbeitsplatz und Geräte aufgeräumt und sauber“. Dieser Schritt erfordert 4-Augen: MA1 und MA2 jeweils ein Häkchen für Kontrolle. Beide tun dies.
+Möglicherweise sind hier Fotos vorgesehen (im PDF erwähnt Schaubild). Im MVP werden Fotos/Schaubilder nur als Platzhalter-Info eingebunden, aber nicht als echte Bilddatei abgefragt.
+Bemerkungen: Falls z.B. etwas kaputt gegangen ist oder Probleme auftraten bei der Reinigung, würde er es notieren.
+Abschließend tragen beide ihr Kürzel ein (Erfasser/Prüfer) um die Reinraum-Nachbereitung zu signieren.
+Weiter.
+Nachbereitung – Einlagern der Materialien: Jetzt folgt der Teil, wo sämtliche entstandenen Produkte und Abfälle ordnungsgemäß verstaut werden:
+Hergestellte Zwischenprodukte: Der Mitarbeiter hat z.B. 10 Gebinde à 100g fertig. Diese werden in Eurocontainern (EC) gesammelt:
+Er prüft: Sind alle Gebinde in den EC geladen und der EC verplombt? – MA1 und MA2 jeweils Checkbox Ja.
+Ist der EC korrekt gekennzeichnet (Etikett mit Menge, gelb-schwarze Markierung für Zwischenprodukt)? – Wieder MA1 und MA2 Ja.
+Danach: In Produktionslager (BtM-Bereich) überführt? – D.h. wurden die ECs ins sichere Lager gebracht. MA1 und MA2 bestätigen, z.B. direkt nach dem Reinigen bringen sie es raus – beide Ja.
+Proben (Freigabeanalytik):
+Er hat 2 Probenbeutel à 10g. Diese werden ebenfalls gekennzeichnet (Etikett mit Menge, gelb-schwarz Markierung, da es Zwischenprodukt-Proben sind). – Er schaut: alles drauf? MA1 & MA2 Ja.
+Ins Produktionslager überführt? – Die Proben kommen vermutlich mit in den Tresor. Beide bestätigen Ja.
+Finale Restmenge:
+Der Rest, 12.5g, wird in ein Behältnis getan und rot markiert (da Ausschuss/Quarantäne). Check: Etikett mit Menge drauf? Rot markiert? – MA1 & MA2 = Ja.
+Zur Überführung ins Sperrlager (BtMS) bereitgestellt? – Das heißt, steht bereit, um ins Betäubungsmittel-Sperrlager zu gehen. Beide: Ja (sie werden das nachher mitnehmen).
+Müllbeutel (inkl. leere Bulkbeutel):
+Der entstandene Abfall wird gesammelt (z.B. leere große Beutel, Putzmaterial). Er verpackt ihn in roten Müllbeutel.
+Check: Roter Markierungsstreifen angebracht? – MA1 & MA2 = Ja (das ist dann Sondermüll gekennzeichnet).
+Zur Überführung ins Sperrlager bereitgestellt? – Auch der Abfall muss ggf. ins Sperrlager bis Vernichtung. Beide: Ja.
+Nicht genutzte Eingangsmaterialien: Falls z.B. ein Bulkbeutel ungeöffnet blieb:
+Ungeöffnete Bulkbeutel zurück ins Lager? – War am Anfang eine gewisse Anzahl Bulkbeutel vorgesehen, nicht alle verbraucht? Sagen wir, alle 5 wurden gebraucht, dann trifft „ungeöffnet“ nicht zu -> hier würde man „Nicht zutreffend“ wählen. Ist aber einer übrig geblieben, dann: MA1 & MA2 bestätigen, dass er wieder ins Materiallager zurückging.
+Primärpackmittel mit ungeöffneter Umverpackung zurück ins Lager? – z.B. unbenutzte Beutelrollen o.Ä., falls vorhanden. Entweder Ja + bestätigt, oder Nicht zutreffend.
+Primärpackmittel mit geöffneter Umverpackung vernichtet? – Angefangene Packmittel (eine geöffnete Beutelpackung kann man nicht zurücklegen) müssen vernichtet werden. Der Mitarbeiter entsorgt diese. Dann MA1 & MA2 „Ja, vernichtet“. Falls nein, müssten sie begründen.
+Das System bietet ein Textfeld „Falls nein, bitte begründen“. Angenommen alle Packmittel wurden ordnungsgemäß entsorgt, bleibt das leer.
+(Nur GACP:) Verwendete Schablonen entfernt und an Sammelstelle für verunreinigte Schablonen eingelagert? – Der Mitarbeiter hat die benutzten Schablonen aus dem Reinraum geholt und an einem speziellen Ort deponiert. Er und MA2 bestätigen mit Ja. Falls er es nicht getan hätte, müsste im Feld darunter eine Begründung eingetragen werden.
+Bemerkung Nachbereitung: Der Mitarbeiter kann noch allgemeine Kommentare zur Nachbereitung eingeben (z.B. „Reinraum für nächste Produktion vorbereitet“ oder Besonderheiten).
+Wieder signieren beide mit ihren Kürzeln die erfolgreiche Nachbereitung (im Nachbereitungs-Abschnitt gab es das oben schon, aber hier könnte es noch mal am Ende sein – im Dokument ist dies etwas verteilt; im MVP könnte man es konsolidieren).
+Weiter.
+Zwischenreinigung (Nachbereitung Reinraum zusätzlich): Eventuell gab es im Dokument noch einen Schritt Nachbereitung Reinraum (Zwischenreinigung), der z.B. verlangt:
+„Leere, gereinigte Eurocontainer bereitgestellt“ – falls am selben Tag ein weiterer Lauf käme, hat man schon frische Container bereit. MA1/MA2 Ja/Nein/N/A.
+„Zwischenreinigung durchgeführt und dokumentiert“ – falls z.B. der Raum weiter benutzt wird. Im aktuellen Fall (Abschluss) vermutlich Ja und dokumentiert im Reinigungslog – MA1/MA2 = Ja.
+Diese Felder sind wahrscheinlich für den Fall, dass am gleichen Tag eine weitere Charge gefahren wird. Wenn nicht zutreffend, könnte man N/A setzen. Im MVP füllen wir vermutlich trotzdem Ja aus (um sauber zu sein).
+Weiter.
+Abschluss: Der letzte Prozessschritt Abschluss fasst noch ein paar administrative Punkte zusammen:
+„Nutzung aller eingesetzten Geräte in Logbücher eingetragen“ – Der Mitarbeiter hat nach Ende alle Geräte (Waagen, Siegelgerät etc.) ins Geräte-Logbuch eingetragen (wie vorgeschrieben). Hat er das getan? Er schaut auf seine Checkliste, ja -> Checkbox „Ja“. (Falls kein Gerät verwendet wurde – Option gibt’s „Keine Geräte verwendet“, aber hier wurden welche verwendet).
+„Probenzugsplan ausgefüllt“ – Er hat den papiernen Probenzugsplan für diese Kampagne ergänzt. Sagen wir, ja -> „Ja“.
+Bemerkung: Er notiert z.B. „Geräte gereinigt, Logbücher aktualisiert. Protokoll vollständig.“ oder lässt es leer, wenn nichts.
+Abschließend trägt er sein Kürzel als Formularbearbeiter ein („MM“) und die Kollegin ihres als Formularprüfer („EB“).
+Weiter.
+Herstellung abgeschlossen – Unterschriften: Die Anwendung zeigt nun an: Herstellung abgeschlossen.
+Es wird eventuell eine Liste aller beteiligten Mitarbeiter angezeigt, damit diese jetzt handschriftlich unterschreiben könnten (im digitalen MVP evtl. weggelassen oder als Info notiert „Folgende Mitarbeiter waren beteiligt: ...“).
+Benachrichtigung: Eine Schaltfläche „Leitung der Herstellung benachrichtigen“ ist prominent sichtbar. Der Mitarbeiter klickt darauf.
+Das System zeigt eine kurze Meldung: „Die Leitung der Herstellung kann das Protokoll jetzt prüfen.“ (Keine echte Email, aber der Mitarbeiter weiß, er ist fertig.)
+Export: Der Mitarbeiter nutzt nun die Exportmöglichkeiten:
+Er klickt auf „Export als PDF“. Nach wenigen Sekunden startet der PDF-Download auf dem Tablet. Er öffnet die Datei und kontrolliert, dass alle Seiten vorhanden sind und alles lesbar ist (zur Not könnte er es auf einem PC ausdrucken, aber im MVP reicht digital).
+Zusätzlich klickt er auf „Export JSON“ und speichert die JSON-Datei im lokalen Speicher des Tablets oder schickt sie per Mail an die IT (je nach Vorgabe). Dieser Schritt dient als Datensicherung.
+Abschließen: Damit ist der digitale Prozess abgeschlossen. Der Reinraummitarbeiter reinigt ggf. das Tablet (😉) und übergibt die Dokumentation an die Qualitätsabteilung zur Prüfung (im weiteren Prozess würde nun die Q-Leitung das PDF gegenzeichnen und im Archiv ablegen, aber das ist außerhalb des MVP).
+6.3 Zusammenfassung der Nutzerrollen im MVP
+Admin (Produktionsplanung): Legt Produktionsaufträge an und pflegt Stammdaten vor dem Prozess. (Im MVP minimal – kann vom gleichen Nutzer erledigt werden.)
+Reinraummitarbeiter (Produktionsteam): Füllt während des Produktionsprozesses den Fragenkatalog aus. Hakt Punkte ab, trägt Werte ein, etc.
+Zweiter Prüfer (Kollege oder QS-Mitarbeiter): Bestätigt an bestimmten Stellen (4-Augen-Prinzip) durch Setzen eines zweiten Häkchens oder Eintrag seines Kürzels. In der Praxis steht diese Person direkt daneben und nutzt dasselbe Tablet. Im MVP gibt es keine separate Login für den zweiten Prüfer; die Unterscheidung erfolgt nur über getrennte Checkboxen/Kürzel-Eingabefelder.
+Produktionsleitung/QS (nachgelagert): Im MVP selbst keine aktive Rolle, aber in der Realität würden sie das ausgefüllte PDF prüfen. Die App unterstützt dies, indem sie am Ende signalisiert, dass alles erledigt ist. In einer späteren Version könnte hier z.B. eine digitale Unterschrift der Leitung erfolgen, aber das ist nicht Teil des MVP.
+Durch diese Benutzerflüsse wird deutlich, dass das MVP den kompletten Ablauf von der Vorbereitung bis zur Nachbereitung digital begleitet. Jeder Schritt ist im System hinterlegt, sodass zu jedem Zeitpunkt klar ist, was getan wurde und wer es bestätigt hat. Die Reinraummitarbeiter werden dabei nicht überfordert, da immer nur ein Abschnitt auf einmal präsentiert wird und die Eingaben möglichst vorstrukturiert und einfach (Checkbox, Zahl etc.) gehalten sind.
+7. Inhalt des Fragenkatalogs (Struktur und Fragen)
+Im Folgenden ist der gesamte Fragenkatalog des Produktionsprozesses in strukturierter Form aufgeführt. Alle Fragen, Untergliederungen und Schritte sind gemäß dem bereitgestellten Dokument „Fragekatalog Produktionsprozess“ aufgenommen – ohne die Spalte Erläuterungen (d.h. die Logik-Hinweise wie "Nur bei GACP" werden hier nur als Kondition erwähnt). Diese Auflistung dient zur inhaltlichen Vollständigkeit und Referenz für die Implementierung.
+Legende:
+Fett gedruckt = Prozessschritt (oberste Ebene)
+Kursiv = Teilschritt (Untergliederung eines Prozessschritts)
+(Untergliederung) = Kennzeichnung einer weiteren Gruppierung innerhalb eines Teilschritts
+Antworttyp: Angabe des erwarteten Eingabeformats.
+(Bedingung) = Hinweis, wann die Frage angezeigt wird (sofern nicht immer).
+Vorbereitung (Prozessschritt)
+Information Produktionsauftrag (Teilschritt) – (Anzeige der Auftragsinformationen, keine Eingaben erforderlich)
+Inhalt: Folgende Informationen werden angezeigt (ausgewähltem Produktionsauftrag entnommen):
+Protokollnummer – (wird im MVP noch nicht vergeben / bleibt leer)
+Eingangsmaterial Wirkstoff: Artikelnummer, Charge, Verfallsdatum, Menge (Soll-Gewicht in g)
+Eingangsmaterial Schablone: (nur bei nicht GMP-zertifiziertem Material) EQ-Nummer der Schablonen, Charge(n) der Schablonen, Anzahl Schablonen
+Primärpackmittel: Artikelnummer, Charge, Anzahl der Packmittel
+Herzustellendes Zwischenprodukt: Artikelnummer des Zwischenprodukts, vorgesehene Gebinde-/Batch-Nummer
+Probenzug vorgesehen? Probenzugsplan der Kampagne, geplanter Probenzug (Anzahl der Proben und Füllmengen)
+Eingangsmaterialien ausbuchen (Teilschritt)
+Eingangsmaterialien ausgebucht und Beleg beigefügt? – Antworttyp: Checkbox (Ja/Nein)
+Signatur Leitung der Herstellung (Bestätigung der Material-Ausbuchung) – Antworttyp: Freitextfeld (Unterschrift/Kürzel)
+Beteiligte Mitarbeiter (Teilschritt)
+Liste der beteiligten Mitarbeiter (Namen und Kürzel aller Personen, die an der Herstellung mitwirken) – Antworttyp: Tabelle/Eingabemaske: Für jeden Mitarbeiter je ein Feld Name (Freitext) und Kürzel (Freitext). (Es können mehrere Zeilen eingegeben werden.)
+Datum + Uhrzeit (Teilschritt)
+Datum und Uhrzeit – Beginn der Herstellung (Zeitpunkt, an dem der Herstellungsprozess gestartet wurde) – Antworttyp: Datum/Uhrzeit-Picker
+Vorbereitung Kennzeichnung (Prozessschritt)
+Prüfung ob alles vorhanden ist (Teilschritt) – (Überprüfung der bereitgestellten Behälter und Materialien für alle folgenden Schritte)
+Eurocontainer für Zwischenprodukte vorhanden? – Antworttyp: Checkbox (Ja/Nein/Nicht zutreffend)
+Probenbehälter und Eurocontainer für Freigabeanalytik vorhanden? – Antworttyp: Checkbox (Ja/Nein/Nicht zutreffend)
+(Nur bei GACP-Ausgangsmaterial) Probenbehälter und Eurocontainer für In-Prozess-Kontrolle (IPK) vorhanden? – Antworttyp: Checkbox (Ja/Nein/Nicht zutreffend)
+(Nur bei GACP-Ausgangsmaterial) Gebinde "Rückfragen QK" vorhanden? – Antworttyp: Checkbox (Ja/Nein/Nicht zutreffend)
+Gebinde für finale Restmenge vorhanden? (Behältnis für am Ende verbleibende Restmenge) – Antworttyp: Checkbox (Ja/Nein/Nicht zutreffend)
+(Nur bei GACP-Ausgangsmaterial) Behältnis für Bruch und aussortiertes Material vorhanden? – Antworttyp: Checkbox (Ja/Nein/Nicht zutreffend)
+Vorbereitung Reinraum (Prozessschritt)
+Raumstatus überprüfen – Line Clearing (Teilschritt)
+Druckkaskade – Arbeitsraum Soll 25–35 Pa / Schleusen Soll 10–20 Pa. Entspricht Soll? – Antworttyp: Checkbox (Ja/Nein)
+Arbeitsraum Ist-Druck [EQ-52]: – Antworttyp: Zahl (eine Dezimalstelle, in Pa)
+Schleusen Ist-Druck [EQ-49 / EQ-50 / EQ-51]: – Antworttyp: Zahl (eine Dezimalstelle, in Pa)
+Entspricht den Soll-Werten? – Antworttyp: Checkbox (Ja/Nein)
+Raumtemperatur Soll 15–25 °C. Entspricht Soll? – Antworttyp: Checkbox (Ja/Nein)
+Raumtemperatur Ist [EQ-47 / EQ-48]: – Antworttyp: Zahl (eine Nachkommastelle, in °C)
+Entspricht Sollwert? – Antworttyp: Checkbox (Ja/Nein)
+Reinraum-Ampelstatus grün? – (Überprüfung im 4-Augen-Prinzip)
+Reinraum kann genutzt werden? – Antworttyp: Checkbox für MA1 (Ja/Nein), Checkbox für MA2 (Ja/Nein) (zwei getrennte Bestätigungen)
+(Bei rotem Status wird ein Hinweis angezeigt: Name des zu verarbeitenden Bulkprodukts + Charge müssen geprüft werden.)
+Line Clearing erfolgt? (Arbeitsplatz sauber und vorbereitet) – Antworttyp: Checkbox (Ja/Nein)
+(Info: Dieser Schritt umfasst z.B.: Arbeitsplatz und Geräte in sauberem, benutzbarem Zustand; Tablet angesteckt und geladen; nur erforderliche Gegenstände am Platz.)
+Bemerkungen (Line Clearing / Reinraumstatus): – Antworttyp: Freitextfeld (optional für Abweichungen)
+Kürzel des bearbeitenden Mitarbeiters (Reinraumstatus) – Antworttyp: Freitextfeld (Mitarbeiterkürzel „Erfasst“)
+Kürzel des prüfenden Mitarbeiters (Reinraumstatus) – Antworttyp: Freitextfeld (Mitarbeiterkürzel „Überprüft“)
+Vorbereitung Waage (Teilschritt) – (Überprüfung und Kalibrierung der Waagen vor Prozessbeginn)
+Prüfung Waagen – Nivellierung korrekt? (Waage 1 und Waage 2) – Antworttyp: Checkbox für Waage 1 (Ja/Nein/Nicht zutreffend), Checkbox für Waage 2 (Ja/Nein/Nicht zutreffend)
+Prüfung Waagen – Wägeplatte zentriert? (Waage 1 und Waage 2) – Antworttyp: Checkbox Waage 1 (Ja/Nein/N/A), Checkbox Waage 2 (Ja/Nein/N/A)
+Kalibrierung per ISO-Calc-Funktion ohne Fehler? (Waage 1 = EQ-60, Waage 2 = EQ-61) – Antworttyp: Checkbox EQ-60 (Ja/Nein/N/A), Checkbox EQ-61 (Ja/Nein/N/A)
+Wägung der Kalibriergewichte (2g/200g) ohne Abweichung? (Waage 1 und Waage 2) – Antworttyp: Checkbox Waage 1 (Ja/Nein/N/A), Checkbox Waage 2 (Ja/Nein/N/A)
+Überprüfung der Einstellungen durch zweite Person (MA2) im Waagen-Statusbericht erfolgt? – Antworttyp: Checkbox (Ja/Nein) (MA2 bestätigt die korrekten Einstellungen aller Waagen)
+Bemerkungen (Waagenvorbereitung): – Antworttyp: Freitextfeld
+Kürzel des bearbeitenden Mitarbeiters (Waagen) – Antworttyp: Freitextfeld („Erfasst“)
+Kürzel des prüfenden Mitarbeiters (Waagen) – Antworttyp: Freitextfeld („Überprüft“)
+Vorbereitung Kammerschweißgerät (Teilschritt) – (Einrichten des Folienschweißgeräts vor Beginn der Abfüllung)
+Verschweißprogramm für die Gebinde – Soll-Werte eintragen: – Antworttyp: Freitextfeld (Angaben vom Gerät laut Vorgabe, z.B. Temperatur, Druck, Zeit)
+Übereinstimmung mit Soll? – Antworttyp: Checkbox (Ja/Nein) (Bestätigung, dass Gerät auf Soll eingestellt ist)
+Verschweißprogramm für die Gebinde – Ist-Werte dokumentieren: – Antworttyp: Freitextfeld (Ist-Einstellungen des Geräts)
+Übereinstimmung mit Soll? – Antworttyp: Checkbox (Ja/Nein) (Check, ob Ist dem Soll entspricht)
+Maschine funktioniert ordnungsgemäß? – Antworttyp: Checkbox (Ja/Nein)
+(Unterpunkte als Info: 3 leere Testbeutel verschweißt; Schweißnaht optisch geprüft und Zugtest durchgeführt.)
+Maschine in Ordnung? – Antworttyp: Checkbox (Ja/Nein) (dieses Kästchen steht für die Summe der Unterpunkte)
+Bemerkungen (Schweißgerät): – Antworttyp: Freitextfeld
+Kürzel des bearbeitenden Mitarbeiters (Schweißgerät) – Antworttyp: Freitextfeld (Erfasst)
+Kürzel des prüfenden Mitarbeiters (Schweißgerät) – Antworttyp: Freitextfeld (Überprüft)
+Herstellprozess (Prozessschritt)
+Beginn Herstellprozess (Teilschritt)
+Beginn der Herstellung – Uhrzeit eintragen: – Antworttyp: Uhrzeit (ggf. automatisch generiert beim Start)
+Beschreibung des Herstellprozesses (Teilschritt) – (Dieser Abschnitt enthält statische Informationen/Flussdiagramme im PDF, die im MVP als Hinweise stehen können.)
+(Info: "Die Herstellung umfasst die folgenden Schritte und wird gemäß Flussdiagramm durchgeführt... Pro Bulkbeutel einzeln ... in folgenden Tabellen protokolliert.") – (Wird als Infotext in der App angezeigt.)
+Primärverpackung (Prozessschritt)
+Produktionslauf pro Bulkbeutel (Teilschritt) – (Für jeden Bulkbeutel wird folgender Fragenblock durchlaufen)
+Laufende Nummer – Nr. Bulkbeutel (Eingangsmaterial): (Vergabe einer fortlaufenden Nummer der verarbeiteten Bulk-Beutel in dieser Produktion) – Antworttyp: Zahl (Ganzzahlig)
+(Hinweis: Die laufende Nr. wird nach Reihenfolge der Abarbeitung vergeben.)
+Bulkbeutel-Identifikation: (Nummer/ID des Bulkbeutels laut Etikett) – Antworttyp: Freitextfeld (oder scan, im MVP Freitext)
+Soll-Inhalt Bulkbeutel (g): (geplante Soll-Menge pro Bulkbeutel) – Antworttyp: Zahl (vordefiniert aus Produktionsauftrag) (nicht editierbar, Anzeige)
+Ist-Inhalt Bulkbeutel (g): (tatsächlich bereitgestellte Menge im Bulkbeutel nach erstem Wiegen) – Antworttyp: Zahl (mit zwei Dezimalstellen)
+Gebinde produzieren (Untergliederung Teilschritt) (dieser Block wird für jeden Bulkbeutel mehrfach wiederholt, bis Bulk leer ist):
+(Wiederholen pro Bulkbeutel: Dieser Abschnitt kann als dynamisches Panel umgesetzt werden, falls ein Bulk in mehreren Teilchargen abgearbeitet wird. Im Normalfall wird ein Bulk komplett verarbeitet, sodass Panel einmalig ist.)
+Soll-Gebindegröße (g): (Geplantes Gewicht pro End-Gebinde, z.B. 100g) – Antworttyp: Zahl (vorgegeben aus Produktionsauftrag, Anzeige)
+Anzahl gefüllter, verschweißter Gebinde (Stück): (Anzahl der tatsächlich produzierten Endgebinde aus diesem Bulk-Teil) – Antworttyp: Zahl (Ganzzahlig)
+Nur Blüten unauffälliger Identität abgefüllt? (Kontrollfrage, ob alle abgefüllten Blüten normal aussahen) – Antworttyp: Checkbox (Ja/Nein)
+Gebinde korrekt abgewogen und verschweißt? (Kontrollfrage, ob Waage und Siegelung bei allen Gebinden ok waren) – Antworttyp: Checkbox (Ja/Nein)
+Restmenge (g): (im Bulkbeutel verbleibende Menge nach Abfüllung dieser Runde) – Antworttyp: Zahl (zwei Dezimalstellen)
+(Nur bei GACP Material) Aussortiertes Material (g): (während Sortierung entfernte Abfälle wie Samen, Äste) – Antworttyp: Zahl (zwei Dezimalstellen) (Bedingung: GACP)
+(Nur bei GACP Material) Probenzug IPK (g): (Gewicht der für In-Prozess-Kontrolle entnommenen Probe aus diesem Bulk) – Antworttyp: Zahl (zwei Dezimalstellen) (Bedingung: GACP)
+Bruch (g): (Gewicht des Bruchmaterials, Kleinteile, die nicht abgefüllt wurden) – Antworttyp: Zahl (zwei Dezimalstellen)
+Kürzel des bearbeitenden Mitarbeiters (Gebinde produzieren) – Antworttyp: Freitextfeld (Mitarbeiterkürzel „Erfasst“)
+Kürzel des prüfenden Mitarbeiters (Gebinde produzieren) – Antworttyp: Freitextfeld (Mitarbeiterkürzel „Geprüft“)
+Schweißnaht des letzten Beutels ohne Beanstandung? (Qualitätskontrolle am zuletzt gefertigten Beutel) – Antworttyp: Checkbox (Ja/Nein)
+(Hinweis: Der Block Gebinde produzieren wird pro Bulkbeutel so oft wiederholt, bis der Bulkbeutel aufgebraucht ist. In vielen Fällen ist das nur einmal. Falls Teilmengen entnommen werden, entsprechend mehrfach.)*
+(Nach Abarbeitung aller Bulkbeutel wird automatisch zum nächsten Prozessschritt verzweigt.)
+Pause (Prozessschritt) (nur sichtbar, wenn tatsächlich eine Unterbrechung erfolgt)
+Pause wird durchgeführt (Teilschritt)
+Wird eine Pause durchgeführt? – Antworttyp: Checkbox (Ja/Nein) (wenn „Ja“, folgen die nächsten Felder; wenn „Nein“, wird Pause-Abschnitt übersprungen)
+Pause und „Vorbereiten des Herstellungsprozesses“ (Teilschritt, nur bei Pause = Ja)
+Beginn Pause – Uhrzeit: – Antworttyp: Uhrzeit
+Alle begonnenen Herstellungsschritte der bis zur Pause geöffneten Bulkbeutel beendet? – (Sicherstellen, dass kein halber Arbeitsschritt in Pause geht)
+Bestätigung/Bemerkung: – Antworttyp: Freitextfeld (Hier kann der Mitarbeiter eine Bemerkung hinterlassen, z.B. „Bulk 3 vor Pause abgeschlossen“)
+Signatur MA1 (Bestätigung vor Pause) – Antworttyp: Freitextfeld (Kürzel „Erfasst“)
+Signatur MA2 (Bestätigung vor Pause) – Antworttyp: Freitextfeld (Kürzel „Geprüft“)
+Ende Pause – Uhrzeit: – Antworttyp: Uhrzeit
+Vorbereitung Waagen nach Pause (Teilschritt, nur bei Pause = Ja)
+(Die gleichen Prüfpunkte wie im Teilschritt "Vorbereitung Waage" vor Beginn, werden hier erneut abgefragt, um sicherzustellen, dass die Waagen nach der Pause noch korrekt sind.)
+Nivellierung Waagen korrekt (nach Pause)? – Antworttyp: Checkbox Waage 1 (Ja/Nein), Checkbox Waage 2 (Ja/Nein)
+ISO-Calc Kalibrierung ohne Fehler (nach Pause)? – Antworttyp: Checkbox Waage 1 (Ja/Nein), Checkbox Waage 2 (Ja/Nein)
+(etc. – Analog Waagen-Prüfung von oben, alle Punkte erneut)
+Bemerkungen Waagen (nach Pause): – Antworttyp: Freitextfeld
+Kürzel MA1 / MA2 (Waagen nach Pause): – Antworttyp: Freitextfelder für Erfasst/Überprüft
+Vorbereitung Kammerschweißgerät nach Pause (Teilschritt, nur bei Pause = Ja)
+(Analog zum Teilschritt vor Produktionsbeginn – Testverschweißungen erneut durchführen.)
+Verschweißprogramm Soll vs. Ist erneut geprüft? – Antworttyp: Freitext für Ist-Werte, Checkbox Übereinstimmung (Ja/Nein)
+Maschine funktioniert ordnungsgemäß (nach Pause)? – Antworttyp: Checkbox (Ja/Nein) (inkl. Test mit 3 Beuteln etc.)
+Bemerkungen Schweißgerät (nach Pause): – Antworttyp: Freitextfeld
+Kürzel MA1 / MA2 (Schweißgerät nach Pause): – Antworttyp: Freitextfelder (Erfasst/Geprüft)
+(Nach Abschluss der Pause-Vorbereitungen wird der Herstellprozess an der Stelle fortgesetzt, wo er unterbrochen wurde.)
+Kumulierte Restmenge und Probenzug (Prozessschritt)
+(Fest im PDF hinterlegte Information inkl. Abbildungen zum weiteren Vorgehen – im MVP als Textinfos dargestellt.)
+Probenzug (Teilschritt) – (Anleitung zum Ziehen der Proben und Umgang mit Restmenge)
+(Info: Es wird erklärt, wie die Analytikmuster abzunehmen sind, diese Gebinde zu füllen, zu versiegeln und von den übrigen zu separieren.)
+(Unterpunkte als Orientierung für den Benutzer:)
+Abfüllen: Wägeprogramm für Proben (z.B. „Wägen“), Wägeprogramm für Zwischenprodukte (z.B. „Kontrollwägen 100g“), leeren Beutel tarieren, Blüten einfüllen, Ergebnis speichern.
+Versiegeln: Beutel einlegen, Deckel schließen, Versiegelung prüfen.
+Restmenge: Wägeprogramm „Wägen“, Restmenge + Bruch + Aussortiertes Material wiegen, finale Restmenge in Gebinde überführen.
+Restmenge am Ende (Eingangsmaterial) (g): (die gesamte übrig gebliebene Menge nach Abschluss aller Abfüllungen) – Antworttyp: Zahl (2 Dezimalstellen)
+Bemerkung (Restmenge): – Antworttyp: Freitextfeld (optional, z.B. Verbleib der Restmenge)
+Probenzug IPK (Teilschritt) – (nur bei GACP-Eingangsmaterial relevant)
+Blüten aus Probenzug IPK in separates Behältnis abgefüllt, gekennzeichnet und separat gelagert? – Antworttyp: Checkbox MA1 (Ja/Nein/N/A), Checkbox MA2 (Ja/Nein/N/A) (zwei Bestätigungen)
+Gesamtmenge Probenzug IPK (g) – (Angabe, wieviel Material für IPK-Proben insgesamt entnommen wurde) – Antworttyp: Zahl (2 Dezimalstellen)
+Bestätigung MA2 (für obige Angabe) – Antworttyp: Checkbox (Ja/Nein/Nicht zutreffend) (zweite Person bestätigt die Richtigkeit der Gewichtsangabe)
+Probenzug Analytik (Teilschritt)
+Probenzug Freigabeanalytik vorgesehen? – Antworttyp: Checkbox (Ja/Nein) (wird aus Auftragsdaten vorgegeben)
+(Wenn Freigabeanalytik = Ja, dann folgt:)
+Vorgesehene Probegebinde (Soll): (Info-Auflistung laut Produktionsauftrag)
+Anzahl geplanter Proben
+Inhalt je Probengebinde (g)
+Abgefüllte Probegebinde (Ist): (Eingabe der tatsächlich entnommenen Proben)
+Anzahl entnommener Proben: – Antworttyp: Zahl (Ganzzahlig)
+Inhalt je Probe (g): – Antworttyp: Zahl (zwei Dezimalstellen)
+(Hinweis: Sollte die Anzahl oder Menge abweichen, würde hier die Ist-Situation festgehalten.)
+Schleusung (Ausgang) (Prozessschritt)
+Schleusen der Mitarbeiter und Materialien (Teilschritt) – (Anweisungen zum Verlassen des Reinraums mit dem Material)
+(Info: „Schleusung der MA“ – Die Mitarbeiter verlassen den Reinraum durch die Schleuse.)
+(Info: „Mit Eurocontainern beladener Rollwagen aus Materialschleuse in Richtung Halle fahren.“ – Die gefüllten Gebinde werden also mittels Rollwagen aus dem Reinraumbereich gebracht.)
+(Keine direkte Frage, nur Dokumentation, dass dieser Schritt erfolgt. Im MVP als Info-Text, ggf. Checkbox „Durchgeführt?“ könnte ergänzt werden, ist im Dokument aber als Info formuliert.)
+Nachbereitung des Reinraums (Prozessschritt)
+Reinraum reinigen (Teilschritt)
+Line Clearing nach Produktion durchgeführt: (Reinraum aufgeräumt und gereinigt im 4-Augen-Prinzip) – Antworttyp: Checkbox MA1 (Ja/Nein), Checkbox MA2 (Ja/Nein)
+(Unterpunkte: Arbeitsplatz und Geräte von sichtbaren Rückständen gereinigt und aufgeräumt – visualisiert durch Schaubild eines sauberen Reinraums.)
+Geprüft (MA1) – Antworttyp: Checkbox (Ja gesetzt durch MA1)
+Geprüft (MA2) – Antworttyp: Checkbox (Ja gesetzt durch MA2)
+Bemerkungen (Reinraum Nachbereitung): – Antworttyp: Freitextfeld
+Kürzel des bearbeitenden Mitarbeiters (Nachbereitung Reinraum) – Antworttyp: Freitextfeld (Erfasst)
+Kürzel des prüfenden Mitarbeiters (Nachbereitung Reinraum) – Antworttyp: Freitextfeld (Geprüft)
+Nachbereitung (Materialien) (Prozessschritt)
+Einlagern der Materialien (Teilschritt) – (Dokumentation der ordnungsgemäßen Verwahrung aller entstandenen Produkte und Abfälle)
+Hergestellte Zwischenprodukte (Untergliederung)
+Zwischenprodukte in Eurocontainer verpackt? (EC enthält alle Gebinde, verplombt und gekennzeichnet)
+EC verplombt? – Antworttyp: Checkbox MA1 (Ja/Nein), Checkbox MA2 (Ja/Nein)
+EC mit gelb/schwarz Label (Produkt, Menge) gekennzeichnet? – Antworttyp: Checkbox MA1 (Ja/Nein), Checkbox MA2 (Ja/Nein)
+In Produktionslager (BtM-Bereich) überführt? (Übergabe der Zwischenprodukt-Container ins sichere Lager) – Antworttyp: Checkbox MA1 (Ja/Nein), Checkbox MA2 (Ja/Nein)
+Proben für Freigabeanalytik (Untergliederung)
+Probengebinde gekennzeichnet? (mit gelb/schwarzem Label und Mengenangabe) – Antworttyp: Checkbox MA1 (Ja/Nein), Checkbox MA2 (Ja/Nein)
+Proben in Produktionslager (BtM-Bereich) überführt? – Antworttyp: Checkbox MA1 (Ja/Nein), Checkbox MA2 (Ja/Nein)
+Finale Restmenge (Untergliederung)
+Restmenge-Gebinde gekennzeichnet? (mit rotem Label/Markierung und Mengenangabe) – Antworttyp: Checkbox MA1 (Ja/Nein), Checkbox MA2 (Ja/Nein)
+Gebinde mit Restmenge zur Überführung ins Sperrlager (BtM-S) bereitgestellt? – Antworttyp: Checkbox MA1 (Ja/Nein), Checkbox MA2 (Ja/Nein)
+Müllbeutel (inkl. leere Bulkbeutel) (Untergliederung)
+Müllbeutel gekennzeichnet? (mit roter Markierung für Vernichtungsgut) – Antworttyp: Checkbox MA1 (Ja/Nein), Checkbox MA2 (Ja/Nein)
+Müllbeutel zur Überführung ins Sperrlager (BtM-S) bereitgestellt? – Antworttyp: Checkbox MA1 (Ja/Nein), Checkbox MA2 (Ja/Nein)
+Nicht genutzte Eingangsmaterialien (Untergliederung)
+Ungeöffnete Bulkbeutel zurück auf Lagerplatz überführt? – Antworttyp: Checkbox MA1 (Ja/Nein/Nicht zutreffend), Checkbox MA2 (Ja/Nein/Nicht zutreffend)
+Primärpackmittel mit ungeöffneter Umverpackung zurück ins Lager? – Antworttyp: Checkbox MA1 (Ja/Nein/N/A), Checkbox MA2 (Ja/Nein/N/A)
+Primärpackmittel mit geöffneter Umverpackung vernichtet? – Antworttyp: Checkbox MA1 (Ja/Nein/N/A), Checkbox MA2 (Ja/Nein/N/A)
+Falls nein bei einem der obigen Punkte: Begründung: – Antworttyp: Freitextfeld (Bemerkung)
+(Nur GACP) Verwendete Schablonen aus Reinraum entfernt und an Sammelstelle eingelagert? – Antworttyp: Checkbox MA1 (Ja/Nein), Checkbox MA2 (Ja/Nein)
+(Nur GACP) Falls nein: Begründung: – Antworttyp: Freitextfeld
+Bemerkung Nachbereitung (gesamt): – Antworttyp: Freitextfeld (zusätzliche Anmerkungen zur Nachbereitung)
+Kürzel des bearbeitenden Mitarbeiters (Nachbereitung Materialien) – Antworttyp: Freitextfeld (Erfasst)
+Kürzel des prüfenden Mitarbeiters (Nachbereitung Materialien) – Antworttyp: Freitextfeld (Geprüft)
+Nachbereitung Reinraum (Zwischenreinigung) (Prozessschritt) (Hinweis: Dieser Schritt kann entfallen, falls bereits alles in „Nachbereitung des Reinraums“ erledigt ist. Im Dokument scheint er doppelt vorzukommen, im MVP fassen wir es ggf. zusammen.)
+Leere, gereinigte Eurocontainer für nächsten Einsatz bereitgestellt? – Antworttyp: Checkbox (Ja/Nein/Nicht zutreffend)
+Zwischenreinigung des Reinraums durchgeführt und dokumentiert? – Antworttyp: Checkbox (Ja/Nein/Nicht zutreffend)
+Abschluss (Prozessschritt)
+Abschluss (Teilschritt) – (letzte administrativen Schritte nach Produktionsende)
+Nutzung aller eingesetzten Geräte in Logbüchern eingetragen? – Antworttyp: Checkbox (Ja/Nein/Keine Geräte verwendet)
+Probenzugsplan (Kampagne) ausgefüllt? – Antworttyp: Checkbox (Ja/Nein/Nicht zutreffend)
+Bemerkung (Abschluss): – Antworttyp: Freitextfeld (z.B. Abweichungen oder Hinweise für QS)
+Kürzel des Formular bearbeitenden Mitarbeiters (Abschluss) – Antworttyp: Freitextfeld (Erfasst)
+Kürzel des Formular prüfenden Mitarbeiters (Abschluss) – Antworttyp: Freitextfeld (Geprüft)
+Herstellung abgeschlossen (Teilschritt) – (Sign-off und Übergabe)
+Liste der an der Produktion beteiligten Mitarbeiter (Name und Unterschrift): – Antworttyp: Liste (Namen der zuvor erfassten Mitarbeiter und Platz für deren Unterschrift auf Ausdruck)
+(Hinweis: Diese Liste dient der finalen Unterschrift aller Beteiligten. Im digitalen MVP wird sie angezeigt, echte Unterschrift erfolgt ggf. auf Papier oder per separater Software.)
+[Schaltfläche] Benachrichtigung der Leitung der Herstellung – (bei Klick wird signalisiert, dass das Protokoll fertig zur Prüfung ist – im MVP keine weitere technische Aktion außer Anzeige einer Bestätigungsmeldung.)
+Ende des Fragenkatalogs für Produktionsmitarbeiter. (Die folgenden Schritte wie Bilanzierung und Leitungskontrolle sind nicht Teil des MVP und wurden daher weggelassen.)
+Mit dieser detaillierten Auflistung soll sichergestellt sein, dass bei der Implementierung kein Punkt des vorgesehenen Fragenkatalogs übersehen wird. Der Entwickler kann diese Struktur 1:1 in SurveyJS überführen, indem er die Hierarchie mittels Seiten (Prozess-/Teilschritte) und Panels (Untergliederungen) sowie Fragen mit entsprechenden Eigenschaften abbildet. Kleinere redaktionelle Anpassungen (z.B. sprachliche Vereinfachungen der Fragen für die UI) sind in Abstimmung möglich, solange der inhaltliche Kern erhalten bleibt.

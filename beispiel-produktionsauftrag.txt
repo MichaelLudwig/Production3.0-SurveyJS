@@ -1,0 +1,40 @@
+{
+  "produkt": "Peace Naturals GC 31/1, 100g",
+  "artikelNr": "Bulk-18350663",
+  "chargenbezeichnung": "25061450",
+  "verfallsdatum": "08.07.2025",
+  "kampagne": "KMP-2025-030",
+  "produktionsauftragNr": "1450",
+  "chargengroesseGeplant": 220,
+  "gebindegroesse": 100,
+  "produktionstrassen": 2,
+  "bulkTyp": "GACP",
+  "probenFreigabeanalytik": true,
+  "probenzug": [
+    { "anzahl": 1, "füllmenge": 55.00 },
+    { "anzahl": 1, "füllmenge": 50.00 }
+  ],
+  "wirkstoff": {
+    "bezeichnung": "Cannabis Peace Naturals GC 31/1, 1g",
+    "artikelNr": "18350663",
+    "charge": "25041378",
+    "verfall": "08.07.2025",
+    "menge_g": 21895.78
+  },
+  "schablone": {
+    "eqNr": "68",
+    "charge": "R100018-20250605-001",
+    "anzahl": 2
+  },
+  "primärpackmittel": {
+    "artikelNr": "O100074",
+    "beschreibung": "Standbodenbeutel 3000ml Weiß, 1 Stk.",
+    "charge": "O100074-20240726-001",
+    "anzahl": 200
+  },
+  "zwischenprodukt": {
+    "artikelNr": "Bulk-18350663",
+    "bezeichnung": "Peace Naturals GC 31/1, 100g",
+    "vorgeseheneGebinde": 220
+  }
+}
