@@ -15,8 +15,8 @@ const ProductionOrderManager: React.FC<ProductionOrderManagerProps> = ({
   onContinueSurvey
 }) => {
   const [orders, setOrders] = useState<ProductionOrder[]>(sampleOrders as ProductionOrder[]);
-  const [showNewOrderForm, setShowNewOrderForm] = useState(false);
-  const [selectedOrderId, setSelectedOrderId] = useState<string>('');
+  const [editingOrder, setEditingOrder] = useState<ProductionOrder | null>(null);
+  const [viewMode, setViewMode] = useState<'list' | 'details' | 'edit' | 'create'>('list');
   const [newOrder, setNewOrder] = useState<Partial<ProductionOrder>>({
     produktName: '',
     materialType: 'GACP',
@@ -60,11 +60,53 @@ const ProductionOrderManager: React.FC<ProductionOrderManagerProps> = ({
     }
   }, []);
 
-  const handleSelectOrder = () => {
-    const order = orders.find(o => o.id === selectedOrderId);
+
+  const handleViewOrder = (orderId: string) => {
+    const order = orders.find(o => o.id === orderId);
     if (order) {
-      onOrderSelected(order);
+      setEditingOrder(order);
+      setViewMode('details');
     }
+  };
+
+  const handleEditOrder = (orderId: string) => {
+    const order = orders.find(o => o.id === orderId);
+    if (order) {
+      setEditingOrder(order);
+      setNewOrder({...order});
+      setViewMode('edit');
+    }
+  };
+
+  const handleDeleteOrder = (orderId: string) => {
+    if (confirm('Sind Sie sicher, dass Sie diesen Produktionsauftrag löschen möchten?')) {
+      const updatedOrders = orders.filter(o => o.id !== orderId);
+      setOrders(updatedOrders);
+      localStorage.setItem('productionOrders', JSON.stringify(updatedOrders));
+    }
+  };
+
+  const handleUpdateOrder = () => {
+    if (!newOrder.produktName || !editingOrder) return;
+
+    const updatedOrder: ProductionOrder = {
+      ...editingOrder,
+      produktName: newOrder.produktName,
+      materialType: newOrder.materialType as 'GACP' | 'GMP',
+      eingangsmaterial: newOrder.eingangsmaterial!,
+      schablone: newOrder.schablone,
+      primaerPackmittel: newOrder.primaerPackmittel!,
+      zwischenprodukt: newOrder.zwischenprodukt!,
+      probenzug: newOrder.probenzug!,
+      bulkBeutelAnzahl: newOrder.bulkBeutelAnzahl || 1
+    };
+
+    const updatedOrders = orders.map(o => o.id === editingOrder.id ? updatedOrder : o);
+    setOrders(updatedOrders);
+    localStorage.setItem('productionOrders', JSON.stringify(updatedOrders));
+    
+    setViewMode('list');
+    setEditingOrder(null);
   };
 
   const handleCreateOrder = () => {
@@ -91,7 +133,6 @@ const ProductionOrderManager: React.FC<ProductionOrderManagerProps> = ({
     localStorage.setItem('productionOrders', JSON.stringify(updatedOrders));
     
     onOrderSelected(order);
-    setShowNewOrderForm(false);
     setNewOrder({
       produktName: '',
       materialType: 'GACP',
@@ -159,7 +200,7 @@ const ProductionOrderManager: React.FC<ProductionOrderManagerProps> = ({
             <button className="btn btn-primary" onClick={onContinueSurvey}>
               Fragekatalog fortsetzen
             </button>
-            <button className="btn btn-secondary" onClick={() => setShowNewOrderForm(true)}>
+            <button className="btn btn-secondary" onClick={() => setViewMode('create')}>
               Neuen Auftrag erstellen
             </button>
           </div>
@@ -170,46 +211,163 @@ const ProductionOrderManager: React.FC<ProductionOrderManagerProps> = ({
 
   return (
     <div className="order-manager">
-      <h2>Produktionsauftrag auswählen oder erstellen</h2>
-      
-      {!showNewOrderForm ? (
-        <div className="order-selection">
-          <div className="select-existing">
-            <h3>Vorhandenen Auftrag auswählen</h3>
-            <select 
-              value={selectedOrderId} 
-              onChange={(e) => setSelectedOrderId(e.target.value)}
-              className="order-select"
-            >
-              <option value="">Bitte auswählen...</option>
-              {orders.map(order => (
-                <option key={order.id} value={order.id}>
-                  {order.produktName} ({order.materialType}) - {new Date(order.createdAt).toLocaleDateString()}
-                </option>
-              ))}
-            </select>
+      {viewMode === 'list' && (
+        <>
+          <div className="order-manager-header">
+            <h2>Produktionsaufträge</h2>
             <button 
               className="btn btn-primary" 
-              onClick={handleSelectOrder}
-              disabled={!selectedOrderId}
+              onClick={() => setViewMode('create')}
             >
-              Auftrag laden
+              + Neuer Auftrag
             </button>
           </div>
           
-          <div className="create-new">
-            <h3>Neuen Auftrag erstellen</h3>
+          <div className="orders-grid">
+            {orders.map(order => (
+              <div key={order.id} className="order-card">
+                <div className="order-card-header">
+                  <h3>{order.produktName}</h3>
+                  <span className={`material-type ${order.materialType.toLowerCase()}`}>
+                    {order.materialType}
+                  </span>
+                </div>
+                <div className="order-card-body">
+                  <p><strong>Erstellt:</strong> {new Date(order.createdAt).toLocaleDateString('de-DE')}</p>
+                  <p><strong>Eingangsmaterial:</strong> {order.eingangsmaterial.artikelNummer}</p>
+                  <p><strong>Charge:</strong> {order.eingangsmaterial.charge}</p>
+                  <p><strong>Bulk-Beutel:</strong> {order.bulkBeutelAnzahl}</p>
+                </div>
+                <div className="order-card-actions">
+                  <button 
+                    className="btn btn-primary btn-small"
+                    onClick={() => onOrderSelected(order)}
+                  >
+                    Fragekatalog starten
+                  </button>
+                  <button 
+                    className="btn btn-secondary btn-small"
+                    onClick={() => handleViewOrder(order.id)}
+                  >
+                    Details
+                  </button>
+                  <button 
+                    className="btn btn-outline btn-small"
+                    onClick={() => handleEditOrder(order.id)}
+                  >
+                    Bearbeiten
+                  </button>
+                  <button 
+                    className="btn btn-danger btn-small"
+                    onClick={() => handleDeleteOrder(order.id)}
+                  >
+                    Löschen
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </>
+      )}
+
+      {viewMode === 'details' && editingOrder && (
+        <div className="order-details-view">
+          <div className="details-header">
             <button 
-              className="btn btn-secondary" 
-              onClick={() => setShowNewOrderForm(true)}
+              className="btn btn-back"
+              onClick={() => setViewMode('list')}
             >
-              Neuen Produktionsauftrag anlegen
+              ← Zurück
             </button>
+            <h2>Produktionsauftrag Details</h2>
+            <div className="details-actions">
+              <button 
+                className="btn btn-primary"
+                onClick={() => onOrderSelected(editingOrder)}
+              >
+                Fragekatalog starten
+              </button>
+              <button 
+                className="btn btn-secondary"
+                onClick={() => handleEditOrder(editingOrder.id)}
+              >
+                Bearbeiten
+              </button>
+            </div>
+          </div>
+          
+          <div className="details-content">
+            <div className="details-section">
+              <h3>Grunddaten</h3>
+              <div className="details-grid">
+                <div><strong>Produktname:</strong> {editingOrder.produktName}</div>
+                <div><strong>Material-Typ:</strong> {editingOrder.materialType}</div>
+                <div><strong>Erstellt am:</strong> {new Date(editingOrder.createdAt).toLocaleDateString('de-DE')}</div>
+                <div><strong>Bulk-Beutel Anzahl:</strong> {editingOrder.bulkBeutelAnzahl}</div>
+              </div>
+            </div>
+
+            <div className="details-section">
+              <h3>Eingangsmaterial</h3>
+              <div className="details-grid">
+                <div><strong>Artikelnummer:</strong> {editingOrder.eingangsmaterial.artikelNummer}</div>
+                <div><strong>Charge:</strong> {editingOrder.eingangsmaterial.charge}</div>
+                <div><strong>Verfallsdatum:</strong> {editingOrder.eingangsmaterial.verfallsdatum}</div>
+                <div><strong>Eingangsmenge:</strong> {editingOrder.eingangsmaterial.eingangsMenge} g</div>
+              </div>
+            </div>
+
+            {editingOrder.schablone && (
+              <div className="details-section">
+                <h3>Schablone</h3>
+                <div className="details-grid">
+                  <div><strong>EQ-Nummer:</strong> {editingOrder.schablone.eqNummer}</div>
+                  <div><strong>Charge:</strong> {editingOrder.schablone.charge}</div>
+                  <div><strong>Anzahl:</strong> {editingOrder.schablone.anzahl}</div>
+                </div>
+              </div>
+            )}
+
+            <div className="details-section">
+              <h3>Primärpackmittel</h3>
+              <div className="details-grid">
+                <div><strong>Artikelnummer:</strong> {editingOrder.primaerPackmittel.artikelNummer}</div>
+                <div><strong>Charge:</strong> {editingOrder.primaerPackmittel.charge}</div>
+                <div><strong>Anzahl:</strong> {editingOrder.primaerPackmittel.anzahl}</div>
+              </div>
+            </div>
+
+            <div className="details-section">
+              <h3>Zwischenprodukt</h3>
+              <div className="details-grid">
+                <div><strong>Artikelnummer:</strong> {editingOrder.zwischenprodukt.artikelNummer}</div>
+                <div><strong>Gebinde-Nummer:</strong> {editingOrder.zwischenprodukt.gebindeNummer}</div>
+              </div>
+            </div>
+
+            <div className="details-section">
+              <h3>Probenzug</h3>
+              <div className="details-grid">
+                <div><strong>Plan:</strong> {editingOrder.probenzug.plan}</div>
+                <div><strong>Anzahl:</strong> {editingOrder.probenzug.anzahl}</div>
+                <div><strong>Füllmenge:</strong> {editingOrder.probenzug.fuellmenge} g</div>
+              </div>
+            </div>
           </div>
         </div>
-      ) : (
+      )}
+
+      {(viewMode === 'create' || viewMode === 'edit') && (
         <div className="new-order-form">
-          <h3>Neuen Produktionsauftrag erstellen</h3>
+          <div className="form-header">
+            <button 
+              className="btn btn-back"
+              onClick={() => setViewMode('list')}
+            >
+              ← Zurück
+            </button>
+            <h3>{viewMode === 'edit' ? 'Produktionsauftrag bearbeiten' : 'Neuen Produktionsauftrag erstellen'}</h3>
+          </div>
           
           <div className="form-group">
             <label>Produktname *</label>
@@ -400,10 +558,16 @@ const ProductionOrderManager: React.FC<ProductionOrderManagerProps> = ({
           </div>
 
           <div className="form-actions">
-            <button className="btn btn-primary" onClick={handleCreateOrder}>
-              Auftrag erstellen und starten
+            <button 
+              className="btn btn-primary" 
+              onClick={viewMode === 'edit' ? handleUpdateOrder : handleCreateOrder}
+            >
+              {viewMode === 'edit' ? 'Änderungen speichern' : 'Auftrag erstellen und starten'}
             </button>
-            <button className="btn btn-secondary" onClick={() => setShowNewOrderForm(false)}>
+            <button 
+              className="btn btn-secondary" 
+              onClick={() => setViewMode('list')}
+            >
               Abbrechen
             </button>
           </div>

@@ -1,54 +1,206 @@
+/* SurveyJS aligned styling */
 .app {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background-color: #f5f5f5;
+  background-color: #f3f3f3;
+  font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
 .app-header {
-  background-color: #2c3e50;
-  color: white;
+  background-color: #fff;
+  color: #404040;
   padding: 1rem 2rem;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  border-bottom: 1px solid #e7e7e7;
 }
 
 .app-header h1 {
   margin: 0;
   font-size: 1.5rem;
   font-weight: 600;
+  color: #404040;
 }
 
 .app-status {
   margin-top: 0.5rem;
   font-size: 0.9rem;
-  opacity: 0.9;
+  color: #6d6d6d;
 }
 
 .app-content {
   flex: 1;
   padding: 2rem;
-  max-width: 1200px;
-  margin: 0 auto;
   width: 100%;
+  max-width: none;
+  margin: 0;
+  background-color: #f3f3f3;
 }
 
-/* Tablet optimizations */
-@media (max-width: 1024px) {
-  .app-content {
-    padding: 1rem;
-  }
-}
+/* ===== RESPONSIVE OPTIMIZATIONS ===== */
 
-@media (max-width: 768px) {
+/* Large tablets (landscape) - 1024px and up */
+@media (min-width: 1024px) and (orientation: landscape) {
   .app-header {
-    padding: 0.75rem 1rem;
+    padding: 2rem;
   }
   
   .app-header h1 {
-    font-size: 1.25rem;
+    font-size: 2rem;
+    font-weight: 700;
+  }
+  
+  .app-status {
+    font-size: 1.1rem;
   }
   
   .app-content {
-    padding: 0.5rem;
+    padding: 3rem;
+    margin-top: 2rem;
+  }
+}
+
+/* Standard tablets (portrait and small landscape) - 768px to 1023px */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .app-content {
+    padding: 1.5rem;
+    margin-top: 1rem;
+  }
+  
+  .app-header h1 {
+    font-size: 1.7rem;
+  }
+}
+
+/* Small tablets and large phones - 480px to 767px */
+@media (max-width: 767px) {
+  .app-header {
+    padding: 1rem;
+  }
+  
+  .app-header h1 {
+    font-size: 1.3rem;
+  }
+  
+  .app-content {
+    padding: 1rem;
+    margin-top: 0.5rem;
+    border-radius: 15px 15px 0 0;
+  }
+}
+
+/* Touch device optimizations */
+@media (hover: none) and (pointer: coarse) {
+  .app-header {
+    padding: 1.5rem 2rem;
+  }
+  
+  .app-header h1 {
+    font-size: 1.8rem;
+  }
+}
+
+/* SurveyJS aligned dialogs and buttons */
+.saved-state-dialog {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.dialog-content {
+  background: white;
+  padding: 2rem;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  max-width: 500px;
+  width: 90%;
+  text-align: center;
+  border: 1px solid #e7e7e7;
+}
+
+.dialog-content h2 {
+  margin-top: 0;
+  color: #404040;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.dialog-content p {
+  margin: 1.5rem 0;
+  line-height: 1.6;
+  color: #6d6d6d;
+}
+
+.dialog-buttons {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  margin-top: 2rem;
+}
+
+/* SurveyJS button styles */
+.btn {
+  padding: 8px 16px;
+  border: 1px solid #e7e7e7;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  font-weight: 400;
+  cursor: pointer;
+  transition: all 0.2s;
+  min-width: 100px;
+  min-height: 32px;
+  background-color: #fff;
+  color: #404040;
+  font-family: inherit;
+}
+
+.btn:hover {
+  background-color: #f8f8f8;
+  border-color: #d0d0d0;
+}
+
+.btn-primary {
+  background-color: #19b394;
+  color: white;
+  border-color: #19b394;
+}
+
+.btn-primary:hover {
+  background-color: #16a085;
+  border-color: #16a085;
+}
+
+.btn-secondary {
+  background-color: #fff;
+  color: #404040;
+  border-color: #e7e7e7;
+}
+
+.btn-secondary:hover {
+  background-color: #f8f8f8;
+  border-color: #d0d0d0;
+}
+
+/* Tablet optimizations for dialog */
+@media (max-width: 768px) {
+  .dialog-content {
+    padding: 1.5rem;
+  }
+  
+  .dialog-buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .btn {
+    width: 100%;
+    max-width: 200px;
   }
 }

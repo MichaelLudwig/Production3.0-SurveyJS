@@ -4,7 +4,6 @@ import ProductionOrderManager from './components/ProductionOrderManager';
 import SurveyComponent from './components/SurveyComponent';
 import CompletionScreen from './components/CompletionScreen';
 import './App.css';
-import './styles/tablet-optimized.css';
 
 const App: React.FC = () => {
   const [appState, setAppState] = useState<AppState>('order-selection');
@@ -12,22 +11,39 @@ const App: React.FC = () => {
   const [surveyAnswers, setSurveyAnswers] = useState<SurveyAnswer>({});
   const [exportData, setExportData] = useState<ExportData | null>(null);
 
-  // Load saved state from localStorage on component mount
+  // Check for saved state but don't auto-load it
+  const [hasSavedState, setHasSavedState] = useState(false);
+  const [savedStateData, setSavedStateData] = useState<any>(null);
+
   useEffect(() => {
     const savedState = localStorage.getItem('productionSurveyState');
     if (savedState) {
       try {
         const parsed = JSON.parse(savedState);
         if (parsed.currentOrder) {
-          setCurrentOrder(parsed.currentOrder);
-          setSurveyAnswers(parsed.surveyAnswers || {});
-          setAppState(parsed.appState || 'survey');
+          setHasSavedState(true);
+          setSavedStateData(parsed);
         }
       } catch (error) {
         console.error('Error loading saved state:', error);
       }
     }
   }, []);
+
+  const handleContinueSaved = () => {
+    if (savedStateData) {
+      setCurrentOrder(savedStateData.currentOrder);
+      setSurveyAnswers(savedStateData.surveyAnswers || {});
+      setAppState(savedStateData.appState || 'survey');
+      setHasSavedState(false);
+    }
+  };
+
+  const handleStartFresh = () => {
+    localStorage.removeItem('productionSurveyState');
+    setHasSavedState(false);
+    setSavedStateData(null);
+  };
 
   // Save state to localStorage whenever it changes
   useEffect(() => {
@@ -84,7 +100,36 @@ const App: React.FC = () => {
       </header>
 
       <main className="app-content">
-        {appState === 'order-selection' && (
+        {hasSavedState && (
+          <div className="saved-state-dialog">
+            <div className="dialog-content">
+              <h2>Gespeicherter Fortschritt gefunden</h2>
+              <p>
+                Sie haben einen unvollständigen Produktionsauftrag:
+                <br />
+                <strong>{savedStateData?.currentOrder?.produktName}</strong>
+                <br />
+                ({savedStateData?.currentOrder?.materialType})
+              </p>
+              <div className="dialog-buttons">
+                <button 
+                  className="btn btn-primary"
+                  onClick={handleContinueSaved}
+                >
+                  Fortfahren
+                </button>
+                <button 
+                  className="btn btn-secondary"
+                  onClick={handleStartFresh}
+                >
+                  Neu starten
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {!hasSavedState && appState === 'order-selection' && (
           <ProductionOrderManager 
             onOrderSelected={handleOrderSelected}
             currentOrder={currentOrder}
