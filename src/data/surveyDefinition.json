@@ -1,6 +1,4 @@
 {
-  "title": "Cannabis Produktions-Dokumentation",
-  "description": "Digitaler Fragenkatalog für die Dokumentation des Cannabis-Produktionsprozesses",
   "showProgressBar": "top",
   "showQuestionNumbers": "off",
   "completedHtml": "<h3>Vielen Dank!</h3><p>Der Produktionsprozess wurde erfolgreich dokumentiert.</p>",
@@ -152,26 +150,14 @@
           "elements": [
             {
               "type": "boolean",
-              "name": "line_clearing_ma1",
-              "title": "Line Clearing durchgeführt - MA1",
+              "name": "line_clearing_bestaetigung",
+              "title": "Line Clearing wurde durchgeführt",
               "isRequired": true
             },
             {
               "type": "boolean",
-              "name": "line_clearing_ma2",
-              "title": "Line Clearing durchgeführt - MA2",
-              "isRequired": true
-            },
-            {
-              "type": "text",
-              "name": "line_clearing_erfasst",
-              "title": "Erfasst durch (Kürzel)",
-              "isRequired": true
-            },
-            {
-              "type": "text",
-              "name": "line_clearing_geprueft",
-              "title": "Geprüft durch (Kürzel)",
+              "name": "line_clearing_dokumentiert",
+              "title": "Eingaben zu Line Clearing wurden überprüft",
               "isRequired": true
             }
           ]
@@ -183,26 +169,14 @@
           "elements": [
             {
               "type": "boolean",
-              "name": "reinigung_ma1",
-              "title": "Reinigung durchgeführt - MA1",
+              "name": "reinigung_bestaetigung",
+              "title": "Reinigung vor Herstellung wurde durchgeführt",
               "isRequired": true
             },
             {
               "type": "boolean",
-              "name": "reinigung_ma2",
-              "title": "Reinigung durchgeführt - MA2",
-              "isRequired": true
-            },
-            {
-              "type": "text",
-              "name": "reinigung_erfasst",
-              "title": "Erfasst durch (Kürzel)",
-              "isRequired": true
-            },
-            {
-              "type": "text",
-              "name": "reinigung_geprueft",
-              "title": "Geprüft durch (Kürzel)",
+              "name": "reinigung_dokumentiert",
+              "title": "Eingaben zu Reinigung wurden überprüft",
               "isRequired": true
             }
           ]
@@ -210,123 +184,98 @@
       ]
     },
     {
-      "name": "materialbereitstellung",
-      "title": "7. Materialbereitstellung",
+      "name": "materialkontrolle",
+      "title": "7. Materialkontrolle",
       "elements": [
         {
-          "type": "panel",
-          "name": "materialkontrolle_panel",
-          "title": "Materialkontrolle",
-          "elements": [
-            {
-              "type": "boolean",
-              "name": "identität_geprüft",
-              "title": "Identität geprüft?",
-              "isRequired": true
-            },
-            {
-              "type": "boolean",
-              "name": "unversehrtheit_geprüft",
-              "title": "Unversehrtheit geprüft?",
-              "isRequired": true
-            },
-            {
-              "type": "boolean",
-              "name": "haltbarkeit_geprüft",
-              "title": "Haltbarkeit geprüft?",
-              "isRequired": true
-            },
-            {
-              "type": "boolean",
-              "name": "kennzeichnung_geprüft",
-              "title": "Kennzeichnung geprüft?",
-              "isRequired": true
-            },
-            {
-              "type": "text",
-              "name": "materialkontrolle_erfasst",
-              "title": "Erfasst durch (Kürzel)",
-              "isRequired": true
-            },
-            {
-              "type": "text",
-              "name": "materialkontrolle_geprueft",
-              "title": "Geprüft durch (Kürzel)",
-              "isRequired": true
-            }
-          ]
+          "type": "text",
+          "name": "soll_ist_produktbezeichnung",
+          "title": "Soll-Ist Vergleich: Produktbezeichnung stimmt überein",
+          "isRequired": true,
+          "placeholder": "Bestätigung der Übereinstimmung"
         },
         {
-          "type": "panel",
-          "name": "probenzug_ipk_panel",
-          "title": "Probenzug für In-Prozess-Kontrolle",
-          "visibleIf": "{materialType} = 'GACP'",
-          "elements": [
-            {
-              "type": "boolean",
-              "name": "probenzug_ipk_durchgeführt",
-              "title": "Probenzug für IPK durchgeführt?",
-              "isRequired": true
-            },
-            {
-              "type": "text",
-              "name": "probenzug_ipk_menge",
-              "title": "Probenmenge (g)",
-              "inputType": "number",
-              "visibleIf": "{probenzug_ipk_durchgeführt} = true"
-            },
-            {
-              "type": "text",
-              "name": "probenzug_ipk_erfasst",
-              "title": "Erfasst durch (Kürzel)",
-              "isRequired": true
-            },
-            {
-              "type": "text",
-              "name": "probenzug_ipk_geprueft",
-              "title": "Geprüft durch (Kürzel)",
-              "isRequired": true
-            }
-          ]
+          "type": "text",
+          "name": "soll_ist_artikelnummer",
+          "title": "Soll-Ist Vergleich: Artikelnummer stimmt überein",
+          "isRequired": true,
+          "placeholder": "Bestätigung der Übereinstimmung"
         },
         {
-          "type": "panel",
-          "name": "sortierung_panel",
-          "title": "Sortierung",
-          "visibleIf": "{materialType} = 'GACP'",
-          "elements": [
-            {
-              "type": "boolean",
-              "name": "sortierung_durchgeführt",
-              "title": "Sortierung durchgeführt?",
-              "isRequired": true
-            },
-            {
-              "type": "text",
-              "name": "aussortiertes_material",
-              "title": "Aussortiertes Material (g)",
-              "inputType": "number",
-              "visibleIf": "{sortierung_durchgeführt} = true"
-            },
-            {
-              "type": "text",
-              "name": "sortierung_erfasst",
-              "title": "Erfasst durch (Kürzel)",
-              "isRequired": true
-            },
-            {
-              "type": "text",
-              "name": "sortierung_geprueft",
-              "title": "Geprüft durch (Kürzel)",
-              "isRequired": true
-            }
-          ]
+          "type": "text",
+          "name": "soll_ist_chargenbezeichnung",
+          "title": "Soll-Ist Vergleich: Chargenbezeichnung stimmt überein",
+          "isRequired": true,
+          "placeholder": "Bestätigung der Übereinstimmung"
+        },
+        {
+          "type": "text",
+          "name": "soll_ist_anzahl_gebinde",
+          "title": "Soll-Ist Vergleich: Anzahl Gebinde stimmt überein",
+          "isRequired": true,
+          "placeholder": "Bestätigung der Übereinstimmung"
+        },
+        {
+          "type": "boolean",
+          "name": "soll_ist_uebereinstimmung",
+          "title": "Gesamte Soll-Ist Übereinstimmung bestätigt",
+          "isRequired": true
+        }
+      ]
+    },
+    {
+      "name": "probenzug_ipk",
+      "title": "8. Probenzug für In-Prozess-Kontrolle",
+      "visibleIf": "{materialType} = 'GACP'",
+      "elements": [
+        {
+          "type": "boolean",
+          "name": "ipk_probenbehälter_vorhanden",
+          "title": "Probenbehälter für IPK sind vorhanden",
+          "isRequired": true
+        },
+        {
+          "type": "boolean",
+          "name": "ipk_proben_bereitgestellt",
+          "title": "IPK-Proben wurden ordnungsgemäß bereitgestellt",
+          "isRequired": true
+        },
+        {
+          "type": "boolean",
+          "name": "ipk_rueckstellmuster_kennzeichnung",
+          "title": "Rückstellmuster sind korrekt gekennzeichnet",
+          "isRequired": true
+        }
+      ]
+    },
+    {
+      "name": "sortierung",
+      "title": "9. Sortierung (nur GACP)",
+      "visibleIf": "{materialType} = 'GACP'",
+      "elements": [
+        {
+          "type": "boolean",
+          "name": "sortierung_durchgefuehrt",
+          "title": "Sortierung wurde durchgeführt",
+          "isRequired": true
+        },
+        {
+          "type": "boolean",
+          "name": "sortierung_dokumentiert",
+          "title": "Sortierung wurde ordnungsgemäß dokumentiert",
+          "isRequired": true
+        },
+        {
+          "type": "boolean",
+          "name": "sortierung_fremdkoerper",
+          "title": "Keine Fremdkörper gefunden oder ordnungsgemäß entfernt",
+          "isRequired": true
         }
       ]
     },
     {
       "name": "primaerverpackung",
-      "title": "8. Primärverpackung - Produktionslauf",
+      "title": "10. Primärverpackung - Produktionslauf",
       "elements": [
         {
           "type": "paneldynamic",
@@ -385,7 +334,7 @@
     },
     {
       "name": "pause_check",
-      "title": "9. Pause-Überprüfung",
+      "title": "11. Pause-Überprüfung",
       "elements": [
         {
           "type": "boolean",
@@ -397,7 +346,7 @@
     },
     {
       "name": "pause_details",
-      "title": "10. Pause",
+      "title": "12. Pause",
       "visibleIf": "{pause_durchgeführt} = true",
       "elements": [
         {
@@ -422,25 +371,13 @@
             {
               "type": "boolean",
               "name": "pause_kontrolle_ma1",
-              "title": "Kontrolle durchgeführt - MA1",
+              "title": "Kontrolle nach Pause wurde von MA1 durchgeführt",
               "isRequired": true
             },
             {
               "type": "boolean",
               "name": "pause_kontrolle_ma2",
-              "title": "Kontrolle durchgeführt - MA2",
-              "isRequired": true
-            },
-            {
-              "type": "text",
-              "name": "pause_kontrolle_erfasst",
-              "title": "Erfasst durch (Kürzel)",
-              "isRequired": true
-            },
-            {
-              "type": "text",
-              "name": "pause_kontrolle_geprueft",
-              "title": "Geprüft durch (Kürzel)",
+              "title": "Kontrolle nach Pause wurde von MA2 bestätigt",
               "isRequired": true
             }
           ]
@@ -464,29 +401,21 @@
           "title": "Probenzug für Freigabeanalytik",
           "elements": [
             {
-              "type": "text",
-              "name": "probe1_menge",
-              "title": "Probe 1 - Menge (g)",
-              "inputType": "number",
+              "type": "boolean",
+              "name": "probenzug_durchgefuehrt",
+              "title": "Probenzug wurde ordnungsgemäß durchgeführt",
               "isRequired": true
             },
             {
-              "type": "text",
-              "name": "probe2_menge",
-              "title": "Probe 2 - Menge (g)",
-              "inputType": "number",
+              "type": "boolean",
+              "name": "probenzug_rueckstellmuster",
+              "title": "Rückstellmuster wurde ordnungsgemäß entnommen",
               "isRequired": true
             },
             {
-              "type": "text",
-              "name": "probenzug_erfasst",
-              "title": "Erfasst durch (Kürzel)",
-              "isRequired": true
-            },
-            {
-              "type": "text",
-              "name": "probenzug_geprueft",
-              "title": "Geprüft durch (Kürzel)",
+              "type": "boolean",
+              "name": "probenzug_dokumentiert",
+              "title": "Probenzug wurde vollständig dokumentiert",
               "isRequired": true
             }
           ]
@@ -495,7 +424,7 @@
     },
     {
       "name": "schleusung_ausgang",
-      "title": "12. Schleusung Ausgang",
+      "title": "14. Schleusung Ausgang",
       "elements": [
         {
           "type": "text",
@@ -512,25 +441,19 @@
             {
               "type": "boolean",
               "name": "schleusung_kontrolle_ma1",
-              "title": "Kontrolle durchgeführt - MA1",
+              "title": "Schleusung wurde von MA1 kontrolliert",
               "isRequired": true
             },
             {
               "type": "boolean",
               "name": "schleusung_kontrolle_ma2",
-              "title": "Kontrolle durchgeführt - MA2",
+              "title": "Schleusung wurde von MA2 kontrolliert",
               "isRequired": true
             },
             {
-              "type": "text",
-              "name": "schleusung_erfasst",
-              "title": "Erfasst durch (Kürzel)",
-              "isRequired": true
-            },
-            {
-              "type": "text",
-              "name": "schleusung_geprueft",
-              "title": "Geprüft durch (Kürzel)",
+              "type": "boolean",
+              "name": "schleusung_reinigung",
+              "title": "Reinigung der Schleusung wurde durchgeführt",
               "isRequired": true
             }
           ]
@@ -539,7 +462,7 @@
     },
     {
       "name": "nachbereitung_reinraum",
-      "title": "13. Nachbereitung Reinraum",
+      "title": "15. Nachbereitung Reinraum",
       "elements": [
         {
           "type": "panel",
@@ -548,26 +471,14 @@
           "elements": [
             {
               "type": "boolean",
-              "name": "nachbereitung_reinigung_ma1",
-              "title": "Reinigung durchgeführt - MA1",
+              "name": "nachbereitung_reinigung_durchgefuehrt",
+              "title": "Nachbereitung Reinigung wurde durchgeführt",
               "isRequired": true
             },
             {
               "type": "boolean",
-              "name": "nachbereitung_reinigung_ma2",
-              "title": "Reinigung durchgeführt - MA2",
-              "isRequired": true
-            },
-            {
-              "type": "text",
-              "name": "nachbereitung_reinigung_erfasst",
-              "title": "Erfasst durch (Kürzel)",
-              "isRequired": true
-            },
-            {
-              "type": "text",
-              "name": "nachbereitung_reinigung_geprueft",
-              "title": "Geprüft durch (Kürzel)",
+              "name": "nachbereitung_reinigung_dokumentiert",
+              "title": "Nachbereitung Reinigung wurde ordnungsgemäß dokumentiert",
               "isRequired": true
             }
           ]
@@ -576,7 +487,7 @@
     },
     {
       "name": "nachbereitung_materialien",
-      "title": "14. Nachbereitung (Materialien)",
+      "title": "16. Nachbereitung (Materialien)",
       "elements": [
         {
           "type": "panel",
@@ -645,7 +556,7 @@
     },
     {
       "name": "abschluss",
-      "title": "15. Abschluss",
+      "title": "17. Abschluss",
       "elements": [
         {
           "type": "text",
@@ -668,15 +579,21 @@
           "placeholder": "Weitere Anmerkungen zum Produktionsprozess..."
         },
         {
-          "type": "text",
-          "name": "abschluss_erfasst",
-          "title": "Erfasst durch (Kürzel)",
+          "type": "boolean",
+          "name": "protokoll_vollstaendig",
+          "title": "Protokoll ist vollständig ausgefüllt",
           "isRequired": true
         },
         {
-          "type": "text",
-          "name": "abschluss_geprueft",
-          "title": "Geprüft durch (Kürzel)",
+          "type": "boolean",
+          "name": "abweichungen_dokumentiert",
+          "title": "Alle Abweichungen wurden ordnungsgemäß dokumentiert",
+          "isRequired": true
+        },
+        {
+          "type": "boolean",
+          "name": "produktionsleitung_informiert",
+          "title": "Produktionsleitung wurde über den Abschluss informiert",
           "isRequired": true
         }
       ]

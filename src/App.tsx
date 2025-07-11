@@ -40,9 +40,12 @@ const App: React.FC = () => {
   };
 
   const handleStartFresh = () => {
-    localStorage.removeItem('productionSurveyState');
+    // Clear ALL localStorage data for completely fresh start
+    localStorage.clear(); // This removes everything
     setHasSavedState(false);
     setSavedStateData(null);
+    // Force page reload to ensure clean state
+    window.location.reload();
   };
 
   // Save state to localStorage whenever it changes
@@ -88,16 +91,6 @@ const App: React.FC = () => {
 
   return (
     <div className="app">
-      <header className="app-header">
-        <h1>Cannabis Produktions-Dokumentation</h1>
-        <div className="app-status">
-          {appState === 'order-selection' && <span>Produktionsauftrag auswählen</span>}
-          {appState === 'survey' && currentOrder && (
-            <span>Auftrag: {currentOrder.produktName} ({currentOrder.materialType})</span>
-          )}
-          {appState === 'completed' && <span>Prozess abgeschlossen</span>}
-        </div>
-      </header>
 
       <main className="app-content">
         {hasSavedState && (

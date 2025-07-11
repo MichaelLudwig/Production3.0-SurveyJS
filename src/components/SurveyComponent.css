@@ -6,65 +6,70 @@
   font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
-.survey-header {
+.survey-header-compact {
   background: #fff;
-  color: #404040;
-  padding: 1rem 2rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
   border-bottom: 1px solid #e7e7e7;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
 }
 
-.survey-info h2 {
-  margin: 0;
-  font-size: 1.25rem;
+.header-line-1 {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.25rem;
+}
+
+.order-name {
   font-weight: 600;
   color: #404040;
+  font-size: 1rem;
 }
 
-.survey-info p {
-  margin: 0.25rem 0 0 0;
+.material-type {
   color: #6d6d6d;
-  font-size: 0.9rem;
+  margin-left: 0.5rem;
 }
 
-.survey-progress {
+.btn-minimal {
+  background: none;
+  border: 1px solid #ddd;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.8rem;
+  color: #666;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.btn-minimal:hover {
+  background: #f5f5f5;
+}
+
+.header-line-2 {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  color: #666;
 }
 
-.survey-progress span {
-  font-size: 0.9rem;
-  color: #6d6d6d;
+.progress-info {
+  font-weight: 500;
+}
+
+.current-step {
+  font-weight: 600;
+  color: #404040;
+  font-size: 0.95rem;
 }
 
 /* Full-width content area */
 .survey-content {
   width: 100%;
   max-width: none;
-  padding: 2rem;
+  padding: 0.25rem 1rem 1rem 1rem;
   background: #f3f3f3;
-  min-height: calc(100vh - 120px);
-}
-
-.current-page-title {
-  margin-bottom: 1.5rem;
-  padding: 1rem;
-  background: #fff;
-  border: 1px solid #e7e7e7;
-  border-radius: 4px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-}
-
-.current-page-title h3 {
-  color: #404040;
-  margin: 0;
-  font-size: 1.1rem;
-  font-weight: 600;
+  min-height: calc(100vh - 80px);
 }
 
 /* Survey wrapper takes full width */
@@ -81,6 +86,20 @@
   box-shadow: none !important;
   border: none !important;
   margin: 0 !important;
+}
+
+/* Remove padding from SurveyJS body */
+.survey-wrapper .sv-body {
+  padding-top: 0 !important;
+  margin-top: 0 !important;
+}
+
+/* Remove margin from page title and page itself */
+.survey-wrapper .sd-page__title,
+.survey-wrapper .sd-page,
+.survey-wrapper .sd-body__page {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
 }
 
 /* Style SurveyJS pages to use full width */
@@ -198,33 +217,41 @@
   margin-bottom: 1rem !important;
 }
 
-/* Progress bar styling */
+/* Hide SurveyJS built-in progress bar */
 .survey-wrapper .sv-progress {
-  background-color: #e7e7e7 !important;
-  border-radius: 4px !important;
-  height: 8px !important;
+  display: none !important;
 }
 
-.survey-wrapper .sv-progress__bar {
-  background-color: #19b394 !important;
-  border-radius: 4px !important;
+/* Full-width progress bar spanning entire container */
+.full-width-progress-bar {
+  width: 100%;
+  height: 6px;
+  background-color: #e7e7e7;
+  position: relative;
+  overflow: hidden;
 }
 
-.survey-footer {
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #19b394 0%, #16a085 100%);
+  transition: width 0.3s ease;
+  border-radius: 0 3px 3px 0;
+}
+
+/* Fix the problematic padding */
+.survey-wrapper .sd-body.sd-body--static {
+  padding-top: 0 !important;
+  max-width: none !important;
+  margin: 0 !important;
+}
+
+.survey-footer-compact {
   background: #fff;
-  padding: 1rem 2rem;
+  padding: 0.5rem 1rem;
   border-top: 1px solid #e7e7e7;
-  box-shadow: 0 -1px 3px rgba(0,0,0,0.1);
-}
-
-.survey-hints {
   text-align: center;
   color: #6d6d6d;
-  font-size: 0.85rem;
-}
-
-.survey-hints p {
-  margin: 0.25rem 0;
+  font-size: 0.8rem;
 }
 
 .survey-loading {
@@ -273,37 +300,80 @@
 /* Responsive Design */
 @media (max-width: 1024px) {
   .survey-content {
-    padding: 1.5rem;
-  }
-  
-  .survey-wrapper .sv-page {
-    padding: 1.5rem !important;
-  }
-}
-
-@media (max-width: 768px) {
-  .survey-header {
-    flex-direction: column;
-    gap: 1rem;
-    text-align: center;
-    padding: 1rem;
-  }
-  
-  .survey-progress {
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-  
-  .survey-content {
-    padding: 1rem;
+    padding: 0.75rem;
   }
   
   .survey-wrapper .sv-page {
     padding: 1rem !important;
   }
+}
+
+@media (max-width: 768px) {
+  .header-line-1 {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
   
-  .current-page-title {
-    padding: 0.75rem;
+  .header-line-2 {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.25rem;
+  }
+  
+  .survey-content {
+    padding: 0.5rem;
+  }
+  
+  .survey-wrapper .sv-page {
+    padding: 0.75rem !important;
+  }
+}
+
+/* Split-screen layout for tablet landscape */
+.survey-split-container {
+  display: flex;
+  gap: 2rem;
+  width: 100%;
+  min-height: 500px;
+  align-items: flex-start;
+}
+
+.survey-left-panel {
+  flex: 1;
+  min-width: 50%;
+}
+
+.survey-right-panel {
+  flex: 1;
+  min-width: 50%;
+  position: sticky;
+  top: 2rem;
+  padding-right: 2rem;
+}
+
+/* MA2 Validation wrapper styling */
+.ma2-validation-wrapper {
+  width: 100%;
+}
+
+/* Hide default SurveyJS navigation when MA2 validation is pending */
+.survey-wrapper.ma2-pending .sv-action-bar {
+  display: none !important;
+}
+
+.survey-wrapper.ma2-pending .sv-btn {
+  display: none !important;
+}
+
+/* Mobile/Portrait fallback - stack vertically */
+@media (max-width: 1024px) or (orientation: portrait) {
+  .survey-split-container {
+    flex-direction: column;
+  }
+  
+  .survey-right-panel {
+    position: static;
   }
 }
 

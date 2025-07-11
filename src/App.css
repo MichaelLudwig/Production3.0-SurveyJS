@@ -1,36 +1,13 @@
 /* SurveyJS aligned styling */
 .app {
   min-height: 100vh;
-  display: flex;
-  flex-direction: column;
   background-color: #f3f3f3;
   font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
-.app-header {
-  background-color: #fff;
-  color: #404040;
-  padding: 1rem 2rem;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-  border-bottom: 1px solid #e7e7e7;
-}
-
-.app-header h1 {
-  margin: 0;
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: #404040;
-}
-
-.app-status {
-  margin-top: 0.5rem;
-  font-size: 0.9rem;
-  color: #6d6d6d;
-}
-
 .app-content {
   flex: 1;
-  padding: 2rem;
+  padding: 0;
   width: 100%;
   max-width: none;
   margin: 0;
@@ -55,16 +32,16 @@
   }
   
   .app-content {
-    padding: 3rem;
-    margin-top: 2rem;
+    padding: 0;
+    margin-top: 0;
   }
 }
 
 /* Standard tablets (portrait and small landscape) - 768px to 1023px */
 @media (min-width: 768px) and (max-width: 1023px) {
   .app-content {
-    padding: 1.5rem;
-    margin-top: 1rem;
+    padding: 0;
+    margin-top: 0;
   }
   
   .app-header h1 {
@@ -83,9 +60,9 @@
   }
   
   .app-content {
-    padding: 1rem;
-    margin-top: 0.5rem;
-    border-radius: 15px 15px 0 0;
+    padding: 0;
+    margin-top: 0;
+    border-radius: 0;
   }
 }
 

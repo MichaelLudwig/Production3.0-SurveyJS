@@ -32,8 +32,31 @@ export interface ProductionOrder {
   createdAt: string;
 }
 
+// Enhanced audit trail for each answer
+export interface AuditTrail {
+  ma1Kuerzel?: string;
+  ma1Timestamp?: string;
+  ma2Kuerzel?: string;
+  ma2Timestamp?: string;
+  ma2Kommentar?: string;
+}
+
+// Individual answer with audit trail
+export interface SurveyAnswerItem {
+  value: any;
+  audit?: AuditTrail;
+}
+
 export interface SurveyAnswer {
-  [key: string]: any;
+  [key: string]: SurveyAnswerItem | any; // Keep backward compatibility
+}
+
+// Four-eyes validation groups
+export interface ValidationGroup {
+  name: string;
+  questions: string[];
+  title: string;
+  requiresMA2: boolean;
 }
 
 export interface ExportData {
