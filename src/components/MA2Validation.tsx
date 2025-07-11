@@ -47,6 +47,13 @@ const sollMapping: Record<string, string> = {
   charge_ist: "charge",
   anzahl_ist: "anzahl"
 };
+// Mapping für Soll-Werte aus Bulkmaterial
+const sollMappingBulk: Record<string, string> = {
+  produktbezeichnung_bulk_ist: "produktbezeichnung",
+  artikelnr_bulk_ist: "artikelNummer",
+  charge_bulk_ist: "charge",
+  verfall_bulk_ist: "verwendbarBis"
+};
 
 const MA2Validation: React.FC<MA2ValidationProps> = ({
   group,
@@ -90,7 +97,10 @@ const MA2Validation: React.FC<MA2ValidationProps> = ({
   };
 
   const renderQuestionSummary = () => {
-    const sollWerte = surveyData?.primaerPackmittel || {};
+    // Erkenne, ob es sich um die Bulkmaterial-Seite handelt
+    const isBulk = group.name === "materialbereitstellung_bulk";
+    const sollWerte = isBulk ? surveyData?.bulkmaterial || {} : surveyData?.primaerPackmittel || {};
+    const mapping = isBulk ? sollMappingBulk : sollMapping;
     return (
       <div className="ma2-question-summary">
         <h4>Zu prüfende Antworten:</h4>
@@ -99,15 +109,14 @@ const MA2Validation: React.FC<MA2ValidationProps> = ({
             const ist = groupAnswers[questionName];
             let isWarn = false;
             let soll = undefined;
-            if (sollMapping[questionName] && sollWerte) {
-              soll = sollWerte[sollMapping[questionName]];
+            if (mapping[questionName] && sollWerte) {
+              soll = sollWerte[mapping[questionName]];
               isWarn = ist !== undefined && soll !== undefined && ist !== soll;
             }
             // NEU: Ja/Nein-Fragen unabhängig vom Sollwert gelb markieren, wenn "Nein"
             if (isNoAnswer(ist)) {
               isWarn = true;
             }
-            
             return (
               <div key={questionName} className={`question-answer-row${isWarn ? ' warn' : ''}`}>
                 <span className="question-name">{questionName}:</span>

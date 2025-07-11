@@ -262,92 +262,51 @@
         {
           "type": "html",
           "name": "bulk_info",
-          "html": "<h4>Soll-Ist Vergleich Bulkmaterial</h4><p>Abgleich der Sollangaben mit den Ist-Angaben auf den Bulkbeuteln</p>"
+          "html": "<ul style='margin-bottom: 10px;'><li>Bereitstellung von Bulkmaterial entsprechend der Vorgabe der Übersicht</li><li>Abgleich der Sollangaben mit den Istangaben auf den Bulkbeuteln</li></ul><div style='text-align:center;'><img src='/images/bulkbeutel-etikett.png' alt='Beispiel Bulkbeutel-Etikett' style='max-width: 300px; margin-top: 10px;'></div>"
         },
         {
           "type": "text",
           "name": "produktbezeichnung_bulk_ist",
           "title": "Produktbezeichnung Ist",
-          "isRequired": true
-        },
-        {
-          "type": "boolean",
-          "name": "produktbezeichnung_bulk_ok",
-          "title": "Produktbezeichnung - Übereinstimmung?",
+          "description": "Soll: {eingangsmaterial.produktbezeichnung}",
           "isRequired": true
         },
         {
           "type": "text",
           "name": "artikelnr_bulk_ist",
           "title": "Artikel-Nr. Ist",
-          "isRequired": true
-        },
-        {
-          "type": "boolean",
-          "name": "artikelnr_bulk_ok",
-          "title": "Artikel-Nr. - Übereinstimmung?",
+          "description": "Soll: {eingangsmaterial.artikelNummer}",
           "isRequired": true
         },
         {
           "type": "text",
           "name": "charge_bulk_ist",
           "title": "Chargenbezeichnung Ist",
-          "isRequired": true
-        },
-        {
-          "type": "boolean",
-          "name": "charge_bulk_ok",
-          "title": "Chargenbezeichnung - Übereinstimmung?",
+          "description": "Soll: {eingangsmaterial.charge}",
           "isRequired": true
         },
         {
           "type": "text",
           "name": "verfall_bulk_ist",
           "title": "Verwendbar bis (TT/MM/JJJJ) Ist",
+          "description": "Soll: {eingangsmaterial.verfall}",
           "inputType": "date",
           "isRequired": true
         },
         {
-          "type": "boolean",
-          "name": "verfall_bulk_ok",
-          "title": "Verwendbar bis - Übereinstimmung?",
-          "isRequired": true
-        },
-        {
-          "type": "paneldynamic",
+          "type": "matrixdynamic",
           "name": "bulkgebinde_liste",
-          "title": "Liste bereitgestellter Gebinde",
-          "templateElements": [
-            {
-              "type": "text",
-              "name": "anzahl",
-              "title": "Anzahl",
-              "inputType": "number",
-              "isRequired": true
-            },
-            {
-              "type": "text",
-              "name": "gebindegroesse",
-              "title": "Gebindegröße (g)",
-              "inputType": "number",
-              "isRequired": true
-            },
-            {
-              "type": "boolean",
-              "name": "probenzug_verwendet",
-              "title": "Für Probenzug verwendet?",
-              "isRequired": true
-            },
-            {
-              "type": "boolean",
-              "name": "dicht_sauber",
-              "title": "Dicht verschlossen und sauber?",
-              "isRequired": true
-            }
+          "title": "Angaben von Gebinde eintragen",
+          "columns": [
+            { "name": "anzahl", "title": "Anzahl", "cellType": "text", "inputType": "number", "isRequired": true },
+            { "name": "gebindegroesse", "title": "Gebindegröße (g)", "cellType": "text", "inputType": "number", "isRequired": true },
+            { "name": "probenzug_verwendet", "title": "Für Probenzug verwendet?", "cellType": "boolean", "isRequired": true },
+            { "name": "dicht_sauber", "title": "Dicht verschlossen und sauber?", "cellType": "boolean", "isRequired": true }
           ],
-          "panelCount": 1,
-          "minPanelCount": 1,
-          "maxPanelCount": 10
+          "rowCount": 1,
+          "minRowCount": 1,
+          "addRowText": "Gebinde hinzufügen",
+          "removeRowText": "Entfernen"
         },
         {
           "type": "comment",
@@ -358,12 +317,6 @@
           "type": "text",
           "name": "bulk_erfasst_kuerzel",
           "title": "Mitarbeiterkürzel \"Erfasst\"",
-          "isRequired": true
-        },
-        {
-          "type": "text",
-          "name": "bulk_geprueft_kuerzel",
-          "title": "Mitarbeiterkürzel \"Überprüft\"",
           "isRequired": true
         }
       ]

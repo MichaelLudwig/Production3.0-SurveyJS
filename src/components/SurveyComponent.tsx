@@ -52,7 +52,8 @@ const SurveyComponent: React.FC<SurveyComponentProps> = ({
       primaerPackmittel: productionOrder.primaerPackmittel,
       zwischenprodukt: productionOrder.zwischenprodukt,
       probenzug: productionOrder.probenzug,
-      schablone: productionOrder.schablone
+      schablone: productionOrder.schablone,
+      bulkmaterial: productionOrder.eingangsmaterial // NEU: für Soll-Ist-Vergleich Bulkmaterial
     };
     
     // Set initial values

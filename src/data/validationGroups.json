@@ -34,7 +34,15 @@
     "name": "materialbereitstellung_bulk",
     "title": "Materialbereitstellung Bulkmaterial",
     "requiresMA2": true,
-    "questions": ["produktbezeichnung_bulk_ist", "produktbezeichnung_bulk_ok", "artikelnr_bulk_ist", "artikelnr_bulk_ok", "charge_bulk_ist", "charge_bulk_ok", "verfall_bulk_ist", "verfall_bulk_ok", "bulkgebinde_liste", "bulk_bemerkungen", "bulk_erfasst_kuerzel", "bulk_geprueft_kuerzel"]
+    "questions": [
+      "produktbezeichnung_bulk_ist",
+      "artikelnr_bulk_ist",
+      "charge_bulk_ist",
+      "verfall_bulk_ist",
+      "bulkgebinde_liste",
+      "bulk_bemerkungen",
+      "bulk_erfasst_kuerzel"
+    ]
   },
   {
     "name": "zubehör_schablonen",
