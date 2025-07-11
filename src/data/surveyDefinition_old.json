@@ -1,0 +1,596 @@
+{
+  "showProgressBar": "top",
+  "showQuestionNumbers": "off",
+  "completedHtml": "<h3>Vielen Dank!</h3><p>Der Produktionsprozess wurde erfolgreich dokumentiert.</p>",
+  "pages": [
+    {
+      "name": "produktionsauftrag_info",
+      "title": "1. Vorbereitung - Information Produktionsauftrag",
+      "elements": [
+        {
+          "type": "html",
+          "name": "auftrag_info",
+          "html": "<h3>Produktionsauftrag Informationen</h3><p><strong>Produkt:</strong> {produktName}</p><p><strong>Material-Typ:</strong> {materialType}</p><p><strong>Eingangsmaterial:</strong> {eingangsmaterial.artikelNummer} (Charge: {eingangsmaterial.charge})</p><p><strong>Bulk-Beutel Anzahl:</strong> {bulkBeutelAnzahl}</p>"
+        }
+      ]
+    },
+    {
+      "name": "materialausgangsbuchung",
+      "title": "2. Vorbereitung - Materialausgangsbuchung",
+      "elements": [
+        {
+          "type": "boolean",
+          "name": "eingangsmaterial_ausgebucht",
+          "title": "Eingangsmaterialien ausgebucht und Beleg beigefügt?",
+          "isRequired": true
+        },
+        {
+          "type": "text",
+          "name": "leiter_herstellung_kuerzel",
+          "title": "Leiter der Herstellung - Kürzel",
+          "isRequired": true,
+          "placeholder": "z.B. MM"
+        }
+      ]
+    },
+    {
+      "name": "beteiligte_mitarbeiter",
+      "title": "3. Vorbereitung - Beteiligte Mitarbeiter",
+      "elements": [
+        {
+          "type": "paneldynamic",
+          "name": "mitarbeiter_liste",
+          "title": "Beteiligte Mitarbeiter",
+          "templateElements": [
+            {
+              "type": "text",
+              "name": "name",
+              "title": "Name",
+              "isRequired": true
+            },
+            {
+              "type": "text",
+              "name": "kuerzel",
+              "title": "Kürzel",
+              "isRequired": true
+            }
+          ],
+          "panelCount": 2,
+          "minPanelCount": 2,
+          "maxPanelCount": 10,
+          "panelAddText": "Mitarbeiter hinzufügen",
+          "panelRemoveText": "Entfernen"
+        }
+      ]
+    },
+    {
+      "name": "beginn_herstellung",
+      "title": "4. Vorbereitung - Beginn der Herstellung",
+      "elements": [
+        {
+          "type": "text",
+          "name": "beginn_datum",
+          "title": "Datum der Herstellung",
+          "inputType": "date",
+          "isRequired": true
+        },
+        {
+          "type": "text",
+          "name": "beginn_uhrzeit",
+          "title": "Uhrzeit Beginn",
+          "inputType": "time",
+          "isRequired": true
+        }
+      ]
+    },
+    {
+      "name": "kennzeichnung_pruefung",
+      "title": "5. Vorbereitung - Kennzeichnung",
+      "elements": [
+        {
+          "type": "html",
+          "name": "kennzeichnung_info",
+          "html": "<h4>Prüfung ob alles vorhanden ist</h4>"
+        },
+        {
+          "type": "boolean",
+          "name": "eurocontainer_vorhanden",
+          "title": "Eurocontainer für Zwischenprodukte vorhanden?",
+          "isRequired": true
+        },
+        {
+          "type": "boolean",
+          "name": "probenbehälter_freigabe_vorhanden",
+          "title": "Probenbehälter und -container (Freigabeanalytik) vorhanden?",
+          "isRequired": true
+        },
+        {
+          "type": "boolean",
+          "name": "probenbehälter_ipk_vorhanden",
+          "title": "Probenbehälter für In-Prozess-Kontrolle vorhanden?",
+          "visibleIf": "{materialType} = 'GACP'",
+          "isRequired": true
+        },
+        {
+          "type": "boolean",
+          "name": "gebinde_rueckfragen_vorhanden",
+          "title": "Gebinde für \"Rückfragen QK\" vorhanden?",
+          "visibleIf": "{materialType} = 'GACP'",
+          "isRequired": true
+        },
+        {
+          "type": "boolean",
+          "name": "gebinde_restmenge_vorhanden",
+          "title": "Gebinde für finale Restmenge vorhanden?",
+          "isRequired": true
+        },
+        {
+          "type": "boolean",
+          "name": "behälter_bruch_vorhanden",
+          "title": "Behälter für Bruch/aussortiertes Material vorhanden?",
+          "visibleIf": "{materialType} = 'GACP'",
+          "isRequired": true
+        }
+      ]
+    },
+    {
+      "name": "reinraum_vorbereitung",
+      "title": "6. Vorbereitung Reinraum",
+      "elements": [
+        {
+          "type": "panel",
+          "name": "line_clearing_panel",
+          "title": "Line Clearing",
+          "elements": [
+            {
+              "type": "boolean",
+              "name": "line_clearing_bestaetigung",
+              "title": "Line Clearing wurde durchgeführt",
+              "isRequired": true
+            },
+            {
+              "type": "boolean",
+              "name": "line_clearing_dokumentiert",
+              "title": "Eingaben zu Line Clearing wurden überprüft",
+              "isRequired": true
+            }
+          ]
+        },
+        {
+          "type": "panel",
+          "name": "reinigung_panel",
+          "title": "Reinigung",
+          "elements": [
+            {
+              "type": "boolean",
+              "name": "reinigung_bestaetigung",
+              "title": "Reinigung vor Herstellung wurde durchgeführt",
+              "isRequired": true
+            },
+            {
+              "type": "boolean",
+              "name": "reinigung_dokumentiert",
+              "title": "Eingaben zu Reinigung wurden überprüft",
+              "isRequired": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "materialkontrolle",
+      "title": "7. Materialkontrolle",
+      "elements": [
+        {
+          "type": "text",
+          "name": "soll_ist_produktbezeichnung",
+          "title": "Soll-Ist Vergleich: Produktbezeichnung stimmt überein",
+          "isRequired": true,
+          "placeholder": "Bestätigung der Übereinstimmung"
+        },
+        {
+          "type": "text",
+          "name": "soll_ist_artikelnummer",
+          "title": "Soll-Ist Vergleich: Artikelnummer stimmt überein",
+          "isRequired": true,
+          "placeholder": "Bestätigung der Übereinstimmung"
+        },
+        {
+          "type": "text",
+          "name": "soll_ist_chargenbezeichnung",
+          "title": "Soll-Ist Vergleich: Chargenbezeichnung stimmt überein",
+          "isRequired": true,
+          "placeholder": "Bestätigung der Übereinstimmung"
+        },
+        {
+          "type": "text",
+          "name": "soll_ist_anzahl_gebinde",
+          "title": "Soll-Ist Vergleich: Anzahl Gebinde stimmt überein",
+          "isRequired": true,
+          "placeholder": "Bestätigung der Übereinstimmung"
+        },
+        {
+          "type": "boolean",
+          "name": "soll_ist_uebereinstimmung",
+          "title": "Gesamte Soll-Ist Übereinstimmung bestätigt",
+          "isRequired": true
+        }
+      ]
+    },
+    {
+      "name": "probenzug_ipk",
+      "title": "8. Probenzug für In-Prozess-Kontrolle",
+      "visibleIf": "{materialType} = 'GACP'",
+      "elements": [
+        {
+          "type": "boolean",
+          "name": "ipk_probenbehälter_vorhanden",
+          "title": "Probenbehälter für IPK sind vorhanden",
+          "isRequired": true
+        },
+        {
+          "type": "boolean",
+          "name": "ipk_proben_bereitgestellt",
+          "title": "IPK-Proben wurden ordnungsgemäß bereitgestellt",
+          "isRequired": true
+        },
+        {
+          "type": "boolean",
+          "name": "ipk_rueckstellmuster_kennzeichnung",
+          "title": "Rückstellmuster sind korrekt gekennzeichnet",
+          "isRequired": true
+        }
+      ]
+    },
+    {
+      "name": "sortierung",
+      "title": "9. Sortierung (nur GACP)",
+      "visibleIf": "{materialType} = 'GACP'",
+      "elements": [
+        {
+          "type": "boolean",
+          "name": "sortierung_durchgefuehrt",
+          "title": "Sortierung wurde durchgeführt",
+          "isRequired": true
+        },
+        {
+          "type": "boolean",
+          "name": "sortierung_dokumentiert",
+          "title": "Sortierung wurde ordnungsgemäß dokumentiert",
+          "isRequired": true
+        },
+        {
+          "type": "boolean",
+          "name": "sortierung_fremdkoerper",
+          "title": "Keine Fremdkörper gefunden oder ordnungsgemäß entfernt",
+          "isRequired": true
+        }
+      ]
+    },
+    {
+      "name": "primaerverpackung",
+      "title": "10. Primärverpackung - Produktionslauf",
+      "elements": [
+        {
+          "type": "paneldynamic",
+          "name": "bulk_beutel_production",
+          "title": "Produktionslauf pro Bulkbeutel",
+          "templateElements": [
+            {
+              "type": "text",
+              "name": "bulk_nummer",
+              "title": "Bulk-Nummer",
+              "isRequired": true
+            },
+            {
+              "type": "text",
+              "name": "ist_inhalt",
+              "title": "Ist-Inhalt (g)",
+              "inputType": "number",
+              "isRequired": true
+            },
+            {
+              "type": "panel",
+              "name": "gebinde_produktion",
+              "title": "Gebinde produzieren",
+              "elements": [
+                {
+                  "type": "text",
+                  "name": "anzahl_gebinde",
+                  "title": "Anzahl Gebinde",
+                  "inputType": "number",
+                  "isRequired": true
+                },
+                {
+                  "type": "text",
+                  "name": "fuellmenge_gesamt",
+                  "title": "Füllmenge gesamt (g)",
+                  "inputType": "number",
+                  "isRequired": true
+                },
+                {
+                  "type": "text",
+                  "name": "restmenge_bulk",
+                  "title": "Restmenge Bulk (g)",
+                  "inputType": "number",
+                  "isRequired": true
+                }
+              ]
+            }
+          ],
+          "panelCount": "{bulkBeutelAnzahl}",
+          "minPanelCount": 1,
+          "maxPanelCount": 10,
+          "panelAddText": "Weiteren Bulkbeutel hinzufügen",
+          "panelRemoveText": "Bulkbeutel entfernen"
+        }
+      ]
+    },
+    {
+      "name": "pause_check",
+      "title": "11. Pause-Überprüfung",
+      "elements": [
+        {
+          "type": "boolean",
+          "name": "pause_durchgeführt",
+          "title": "Pause wird durchgeführt?",
+          "isRequired": true
+        }
+      ]
+    },
+    {
+      "name": "pause_details",
+      "title": "12. Pause",
+      "visibleIf": "{pause_durchgeführt} = true",
+      "elements": [
+        {
+          "type": "text",
+          "name": "pause_beginn",
+          "title": "Beginn Pause",
+          "inputType": "time",
+          "isRequired": true
+        },
+        {
+          "type": "text",
+          "name": "pause_ende",
+          "title": "Ende Pause",
+          "inputType": "time",
+          "isRequired": true
+        },
+        {
+          "type": "panel",
+          "name": "pause_kontrolle",
+          "title": "Kontrolle nach Pause",
+          "elements": [
+            {
+              "type": "boolean",
+              "name": "pause_kontrolle_ma1",
+              "title": "Kontrolle nach Pause wurde von MA1 durchgeführt",
+              "isRequired": true
+            },
+            {
+              "type": "boolean",
+              "name": "pause_kontrolle_ma2",
+              "title": "Kontrolle nach Pause wurde von MA2 bestätigt",
+              "isRequired": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "kumulierte_restmenge",
+      "title": "11. Kumulierte Restmenge & Probenzug",
+      "elements": [
+        {
+          "type": "text",
+          "name": "kumulierte_restmenge",
+          "title": "Kumulierte Restmenge (g)",
+          "inputType": "number",
+          "isRequired": true
+        },
+        {
+          "type": "panel",
+          "name": "probenzug_freigabe",
+          "title": "Probenzug für Freigabeanalytik",
+          "elements": [
+            {
+              "type": "boolean",
+              "name": "probenzug_durchgefuehrt",
+              "title": "Probenzug wurde ordnungsgemäß durchgeführt",
+              "isRequired": true
+            },
+            {
+              "type": "boolean",
+              "name": "probenzug_rueckstellmuster",
+              "title": "Rückstellmuster wurde ordnungsgemäß entnommen",
+              "isRequired": true
+            },
+            {
+              "type": "boolean",
+              "name": "probenzug_dokumentiert",
+              "title": "Probenzug wurde vollständig dokumentiert",
+              "isRequired": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "schleusung_ausgang",
+      "title": "14. Schleusung Ausgang",
+      "elements": [
+        {
+          "type": "text",
+          "name": "schleusung_uhrzeit",
+          "title": "Uhrzeit Schleusung",
+          "inputType": "time",
+          "isRequired": true
+        },
+        {
+          "type": "panel",
+          "name": "schleusung_kontrolle",
+          "title": "Kontrolle vor Schleusung",
+          "elements": [
+            {
+              "type": "boolean",
+              "name": "schleusung_kontrolle_ma1",
+              "title": "Schleusung wurde von MA1 kontrolliert",
+              "isRequired": true
+            },
+            {
+              "type": "boolean",
+              "name": "schleusung_kontrolle_ma2",
+              "title": "Schleusung wurde von MA2 kontrolliert",
+              "isRequired": true
+            },
+            {
+              "type": "boolean",
+              "name": "schleusung_reinigung",
+              "title": "Reinigung der Schleusung wurde durchgeführt",
+              "isRequired": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "nachbereitung_reinraum",
+      "title": "15. Nachbereitung Reinraum",
+      "elements": [
+        {
+          "type": "panel",
+          "name": "nachbereitung_reinigung",
+          "title": "Reinigung nach Produktion",
+          "elements": [
+            {
+              "type": "boolean",
+              "name": "nachbereitung_reinigung_durchgefuehrt",
+              "title": "Nachbereitung Reinigung wurde durchgeführt",
+              "isRequired": true
+            },
+            {
+              "type": "boolean",
+              "name": "nachbereitung_reinigung_dokumentiert",
+              "title": "Nachbereitung Reinigung wurde ordnungsgemäß dokumentiert",
+              "isRequired": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "nachbereitung_materialien",
+      "title": "16. Nachbereitung (Materialien)",
+      "elements": [
+        {
+          "type": "panel",
+          "name": "einlagern_materialien",
+          "title": "Einlagern der Materialien",
+          "elements": [
+            {
+              "type": "panel",
+              "name": "zwischenprodukte",
+              "title": "Hergestellte Zwischenprodukte",
+              "elements": [
+                {
+                  "type": "text",
+                  "name": "zwischenprodukt_anzahl",
+                  "title": "Anzahl Gebinde",
+                  "inputType": "number",
+                  "isRequired": true
+                },
+                {
+                  "type": "text",
+                  "name": "zwischenprodukt_gewicht",
+                  "title": "Gesamtgewicht (g)",
+                  "inputType": "number",
+                  "isRequired": true
+                }
+              ]
+            },
+            {
+              "type": "panel",
+              "name": "proben_einlagern",
+              "title": "Proben",
+              "elements": [
+                {
+                  "type": "text",
+                  "name": "proben_anzahl",
+                  "title": "Anzahl Proben",
+                  "inputType": "number",
+                  "isRequired": true
+                },
+                {
+                  "type": "text",
+                  "name": "proben_gewicht",
+                  "title": "Gesamtgewicht Proben (g)",
+                  "inputType": "number",
+                  "isRequired": true
+                }
+              ]
+            },
+            {
+              "type": "panel",
+              "name": "finale_restmenge",
+              "title": "Finale Restmenge",
+              "elements": [
+                {
+                  "type": "text",
+                  "name": "finale_restmenge_gewicht",
+                  "title": "Gewicht finale Restmenge (g)",
+                  "inputType": "number",
+                  "isRequired": true
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "abschluss",
+      "title": "17. Abschluss",
+      "elements": [
+        {
+          "type": "text",
+          "name": "ende_datum",
+          "title": "Datum Ende",
+          "inputType": "date",
+          "isRequired": true
+        },
+        {
+          "type": "text",
+          "name": "ende_uhrzeit",
+          "title": "Uhrzeit Ende",
+          "inputType": "time",
+          "isRequired": true
+        },
+        {
+          "type": "comment",
+          "name": "abschließende_bemerkung",
+          "title": "Abschließende Bemerkung",
+          "placeholder": "Weitere Anmerkungen zum Produktionsprozess..."
+        },
+        {
+          "type": "boolean",
+          "name": "protokoll_vollstaendig",
+          "title": "Protokoll ist vollständig ausgefüllt",
+          "isRequired": true
+        },
+        {
+          "type": "boolean",
+          "name": "abweichungen_dokumentiert",
+          "title": "Alle Abweichungen wurden ordnungsgemäß dokumentiert",
+          "isRequired": true
+        },
+        {
+          "type": "boolean",
+          "name": "produktionsleitung_informiert",
+          "title": "Produktionsleitung wurde über den Abschluss informiert",
+          "isRequired": true
+        }
+      ]
+    }
+  ]
+}

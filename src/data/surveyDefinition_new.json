@@ -1,0 +1,504 @@
+{
+  "showProgressBar": "top",
+  "showQuestionNumbers": "off",
+  "completedHtml": "<h3>Vielen Dank!</h3><p>Der Produktionsprozess wurde erfolgreich dokumentiert.</p>",
+  "pages": [
+    {
+      "name": "produktionsauftrag_info",
+      "title": "1.1 Vorbereitung - Information Produktionsauftrag",
+      "elements": [
+        {
+          "type": "html",
+          "name": "auftrag_info",
+          "html": "<h3>Produktionsauftrag Informationen</h3><p><strong>Produkt:</strong> {produktName}</p><p><strong>Material-Typ:</strong> {materialType}</p><p><strong>EM Wirkstoff:</strong><br/>- Artikelnummer: {eingangsmaterial.artikelNummer}<br/>- Charge: {eingangsmaterial.charge}<br/>- Verfall: {eingangsmaterial.verfall}<br/>- Menge: {eingangsmaterial.menge}</p><p><strong>EM Primärpackmittel:</strong><br/>- Artikelnummer: {primaerPackmittel.artikelNummer}<br/>- Charge: {primaerPackmittel.charge}<br/>- Anzahl: {primaerPackmittel.anzahl}</p><p><strong>Herzustellendes Zwischenprodukt:</strong><br/>- Artikelnummer: {zwischenprodukt.artikelNummer}<br/>- Vorg. Gebindezahl: {zwischenprodukt.gebindezahl}</p><p><strong>Probenzug vorgesehen:</strong> {probenzug.vorgesehen ? 'Ja' : 'Nein'}</p>"
+        }
+      ]
+    },
+    {
+      "name": "materialausgangsbuchung",
+      "title": "1.2 Vorbereitung - Eingangsmaterialien ausbuchen",
+      "elements": [
+        {
+          "type": "boolean",
+          "name": "eingangsmaterial_ausgebucht",
+          "title": "Eingangsmaterialien ausgebucht und Beleg beigefügt?",
+          "isRequired": true
+        },
+        {
+          "type": "text",
+          "name": "leiter_herstellung_signatur",
+          "title": "Signatur Leitung der Herstellung",
+          "isRequired": true,
+          "placeholder": "Signatur oder Kürzel"
+        }
+      ]
+    },
+    {
+      "name": "beteiligte_mitarbeiter",
+      "title": "1.3 Vorbereitung - Beteiligte Mitarbeiter",
+      "elements": [
+        {
+          "type": "paneldynamic",
+          "name": "mitarbeiter_liste",
+          "title": "Liste beteiligte Mitarbeiter",
+          "templateElements": [
+            {
+              "type": "text",
+              "name": "name",
+              "title": "Name des Mitarbeiters",
+              "isRequired": true
+            },
+            {
+              "type": "text",
+              "name": "kuerzel",
+              "title": "Kürzel",
+              "isRequired": true
+            }
+          ],
+          "panelCount": 2,
+          "minPanelCount": 2,
+          "maxPanelCount": 10,
+          "panelAddText": "Mitarbeiter hinzufügen",
+          "panelRemoveText": "Entfernen"
+        }
+      ]
+    },
+    {
+      "name": "datum_uhrzeit",
+      "title": "1.4 Vorbereitung - Datum + Uhrzeit",
+      "elements": [
+        {
+          "type": "text",
+          "name": "beginn_datum",
+          "title": "Datum der Herstellung",
+          "inputType": "date",
+          "isRequired": true
+        },
+        {
+          "type": "text",
+          "name": "beginn_uhrzeit",
+          "title": "Uhrzeit Beginn der Herstellung",
+          "inputType": "time",
+          "isRequired": true
+        }
+      ]
+    },
+    {
+      "name": "kennzeichnung_pruefung",
+      "title": "1.5 Vorbereitung - Kennzeichnung",
+      "elements": [
+        {
+          "type": "html",
+          "name": "kennzeichnung_info",
+          "html": "<h4>Prüfung ob alles vorhanden ist</h4><p><strong>Info:</strong> Vorbereitung der Etiketten (Dymo-Label)</p>"
+        },
+        {
+          "type": "radiogroup",
+          "name": "eurocontainer_vorhanden",
+          "title": "Eurocontainer für Zwischenprodukte",
+          "choices": ["Ja", "Nein", "Nicht zutreffend"],
+          "isRequired": true
+        },
+        {
+          "type": "radiogroup",
+          "name": "probenbehälter_freigabe_vorhanden",
+          "title": "Proben Freigabeanalytik: Probengebinde und Eurocontainer",
+          "choices": ["Ja", "Nein", "Nicht zutreffend"],
+          "isRequired": true
+        },
+        {
+          "type": "radiogroup",
+          "name": "probenbehälter_ipk_vorhanden",
+          "title": "Proben Inprozesskontrolle: Probengebinde und Eurocontainer",
+          "visibleIf": "{materialType} = 'GACP'",
+          "choices": ["Ja", "Nein", "Nicht zutreffend"],
+          "isRequired": true
+        },
+        {
+          "type": "radiogroup",
+          "name": "gebinde_rueckfragen_vorhanden",
+          "title": "Gebinde \"Rückfragen QK\"",
+          "visibleIf": "{materialType} = 'GACP'",
+          "choices": ["Ja", "Nein", "Nicht zutreffend"],
+          "isRequired": true
+        },
+        {
+          "type": "radiogroup",
+          "name": "gebinde_restmenge_vorhanden",
+          "title": "Finale Restmenge",
+          "choices": ["Ja", "Nein", "Nicht zutreffend"],
+          "isRequired": true
+        },
+        {
+          "type": "radiogroup",
+          "name": "behälter_bruch_vorhanden",
+          "title": "Bruch und aussortiertes Material",
+          "visibleIf": "{materialType} = 'GACP'",
+          "choices": ["Ja", "Nein", "Nicht zutreffend"],
+          "isRequired": true
+        }
+      ]
+    },
+    {
+      "name": "raumstatus_ueberpruefen",
+      "title": "1.6 Vorbereitung - Raumstatus überprüfen",
+      "elements": [
+        {
+          "type": "html",
+          "name": "raumstatus_info",
+          "html": "<h4>Info</h4><p>Der Status des Reinraums wird im 4-Augen Prinzip überprüft</p>"
+        },
+        {
+          "type": "text",
+          "name": "druckkaskade_arbeitsraum_ist",
+          "title": "Druckkaskade - Arbeitsraum Ist Druck [EQ-52] (Soll: 25-35 Pa)",
+          "inputType": "number",
+          "isRequired": true,
+          "placeholder": "Wert in Pa"
+        },
+        {
+          "type": "text",
+          "name": "druckkaskade_schleusen_ist_eq49",
+          "title": "Schleusen Ist Druck [EQ-49] (Soll: 10-20 Pa)",
+          "inputType": "number",
+          "isRequired": true,
+          "placeholder": "Wert in Pa"
+        },
+        {
+          "type": "text",
+          "name": "druckkaskade_schleusen_ist_eq50",
+          "title": "Schleusen Ist Druck [EQ-50] (Soll: 10-20 Pa)",
+          "inputType": "number",
+          "isRequired": true,
+          "placeholder": "Wert in Pa"
+        },
+        {
+          "type": "text",
+          "name": "druckkaskade_schleusen_ist_eq51",
+          "title": "Schleusen Ist Druck [EQ-51] (Soll: 10-20 Pa)",
+          "inputType": "number",
+          "isRequired": true,
+          "placeholder": "Wert in Pa"
+        },
+        {
+          "type": "boolean",
+          "name": "druckkaskade_entspricht",
+          "title": "Druckkaskade entspricht Soll-Werten?",
+          "isRequired": true
+        },
+        {
+          "type": "radiogroup",
+          "name": "reinraumstatus_ampel",
+          "title": "Reinraumstatus - Ampelstatus",
+          "choices": ["Grün", "Rot"],
+          "isRequired": true
+        },
+        {
+          "type": "text",
+          "name": "reinraumstatus_bulkprodukt_name",
+          "title": "Bei rot: Name des zu verarbeitenden Bulkprodukts + Charge",
+          "visibleIf": "{reinraumstatus_ampel} = 'Rot'"
+        },
+        {
+          "type": "boolean",
+          "name": "reinraum_nutzbar_ma1",
+          "title": "Reinraum kann genutzt werden? (MA1)",
+          "isRequired": true
+        },
+        {
+          "type": "boolean",
+          "name": "reinraum_nutzbar_ma2",
+          "title": "Reinraum kann genutzt werden? (MA2)",
+          "isRequired": true
+        }
+      ]
+    },
+    {
+      "name": "materialbereitstellung_primaerpackmittel",
+      "title": "1.7 Materialbereitstellung - Primärpackmittel",
+      "elements": [
+        {
+          "type": "html",
+          "name": "primaerpackmittel_info",
+          "html": "<h4>Info</h4><p>Bereitstellung der Primärpackmittel entsprechend der Vorgabe der Übersicht</p><p>Abgleich der Sollangaben mit den Ist-Angaben auf den Umverpackungen der Packmittel</p>"
+        },
+        {
+          "type": "text",
+          "name": "produktbezeichnung_primaer_ist",
+          "title": "Produktbezeichnung Ist (Soll: {primaerPackmittel.produktbezeichnung})",
+          "isRequired": true,
+          "placeholder": "Angaben von Gebinde eintragen"
+        },
+        {
+          "type": "boolean",
+          "name": "produktbezeichnung_primaer_uebereinstimmung",
+          "title": "Produktbezeichnung - Übereinstimmung mit Soll?",
+          "isRequired": true
+        },
+        {
+          "type": "text",
+          "name": "artikelnr_primaer_ist",
+          "title": "Artikel-Nr. Ist (Soll: {primaerPackmittel.artikelNummer})",
+          "isRequired": true,
+          "placeholder": "Angaben von Gebinde eintragen"
+        },
+        {
+          "type": "boolean",
+          "name": "artikelnr_primaer_uebereinstimmung",
+          "title": "Artikel-Nr. - Übereinstimmung mit Soll?",
+          "isRequired": true
+        },
+        {
+          "type": "text",
+          "name": "charge_primaer_ist",
+          "title": "Chargenbezeichnung Ist (Soll: {primaerPackmittel.charge})",
+          "isRequired": true,
+          "placeholder": "Angaben von Gebinde eintragen"
+        },
+        {
+          "type": "boolean",
+          "name": "charge_primaer_uebereinstimmung",
+          "title": "Chargenbezeichnung - Übereinstimmung mit Soll?",
+          "isRequired": true
+        },
+        {
+          "type": "text",
+          "name": "anzahl_primaer_ist",
+          "title": "Anzahl Gebinde Ist (Soll: {primaerPackmittel.anzahl})",
+          "inputType": "number",
+          "isRequired": true,
+          "placeholder": "Angaben von Gebinde eintragen"
+        },
+        {
+          "type": "boolean",
+          "name": "anzahl_primaer_uebereinstimmung",
+          "title": "Anzahl Gebinde - Übereinstimmung mit Soll?",
+          "isRequired": true
+        },
+        {
+          "type": "boolean",
+          "name": "packmittel_verschlossen_ma1",
+          "title": "Packmittel in einer dicht verschlossenen Umverpackung? (MA1)",
+          "isRequired": true
+        },
+        {
+          "type": "boolean",
+          "name": "packmittel_verschlossen_ma2",
+          "title": "Bestätigung 2. MA - Packmittel dicht verschlossen?",
+          "isRequired": true
+        },
+        {
+          "type": "comment",
+          "name": "primaerpackmittel_bemerkung",
+          "title": "Erläuterungen falls Checkboxen mit Nein markiert wurden",
+          "placeholder": "Bemerkungen..."
+        },
+        {
+          "type": "text",
+          "name": "primaerpackmittel_erfasst_kuerzel",
+          "title": "Mitarbeiterkürzel \"Erfasst\"",
+          "isRequired": true
+        },
+        {
+          "type": "text",
+          "name": "primaerpackmittel_geprueft_kuerzel",
+          "title": "Mitarbeiterkürzel \"Überprüft\"",
+          "isRequired": true
+        }
+      ]
+    },
+    {
+      "name": "materialbereitstellung_bulkmaterial",
+      "title": "1.8 Materialbereitstellung - Bulkmaterial",
+      "elements": [
+        {
+          "type": "html",
+          "name": "bulkmaterial_info",
+          "html": "<h4>Info</h4><p>Bereitstellung von Bulkmaterial entsprechend der Vorgabe der Übersicht</p><p>Abgleich der Sollangaben mit den Ist-Angaben auf den Bulkbeuteln</p>"
+        },
+        {
+          "type": "text",
+          "name": "produktbezeichnung_bulk_ist",
+          "title": "Produktbezeichnung Ist (Soll: {eingangsmaterial.produktbezeichnung})",
+          "isRequired": true,
+          "placeholder": "Angaben von Gebinde eintragen"
+        },
+        {
+          "type": "boolean",
+          "name": "produktbezeichnung_bulk_uebereinstimmung",
+          "title": "Produktbezeichnung - Übereinstimmung mit Soll?",
+          "isRequired": true
+        },
+        {
+          "type": "text",
+          "name": "artikelnr_bulk_ist",
+          "title": "Artikel-Nr. Ist (Soll: {eingangsmaterial.artikelNummer})",
+          "isRequired": true,
+          "placeholder": "Angaben von Gebinde eintragen"
+        },
+        {
+          "type": "boolean",
+          "name": "artikelnr_bulk_uebereinstimmung",
+          "title": "Artikel-Nr. - Übereinstimmung mit Soll?",
+          "isRequired": true
+        },
+        {
+          "type": "text",
+          "name": "charge_bulk_ist",
+          "title": "Chargenbezeichnung Ist (Soll: {eingangsmaterial.charge})",
+          "isRequired": true,
+          "placeholder": "Angaben von Gebinde eintragen"
+        },
+        {
+          "type": "boolean",
+          "name": "charge_bulk_uebereinstimmung",
+          "title": "Chargenbezeichnung - Übereinstimmung mit Soll?",
+          "isRequired": true
+        },
+        {
+          "type": "text",
+          "name": "verfall_bulk_ist",
+          "title": "Verwendbar bis (TT/MM/JJJJ) Ist (Soll: {eingangsmaterial.verfall})",
+          "inputType": "date",
+          "isRequired": true
+        },
+        {
+          "type": "boolean",
+          "name": "verfall_bulk_uebereinstimmung",
+          "title": "Verwendbar bis - Übereinstimmung mit Soll?",
+          "isRequired": true
+        },
+        {
+          "type": "paneldynamic",
+          "name": "bulkgebinde_liste",
+          "title": "Liste bereitgestellter Gebinde",
+          "templateElements": [
+            {
+              "type": "text",
+              "name": "anzahl",
+              "title": "Anzahl",
+              "inputType": "number",
+              "isRequired": true
+            },
+            {
+              "type": "text",
+              "name": "gebindegroesse",
+              "title": "Gebindegröße (g)",
+              "inputType": "number",
+              "isRequired": true
+            },
+            {
+              "type": "boolean",
+              "name": "probenzug_verwendet",
+              "title": "Gebinde wurde für Probenzug verwendet",
+              "isRequired": true
+            },
+            {
+              "type": "boolean",
+              "name": "dicht_verschlossen",
+              "title": "Gebinde dicht verschlossen und augenscheinlich sauber",
+              "isRequired": true
+            }
+          ],
+          "panelCount": 1,
+          "minPanelCount": 1,
+          "maxPanelCount": 10,
+          "panelAddText": "Gebinde hinzufügen",
+          "panelRemoveText": "Entfernen"
+        },
+        {
+          "type": "comment",
+          "name": "bulkmaterial_bemerkungen",
+          "title": "Bemerkungen",
+          "placeholder": "Weitere Anmerkungen..."
+        },
+        {
+          "type": "text",
+          "name": "bulkmaterial_erfasst_kuerzel",
+          "title": "Mitarbeiterkürzel \"Erfasst\"",
+          "isRequired": true
+        },
+        {
+          "type": "text",
+          "name": "bulkmaterial_geprueft_kuerzel",
+          "title": "Mitarbeiterkürzel \"Überprüft\"",
+          "isRequired": true
+        }
+      ]
+    },
+    {
+      "name": "zubehör_schablonen",
+      "title": "1.9 Zubehör - Schablonen (nur GACP)",
+      "visibleIf": "{materialType} = 'GACP'",
+      "elements": [
+        {
+          "type": "text",
+          "name": "schablonen_eq_nummer_ist",
+          "title": "Schablonen EQ Nummer Ist (Soll: CAN-MOE-EQ-{schablonen.eqNummer})",
+          "inputType": "number",
+          "isRequired": true,
+          "placeholder": "EQ Nummer eingeben"
+        },
+        {
+          "type": "boolean",
+          "name": "schablonen_eq_uebereinstimmung",
+          "title": "Schablonen EQ Nummer - Übereinstimmung mit Soll?",
+          "isRequired": true
+        },
+        {
+          "type": "text",
+          "name": "schablonen_charge_ist",
+          "title": "Schablonen: Charge/n Ist (Soll: {schablonen.charge})",
+          "isRequired": true,
+          "placeholder": "Charge/n eingeben"
+        },
+        {
+          "type": "boolean",
+          "name": "schablonen_charge_uebereinstimmung",
+          "title": "Schablonen: Charge/n - Übereinstimmung mit Soll?",
+          "isRequired": true
+        },
+        {
+          "type": "text",
+          "name": "schablonen_anzahl_ist",
+          "title": "Schablonen: Anzahl Ist (Soll: {schablonen.anzahl})",
+          "inputType": "number",
+          "isRequired": true,
+          "placeholder": "Anzahl eingeben"
+        },
+        {
+          "type": "boolean",
+          "name": "schablonen_anzahl_uebereinstimmung",
+          "title": "Schablonen: Anzahl - Übereinstimmung mit Soll?",
+          "isRequired": true
+        }
+      ]
+    },
+    {
+      "name": "materialbereitstellung_abschluss",
+      "title": "1.10 Materialbereitstellung - Abschluss",
+      "elements": [
+        {
+          "type": "comment",
+          "name": "materialbereitstellung_bemerkungen",
+          "title": "Bemerkungen zum Abschnitt Materialbereitstellung",
+          "placeholder": "Weitere Anmerkungen..."
+        },
+        {
+          "type": "text",
+          "name": "materialbereitstellung_signatur_ma1",
+          "title": "Materialbereitstellung abgeschlossen - Signatur MA1",
+          "isRequired": true,
+          "placeholder": "Signatur"
+        },
+        {
+          "type": "text",
+          "name": "materialbereitstellung_kuerzel_ma2",
+          "title": "Materialbereitstellung abgeschlossen - Kürzel MA2",
+          "isRequired": true,
+          "placeholder": "Kürzel"
+        }
+      ]
+    }
+  ]
+}

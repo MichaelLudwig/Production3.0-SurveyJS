@@ -1,0 +1,100 @@
+[
+  {
+    "name": "line_clearing",
+    "title": "Line Clearing",
+    "questions": [
+      "line_clearing_bestaetigung",
+      "line_clearing_dokumentiert"
+    ],
+    "requiresMA2": true
+  },
+  {
+    "name": "reinigung",
+    "title": "Reinigung vor Herstellung",
+    "questions": [
+      "reinigung_bestaetigung",
+      "reinigung_dokumentiert"
+    ],
+    "requiresMA2": true
+  },
+  {
+    "name": "materialkontrolle",
+    "title": "Materialkontrolle",
+    "questions": [
+      "soll_ist_produktbezeichnung",
+      "soll_ist_artikelnummer", 
+      "soll_ist_chargenbezeichnung",
+      "soll_ist_anzahl_gebinde",
+      "soll_ist_uebereinstimmung"
+    ],
+    "requiresMA2": true
+  },
+  {
+    "name": "probenzug_ipk", 
+    "title": "Probenzug für In-Prozess-Kontrolle",
+    "questions": [
+      "ipk_probenbehälter_vorhanden",
+      "ipk_proben_bereitgestellt",
+      "ipk_rueckstellmuster_kennzeichnung"
+    ],
+    "requiresMA2": true
+  },
+  {
+    "name": "sortierung",
+    "title": "Sortierung (nur GACP)",
+    "questions": [
+      "sortierung_durchgefuehrt",
+      "sortierung_dokumentiert",
+      "sortierung_fremdkoerper"
+    ],
+    "requiresMA2": true
+  },
+  {
+    "name": "pause_kontrolle",
+    "title": "Kontrolle nach Pause",
+    "questions": [
+      "pause_kontrolle_ma1",
+      "pause_kontrolle_ma2"
+    ],
+    "requiresMA2": true
+  },
+  {
+    "name": "probenzug",
+    "title": "Kumulierte Restmenge & Probenzug",
+    "questions": [
+      "probenzug_durchgefuehrt",
+      "probenzug_rueckstellmuster",
+      "probenzug_dokumentiert"
+    ],
+    "requiresMA2": true
+  },
+  {
+    "name": "schleusung",
+    "title": "Schleusung Ausgang",
+    "questions": [
+      "schleusung_kontrolle_ma1",
+      "schleusung_kontrolle_ma2",
+      "schleusung_reinigung"
+    ],
+    "requiresMA2": true
+  },
+  {
+    "name": "nachbereitung_reinigung",
+    "title": "Nachbereitung Reinraum",
+    "questions": [
+      "nachbereitung_reinigung_durchgefuehrt",
+      "nachbereitung_reinigung_dokumentiert"
+    ],
+    "requiresMA2": true
+  },
+  {
+    "name": "abschluss",
+    "title": "Abschluss",
+    "questions": [
+      "protokoll_vollstaendig",
+      "abweichungen_dokumentiert",
+      "produktionsleitung_informiert"
+    ],
+    "requiresMA2": true
+  }
+]

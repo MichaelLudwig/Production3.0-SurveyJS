@@ -10,37 +10,13 @@
         {
           "type": "html",
           "name": "auftrag_display",
-          "html": "<div style='display: grid; grid-template-columns: 1fr 1fr; gap: 20px; max-width: 100%; font-size: 14px; line-height: 1.2;'><div><div style='margin-bottom: 12px;'><h4 style='font-size: 18px; margin: 0 0 5px 0; font-weight: bold; color: #333;'>Eingangsmaterial Arzneimittel/Wirkstoff</h4><p style='margin: 1px 0;'><strong>Produktbezeichnung:</strong> {eingangsmaterial.produktbezeichnung}</p><p style='margin: 1px 0;'><strong>Artikel-Nr.:</strong> {eingangsmaterial.artikelNummer}</p><p style='margin: 1px 0;'><strong>Charge:</strong> {eingangsmaterial.charge}</p><p style='margin: 1px 0;'><strong>Verfall:</strong> {eingangsmaterial.verfall}</p><p style='margin: 1px 0;'><strong>Menge:</strong> {eingangsmaterial.menge}</p></div><div style='margin-bottom: 12px;'><h4 style='font-size: 18px; margin: 16px 0 5px 0; font-weight: bold; color: #333;'>Eingangsmaterial Schablone</h4><p style='margin: 1px 0;'><strong>EQ-Nummer:</strong> {schablone.eqNummer}</p><p style='margin: 1px 0;'><strong>Charge:</strong> {schablone.charge}</p><p style='margin: 1px 0;'><strong>Anzahl:</strong> {schablone.anzahl}</p></div><div style='margin-bottom: 12px;'><h4 style='font-size: 18px; margin: 16px 0 5px 0; font-weight: bold; color: #333;'>Eingangsmaterial Primärpackmittel</h4><p style='margin: 1px 0;'><strong>Produktbezeichnung:</strong> {primaerPackmittel.produktbezeichnung}</p><p style='margin: 1px 0;'><strong>Artikel-Nr.:</strong> {primaerPackmittel.artikelNummer}</p><p style='margin: 1px 0;'><strong>Charge:</strong> {primaerPackmittel.charge}</p><p style='margin: 1px 0;'><strong>Anzahl:</strong> {primaerPackmittel.anzahl}</p></div></div><div><div style='margin-bottom: 12px;'><h4 style='font-size: 18px; margin: 0 0 5px 0; font-weight: bold; color: #333;'>Herzustellendes Zwischenprodukt</h4><p style='margin: 1px 0;'><strong>Zwischenprodukt:</strong> {produktName}</p><p style='margin: 1px 0;'><strong>Artikel-Nr.:</strong> {zwischenprodukt.artikelNummer}</p><p style='margin: 1px 0;'><strong>Charge:</strong> {zwischenprodukt.gebindeNummer}</p><p style='margin: 1px 0;'><strong>Anzahl:</strong> {zwischenprodukt.vorgGebindezahl}</p></div><div style='margin-bottom: 12px;'><h4 style='font-size: 18px; margin: 16px 0 5px 0; font-weight: bold; color: #333;'>Produktionsstraßen Anzahl</h4><p style='margin: 1px 0;'><strong>Anzahl:</strong> {bulkBeutelAnzahl}</p></div><div style='margin-bottom: 12px;'><h4 style='font-size: 18px; margin: 16px 0 5px 0; font-weight: bold; color: #333;'>Probenzugsplan der Kampagne</h4><p style='margin: 1px 0;'><strong>Freigabeanalytik vorgesehen?:</strong> {probenzug.freigabeVorgesehen}</p><p style='margin: 1px 0;'><strong>Plan:</strong> {probenzug.plan}</p><p style='margin: 1px 0;'><strong>Füllmenge:</strong></p><ul style='margin: 1px 0 0 15px; padding: 0;'><li style='margin: 0;'>1× {probenzug.fuellmenge1} g</li><li style='margin: 0;'>1× {probenzug.fuellmenge2} g</li></ul></div></div></div>"
-        },
-        {
-          "type": "boolean",
-          "name": "eingangsmaterial_ausgebucht",
-          "title": "Eingangsmaterialien ausgebucht und Beleg beigefügt?",
-          "isRequired": true
-        },
-        {
-          "type": "text",
-          "name": "leiter_herstellung_signatur",
-          "title": "Signatur Leitung der Herstellung",
-          "isRequired": true
-        }
-      ]
-    },
-    {
-      "name": "schablonen_info",
-      "title": "1.2 Eingangsmaterial Schablone",
-      "visibleIf": "{materialType} = 'GACP'",
-      "elements": [
-        {
-          "type": "html",
-          "name": "schablonen_display",
-          "html": "<div style='font-size: 14px; line-height: 1.2;'><div style='margin-bottom: 12px;'><h4 style='font-size: 18px; margin: 0 0 5px 0; font-weight: bold; color: #333;'>Eingangsmaterial Schablone</h4><p style='margin: 1px 0;'><strong>EQ-Nummer:</strong> {schablone.eqNummer}</p><p style='margin: 1px 0;'><strong>Charge:</strong> {schablone.charge}</p><p style='margin: 1px 0;'><strong>Anzahl:</strong> {schablone.anzahl}</p></div></div>"
+          "html": "<h3>Produktionsauftrag Informationen</h3><p><strong>Produkt:</strong> {produktName}</p><p><strong>Material-Typ:</strong> {materialType}</p><p><strong>EM Wirkstoff:</strong> {eingangsmaterial.artikelNummer} (Charge: {eingangsmaterial.charge})</p><p><strong>Bulk-Beutel Anzahl:</strong> {bulkBeutelAnzahl}</p><p><strong>Primärpackmittel:</strong> {primaerPackmittel.artikelNummer}</p><p><strong>Zwischenprodukt:</strong> {zwischenprodukt.artikelNummer}</p>"
         }
       ]
     },
     {
       "name": "eingangsmaterialien_ausbuchen",
-      "title": "1.3 Eingangsmaterialien ausbuchen",
+      "title": "1.2 Eingangsmaterialien ausbuchen",
       "elements": [
         {
           "type": "boolean",

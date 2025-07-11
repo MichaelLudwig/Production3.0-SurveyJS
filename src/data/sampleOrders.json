@@ -2,13 +2,14 @@
   {
     "id": "1450",
     "produktName": "Peace Naturals GC 31/1, 100g",
-    "protokollNummer": "KMP-2025-030",
+    "protokollNummer": "PRBZ-2025-067",
     "materialType": "GACP",
     "eingangsmaterial": {
       "artikelNummer": "18350663",
+      "produktbezeichnung": "Peace Naturals GC 31/1 Blüten",
       "charge": "25041378",
-      "verfallsdatum": "2025-07-08",
-      "eingangsMenge": 21895.78
+      "verfall": "08.07.2025",
+      "menge": "21.895,78 g"
     },
     "schablone": {
       "eqNummer": "68",
@@ -17,17 +18,21 @@
     },
     "primaerPackmittel": {
       "artikelNummer": "O100074",
+      "produktbezeichnung": "Standbodenbeutel 3000ml Weiß, 1 Stk.",
       "charge": "O100074-20240726-001",
       "anzahl": 200
     },
     "zwischenprodukt": {
       "artikelNummer": "Bulk-18350663",
-      "gebindeNummer": "25061450"
+      "gebindeNummer": "25061450",
+      "vorgGebindezahl": 220
     },
     "probenzug": {
-      "plan": "Freigabeanalytik KMP-2025-030",
+      "plan": "PRBZ-2025-067",
+      "freigabeVorgesehen": "ja",
       "anzahl": 2,
-      "fuellmenge": 52.5
+      "fuellmenge1": 55.0,
+      "fuellmenge2": 50.0
     },
     "bulkBeutelAnzahl": 2,
     "createdAt": "2025-01-09T10:00:00Z"
@@ -36,25 +41,31 @@
     "id": "2",
     "produktName": "Cannabis Extrakt 25% CBD",
     "materialType": "GMP",
+    "protokollNummer": "PRBZ-2025-068",
     "eingangsmaterial": {
       "artikelNummer": "CAN-002",
+      "produktbezeichnung": "Cannabis Extrakt 25% CBD",
       "charge": "2024-002",
-      "verfallsdatum": "2025-06-30",
-      "eingangsMenge": 500
+      "verfall": "30.06.2025",
+      "menge": "500,00 g"
     },
     "primaerPackmittel": {
       "artikelNummer": "PKM-002",
+      "produktbezeichnung": "Glasflasche 30ml braun",
       "charge": "PKM-2024-002",
       "anzahl": 50
     },
     "zwischenprodukt": {
       "artikelNummer": "ZP-002",
-      "gebindeNummer": "GB-002"
+      "gebindeNummer": "GB-002",
+      "vorgGebindezahl": 50
     },
     "probenzug": {
-      "plan": "GMP Probenzug Extrakt",
+      "plan": "PRBZ-2025-068",
+      "freigabeVorgesehen": "ja",
       "anzahl": 2,
-      "fuellmenge": 5
+      "fuellmenge1": 5.0,
+      "fuellmenge2": 5.0
     },
     "bulkBeutelAnzahl": 2,
     "createdAt": "2024-01-16T14:15:00Z"
@@ -63,11 +74,13 @@
     "id": "3",
     "produktName": "Medizinisches Cannabis 15% THC",
     "materialType": "GACP",
+    "protokollNummer": "PRBZ-2025-069",
     "eingangsmaterial": {
       "artikelNummer": "CAN-003",
+      "produktbezeichnung": "Medizinisches Cannabis 15% THC Blüten",
       "charge": "2024-003",
-      "verfallsdatum": "2025-09-30",
-      "eingangsMenge": 750
+      "verfall": "30.09.2025",
+      "menge": "750,00 g"
     },
     "schablone": {
       "eqNummer": "EQ-002",
@@ -76,17 +89,21 @@
     },
     "primaerPackmittel": {
       "artikelNummer": "PKM-003",
+      "produktbezeichnung": "Standbodenbeutel 5000ml transparent",
       "charge": "PKM-2024-003",
       "anzahl": 75
     },
     "zwischenprodukt": {
       "artikelNummer": "ZP-003",
-      "gebindeNummer": "GB-003"
+      "gebindeNummer": "GB-003",
+      "vorgGebindezahl": 75
     },
     "probenzug": {
-      "plan": "Medizinischer Probenzug",
+      "plan": "PRBZ-2025-069",
+      "freigabeVorgesehen": "ja",
       "anzahl": 3,
-      "fuellmenge": 15
+      "fuellmenge1": 15.0,
+      "fuellmenge2": 12.5
     },
     "bulkBeutelAnzahl": 1,
     "createdAt": "2024-01-17T09:00:00Z"

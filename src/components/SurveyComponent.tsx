@@ -46,11 +46,13 @@ const SurveyComponent: React.FC<SurveyComponentProps> = ({
     const orderData = {
       produktName: productionOrder.produktName,
       materialType: productionOrder.materialType,
+      protokollNummer: productionOrder.protokollNummer,
       bulkBeutelAnzahl: productionOrder.bulkBeutelAnzahl,
       eingangsmaterial: productionOrder.eingangsmaterial,
       primaerPackmittel: productionOrder.primaerPackmittel,
       zwischenprodukt: productionOrder.zwischenprodukt,
-      probenzug: productionOrder.probenzug
+      probenzug: productionOrder.probenzug,
+      schablone: productionOrder.schablone
     };
     
     // Set initial values
