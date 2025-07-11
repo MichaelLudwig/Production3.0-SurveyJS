@@ -17,42 +17,6 @@
           "name": "eingangsmaterial_ausgebucht",
           "title": "Eingangsmaterialien ausgebucht und Beleg beigefügt?",
           "isRequired": true
-        },
-        {
-          "type": "text",
-          "name": "leiter_herstellung_signatur",
-          "title": "Signatur Leitung der Herstellung",
-          "isRequired": true
-        }
-      ]
-    },
-    {
-      "name": "schablonen_info",
-      "title": "1.2 Eingangsmaterial Schablone",
-      "visibleIf": "{materialType} = 'GACP'",
-      "elements": [
-        {
-          "type": "html",
-          "name": "schablonen_display",
-          "html": "<div style='font-size: 14px; line-height: 1.2;'><div style='margin-bottom: 12px;'><h4 style='font-size: 18px; margin: 0 0 5px 0; font-weight: bold; color: #333;'>Eingangsmaterial Schablone</h4><p style='margin: 1px 0;'><strong>EQ-Nummer:</strong> {schablone.eqNummer}</p><p style='margin: 1px 0;'><strong>Charge:</strong> {schablone.charge}</p><p style='margin: 1px 0;'><strong>Anzahl:</strong> {schablone.anzahl}</p></div></div>"
-        }
-      ]
-    },
-    {
-      "name": "eingangsmaterialien_ausbuchen",
-      "title": "1.3 Eingangsmaterialien ausbuchen",
-      "elements": [
-        {
-          "type": "boolean",
-          "name": "eingangsmaterial_ausgebucht",
-          "title": "Eingangsmaterialien ausgebucht und Beleg beigefügt?",
-          "isRequired": true
-        },
-        {
-          "type": "text",
-          "name": "leiter_herstellung_signatur",
-          "title": "Signatur Leitung der Herstellung",
-          "isRequired": true
         }
       ]
     },
@@ -72,15 +36,18 @@
               "isRequired": true
             },
             {
-              "type": "text", 
+              "type": "text",
               "name": "kuerzel",
               "title": "Kürzel",
-              "isRequired": true
+              "isRequired": true,
+              "startWithNewLine": false
             }
           ],
           "panelCount": 2,
           "minPanelCount": 2,
-          "maxPanelCount": 10
+          "maxPanelCount": 10,
+          "panelAddText": "Mitarbeiter hinzufügen",
+          "panelRemoveText": "Entfernen"
         }
       ]
     },
@@ -114,49 +81,37 @@
           "html": "<h4>Prüfung ob alles vorhanden ist</h4><p>Vorbereitung der Etiketten (Dymo-Label)</p>"
         },
         {
-          "type": "radiogroup",
-          "name": "eurocontainer_vorhanden",
-          "title": "Eurocontainer für Zwischenprodukte",
-          "choices": ["Ja", "Nein", "Nicht zutreffend"],
-          "isRequired": true
+          "type": "matrix",
+          "name": "kennzeichnung_matrix_allgemein",
+          "title": "Vorbereitung der Etiketten (Dymo-Label)",
+          "columns": [
+            { "value": "ja", "text": "Ja" },
+            { "value": "nein", "text": "Nein" },
+            { "value": "nicht_zutreffend", "text": "Nicht zutreffend" }
+          ],
+          "rows": [
+            { "value": "eurocontainer", "text": "Eurocontainer für Zwischenprodukte" },
+            { "value": "proben_freigabe", "text": "Proben Freigabeanalytik: Probengebinde und Eurocontainer" },
+            { "value": "restmenge", "text": "Finale Restmenge" }
+          ],
+          "isAllRowRequired": true
         },
         {
-          "type": "radiogroup",
-          "name": "proben_freigabe_vorhanden",
-          "title": "Proben Freigabeanalytik: Probengebinde und Eurocontainer",
-          "choices": ["Ja", "Nein", "Nicht zutreffend"],
-          "isRequired": true
-        },
-        {
-          "type": "radiogroup",
-          "name": "proben_ipk_vorhanden",
-          "title": "Proben Inprozesskontrolle: Probengebinde und Eurocontainer",
+          "type": "matrix",
+          "name": "kennzeichnung_matrix_gacp",
+          "title": "Vorbereitung der Etiketten (Dymo-Label) – GACP-spezifisch",
           "visibleIf": "{materialType} = 'GACP'",
-          "choices": ["Ja", "Nein", "Nicht zutreffend"],
-          "isRequired": true
-        },
-        {
-          "type": "radiogroup",
-          "name": "gebinde_rueckfragen_vorhanden",
-          "title": "Gebinde \"Rückfragen QK\"",
-          "visibleIf": "{materialType} = 'GACP'",
-          "choices": ["Ja", "Nein", "Nicht zutreffend"],
-          "isRequired": true
-        },
-        {
-          "type": "radiogroup",
-          "name": "gebinde_restmenge_vorhanden",
-          "title": "Finale Restmenge",
-          "choices": ["Ja", "Nein", "Nicht zutreffend"],
-          "isRequired": true
-        },
-        {
-          "type": "radiogroup",
-          "name": "behaelter_bruch_vorhanden",
-          "title": "Bruch und aussortiertes Material",
-          "visibleIf": "{materialType} = 'GACP'",
-          "choices": ["Ja", "Nein", "Nicht zutreffend"],
-          "isRequired": true
+          "columns": [
+            { "value": "ja", "text": "Ja" },
+            { "value": "nein", "text": "Nein" },
+            { "value": "nicht_zutreffend", "text": "Nicht zutreffend" }
+          ],
+          "rows": [
+            { "value": "proben_ipk", "text": "Proben Inprozesskontrolle: Probengebinde und Eurocontainer" },
+            { "value": "gebinde_rueckfragen", "text": "Gebinde „Rückfragen QK“" },
+            { "value": "bruch", "text": "Bruch und aussortiertes Material" }
+          ],
+          "isAllRowRequired": true
         }
       ]
     },
@@ -170,152 +125,106 @@
           "html": "<h4>Info</h4><p>Der Status des Reinraums wird im 4-Augen Prinzip überprüft</p>"
         },
         {
-          "type": "text",
-          "name": "druckkaskade_arbeitsraum",
-          "title": "Druckkaskade - Arbeitsraum Ist [EQ-52] (Soll: 25-35 Pa)",
-          "inputType": "number",
-          "isRequired": true
+          "type": "matrixdynamic",
+          "name": "arbeitsraum_ist_druck_matrix",
+          "title": "Arbeitsraum Ist Druck (Soll: 25-35 Pa)",
+          "columns": [
+            { "name": "eq52", "title": "EQ-52", "cellType": "text", "inputType": "number", "isRequired": true }
+          ],
+          "rowCount": 1,
+          "minRowCount": 1,
+          "maxRowCount": 1,
+          "addRowText": "",
+          "removeRowText": ""
         },
         {
-          "type": "text",
-          "name": "druckkaskade_schleuse_eq49",
-          "title": "Schleusen Ist [EQ-49] (Soll: 10-20 Pa)", 
-          "inputType": "number",
-          "isRequired": true
+          "type": "matrixdynamic",
+          "name": "schleusen_ist_druck_matrix",
+          "title": "Schleusen Ist Druck (Soll: 10-20 Pa)",
+          "columns": [
+            { "name": "eq49", "title": "EQ-49", "cellType": "text", "inputType": "number", "isRequired": true },
+            { "name": "eq50", "title": "EQ-50", "cellType": "text", "inputType": "number", "isRequired": true },
+            { "name": "eq51", "title": "EQ-51", "cellType": "text", "inputType": "number", "isRequired": true }
+          ],
+          "rowCount": 1,
+          "minRowCount": 1,
+          "maxRowCount": 1,
+          "addRowText": "",
+          "removeRowText": ""
         },
-        {
-          "type": "text",
-          "name": "druckkaskade_schleuse_eq50",
-          "title": "Schleusen Ist [EQ-50] (Soll: 10-20 Pa)",
-          "inputType": "number", 
-          "isRequired": true
-        },
-        {
-          "type": "text",
-          "name": "druckkaskade_schleuse_eq51",
-          "title": "Schleusen Ist [EQ-51] (Soll: 10-20 Pa)",
-          "inputType": "number",
-          "isRequired": true
-        },
-        {
-          "type": "boolean",
-          "name": "druckkaskade_entspricht",
-          "title": "Druckkaskade entspricht Soll-Werten?",
-          "isRequired": true
-        },
+       
         {
           "type": "radiogroup",
           "name": "reinraumstatus_ampel",
           "title": "Reinraumstatus - Ampelstatus",
           "choices": ["Grün", "Rot"],
-          "isRequired": true
+          "isRequired": true,
+          "colCount": 2
         },
         {
           "type": "text",
           "name": "bulkprodukt_name_rot",
           "title": "Bei rot: Name des zu verarbeitenden Bulkprodukts + Charge",
-          "visibleIf": "{reinraumstatus_ampel} = 'Rot'"
+          "visibleIf": "{reinraumstatus_ampel} = 'Rot'",
+          "startWithNewLine": false
         },
         {
           "type": "boolean",
-          "name": "reinraum_nutzbar_ma1",
-          "title": "Reinraum kann genutzt werden? (MA1)",
-          "isRequired": true
-        },
-        {
-          "type": "boolean",
-          "name": "reinraum_nutzbar_ma2", 
-          "title": "Reinraum kann genutzt werden? (MA2)",
+          "name": "reinraum_nutzbar",
+          "title": "Reinraum kann genutzt werden?",
           "isRequired": true
         }
       ]
     },
     {
-      "name": "materialbereitstellung_primaer",
+      "name": "materialbereitstellung_primaerpackmittel",
       "title": "2.1 Materialbereitstellung - Primärpackmittel",
       "elements": [
         {
           "type": "html",
-          "name": "primaer_info",
-          "html": "<h4>Soll-Ist Vergleich Primärpackmittel</h4><p>Abgleich der Sollangaben mit den Ist-Angaben auf den Umverpackungen</p>"
+          "name": "info_primärpackmittel",
+          "html": "<b>Bereitstellung der Primärpackmittel entsprechend der Vorgabe der Übersicht</b><br>Abgleich der Sollangaben mit den Istangaben auf den Umverpackungen der Packmittel.<br><img src='images/packmittel-etikett.png' alt='Beispiel Primärpackmittel' style='max-width: 400px; margin-top: 10px;'>"
         },
         {
           "type": "text",
-          "name": "produktbezeichnung_primaer_ist",
+          "name": "produktbezeichnung_ist",
           "title": "Produktbezeichnung Ist",
-          "isRequired": true
-        },
-        {
-          "type": "boolean",
-          "name": "produktbezeichnung_primaer_ok",
-          "title": "Produktbezeichnung - Übereinstimmung?",
+          "description": "Soll: {primaerPackmittel.produktbezeichnung}",
           "isRequired": true
         },
         {
           "type": "text",
-          "name": "artikelnr_primaer_ist",
+          "name": "artikelnummer_ist",
           "title": "Artikel-Nr. Ist",
-          "isRequired": true
-        },
-        {
-          "type": "boolean",
-          "name": "artikelnr_primaer_ok",
-          "title": "Artikel-Nr. - Übereinstimmung?",
+          "description": "Soll: {primaerPackmittel.artikelNummer}",
           "isRequired": true
         },
         {
           "type": "text",
-          "name": "charge_primaer_ist",
+          "name": "charge_ist",
           "title": "Chargenbezeichnung Ist",
-          "isRequired": true
-        },
-        {
-          "type": "boolean",
-          "name": "charge_primaer_ok",
-          "title": "Chargenbezeichnung - Übereinstimmung?",
+          "description": "Soll: {primaerPackmittel.charge}",
           "isRequired": true
         },
         {
           "type": "text",
-          "name": "anzahl_primaer_ist",
+          "name": "anzahl_ist",
           "title": "Anzahl Gebinde Ist",
+          "description": "Soll: {primaerPackmittel.anzahl}",
           "inputType": "number",
           "isRequired": true
         },
         {
-          "type": "boolean",
-          "name": "anzahl_primaer_ok",
-          "title": "Anzahl Gebinde - Übereinstimmung?",
-          "isRequired": true
-        },
-        {
-          "type": "boolean",
-          "name": "packmittel_verschlossen_ma1",
-          "title": "Packmittel dicht verschlossen? (MA1)",
-          "isRequired": true
-        },
-        {
-          "type": "boolean",
-          "name": "packmittel_verschlossen_ma2",
-          "title": "Bestätigung 2. MA - Packmittel dicht verschlossen?",
+          "type": "radiogroup",
+          "name": "umverpackung_dicht",
+          "title": "Packmittel in einer dicht verschlossenen Umverpackung?",
+          "choices": ["Ja", "Nein"],
           "isRequired": true
         },
         {
           "type": "comment",
-          "name": "primaer_bemerkung",
-          "title": "Erläuterungen falls Checkboxen mit Nein markiert"
-        },
-        {
-          "type": "text",
-          "name": "primaer_erfasst_kuerzel",
-          "title": "Mitarbeiterkürzel \"Erfasst\"",
-          "isRequired": true
-        },
-        {
-          "type": "text",
-          "name": "primaer_geprueft_kuerzel",
-          "title": "Mitarbeiterkürzel \"Überprüft\"",
-          "isRequired": true
+          "name": "bemerkungen",
+          "title": "Bemerkungen"
         }
       ]
     },

@@ -2,20 +2,33 @@
   {
     "name": "eingangsmaterialien_ausbuchen",
     "title": "Eingangsmaterialien ausbuchen",
-    "requiresMA2": true,
-    "questions": ["eingangsmaterial_ausgebucht", "leiter_herstellung_signatur"]
+    "validationType": "signature",
+    "signatureLabel": "Signatur Leiter der Herstellung",
+    "showMA2": false,
+    "questions": ["eingangsmaterial_ausgebucht"]
   },
   {
     "name": "raumstatus_pruefen",
     "title": "Raumstatus überprüfen",
     "requiresMA2": true,
-    "questions": ["druckkaskade_arbeitsraum", "druckkaskade_schleuse_eq49", "druckkaskade_schleuse_eq50", "druckkaskade_schleuse_eq51", "druckkaskade_entspricht", "reinraumstatus_ampel", "bulkprodukt_name_rot", "reinraum_nutzbar_ma1", "reinraum_nutzbar_ma2"]
+    "questions": [
+      "arbeitsraum_ist_druck_matrix",
+      "schleusen_ist_druck_matrix",
+      "reinraumstatus_ampel",
+      "reinraum_nutzbar"
+    ]
   },
   {
-    "name": "materialbereitstellung_primaer",
+    "name": "materialbereitstellung_primaerpackmittel",
     "title": "Materialbereitstellung Primärpackmittel",
     "requiresMA2": true,
-    "questions": ["produktbezeichnung_primaer_ist", "produktbezeichnung_primaer_ok", "artikelnr_primaer_ist", "artikelnr_primaer_ok", "charge_primaer_ist", "charge_primaer_ok", "anzahl_primaer_ist", "anzahl_primaer_ok", "packmittel_verschlossen_ma1", "packmittel_verschlossen_ma2", "primaer_bemerkung", "primaer_erfasst_kuerzel", "primaer_geprueft_kuerzel"]
+    "questions": [
+      "produktbezeichnung_ist",
+      "artikelnummer_ist",
+      "charge_ist",
+      "anzahl_ist",
+      "umverpackung_dicht"
+    ]
   },
   {
     "name": "materialbereitstellung_bulk",

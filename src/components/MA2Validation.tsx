@@ -9,6 +9,31 @@ interface MA2ValidationProps {
   isCompleted: boolean;
 }
 
+// Ergänze die Typdefinition für ValidationGroup (nur lokal, falls importiert, dann als Partial<...> nutzen)
+interface ExtendedValidationGroup extends ValidationGroup {
+  validationType?: string;
+  signatureLabel?: string;
+  showMA2?: boolean;
+  ma2Label?: string;
+}
+
+// Hilfsfunktion für Matrix-Antworten
+function renderMatrixAnswer(answer: any) {
+  if (Array.isArray(answer) && answer.length === 1 && typeof answer[0] === 'object') {
+    // matrixdynamic mit einer Zeile
+    return Object.entries(answer[0])
+      .map(([key, value]) => `${key.toUpperCase()}: ${value}`)
+      .join(', ');
+  }
+  if (typeof answer === 'object' && answer !== null) {
+    // matrix mit mehreren Zeilen oder andere Objekte
+    return Object.entries(answer)
+      .map(([key, value]) => `${key}: ${value}`)
+      .join(', ');
+  }
+  return typeof answer === 'boolean' ? (answer ? 'Ja' : 'Nein') : String(answer);
+}
+
 const MA2Validation: React.FC<MA2ValidationProps> = ({
   group,
   groupAnswers,
@@ -17,6 +42,7 @@ const MA2Validation: React.FC<MA2ValidationProps> = ({
 }) => {
   const [ma2Kuerzel, setMa2Kuerzel] = useState('');
   const [ma2Kommentar, setMa2Kommentar] = useState('');
+  const [ma2MA2, setMa2MA2] = useState('');
 
   // Check if all questions in group are answered
   const allQuestionsAnswered = group.questions.every(
@@ -61,7 +87,7 @@ const MA2Validation: React.FC<MA2ValidationProps> = ({
               <div key={questionName} className="question-answer-row">
                 <span className="question-name">{questionName}:</span>
                 <span className="answer-value">
-                  {typeof answer === 'boolean' ? (answer ? 'Ja' : 'Nein') : String(answer)}
+                  {renderMatrixAnswer(answer)}
                 </span>
               </div>
             );
@@ -71,7 +97,10 @@ const MA2Validation: React.FC<MA2ValidationProps> = ({
     );
   };
 
-  if (!group.requiresMA2) {
+  const groupExt = group as ExtendedValidationGroup;
+  const isSignatureValidation = groupExt.validationType === "signature";
+  const isMA2Validation = groupExt.requiresMA2 === true;
+  if (!isSignatureValidation && !isMA2Validation) {
     return null;
   }
   
@@ -81,11 +110,17 @@ const MA2Validation: React.FC<MA2ValidationProps> = ({
   return (
     <div className={`ma2-validation-container ${!isEnabled ? 'disabled' : ''}`}>
       <div className="ma2-section-header">
-        <h3>Vier-Augen-Prinzip: {group.title}</h3>
+        <h3>
+          {isSignatureValidation
+            ? `Signatur: ${groupExt.title}`
+            : `Vier-Augen-Prinzip: ${groupExt.title}`}
+        </h3>
         <p>
-          {!isEnabled 
+          {!isEnabled
             ? 'Bitte zuerst alle Fragen der linken Seite beantworten.'
-            : 'Die Antworten müssen von einem zweiten Mitarbeiter geprüft werden.'
+            : isSignatureValidation
+              ? 'Bitte die Signatur eintragen.'
+              : 'Die Antworten müssen von einem zweiten Mitarbeiter geprüft werden.'
           }
         </p>
       </div>
@@ -95,19 +130,40 @@ const MA2Validation: React.FC<MA2ValidationProps> = ({
           {isEnabled && renderQuestionSummary()}
           
           <div className="ma2-form-group">
-            <label htmlFor="ma2-kuerzel">Prüfendes Personal - Kürzel *</label>
+            <label htmlFor="ma2-kuerzel">
+              {isSignatureValidation
+                ? (groupExt.signatureLabel || "Signatur")
+                : "Prüfendes Personal - Kürzel *"}
+            </label>
             <input
               id="ma2-kuerzel"
               type="text"
               value={ma2Kuerzel}
               onChange={(e) => setMa2Kuerzel(e.target.value)}
               placeholder="z.B. AB"
-              maxLength={5}
+              maxLength={30}
               required
               disabled={!isEnabled || ma2ValidationCompleted}
               readOnly={ma2ValidationCompleted}
             />
           </div>
+          {isSignatureValidation && groupExt.showMA2 && (
+            <div className="ma2-form-group">
+              <label htmlFor="ma2-ma2">
+                {groupExt.ma2Label || "Kürzel MA2"}
+              </label>
+              <input
+                id="ma2-ma2"
+                type="text"
+                value={ma2MA2}
+                onChange={(e) => setMa2MA2(e.target.value)}
+                maxLength={30}
+                required={false}
+                disabled={!isEnabled || ma2ValidationCompleted}
+                readOnly={ma2ValidationCompleted}
+              />
+            </div>
+          )}
 
           <div className="ma2-form-group">
             <label htmlFor="ma2-kommentar">Kommentar (optional)</label>

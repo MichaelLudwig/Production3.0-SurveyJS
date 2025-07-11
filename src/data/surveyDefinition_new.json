@@ -93,49 +93,37 @@
           "html": "<h4>Prüfung ob alles vorhanden ist</h4><p><strong>Info:</strong> Vorbereitung der Etiketten (Dymo-Label)</p>"
         },
         {
-          "type": "radiogroup",
-          "name": "eurocontainer_vorhanden",
-          "title": "Eurocontainer für Zwischenprodukte",
-          "choices": ["Ja", "Nein", "Nicht zutreffend"],
-          "isRequired": true
+          "type": "matrix",
+          "name": "kennzeichnung_matrix_allgemein",
+          "title": "Vorbereitung der Etiketten (Dymo-Label)",
+          "columns": [
+            { "value": "ja", "text": "Ja" },
+            { "value": "nein", "text": "Nein" },
+            { "value": "nicht_zutreffend", "text": "Nicht zutreffend" }
+          ],
+          "rows": [
+            { "value": "eurocontainer", "text": "Eurocontainer für Zwischenprodukte" },
+            { "value": "proben_freigabe", "text": "Proben Freigabeanalytik: Probengebinde und Eurocontainer" },
+            { "value": "restmenge", "text": "Finale Restmenge" }
+          ],
+          "isAllRowRequired": true
         },
         {
-          "type": "radiogroup",
-          "name": "probenbehälter_freigabe_vorhanden",
-          "title": "Proben Freigabeanalytik: Probengebinde und Eurocontainer",
-          "choices": ["Ja", "Nein", "Nicht zutreffend"],
-          "isRequired": true
-        },
-        {
-          "type": "radiogroup",
-          "name": "probenbehälter_ipk_vorhanden",
-          "title": "Proben Inprozesskontrolle: Probengebinde und Eurocontainer",
+          "type": "matrix",
+          "name": "kennzeichnung_matrix_gacp",
+          "title": "Vorbereitung der Etiketten (Dymo-Label) – GACP-spezifisch",
           "visibleIf": "{materialType} = 'GACP'",
-          "choices": ["Ja", "Nein", "Nicht zutreffend"],
-          "isRequired": true
-        },
-        {
-          "type": "radiogroup",
-          "name": "gebinde_rueckfragen_vorhanden",
-          "title": "Gebinde \"Rückfragen QK\"",
-          "visibleIf": "{materialType} = 'GACP'",
-          "choices": ["Ja", "Nein", "Nicht zutreffend"],
-          "isRequired": true
-        },
-        {
-          "type": "radiogroup",
-          "name": "gebinde_restmenge_vorhanden",
-          "title": "Finale Restmenge",
-          "choices": ["Ja", "Nein", "Nicht zutreffend"],
-          "isRequired": true
-        },
-        {
-          "type": "radiogroup",
-          "name": "behälter_bruch_vorhanden",
-          "title": "Bruch und aussortiertes Material",
-          "visibleIf": "{materialType} = 'GACP'",
-          "choices": ["Ja", "Nein", "Nicht zutreffend"],
-          "isRequired": true
+          "columns": [
+            { "value": "ja", "text": "Ja" },
+            { "value": "nein", "text": "Nein" },
+            { "value": "nicht_zutreffend", "text": "Nicht zutreffend" }
+          ],
+          "rows": [
+            { "value": "proben_ipk", "text": "Proben Inprozesskontrolle: Probengebinde und Eurocontainer" },
+            { "value": "gebinde_rueckfragen", "text": "Gebinde „Rückfragen QK“" },
+            { "value": "bruch", "text": "Bruch und aussortiertes Material" }
+          ],
+          "isAllRowRequired": true
         }
       ]
     },
