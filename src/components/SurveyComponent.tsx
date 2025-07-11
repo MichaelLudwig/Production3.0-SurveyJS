@@ -358,6 +358,7 @@ const SurveyComponent: React.FC<SurveyComponentProps> = ({
                   groupAnswers={getGroupAnswers(group)}
                   onMA2Validation={handleMA2Validation}
                   isCompleted={ma2Completions[group.name] || false}
+                  surveyData={survey?.data}
                 />
               ))}
               

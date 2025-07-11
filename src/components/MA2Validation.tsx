@@ -7,6 +7,7 @@ interface MA2ValidationProps {
   groupAnswers: { [key: string]: any };
   onMA2Validation: (groupName: string, ma2Data: { kuerzel: string; kommentar?: string }) => void;
   isCompleted: boolean;
+  surveyData: any;
 }
 
 // Ergänze die Typdefinition für ValidationGroup (nur lokal, falls importiert, dann als Partial<...> nutzen)
@@ -34,11 +35,25 @@ function renderMatrixAnswer(answer: any) {
   return typeof answer === 'boolean' ? (answer ? 'Ja' : 'Nein') : String(answer);
 }
 
+// Hilfsfunktion für Ja/Nein-Fragen
+function isNoAnswer(value: any) {
+  return value === false || value === "Nein" || value === "No";
+}
+
+// Mapping für Soll-Werte aus primaerPackmittel
+const sollMapping: Record<string, string> = {
+  produktbezeichnung_ist: "produktbezeichnung",
+  artikelnummer_ist: "artikelNummer",
+  charge_ist: "charge",
+  anzahl_ist: "anzahl"
+};
+
 const MA2Validation: React.FC<MA2ValidationProps> = ({
   group,
   groupAnswers,
   onMA2Validation,
-  isCompleted
+  isCompleted,
+  surveyData
 }) => {
   const [ma2Kuerzel, setMa2Kuerzel] = useState('');
   const [ma2Kommentar, setMa2Kommentar] = useState('');
@@ -75,20 +90,29 @@ const MA2Validation: React.FC<MA2ValidationProps> = ({
   };
 
   const renderQuestionSummary = () => {
+    const sollWerte = surveyData?.primaerPackmittel || {};
     return (
       <div className="ma2-question-summary">
         <h4>Zu prüfende Antworten:</h4>
         <div className="question-answers">
           {group.questions.map(questionName => {
-            const answer = groupAnswers[questionName];
-            if (answer === undefined || answer === '') return null;
+            const ist = groupAnswers[questionName];
+            let isWarn = false;
+            let soll = undefined;
+            if (sollMapping[questionName] && sollWerte) {
+              soll = sollWerte[sollMapping[questionName]];
+              isWarn = ist !== undefined && soll !== undefined && ist !== soll;
+            }
+            // NEU: Ja/Nein-Fragen unabhängig vom Sollwert gelb markieren, wenn "Nein"
+            if (isNoAnswer(ist)) {
+              isWarn = true;
+            }
             
             return (
-              <div key={questionName} className="question-answer-row">
+              <div key={questionName} className={`question-answer-row${isWarn ? ' warn' : ''}`}>
                 <span className="question-name">{questionName}:</span>
-                <span className="answer-value">
-                  {renderMatrixAnswer(answer)}
-                </span>
+                <span className="answer-value">{renderMatrixAnswer(ist)}</span>
+                {isWarn && soll !== undefined && <span className="warn-hint">Soll: {soll}</span>}
               </div>
             );
           })}

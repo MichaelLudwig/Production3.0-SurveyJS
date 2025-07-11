@@ -22,8 +22,8 @@
 
 .order-name {
   font-weight: 600;
-  color: #404040;
-  font-size: 1rem;
+  color: #00b388;
+  font-size: 1.4rem;
 }
 
 .material-type {
@@ -60,7 +60,7 @@
 .current-step {
   font-weight: 600;
   color: #404040;
-  font-size: 0.95rem;
+  font-size: 1.1rem;
 }
 
 /* Full-width content area */

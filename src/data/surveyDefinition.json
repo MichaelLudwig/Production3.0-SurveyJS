@@ -169,10 +169,24 @@
           "startWithNewLine": false
         },
         {
-          "type": "boolean",
-          "name": "reinraum_nutzbar",
-          "title": "Reinraum kann genutzt werden?",
-          "isRequired": true
+          "type": "panel",
+          "name": "reinraum_nutzbar_panel",
+          "elements": [
+            {
+              "type": "boolean",
+              "name": "reinraum_nutzbar",
+              "title": "Reinraum kann genutzt werden?",
+              "isRequired": true
+            },
+            {
+              "type": "comment",
+              "name": "reinraum_nutzbar_kommentar",
+              "title": "Bitte Grund für 'Nein' angeben",
+              "visibleIf": "{reinraum_nutzbar} = false",
+              "isRequired": true,
+              "startWithNewLine": false
+            }
+          ]
         }
       ]
     },
@@ -183,7 +197,7 @@
         {
           "type": "html",
           "name": "info_primärpackmittel",
-          "html": "<b>Bereitstellung der Primärpackmittel entsprechend der Vorgabe der Übersicht</b><br>Abgleich der Sollangaben mit den Istangaben auf den Umverpackungen der Packmittel.<br><img src='images/packmittel-etikett.png' alt='Beispiel Primärpackmittel' style='max-width: 400px; margin-top: 10px;'>"
+          "html": "<ul style='margin-bottom: 10px;'><li>Bereitstellung der Primärpackmittel entsprechend der Vorgabe der Übersicht</li><li>Abgleich der Sollangaben mit den Istangaben auf den Umverpackungen der Packmittel.</li></ul><div style='text-align:center;'><img src='/images/packmittel-etikett.png' alt='Beispiel Primärpackmittel' style='max-width: 400px; margin-top: 10px;'></div>"
         },
         {
           "type": "text",
@@ -215,11 +229,24 @@
           "isRequired": true
         },
         {
-          "type": "radiogroup",
-          "name": "umverpackung_dicht",
-          "title": "Packmittel in einer dicht verschlossenen Umverpackung?",
-          "choices": ["Ja", "Nein"],
-          "isRequired": true
+          "type": "panel",
+          "name": "umverpackung_dicht_panel",
+          "elements": [
+            {
+              "type": "boolean",
+              "name": "umverpackung_dicht",
+              "title": "Packmittel in einer dicht verschlossenen Umverpackung?",
+              "isRequired": true
+            },
+            {
+              "type": "comment",
+              "name": "umverpackung_dicht_kommentar",
+              "title": "Bitte Grund für 'Nein' angeben",
+              "visibleIf": "{umverpackung_dicht} = false",
+              "isRequired": true,
+              "startWithNewLine": false
+            }
+          ]
         },
         {
           "type": "comment",
