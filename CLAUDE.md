@@ -1,171 +1,174 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+Diese Datei dient als Leitfaden für Claude Code (claude.ai/code) bei der Arbeit mit dem Code in diesem Repository.
 
-## Project Overview
+## Projektüberblick
 
-This is a digital cannabis production process documentation system built as a React SPA with SurveyJS integration. The system digitizes the paper-based cannabis production process (GACP to GMP transition) for cleanroom staff using a tablet-optimized web application.
+Dies ist ein digitales Dokumentationssystem für den Cannabis-Produktionsprozess, entwickelt als React SPA mit SurveyJS-Integration. Das System digitalisiert den papierbasierten Produktionsprozess (GACP- zu GMP-Übergang) für Reinraumpersonal mittels einer tablet-optimierten Webanwendung.
 
-## Architecture
+## Architektur
 
-### Frontend Stack (Planned)
-- **React SPA** - Main application framework
-- **SurveyJS** - Core survey/questionnaire framework for the production process catalog
-- **Tablet-optimized UI** - Responsive design for touch interaction
-- **Client-side only** - No backend, all processing in browser
+### Frontend-Stack
+- **React SPA** – Hauptframework der Anwendung
+- **SurveyJS** – Kern-Framework für den Fragekatalog
+- **Tablet-optimierte UI** – Responsives Design für Touch-Bedienung
+- **Nur Client-seitig** – Keine Backend-Anbindung, gesamte Verarbeitung im Browser
 
-### Core Components Structure (To Be Implemented)
-- `App` - Main application component, route management
-- `ProductionOrderManager` - Create/select production orders
-- `SurveyComponent` - Main questionnaire using SurveyJS
-- `Navigation/Layout` - Tablet-optimized navigation and layout
-- `ExportComponent` - JSON and PDF export functionality
+### Komponentenstruktur
+- `App.tsx` – Hauptkomponente, Routing
+- `ProductionOrderManager.tsx` – Produktionsaufträge anlegen/auswählen
+- `SurveyComponent.tsx` – Hauptfragebogen mit SurveyJS
+- `CompletionScreen.tsx` – Abschluss und Export
+- `MA2Validation.tsx` – Validierung (Vier-Augen-Prinzip, Leitungssignatur)
+- Weitere Komponenten für Navigation, Layout, etc.
 
-### Data Flow
-1. Production order selection/creation (JSON-based)
-2. Survey initialization with order data
-3. Progressive form completion with local storage
-4. Export to JSON/PDF (client-side only)
+### Datenfluss
+1. Auswahl/Anlage eines Produktionsauftrags (JSON-basiert)
+2. Initialisierung des Fragebogens mit Auftragsdaten
+3. Schrittweises Ausfüllen, Zwischenspeicherung im Local Storage
+4. Export als JSON/PDF (nur clientseitig)
 
-## Key Features
+## Kernfunktionen
 
-### Production Process Coverage
-- **Hierarchical questionnaire** - Process steps > Sub-steps > Questions
-- **Conditional logic** - Questions appear based on material type (GACP/GMP) and previous answers
-- **Four-eyes principle** - Dual confirmation fields for critical checkpoints
-- **Multi-format inputs** - Checkboxes, text, numeric, date/time, signatures
-- **Repeatable sections** - Dynamic panels for bulk bag processing
+### Abdeckung des Produktionsprozesses
+- **Hierarchischer Fragebogen** – Prozessschritte > Teilschritte > Fragen
+- **Bedingte Logik** – Fragen erscheinen je nach Materialtyp (GACP/GMP) und Vorantworten
+- **Vier-Augen-Prinzip** – Doppelte Bestätigung an kritischen Kontrollpunkten
+- **Verschiedene Fragetypen** – Checkboxen, Text, Zahl, Datum/Uhrzeit, Signatur
+- **Wiederholbare Abschnitte** – Dynamische Panels für Bulkbeutel
 
-### Material Type Logic
-- **GACP Material** - Shows additional quality control questions (IPK, sorting, etc.)
-- **GMP Material** - Streamlined process, skips GACP-specific sections
-- Controlled via `visibleIf` conditions in SurveyJS JSON
+### Materialtyp-Logik
+- **GACP-Material** – Zusätzliche Qualitätskontrollfragen (IPK, Sortierung, etc.)
+- **GMP-Material** – Schlankerer Prozess, überspringt GACP-spezifische Abschnitte
+- Gesteuert über `visibleIf`-Bedingungen im SurveyJS-JSON
 
-### Data Persistence
-- **Local storage** - Progress saved in browser
-- **No backend** - All data client-side only
-- **Export formats** - JSON (structured) and PDF (human-readable)
+### Datenpersistenz
+- **Local Storage** – Fortschritt wird im Browser gespeichert
+- **Kein Backend** – Alle Daten verbleiben clientseitig
+- **Exportformate** – JSON (strukturiert) und PDF (menschenlesbar)
 
-## File Structure (To Be Created)
+## Dateistruktur (aktuell)
 
 ```
 /src
   /components
-    App.jsx
-    ProductionOrderManager.jsx
-    SurveyComponent.jsx
-    Navigation.jsx
-    ExportComponent.jsx
+    App.tsx
+    ProductionOrderManager.tsx
+    SurveyComponent.tsx
+    CompletionScreen.tsx
+    MA2Validation.tsx
+    ...
   /data
-    surveyDefinition.json     # Main questionnaire structure
-    productionOrders.json     # Sample production orders
-  /utils
-    surveyLogic.js           # Conditional visibility logic
-    exportUtils.js           # PDF/JSON export functions
+    surveyDefinition.json
+    sampleOrders.json
+    validationGroups.json
+    ...
   /styles
-    tablet-optimized.css     # Touch-friendly styling
+    tablet-optimized.css
+    ...
+  /utils
+    exportUtils.ts
+  /types
+    index.ts
+main.tsx
+index.html
 package.json
 ```
 
-## Development Commands
-
-Since this is a new project, the following commands will need to be set up:
+## Entwicklungsbefehle
 
 ```bash
-# Project initialization (not yet done)
-npm init -y
-npm install react react-dom
-npm install survey-react survey-pdf-generator
-npm install react-scripts  # or vite
+# Projektinitialisierung
+npm install
 
-# Development
-npm start                   # Start development server
-npm run build              # Build for production
-npm test                   # Run tests
-npm run lint               # Code linting
+# Entwicklung
+npm run dev                # Entwicklungsserver starten
+npm run build              # Für Produktion bauen
+npm test                   # Tests ausführen
+npm run lint               # Linting
 ```
 
-## SurveyJS Integration
+## SurveyJS-Integration
 
-### Survey Definition Structure
-- **Pages** - Each page typically represents a sub-step
-- **Panels** - Group related questions or repeatable sections
-- **Elements** - Individual questions with various input types
-- **Conditional Logic** - `visibleIf` conditions based on material type and previous answers
+### Struktur der Survey-Definition
+- **Seiten (pages)** – Jede Seite repräsentiert meist einen Teilschritt
+- **Panels** – Gruppieren verwandte Fragen oder wiederholbare Abschnitte
+- **Elemente** – Einzelne Fragen mit verschiedenen Eingabetypen
+- **Bedingte Logik** – `visibleIf`-Bedingungen je nach Materialtyp und Vorantworten
 
-### Key Survey Features Used
-- Dynamic panels for bulk bag processing
-- Conditional visibility for GACP/GMP material types
-- Custom validation for required fields
-- Multi-format question types (boolean, text, numeric, date)
+### Wichtige SurveyJS-Features
+- Dynamische Panels für Bulkbeutel
+- Bedingte Sichtbarkeit für GACP/GMP-Materialtypen
+- Eigene Validierungen für Pflichtfelder
+- Verschiedene Fragetypen (Boolean, Text, Zahl, Datum)
 
-## Development Guidelines
+## Entwicklungsrichtlinien
 
-### Material Type Handling
-- Use `{materialType} == 'GACP'` conditions for GACP-specific questions
-- GMP material skips sorting, IPK, and additional quality checks
-- Implement in `visibleIf` properties of SurveyJS elements
+### Materialtyp-Handling
+- `{materialType} == 'GACP'` für GACP-spezifische Fragen
+- GMP-Material überspringt Sortierung, IPK, zusätzliche Qualitätsprüfungen
+- Umsetzung über `visibleIf` in SurveyJS-Elementen
 
-### Tablet Optimization
-- Minimum 44px touch targets
-- Large fonts (minimum 16px)
-- Adequate spacing for touch interaction
-- Keyboard-aware scrolling for text inputs
+### Tablet-Optimierung
+- Mindestens 44px große Touch-Ziele
+- Große Schrift (mind. 16px)
+- Ausreichend Abstand für Touch-Bedienung
+- Scrollen bei Tastatureingabe berücksichtigen
 
-### Data Validation
-- Mark critical questions as `isRequired: true`
-- Numeric fields with appropriate ranges
-- Date/time format validation
-- Two-person confirmation fields for quality checkpoints
+### Datenvalidierung
+- Kritische Fragen als `isRequired: true` markieren
+- Zahlenfelder mit sinnvollen Bereichen
+- Datums-/Zeitformat validieren
+- Doppelte Bestätigungsfelder für kritische Kontrollpunkte
 
-### Export Requirements
-- PDF must include all answered questions with clear formatting
-- JSON export for structured data processing
-- Client-side generation only (no server calls)
-- Filename format: `Protokoll_{orderNumber}_{date}.{extension}`
+### Export-Anforderungen
+- PDF enthält alle beantworteten Fragen, klar formatiert
+- JSON-Export für strukturierte Weiterverarbeitung
+- Nur clientseitige Generierung (keine Serveraufrufe)
+- Dateinamen-Format: `Protokoll_{orderNumber}_{date}.{extension}`
 
-## Testing Strategy
+## Teststrategie
 
-### Critical Test Areas
-- Survey logic with different material types (GACP vs GMP)
-- Conditional question display/hiding
-- Multi-bulk bag processing flows
-- Export functionality (PDF/JSON)
-- Tablet responsiveness and touch interaction
-- Local storage persistence
+### Kritische Testbereiche
+- Survey-Logik mit verschiedenen Materialtypen (GACP vs GMP)
+- Bedingte Anzeige/Verbergen von Fragen
+- Bulkbeutel-Prozesse mit mehreren Durchläufen
+- Exportfunktion (PDF/JSON)
+- Tablet-Responsivität und Touch-Bedienung
+- Persistenz im Local Storage
 
-### Test Data
-- Sample production orders with GACP and GMP materials
-- Various bulk bag quantities for testing repeatable sections
-- Edge cases for conditional logic
+### Testdaten
+- Beispiel-Produktionsaufträge mit GACP- und GMP-Material
+- Verschiedene Bulkbeutel-Anzahlen für dynamische Abschnitte
+- Edge Cases für bedingte Logik
 
-## Compliance Considerations
+## Compliance-Anforderungen
 
-### GxP Requirements
-- Complete audit trail in exported data
-- Two-person verification for critical steps
-- Proper signature/initial capture
-- Timestamp recording for all process steps
+- Audit-Trail (Kürzel, Zeitstempel) und Validierungsgruppen-Validierung (MA2, Leitungssignatur) werden **pro Fragengruppe** (nicht pro Frage) erfasst. Details siehe [prd.md](./docs/prd.md) und [sap-integration.md](./docs/sap-integration.md).
 
-### Data Security
-- All processing client-side (no server transmission)
-- Local storage encryption considerations for production use
-- PDF/JSON export security (local download only)
+## Validierungsgruppen & Audit-Trail
 
-## Known Limitations (MVP)
+- Validierungsgruppen bündeln alle Prozessabschnitte, die eine besondere Bestätigung benötigen – z. B. durch einen zweiten Mitarbeiter (MA2, Vier-Augen-Prinzip) oder durch die Herstellungsleitung (Signatur).
+- Jede Validierungsgruppe ist im Fragekatalog als solche gekennzeichnet (siehe [validationGroups.json](./src/data/validationGroups.json)), mit Attributen wie `requiresMA2: true` oder `validationType: "signature"`.
+- Die React-Komponente [`MA2Validation`](./src/components/MA2Validation.tsx) behandelt **alle Validierungsgruppen** einheitlich: Sie fordert – je nach Gruppe – die Eingabe des Kürzels und ggf. eines Kommentars von MA2 oder der Leitung.
+- Für jede Validierungsgruppe werden Kürzel, Zeitstempel und ggf. Kommentar der validierenden Person erfasst und im Export (JSON/PDF) dokumentiert (Audit-Trail).
+- Die Validierungsgruppen-Logik ist flexibel: Sie kann sowohl reine MA2-Prüfungen, reine Leitungssignaturen als auch Kombinationen abbilden.
+- **Es gibt keine getrennten Mechanismen für MA2 und Leitungssignatur – alles wird über das Validierungsgruppen-Konzept abgebildet.**
 
-- No SAP integration (static data only)
-- No backend/database persistence
-- Simplified signatures (text fields, not digital signatures)
-- No user authentication/role management
-- No real-time notifications to production management
-- German language only
+## Bekannte Einschränkungen (MVP)
 
-## Future Enhancements (Out of MVP Scope)
+- Keine SAP-Integration (nur statische Daten)
+- Keine Backend-/Datenbankpersistenz
+- Vereinfachte Signaturen (Textfelder, keine digitalen Signaturen)
+- Keine Benutzerverwaltung/Rollen
+- Keine Echtzeit-Benachrichtigungen an Produktionsleitung
+- Nur Deutsch
 
-- SAP integration for production order data
-- Database persistence and user management
-- Digital signature compliance (21 CFR Part 11)
-- Real-time notifications and workflow integration
-- Multi-language support
-- Advanced data validation and calculations
+## Zukünftige Erweiterungen (außerhalb MVP)
+
+- **SAP-Integration:** Geplante Anbindung über lokale Serverkomponente, die Produktionsaufträge, Materiallisten und Fragekataloge aus SAP synchronisiert und ausgefüllte Instanzen zurücküberträgt. Details siehe [sap-integration.md](./docs/sap-integration.md).
+- Datenbankpersistenz und Benutzerverwaltung
+- Digitale Signatur-Konformität (21 CFR Part 11)
+- Echtzeit-Benachrichtigungen und Workflow-Integration
+- Mehrsprachigkeit
+- Erweiterte Datenvalidierung und Berechnungen
