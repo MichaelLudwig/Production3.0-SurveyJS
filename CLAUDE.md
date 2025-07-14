@@ -2,6 +2,15 @@
 
 Diese Datei dient als Leitfaden für Claude Code (claude.ai/code) bei der Arbeit mit dem Code in diesem Repository.
 
+## Arbeitsanweisungen für Claude Code
+
+- Lies zu Beginn jeder neuen Unterhaltung immer die planning.md im docs Ornder vollständig.
+- Prüfe die tasks.md im docs Ornder, bevor du mit der Arbeit startest.
+- Markiere erledigte Aufgaben sofort als abgeschlossen in der tasks.md.
+- Füge neu entdeckte Aufgaben umgehend zur tasks.md hinzu.
+- Berücksichtige bei allen fachlichen und technischen Fragen immer die prd.md im Ordner docs. Sie beschreibt die vollständigen Anforderungen, Ziele und Akzeptanzkriterien des Projekts und ist das maßgebliche Referenzdokument für alle Umsetzungen.
+- Beachte die sap-integration.md im Ordner docs: Sie dokumentiert die geplante Schnittstelle und Datenstruktur für die zukünftige Integration mit SAP. Für alle Fragen zur SAP-Anbindung und Datenübertragung ist dieses Dokument maßgeblich.
+
 ## Projektüberblick
 
 Dies ist ein digitales Dokumentationssystem für den Cannabis-Produktionsprozess, entwickelt als React SPA mit SurveyJS-Integration. Das System digitalisiert den papierbasierten Produktionsprozess (GACP- zu GMP-Übergang) für Reinraumpersonal mittels einer tablet-optimierten Webanwendung.
@@ -115,17 +124,22 @@ npm run lint               # Linting
 - Ausreichend Abstand für Touch-Bedienung
 - Scrollen bei Tastatureingabe berücksichtigen
 
-### Datenvalidierung
-- Kritische Fragen als `isRequired: true` markieren
-- Zahlenfelder mit sinnvollen Bereichen
-- Datums-/Zeitformat validieren
-- Doppelte Bestätigungsfelder für kritische Kontrollpunkte
+## Datenvalidierung
 
-### Export-Anforderungen
-- PDF enthält alle beantworteten Fragen, klar formatiert
-- JSON-Export für strukturierte Weiterverarbeitung
-- Nur clientseitige Generierung (keine Serveraufrufe)
-- Dateinamen-Format: `Protokoll_{orderNumber}_{date}.{extension}`
+- Pflichtfelder und Validierungen werden gemäß SurveyJS-Definition umgesetzt. Kritische Fragen sind als Pflichtfelder markiert und müssen vor Abschluss beantwortet sein.
+- Bedingte Validierungen: Manche Felder sind nur unter bestimmten Bedingungen erforderlich (z. B. abhängig von Materialtyp oder Vorantworten).
+- Validierungsgruppen (Vier-Augen-Prinzip, Leitungssignatur) werden pro Fragengruppe geprüft und dokumentiert.
+- Die Validierungslogik ist im SurveyJS-JSON und in den Validierungsgruppen (siehe validationGroups.json) abgebildet.
+- Es gibt keine serverseitige Validierung – alle Prüfungen erfolgen clientseitig in der Anwendung.
+
+## Export
+
+- Exportierte Daten enthalten alle Antworten, Audit-Trail-Informationen (Kürzel, Zeitstempel, ggf. Kommentar) und Validierungsgruppen-Bestätigungen.
+- Exportformate: JSON (strukturierte Rohdaten inkl. Audit-Trail, geeignet für Archivierung und Weiterverarbeitung) und PDF (formatierter, menschenlesbarer Bericht).
+- Die Dateinamen folgen dem Schema: `Protokoll_{orderID}_{timestamp}.{extension}`.
+- Alle Exporte werden ausschließlich clientseitig generiert und heruntergeladen. Es findet keine Übertragung an einen Server statt.
+- Der JSON-Export entspricht der SurveyJS-Resultatstruktur und enthält zusätzlich die Audit-Trail- und Validierungsdaten pro Gruppe.
+- Der PDF-Export enthält alle beantworteten Fragen, Audit-Trail, Unterschriften/Kürzel und ist für GMP-konforme Archivierung geeignet.
 
 ## Teststrategie
 
