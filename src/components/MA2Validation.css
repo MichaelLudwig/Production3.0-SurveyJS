@@ -294,3 +294,69 @@
   color: #222;
 }
   */
+
+/* SurveyJS-ähnlicher Toggle-Switch für Ja/Nein */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 150px;
+  height: 50px;
+  margin-bottom: 0.5rem;
+}
+.switch input {display:none;}
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: #fff; /* immer weiß */
+  transition: .4s;
+  border-radius: 34px;
+  border: 2px solid #19b394; /* immer grün */
+}
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 36px;
+  width: 66px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  transition: .4s;
+  border-radius: 30px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+  border: 1.5px solid #19b394;
+}
+input:checked + .slider:before {
+  transform: translateX(66px);
+}
+.switch-label {
+  position: absolute;
+  top: 10px;
+  font-size: 1rem;
+  width: 48px;
+  text-align: center;
+  font-weight: 600;
+  pointer-events: none;
+  color: #bdbdbd;
+  transition: color 0.2s;
+}
+.switch-label-no {
+  left: 14px;
+}
+.switch-label-yes {
+  right: 14px;
+}
+/* Wenn nicht ausgewählt: Nein grün, Ja grau */
+input:not(:checked) + .slider .switch-label-no {
+  color: #19b394;
+}
+input:not(:checked) + .slider .switch-label-yes {
+  color: #bdbdbd;
+}
+/* Wenn ausgewählt: Ja grün, Nein grau */
+input:checked + .slider .switch-label-no {
+  color: #bdbdbd;
+}
+input:checked + .slider .switch-label-yes {
+  color: #19b394;
+}

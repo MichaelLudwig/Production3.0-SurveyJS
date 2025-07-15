@@ -5,7 +5,7 @@ import './MA2Validation.css';
 interface MA2ValidationProps {
   group: ValidationGroup;
   groupAnswers: { [key: string]: any };
-  onMA2Validation: (groupName: string, ma2Data: { kuerzel: string; kommentar?: string }) => void;
+  onMA2Validation: (groupName: string, ma2Data: { kuerzel: string; kommentar?: string; pruefungOK?: boolean }) => void;
   isCompleted: boolean;
   surveyData: any;
 }
@@ -65,6 +65,7 @@ const MA2Validation: React.FC<MA2ValidationProps> = ({
   const [ma2Kuerzel, setMa2Kuerzel] = useState('');
   const [ma2Kommentar, setMa2Kommentar] = useState('');
   const [ma2MA2, setMa2MA2] = useState('');
+  const [ma2PruefungOK, setMa2PruefungOK] = useState<boolean>(true);
 
   // Check if all questions in group are answered
   const allQuestionsAnswered = group.questions.every(
@@ -87,13 +88,16 @@ const MA2Validation: React.FC<MA2ValidationProps> = ({
       alert('Bitte geben Sie Ihr Kürzel ein.');
       return;
     }
-
+    if (ma2PruefungOK === null) {
+      alert('Bitte geben Sie an, ob die Prüfung OK ist.');
+      return;
+    }
     onMA2Validation(group.name, {
       kuerzel: ma2Kuerzel.trim(),
-      kommentar: ma2Kommentar.trim() || undefined
+      kommentar: ma2Kommentar.trim() || undefined,
+      pruefungOK: ma2PruefungOK
     });
-
-    // Don't clear the fields - they should remain visible after completion
+    // Don't clear the fields - sie sollten sichtbar bleiben
   };
 
   const renderQuestionSummary = () => {
@@ -161,7 +165,25 @@ const MA2Validation: React.FC<MA2ValidationProps> = ({
       <div className={`ma2-validation-section ${ma2ValidationCompleted ? 'completed' : ''}`}>
         <div className="ma2-validation-form">
           {isEnabled && renderQuestionSummary()}
-          
+
+          {/* Toggle-Switch für Prüfung OK (über Kommentar) */}
+          <div className="ma2-form-group">
+            <label htmlFor="ma2-pruefung-ok-switch" style={{marginBottom: '0.5rem', display: 'block'}}>Prüfung OK *</label>
+            <label className="switch">
+              <input
+                id="ma2-pruefung-ok-switch"
+                type="checkbox"
+                checked={ma2PruefungOK === true}
+                onChange={e => setMa2PruefungOK(e.target.checked)}
+                disabled={!isEnabled || ma2ValidationCompleted}
+              />
+              <span className="slider round">
+                <span className="switch-label switch-label-no">Nein</span>
+                <span className="switch-label switch-label-yes">Ja</span>
+              </span>
+            </label>
+          </div>
+
           <div className="ma2-form-group">
             <label htmlFor="ma2-kuerzel">
               {isSignatureValidation

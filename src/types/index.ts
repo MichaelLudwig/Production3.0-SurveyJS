@@ -44,7 +44,14 @@ export interface AuditTrail {
 // Individual answer with audit trail
 export interface SurveyAnswerItem {
   value: any;
-  audit?: AuditTrail;
+  audit: {
+    ma1Kuerzel?: string;
+    ma1Timestamp?: string;
+    ma2Kuerzel?: string;
+    ma2Timestamp?: string;
+    ma2Kommentar?: string;
+    ma2PruefungOK?: boolean;
+  };
 }
 
 export interface SurveyAnswer {

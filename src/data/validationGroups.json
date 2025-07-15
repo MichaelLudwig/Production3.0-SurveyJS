@@ -27,7 +27,8 @@
       "artikelnummer_ist",
       "charge_ist",
       "anzahl_ist",
-      "umverpackung_dicht"
+      "umverpackung_dicht",
+      "primaerpackmittel_erfasst_kuerzel"
     ]
   },
   {
@@ -40,7 +41,6 @@
       "charge_bulk_ist",
       "verfall_bulk_ist",
       "bulkgebinde_liste",
-      "bulk_bemerkungen",
       "bulk_erfasst_kuerzel"
     ]
   },

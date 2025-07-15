@@ -249,6 +249,12 @@
           ]
         },
         {
+          "type": "text",
+          "name": "primaerpackmittel_erfasst_kuerzel",
+          "title": "Mitarbeiterkürzel \"Erfasst\"",
+          "isRequired": true
+        },
+        {
           "type": "comment",
           "name": "bemerkungen",
           "title": "Bemerkungen"
@@ -309,15 +315,15 @@
           "removeRowText": "Entfernen"
         },
         {
-          "type": "comment",
-          "name": "bulk_bemerkungen",
-          "title": "Bemerkungen"
-        },
-        {
           "type": "text",
           "name": "bulk_erfasst_kuerzel",
           "title": "Mitarbeiterkürzel \"Erfasst\"",
           "isRequired": true
+        },
+        {
+          "type": "comment",
+          "name": "bulk_bemerkungen",
+          "title": "Bemerkungen"
         }
       ]
     },

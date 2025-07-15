@@ -179,15 +179,12 @@ const SurveyComponent: React.FC<SurveyComponentProps> = ({
   }, [survey, pendingMA2Groups]);
 
   // Handle MA2 validation for a group
-  const handleMA2Validation = (groupName: string, ma2Data: { kuerzel: string; kommentar?: string }) => {
+  const handleMA2Validation = (groupName: string, ma2Data: { kuerzel: string; kommentar?: string; pruefungOK?: boolean }) => {
     const group = (validationGroups as ValidationGroup[]).find(g => g.name === groupName);
     if (!group) return;
-
     const timestamp = new Date().toISOString();
-
     // Update all questions in the group with MA2 data
     const updatedAnswers = { ...enhancedAnswers };
-    
     group.questions.forEach(questionName => {
       if (updatedAnswers[questionName]) {
         const currentAnswer = updatedAnswers[questionName] as SurveyAnswerItem;
@@ -197,22 +194,19 @@ const SurveyComponent: React.FC<SurveyComponentProps> = ({
             ...currentAnswer.audit,
             ma2Kuerzel: ma2Data.kuerzel,
             ma2Timestamp: timestamp,
-            ma2Kommentar: ma2Data.kommentar
+            ma2Kommentar: ma2Data.kommentar,
+            ma2PruefungOK: ma2Data.pruefungOK
           }
         };
       }
     });
-
     setEnhancedAnswers(updatedAnswers);
     setMA2Completions(prev => ({ ...prev, [groupName]: true }));
-    
     // Remove from pending groups
     setPendingMA2Groups(prev => prev.filter(name => name !== groupName));
-
-    // Update localStorage with all MA2 state
+    // Update localStorage mit allen MA2-States
     const updatedMA2Completions = { ...ma2Completions, [groupName]: true };
     const updatedPendingGroups = pendingMA2Groups.filter(name => name !== groupName);
-    
     localStorage.setItem('surveyProgress', JSON.stringify({
       data: survey?.data || {},
       enhancedData: updatedAnswers,
