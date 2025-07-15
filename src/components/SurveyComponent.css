@@ -1,3 +1,29 @@
+/* Survey Status Indicators */
+.survey-status {
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 0.85em;
+  font-weight: bold;
+  margin-left: 8px;
+}
+
+.survey-status.none {
+  background-color: #f0f0f0;
+  color: #666;
+}
+
+.survey-status.in_progress {
+  background-color: #fff3cd;
+  color: #856404;
+  border: 1px solid #ffeaa7;
+}
+
+.survey-status.completed {
+  background-color: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
 /* Full-width survey container inspired by Leicester Cough Questionnaire */
 .survey-container {
   width: 100%;

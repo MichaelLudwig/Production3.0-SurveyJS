@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ProductionOrder } from '../types';
-import { readJsonFile, writeJsonFile } from '../utils/exportUtils';
+import { readJsonFile } from '../utils/exportUtils';
 import './ProductionOrderManager.css';
 
 interface ProductionOrderManagerProps {
@@ -9,7 +9,7 @@ interface ProductionOrderManagerProps {
   onContinueSurvey: () => void;
 }
 
-const ORDERS_PATH = 'data/orders/orders.json';
+const API_BASE_URL = 'http://localhost:3001/api';
 
 const ProductionOrderManager: React.FC<ProductionOrderManagerProps> = ({
   onOrderSelected,
@@ -19,6 +19,7 @@ const ProductionOrderManager: React.FC<ProductionOrderManagerProps> = ({
   const [orders, setOrders] = useState<ProductionOrder[]>([]);
   const [editingOrder, setEditingOrder] = useState<ProductionOrder | null>(null);
   const [viewMode, setViewMode] = useState<'list' | 'details' | 'edit' | 'create'>('list');
+  const [orderStatuses, setOrderStatuses] = useState<Record<string, string>>({});
   const [newOrder, setNewOrder] = useState<Partial<ProductionOrder>>({
     produktName: '',
     materialType: 'GACP',
@@ -50,12 +51,34 @@ const ProductionOrderManager: React.FC<ProductionOrderManagerProps> = ({
     bulkBeutelAnzahl: 1
   });
 
-  // Lade Aufträge aus JSON-Datei
+  // Lade Aufträge über API
   useEffect(() => {
     (async () => {
       try {
-        const loadedOrders = await readJsonFile(ORDERS_PATH);
+        const loadedOrders = await readJsonFile('data/orders/orders.json');
         setOrders(loadedOrders || []);
+        
+        // Lade Survey-Status für alle Aufträge
+        const statuses: Record<string, string> = {};
+        for (const order of loadedOrders || []) {
+          try {
+            const statusResponse = await fetch(`${API_BASE_URL}/surveys/${order.id}/status`);
+            if (statusResponse.ok) {
+              const statusResult = await statusResponse.json();
+              if (statusResult.data?.exists) {
+                statuses[order.id] = statusResult.data.status;
+              } else {
+                statuses[order.id] = 'none';
+              }
+            } else {
+              statuses[order.id] = 'none';
+            }
+          } catch (error) {
+            console.warn(`Fehler beim Laden des Survey-Status für Auftrag ${order.id}:`, error);
+            statuses[order.id] = 'none';
+          }
+        }
+        setOrderStatuses(statuses);
       } catch (error) {
         console.error('Fehler beim Laden der Aufträge:', error);
         setOrders([]);
@@ -63,14 +86,11 @@ const ProductionOrderManager: React.FC<ProductionOrderManagerProps> = ({
     })();
   }, []);
 
-  // Speichere Aufträge in JSON-Datei
+  // Speichere Aufträge über API
   const saveOrders = async (updatedOrders: ProductionOrder[]) => {
     setOrders(updatedOrders);
-    try {
-      await writeJsonFile(ORDERS_PATH, updatedOrders);
-    } catch (error) {
-      console.error('Fehler beim Speichern der Aufträge:', error);
-    }
+    // Note: Individual order operations are now handled by specific API calls
+    // This function is kept for compatibility but orders are saved individually
   };
 
   const handleViewOrder = (orderId: string) => {
@@ -117,56 +137,82 @@ const ProductionOrderManager: React.FC<ProductionOrderManagerProps> = ({
     setEditingOrder(null);
   };
 
-  const handleCreateOrder = () => {
+  const handleCreateOrder = async () => {
     if (!newOrder.produktName || !newOrder.materialType || !newOrder.eingangsmaterial || !newOrder.primaerPackmittel || !newOrder.zwischenprodukt || !newOrder.probenzug) {
       alert('Bitte füllen Sie alle erforderlichen Felder aus.');
       return;
     }
-    const order: ProductionOrder = {
-      id: Date.now().toString(),
-      createdAt: new Date().toISOString(),
-      produktName: newOrder.produktName,
-      materialType: newOrder.materialType as 'GACP' | 'GMP',
-      eingangsmaterial: newOrder.eingangsmaterial,
-      schablone: newOrder.schablone,
-      primaerPackmittel: newOrder.primaerPackmittel,
-      zwischenprodukt: newOrder.zwischenprodukt,
-      probenzug: newOrder.probenzug,
-      bulkBeutelAnzahl: newOrder.bulkBeutelAnzahl || 1
-    };
-    const updatedOrders = [...orders, order];
-    saveOrders(updatedOrders);
-    onOrderSelected(order);
-    setNewOrder({
-      produktName: '',
-      materialType: 'GACP',
-      eingangsmaterial: {
-        artikelNummer: '',
-        charge: '',
-        verfallsdatum: '',
-        eingangsMenge: 0
-      },
-      schablone: {
-        eqNummer: '',
-        charge: '',
-        anzahl: 0
-      },
-      primaerPackmittel: {
-        artikelNummer: '',
-        charge: '',
-        anzahl: 0
-      },
-      zwischenprodukt: {
-        artikelNummer: '',
-        gebindeNummer: ''
-      },
-      probenzug: {
-        plan: '',
-        anzahl: 2,
-        fuellmenge: 10
-      },
-      bulkBeutelAnzahl: 1
-    });
+    
+    try {
+      const orderData = {
+        produktName: newOrder.produktName,
+        materialType: newOrder.materialType as 'GACP' | 'GMP',
+        eingangsmaterial: newOrder.eingangsmaterial,
+        schablone: newOrder.schablone,
+        primaerPackmittel: newOrder.primaerPackmittel,
+        zwischenprodukt: newOrder.zwischenprodukt,
+        probenzug: newOrder.probenzug,
+        bulkBeutelAnzahl: newOrder.bulkBeutelAnzahl || 1
+      };
+      
+      // Create order via API
+      const response = await fetch(`${API_BASE_URL}/orders`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ order: orderData })
+      });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      }
+      
+      const result = await response.json();
+      const createdOrder = result.data;
+      
+      // Update local state
+      const updatedOrders = [...orders, createdOrder];
+      setOrders(updatedOrders);
+      setOrderStatuses(prev => ({ ...prev, [createdOrder.id]: 'none' }));
+      
+      onOrderSelected(createdOrder);
+      
+      // Reset form
+      setNewOrder({
+        produktName: '',
+        materialType: 'GACP',
+        eingangsmaterial: {
+          artikelNummer: '',
+          charge: '',
+          verfallsdatum: '',
+          eingangsMenge: 0
+        },
+        schablone: {
+          eqNummer: '',
+          charge: '',
+          anzahl: 0
+        },
+        primaerPackmittel: {
+          artikelNummer: '',
+          charge: '',
+          anzahl: 0
+        },
+        zwischenprodukt: {
+          artikelNummer: '',
+          gebindeNummer: ''
+        },
+        probenzug: {
+          plan: '',
+          anzahl: 2,
+          fuellmenge: 10
+        },
+        bulkBeutelAnzahl: 1
+      });
+    } catch (error) {
+      console.error('Fehler beim Erstellen des Auftrags:', error);
+      alert('Fehler beim Erstellen des Auftrags. Bitte versuchen Sie es erneut.');
+    }
   };
 
   const handleInputChange = (section: string, field: string, value: any) => {
@@ -241,13 +287,20 @@ const ProductionOrderManager: React.FC<ProductionOrderManagerProps> = ({
                   <p><strong>Eingangsmaterial:</strong> {order.eingangsmaterial.artikelNummer}</p>
                   <p><strong>Charge:</strong> {order.eingangsmaterial.charge}</p>
                   <p><strong>Bulk-Beutel:</strong> {order.bulkBeutelAnzahl}</p>
+                  <p><strong>Status:</strong> 
+                    <span className={`survey-status ${orderStatuses[order.id] || 'none'}`}>
+                      {orderStatuses[order.id] === 'in_progress' ? 'In Bearbeitung' : 
+                       orderStatuses[order.id] === 'completed' ? 'Abgeschlossen' : 'Nicht begonnen'}
+                    </span>
+                  </p>
                 </div>
                 <div className="order-card-actions">
                   <button 
                     className="btn btn-primary btn-small"
                     onClick={() => onOrderSelected(order)}
                   >
-                    Fragekatalog starten
+                    {orderStatuses[order.id] === 'in_progress' ? 'Fragekatalog fortsetzen' : 
+                     orderStatuses[order.id] === 'completed' ? 'Fragekatalog anzeigen' : 'Fragekatalog starten'}
                   </button>
                   <button 
                     className="btn btn-secondary btn-small"

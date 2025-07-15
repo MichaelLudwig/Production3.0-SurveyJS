@@ -61,9 +61,10 @@ export interface SurveyAnswer {
 // Four-eyes validation groups
 export interface ValidationGroup {
   name: string;
-  questions: string[];
   title: string;
-  requiresMA2: boolean;
+  validationType: "signature" | "validation";
+  label: string;
+  questions: string[];
 }
 
 export interface ExportData {

@@ -1,29 +1,136 @@
 import { ExportData } from '../types';
 
-// Utility-Funktionen für lokale, dateibasierte Datenhaltung (Phase 3)
-// Hinweis: Die Implementierung muss ggf. je nach Umgebung (Browser vs. Node.js) angepasst werden.
+// Backend API configuration
+const API_BASE_URL = 'http://localhost:3001/api';
 
-// Platzhalter-Implementierung für Browser: File System Access API (experimentell)
-// In Node.js-Umgebung: fs/promises verwenden
-
+// HTTP Client functions for Backend API communication
 export async function readJsonFile(path: string): Promise<any> {
-  // TODO: Implementierung je nach Umgebung
-  throw new Error('readJsonFile: Implementierung für die Zielumgebung erforderlich');
+  try {
+    console.log(`[API] Reading: ${path}`);
+    
+    // Map old file paths to new API endpoints
+    let apiUrl: string;
+    if (path === 'data/orders/orders.json') {
+      apiUrl = `${API_BASE_URL}/orders`;
+    } else if (path === 'data/master-data/surveyDefinition.json') {
+      apiUrl = `${API_BASE_URL}/master-data/survey-definition`;
+    } else if (path === 'data/master-data/validationGroups.json') {
+      apiUrl = `${API_BASE_URL}/master-data/validation-groups`;
+    } else if (path.startsWith('data/surveys/survey-') && path.endsWith('-inprogress.json')) {
+      // Extract orderId from path: data/surveys/survey-{orderId}-inprogress.json
+      const match = path.match(/survey-(.+?)-inprogress\.json/);
+      const orderId = match ? match[1] : '';
+      apiUrl = `${API_BASE_URL}/surveys/${orderId}/data`;
+    } else {
+      throw new Error(`Unsupported path: ${path}`);
+    }
+    
+    const response = await fetch(apiUrl);
+    if (!response.ok) {
+      if (response.status === 404) {
+        throw new Error(`File not found: ${path}`);
+      }
+      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+    }
+    
+    const result = await response.json();
+    return result.data;
+  } catch (error) {
+    console.error(`[API] Error reading ${path}:`, error);
+    throw error;
+  }
 }
 
 export async function writeJsonFile(path: string, data: any): Promise<void> {
-  // TODO: Implementierung je nach Umgebung
-  throw new Error('writeJsonFile: Implementierung für die Zielumgebung erforderlich');
+  try {
+    console.log(`[API] Writing: ${path}`);
+    
+    // Map old file paths to new API endpoints
+    if (path === 'data/orders/orders.json') {
+      // This should not be called directly - use specific order operations instead
+      throw new Error('Use specific order API endpoints instead of writing orders.json directly');
+    } else if (path.startsWith('data/surveys/survey-') && path.endsWith('-inprogress.json')) {
+      // Extract orderId from path
+      const match = path.match(/survey-(.+?)-inprogress\.json/);
+      const orderId = match ? match[1] : '';
+      
+      const apiUrl = `${API_BASE_URL}/surveys/${orderId}/progress`;
+      const response = await fetch(apiUrl, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data)
+      });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      }
+    } else {
+      throw new Error(`Unsupported write path: ${path}`);
+    }
+  } catch (error) {
+    console.error(`[API] Error writing ${path}:`, error);
+    throw error;
+  }
 }
 
 export async function listSurveyFiles(orderId?: string): Promise<string[]> {
-  // TODO: Implementierung je nach Umgebung
-  throw new Error('listSurveyFiles: Implementierung für die Zielumgebung erforderlich');
+  try {
+    console.log(`[API] Listing survey files${orderId ? ` for order ${orderId}` : ''}`);
+    
+    if (orderId) {
+      // Check if specific order has an in-progress survey
+      try {
+        const statusResponse = await fetch(`${API_BASE_URL}/surveys/${orderId}/status`);
+        if (statusResponse.ok) {
+          const statusResult = await statusResponse.json();
+          if (statusResult.data?.exists && statusResult.data?.status === 'in_progress') {
+            return [`survey-${orderId}-inprogress.json`];
+          }
+        }
+      } catch (error) {
+        console.log(`[API] No survey found for order ${orderId}`);
+      }
+      return [];
+    } else {
+      // List all surveys
+      const response = await fetch(`${API_BASE_URL}/surveys`);
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      }
+      const result = await response.json();
+      return result.data || [];
+    }
+  } catch (error) {
+    console.error(`[API] Error listing survey files:`, error);
+    throw error;
+  }
 }
 
 export async function deleteSurveyFile(filename: string): Promise<void> {
-  // TODO: Implementierung je nach Umgebung
-  throw new Error('deleteSurveyFile: Implementierung für die Zielumgebung erforderlich');
+  try {
+    console.log(`[API] Deleting: ${filename}`);
+    
+    // Extract orderId from filename
+    const match = filename.match(/survey-(.+?)-(?:inprogress|.+)\.json/);
+    const orderId = match ? match[1] : '';
+    
+    if (!orderId) {
+      throw new Error(`Cannot extract orderId from filename: ${filename}`);
+    }
+    
+    const response = await fetch(`${API_BASE_URL}/surveys/${orderId}`, {
+      method: 'DELETE'
+    });
+    
+    if (!response.ok && response.status !== 404) {
+      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+    }
+  } catch (error) {
+    console.error(`[API] Error deleting ${filename}:`, error);
+    throw error;
+  }
 }
 
 export const exportToJSON = async (data: ExportData): Promise<void> => {

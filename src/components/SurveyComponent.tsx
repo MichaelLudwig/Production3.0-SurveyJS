@@ -2,9 +2,7 @@ import React, { useEffect, useState } from 'react';
 import 'survey-core/survey-core.min.css';
 import { Model } from 'survey-core';
 import { Survey } from 'survey-react-ui';
-import { ProductionOrder, SurveyAnswer, ValidationGroup, SurveyAnswerItem } from '../types';
-import surveyDefinition from '../data/surveyDefinition.json';
-import validationGroups from '../data/validationGroups.json';
+import { ProductionOrder, SurveyAnswer, ValidationGroup } from '../types';
 import MA2Validation from './MA2Validation';
 import './SurveyComponent.css';
 import { surveyLocalization } from 'survey-core';
@@ -26,37 +24,80 @@ const SurveyComponent: React.FC<SurveyComponentProps> = ({
 }) => {
   const [survey, setSurvey] = useState<Model | null>(null);
   const [currentPageIndex, setCurrentPageIndex] = useState(0);
-  const [enhancedAnswers, setEnhancedAnswers] = useState<SurveyAnswer>(initialAnswers);
-  const [ma2Completions, setMA2Completions] = useState<{ [groupName: string]: boolean }>({});
+  const [validationData, setValidationData] = useState<{ [groupName: string]: any }>({});
   const [pendingMA2Groups, setPendingMA2Groups] = useState<string[]>([]);
+  const [surveyDefinition, setSurveyDefinition] = useState<any>(null);
+  const [validationGroups, setValidationGroups] = useState<ValidationGroup[]>([]);
+  
+  // Debug ValidationGroups State Änderungen
+  useEffect(() => {
+    console.log('[DEBUG] ValidationGroups state changed:', validationGroups);
+    console.log('[DEBUG] ValidationGroups count:', validationGroups.length);
+    if (validationGroups.length > 0) {
+      console.log('[DEBUG] First group in state:', validationGroups[0]);
+      console.log('[DEBUG] Raumstatus group in state:', validationGroups.find(g => g.name === 'raumstatus_pruefen'));
+    }
+  }, [validationGroups]);
+  const [validationTrigger, setValidationTrigger] = useState(0);
 
   // Hilfsfunktionen für Dateipfade
   const getSurveyInProgressPath = () => `data/surveys/survey-${productionOrder.id}-inprogress.json`;
   const getSurveyCompletedPath = (timestamp: string) => `data/surveys/survey-${productionOrder.id}-${timestamp}.json`;
 
-  // Get current user (in real app, this would come from auth)
-  const getCurrentUser = () => 'MA1'; // Placeholder - in real app get from auth context
+  // Get current user entfernt - wird nicht mehr verwendet
+  
+  // Hilfsfunktion: Entferne Auftragsdaten aus Survey-Antworten
+  const filterSurveyAnswers = (data: any) => {
+    const surveyAnswers = { ...data };
+    delete surveyAnswers.produktName;
+    delete surveyAnswers.materialType;
+    delete surveyAnswers.protokollNummer;
+    delete surveyAnswers.bulkBeutelAnzahl;
+    delete surveyAnswers.eingangsmaterial;
+    delete surveyAnswers.primaerPackmittel;
+    delete surveyAnswers.zwischenprodukt;
+    delete surveyAnswers.probenzug;
+    delete surveyAnswers.schablone;
+    delete surveyAnswers.bulkmaterial;
+    return surveyAnswers;
+  };
 
-  // Lade Bearbeitungsstand aus Datei (statt localStorage)
+  // Lade Survey-Definition und Validierungsgruppen über API
   useEffect(() => {
     (async () => {
       try {
-        const saved = await readJsonFile(getSurveyInProgressPath());
-        if (saved) {
-          // Übernehme alle relevanten Felder
-          if (saved.data) survey && (survey.data = saved.data);
-          if (saved.currentPageNo) setCurrentPageIndex(saved.currentPageNo);
-          if (saved.enhancedData) setEnhancedAnswers(saved.enhancedData);
-          if (saved.ma2Completions) setMA2Completions(saved.ma2Completions);
-          if (saved.pendingMA2Groups) setPendingMA2Groups(saved.pendingMA2Groups);
-        }
+        console.log('[Survey] Loading survey definition and validation groups from API...');
+        
+        // Lade Survey-Definition
+        const surveyDef = await readJsonFile('data/master-data/surveyDefinition.json');
+        console.log('[Survey] Survey definition loaded:', surveyDef ? 'success' : 'failed');
+        setSurveyDefinition(surveyDef);
+        
+        // Lade Validierungsgruppen
+        const validationGroupsData = await readJsonFile('data/master-data/validationGroups.json');
+        console.log('[Survey] Validation groups loaded:', validationGroupsData ? 'success' : 'failed');
+        console.log('[DEBUG] ValidationGroups API response:', validationGroupsData);
+        console.log('[DEBUG] First group from API:', validationGroupsData?.[0]);
+        console.log('[DEBUG] Setting validationGroups state...');
+        setValidationGroups(validationGroupsData || []);
+        console.log('[DEBUG] setValidationGroups called with:', validationGroupsData || []);
+        
       } catch (error) {
-        // Kein gespeicherter Stand vorhanden
+        console.error('[Survey] Error loading survey configuration:', error);
+        alert('Fehler beim Laden der Survey-Konfiguration. Bitte versuchen Sie es erneut.');
       }
     })();
-  }, [productionOrder.id]);
+  }, []);
+
 
   useEffect(() => {
+    // Nur ausführen, wenn Survey-Definition geladen ist
+    if (!surveyDefinition) {
+      console.log('[Survey] Waiting for survey definition to load...');
+      return;
+    }
+    
+    console.log('[Survey] Creating survey model with loaded definition...');
     // Create survey model exactly as per SurveyJS documentation
     const surveyModel = new Model(surveyDefinition);
     surveyModel.locale = 'de';
@@ -78,74 +119,128 @@ const SurveyComponent: React.FC<SurveyComponentProps> = ({
       schablone: productionOrder.schablone,
       bulkmaterial: productionOrder.eingangsmaterial // NEU: für Soll-Ist-Vergleich Bulkmaterial
     };
-    surveyModel.data = { ...orderData, ...initialAnswers };
+    // Initialisiere Survey-Model nur mit Auftragsdaten, nicht mit initialAnswers
+    surveyModel.data = { ...orderData };
     surveyModel.onComplete.add(async (sender) => {
       const answers = sender.data;
       onSurveyComplete(answers);
-      // Speichere als abgeschlossenes Survey
+      // Speichere als abgeschlossenes Survey - neue saubere Struktur
       const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+      const surveyAnswers = filterSurveyAnswers(answers);
       await writeJsonFile(getSurveyCompletedPath(timestamp), {
         orderId: productionOrder.id,
         timestamp,
         status: 'completed',
-        answers: enhancedAnswers,
-        auditTrail: enhancedAnswers // oder extrahiert, je nach Struktur
+        survey: surveyAnswers, // Nur Survey-Antworten
+        validation: validationData // Validierungsgruppen (finaler Stand)
       });
       // Lösche den in-progress-Stand
       await writeJsonFile(getSurveyInProgressPath(), {});
     });
     surveyModel.onCurrentPageChanged.add(async (sender) => {
       setCurrentPageIndex(sender.currentPageNo);
-      // Speichere Fortschritt in Datei
-      await writeJsonFile(getSurveyInProgressPath(), {
-        data: sender.data,
-        enhancedData: enhancedAnswers,
-        ma2Completions,
-        pendingMA2Groups,
-        currentPageNo: sender.currentPageNo
-      });
+      
+      // Speichere Fortschritt bei Seitenwechsel
+      try {
+        console.log(`[Survey] Saving progress on page change to page ${sender.currentPageNo}`);
+        const surveyAnswers = filterSurveyAnswers(sender.data);
+        
+        // Lade aktuelle Validierungsdaten aus der Datei (nicht aus dem State)
+        let currentValidationData = {};
+        try {
+          const currentSaved = await readJsonFile(getSurveyInProgressPath());
+          currentValidationData = currentSaved?.validation || {};
+          console.log(`[Survey] Loaded current validation data for page change:`, currentValidationData);
+        } catch (error) {
+          console.log(`[Survey] No existing validation data found for page change`);
+        }
+        
+        await writeJsonFile(getSurveyInProgressPath(), {
+          orderId: productionOrder.id,
+          timestamp: new Date().toISOString(),
+          status: 'in_progress',
+          survey: surveyAnswers,
+          validation: currentValidationData, // Use data from file, not state
+          currentPageNo: sender.currentPageNo
+        });
+        
+        console.log(`[Survey] Progress saved successfully on page change`);
+      } catch (error) {
+        console.error('[Survey] Failed to save progress on page change:', error);
+        // Navigation trotzdem erlauben - User nicht blockieren
+      }
     });
-    surveyModel.onValueChanged.add(async (sender, options) => {
+    surveyModel.onValueChanged.add((_sender, options) => {
       const questionName = options.name;
       const newValue = options.value;
-      const currentUser = getCurrentUser();
-      const timestamp = new Date().toISOString();
-      const enhancedAnswer: SurveyAnswerItem = {
-        value: newValue,
-        audit: {
-          ma1Kuerzel: currentUser,
-          ma1Timestamp: timestamp
-        }
-      };
-      setEnhancedAnswers(prev => {
-        const newAnswers = {
-          ...prev,
-          [questionName]: enhancedAnswer
-        };
-        // Prüfe Validierungsgruppen wie gehabt ...
-        // ...
-        return newAnswers;
-      });
-      // Speichere Fortschritt in Datei
-      await writeJsonFile(getSurveyInProgressPath(), {
-        data: sender.data,
-        enhancedData: { ...enhancedAnswers, [questionName]: enhancedAnswer },
-        ma2Completions,
-        pendingMA2Groups,
-        currentPageNo: sender.currentPageNo
-      });
+      console.log(`[Survey] Value changed: ${questionName} = ${JSON.stringify(newValue)}`);
+      
+      // Trigger Validierung nach State-Update (wartet bis SurveyJS survey.data aktualisiert hat)
+      setTimeout(() => {
+        console.log('[Survey] Triggering validation re-check after survey data update');
+        setValidationTrigger(prev => prev + 1);
+      }, 0);
     });
     setSurvey(surveyModel);
+    
+    // Lade saved progress NACH Survey-Model-Erstellung
+    (async () => {
+      try {
+        console.log(`[Survey] Loading saved progress for freshly created survey model: ${productionOrder.id}`);
+        const saved = await readJsonFile(getSurveyInProgressPath());
+        if (saved) {
+          console.log('[Survey] Loading saved progress - new structure:', {
+            hasSurvey: !!saved.survey,
+            hasValidation: !!saved.validation,
+            currentPage: saved.currentPageNo,
+            validationGroups: Object.keys(saved.validation || {}).length
+          });
+          
+          // Neue saubere Struktur: Kombiniere Auftragsdaten mit Survey-Antworten
+          let surveyData = { ...orderData }; // Starte mit Auftragsdaten
+          
+          // Lade Survey-Antworten aus dem neuen "survey" Feld
+          if (saved.survey && Object.keys(saved.survey).length > 0) {
+            console.log('[Survey] Loading survey answers:', saved.survey);
+            surveyData = { ...surveyData, ...saved.survey };
+          }
+          
+          // Setze Survey-Daten
+          if (Object.keys(surveyData).length > 0) {
+            console.log('[Survey] Restoring survey data:', surveyData);
+            surveyModel.data = surveyData;
+          }
+          
+          // Setze aktuelle Seite
+          if (saved.currentPageNo !== undefined && saved.currentPageNo < surveyModel.pageCount) {
+            console.log(`[Survey] Setting current page to: ${saved.currentPageNo}`);
+            surveyModel.currentPageNo = saved.currentPageNo;
+            setCurrentPageIndex(saved.currentPageNo);
+          }
+          
+          // Validierungen laden für MA2-Logik
+          if (saved.validation) {
+            console.log('[Survey] Loading validation data:', saved.validation);
+            setValidationData(saved.validation);
+          }
+        } else {
+          console.log('[Survey] No saved progress for this survey');
+        }
+      } catch (error) {
+        console.log('[Survey] No saved progress - starting fresh survey');
+      }
+    })();
+    
     return () => {
       surveyModel.dispose();
     };
-  }, [productionOrder, initialAnswers, onSurveyComplete]);
+  }, [productionOrder, initialAnswers, onSurveyComplete, surveyDefinition]);
 
   // Block navigation when MA2 validations are pending (unverändert)
   useEffect(() => {
     if (survey) {
       survey.onCurrentPageChanging.clear();
-      survey.onCurrentPageChanging.add((sender, options) => {
+      survey.onCurrentPageChanging.add((_sender, options) => {
         if (pendingMA2Groups.length > 0) {
           options.allowChanging = false;
           alert('Bitte alle MA2-Validierungen abschließen, bevor Sie fortfahren.');
@@ -154,67 +249,72 @@ const SurveyComponent: React.FC<SurveyComponentProps> = ({
     }
   }, [survey, pendingMA2Groups]);
 
-  // Handle MA2 validation for a group
+  // Handle MA2 validation for a group - neue saubere Struktur
   const handleMA2Validation = async (groupName: string, ma2Data: { kuerzel: string; kommentar?: string; pruefungOK?: boolean }) => {
-    const group = (validationGroups as ValidationGroup[]).find(g => g.name === groupName);
+    const group = validationGroups.find(g => g.name === groupName);
     if (!group) return;
     const timestamp = new Date().toISOString();
-    const updatedAnswers = { ...enhancedAnswers };
-    group.questions.forEach(questionName => {
-      if (updatedAnswers[questionName]) {
-        const currentAnswer = updatedAnswers[questionName] as SurveyAnswerItem;
-        updatedAnswers[questionName] = {
-          ...currentAnswer,
-          audit: {
-            ...currentAnswer.audit,
-            ma2Kuerzel: ma2Data.kuerzel,
-            ma2Timestamp: timestamp,
-            ma2Kommentar: ma2Data.kommentar,
-            ma2PruefungOK: ma2Data.pruefungOK
-          }
-        };
+    
+    // Lade aktuelle Daten - handle missing file gracefully
+    let currentSaved;
+    try {
+      currentSaved = await readJsonFile(getSurveyInProgressPath());
+    } catch (error) {
+      console.log('[MA2] No existing file found, creating new validation data');
+      currentSaved = { validation: {} };
+    }
+    
+    // Neue Validierungsstruktur - merge with existing validation data
+    const updatedValidationData = {
+      ...validationData, // Use current local state as base
+      ...currentSaved?.validation, // Then merge any saved validation data
+      [groupName]: {
+        status: 'completed',
+        ma2Kuerzel: ma2Data.kuerzel,
+        ma2Timestamp: timestamp,
+        ma2Kommentar: ma2Data.kommentar,
+        validationOK: ma2Data.pruefungOK,
+        validatedQuestions: group.questions
       }
-    });
-    setEnhancedAnswers(updatedAnswers);
-    setMA2Completions(prev => ({ ...prev, [groupName]: true }));
-    setPendingMA2Groups(prev => prev.filter(name => name !== groupName));
-    // Speichere Fortschritt in Datei
+    };
+    
+    // Update lokalen State
+    setValidationData(updatedValidationData);
+    
+    // Filtere Survey-Antworten
+    const surveyAnswers = filterSurveyAnswers(survey?.data || {});
+    
+    // Speichere mit neuer sauberer Struktur
     await writeJsonFile(getSurveyInProgressPath(), {
-      data: survey?.data || {},
-      enhancedData: updatedAnswers,
-      ma2Completions: { ...ma2Completions, [groupName]: true },
-      pendingMA2Groups: pendingMA2Groups.filter(name => name !== groupName),
+      orderId: productionOrder.id,
+      timestamp: new Date().toISOString(),
+      status: 'in_progress',
+      survey: surveyAnswers, // Nur Survey-Antworten
+      validation: updatedValidationData, // Validierungsgruppen
       currentPageNo: survey?.currentPageNo || 0
     });
+    
+    console.log(`[MA2] Validation completed for group: ${groupName}`, updatedValidationData[groupName]);
   };
 
-  // Get answers for a specific validation group
+  // Get answers for a specific validation group - direkter Zugriff auf lokale SurveyJS-Daten
   const getGroupAnswers = (group: ValidationGroup) => {
     const groupAnswers: { [key: string]: any } = {};
     
-    console.log(`Getting answers for group ${group.title}:`);
-    console.log(`Enhanced answers:`, enhancedAnswers);
-    console.log(`Survey data:`, survey?.data);
+    console.log(`[Validation] Getting answers for group ${group.title}:`);
+    console.log(`[Validation] Survey model data:`, survey?.data);
     
     group.questions.forEach(questionName => {
-      // First try enhanced answers
-      const enhancedAnswer = enhancedAnswers[questionName];
-      if (enhancedAnswer && typeof enhancedAnswer === 'object' && 'value' in enhancedAnswer) {
-        groupAnswers[questionName] = (enhancedAnswer as SurveyAnswerItem).value;
-      } 
-      // Fallback to survey data
-      else if (survey?.data && survey.data[questionName] !== undefined) {
+      // Direkter Zugriff auf lokale SurveyJS-Daten (sofort verfügbar)
+      if (survey?.data && survey.data[questionName] !== undefined) {
         groupAnswers[questionName] = survey.data[questionName];
+        console.log(`[Validation] ✅ Found answer for ${questionName}: ${JSON.stringify(survey.data[questionName])}`);
+      } else {
+        console.log(`[Validation] ❌ No answer found for ${questionName}`);
       }
-      // Final fallback
-      else {
-        groupAnswers[questionName] = enhancedAnswer;
-      }
-      
-      console.log(`Question ${questionName}: enhanced=${enhancedAnswer}, survey=${survey?.data?.[questionName]}, final=${groupAnswers[questionName]}`);
     });
     
-    console.log(`Final group answers for ${group.title}:`, groupAnswers);
+    console.log(`[Validation] Final group answers for ${group.title}:`, groupAnswers);
     return groupAnswers;
   };
 
@@ -247,7 +347,7 @@ const SurveyComponent: React.FC<SurveyComponentProps> = ({
     const allPageQuestions = getAllQuestionNames(currentPage.elements);
     console.log(`Page ${currentPageIndex} all questions:`, allPageQuestions);
 
-    const groups = (validationGroups as ValidationGroup[]).filter(group => {
+    const groups = validationGroups.filter(group => {
       // Check if any question from this group is on the current page
       const hasQuestionOnPage = group.questions.some(questionName => 
         allPageQuestions.includes(questionName)
@@ -256,6 +356,12 @@ const SurveyComponent: React.FC<SurveyComponentProps> = ({
       // Debug logging
       if (hasQuestionOnPage) {
         console.log(`Found validation group on page: ${group.title}`, group.questions);
+        console.log(`[DEBUG] ValidationGroup from state:`, {
+          name: group.name,
+          validationType: group.validationType,
+          label: group.label,
+          hasValidationType: group.validationType !== undefined
+        });
       }
       
       return hasQuestionOnPage;
@@ -265,10 +371,60 @@ const SurveyComponent: React.FC<SurveyComponentProps> = ({
     return groups;
   };
 
-  const handleBackToOrder = () => {
-    if (window.confirm('Möchten Sie wirklich zur Auftragsauswahl zurück? Ihr Fortschritt wird gespeichert.')) {
-      onBackToOrder();
+  // Trigger validation re-check when survey data or trigger changes
+  useEffect(() => {
+    if (!survey || !validationGroups.length) return;
+    
+    console.log('[Survey] Survey data changed, re-checking validation');
+    
+    const currentGroups = getCurrentPageValidationGroups();
+    const newPendingGroups = currentGroups
+      .filter(group => group.validationType === "validation") // Gruppen die MA2 benötigen
+      .filter(group => !validationData[group.name] || validationData[group.name].status !== 'completed') // Noch nicht abgeschlossen
+      .map(group => group.name);
+    
+    console.log(`[MA2] Page ${currentPageIndex} - New pending MA2 groups:`, newPendingGroups);
+    console.log(`[MA2] Current validation data:`, validationData);
+    
+    if (newPendingGroups.length !== pendingMA2Groups.length || 
+        !newPendingGroups.every(name => pendingMA2Groups.includes(name))) {
+      console.log(`[MA2] Updating pending MA2 groups from [${pendingMA2Groups}] to [${newPendingGroups}]`);
+      setPendingMA2Groups(newPendingGroups);
     }
+  }, [currentPageIndex, survey, validationGroups, validationData, validationTrigger]);
+
+  const handleBackToOrder = async () => {
+    // Speichere Fortschritt vor dem Wechsel
+    try {
+      console.log('[Survey] Saving progress before order switch...');
+      const surveyAnswers = filterSurveyAnswers(survey?.data || {});
+      
+      // Lade aktuelle Validierungsdaten aus der Datei (nicht aus dem State)
+      let currentValidationData = {};
+      try {
+        const currentSaved = await readJsonFile(getSurveyInProgressPath());
+        currentValidationData = currentSaved?.validation || {};
+        console.log(`[Survey] Loaded current validation data for order switch:`, currentValidationData);
+      } catch (error) {
+        console.log(`[Survey] No existing validation data found for order switch`);
+      }
+      
+      await writeJsonFile(getSurveyInProgressPath(), {
+        orderId: productionOrder.id,
+        timestamp: new Date().toISOString(),
+        status: 'in_progress',
+        survey: surveyAnswers,
+        validation: currentValidationData, // Use data from file, not state
+        currentPageNo: survey?.currentPageNo || 0
+      });
+      
+      console.log('[Survey] Progress saved successfully before order switch');
+    } catch (error) {
+      console.error('[Survey] Failed to save progress before order switch:', error);
+      // Trotzdem navigieren - User nicht blockieren
+    }
+    
+    onBackToOrder();
   };
 
   const getTotalPages = () => {
@@ -279,8 +435,14 @@ const SurveyComponent: React.FC<SurveyComponentProps> = ({
     return survey?.currentPage?.title || '';
   };
 
-  if (!survey) {
-    return <div className="survey-loading">Fragekatalog wird geladen...</div>;
+  if (!surveyDefinition || !survey) {
+    return (
+      <div className="survey-loading">
+        <p>Fragekatalog wird geladen...</p>
+        {!surveyDefinition && <p>• Survey-Definition wird von Server geladen...</p>}
+        {!survey && surveyDefinition && <p>• Survey wird initialisiert...</p>}
+      </div>
+    );
   }
 
   return (
@@ -318,16 +480,24 @@ const SurveyComponent: React.FC<SurveyComponentProps> = ({
           {/* Right Panel: MA2 Validation */}
           <div className="survey-right-panel">
             <div className="ma2-validation-wrapper">
-              {getCurrentPageValidationGroups().map(group => (
-                <MA2Validation
-                  key={group.name}
-                  group={group}
-                  groupAnswers={getGroupAnswers(group)}
-                  onMA2Validation={handleMA2Validation}
-                  isCompleted={ma2Completions[group.name] || false}
-                  surveyData={survey?.data}
-                />
-              ))}
+              {getCurrentPageValidationGroups().map(group => {
+                console.log(`[DEBUG] Rendering MA2Validation for group: ${group.name}`, {
+                  validationType: group.validationType,
+                  label: group.label,
+                  title: group.title,
+                  fullGroup: group
+                });
+                return (
+                  <MA2Validation
+                    key={group.name}
+                    group={group}
+                    groupAnswers={getGroupAnswers(group)}
+                    onMA2Validation={handleMA2Validation}
+                    isCompleted={validationData[group.name]?.status === 'completed' || false}
+                    surveyData={survey?.data}
+                  />
+                );
+              })}
               
               {pendingMA2Groups.length > 0 && (
                 <div className="ma2-pending-notice">

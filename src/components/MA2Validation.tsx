@@ -10,13 +10,7 @@ interface MA2ValidationProps {
   surveyData: any;
 }
 
-// Ergänze die Typdefinition für ValidationGroup (nur lokal, falls importiert, dann als Partial<...> nutzen)
-interface ExtendedValidationGroup extends ValidationGroup {
-  validationType?: string;
-  signatureLabel?: string;
-  showMA2?: boolean;
-  ma2Label?: string;
-}
+// Kein Extended Interface mehr nötig - ValidationGroup ist jetzt standardisiert
 
 // Hilfsfunktion für Matrix-Antworten
 function renderMatrixAnswer(answer: any) {
@@ -70,7 +64,6 @@ const MA2Validation: React.FC<MA2ValidationProps> = ({
 }) => {
   const [ma2Kuerzel, setMa2Kuerzel] = useState('');
   const [ma2Kommentar, setMa2Kommentar] = useState('');
-  const [ma2MA2, setMa2MA2] = useState('');
   const [ma2PruefungOK, setMa2PruefungOK] = useState<boolean>(true);
 
   // Check if all questions in group are answered
@@ -84,7 +77,7 @@ const MA2Validation: React.FC<MA2ValidationProps> = ({
   console.log(`Group answers:`, groupAnswers);
   console.log(`All questions answered:`, allQuestionsAnswered);
   console.log(`Is completed:`, isCompleted);
-  console.log(`Requires MA2:`, group.requiresMA2);
+  console.log(`Validation Type:`, group.validationType);
 
   // Check if MA2 validation is already completed
   const ma2ValidationCompleted = isCompleted;
@@ -151,9 +144,8 @@ const MA2Validation: React.FC<MA2ValidationProps> = ({
     );
   };
 
-  const groupExt = group as ExtendedValidationGroup;
-  const isSignatureValidation = groupExt.validationType === "signature";
-  const isMA2Validation = groupExt.requiresMA2 === true;
+  const isSignatureValidation = group.validationType === "signature";
+  const isMA2Validation = group.validationType === "validation";
   if (!isSignatureValidation && !isMA2Validation) {
     return null;
   }
@@ -166,8 +158,8 @@ const MA2Validation: React.FC<MA2ValidationProps> = ({
       <div className="ma2-section-header">
         <h3>
           {isSignatureValidation
-            ? `Signatur: ${groupExt.title}`
-            : `Vier-Augen-Prinzip: ${groupExt.title}`}
+            ? `Signatur: ${group.title}`
+            : `Vier-Augen-Prinzip: ${group.title}`}
         </h3>
         <p>
           {!isEnabled
@@ -203,9 +195,7 @@ const MA2Validation: React.FC<MA2ValidationProps> = ({
 
           <div className="ma2-form-group">
             <label htmlFor="ma2-kuerzel">
-              {isSignatureValidation
-                ? (groupExt.signatureLabel || "Signatur")
-                : "Prüfendes Personal - Kürzel *"}
+              {group.label}
             </label>
             <input
               id="ma2-kuerzel"
@@ -219,23 +209,6 @@ const MA2Validation: React.FC<MA2ValidationProps> = ({
               readOnly={ma2ValidationCompleted}
             />
           </div>
-          {isSignatureValidation && groupExt.showMA2 && (
-            <div className="ma2-form-group">
-              <label htmlFor="ma2-ma2">
-                {groupExt.ma2Label || "Kürzel MA2"}
-              </label>
-              <input
-                id="ma2-ma2"
-                type="text"
-                value={ma2MA2}
-                onChange={(e) => setMa2MA2(e.target.value)}
-                maxLength={30}
-                required={false}
-                disabled={!isEnabled || ma2ValidationCompleted}
-                readOnly={ma2ValidationCompleted}
-              />
-            </div>
-          )}
 
           <div className="ma2-form-group">
             <label htmlFor="ma2-kommentar">Kommentar (optional)</label>

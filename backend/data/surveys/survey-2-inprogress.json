@@ -1,0 +1,51 @@
+{
+  "orderId": "2",
+  "timestamp": "2025-07-15T22:06:05.244Z",
+  "status": "in_progress",
+  "survey": {
+    "eingangsmaterial_ausgebucht": true,
+    "mitarbeiter_liste": [
+      {
+        "name": "fgh",
+        "kuerzel": "fgh"
+      },
+      {
+        "name": "fgh",
+        "kuerzel": "fgh"
+      }
+    ],
+    "beginn_datum": "2025-07-19",
+    "beginn_uhrzeit": "04:01",
+    "kennzeichnung_matrix_allgemein": {
+      "eurocontainer": "ja",
+      "proben_freigabe": "ja",
+      "restmenge": "ja"
+    },
+    "arbeitsraum_ist_druck_matrix": [
+      {
+        "eq52": 34
+      }
+    ],
+    "schleusen_ist_druck_matrix": [
+      {
+        "eq49": 34,
+        "eq50": 34,
+        "eq51": 34
+      }
+    ],
+    "reinraumstatus_ampel": "Grün",
+    "reinraum_nutzbar": true
+  },
+  "validation": {
+    "eingangsmaterialien_ausbuchen": {
+      "status": "completed",
+      "ma2Kuerzel": "fgh",
+      "ma2Timestamp": "2025-07-15T22:01:32.851Z",
+      "validationOK": true,
+      "validatedQuestions": [
+        "eingangsmaterial_ausgebucht"
+      ]
+    }
+  },
+  "currentPageNo": 4
+}

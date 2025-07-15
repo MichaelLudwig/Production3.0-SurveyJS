@@ -1,0 +1,52 @@
+{
+  "orderId": "1450",
+  "timestamp": "2025-07-15T21:45:15.469Z",
+  "status": "in_progress",
+  "survey": {
+    "eingangsmaterial_ausgebucht": true,
+    "mitarbeiter_liste": [
+      {
+        "name": "ert",
+        "kuerzel": "ert"
+      },
+      {
+        "name": "ert",
+        "kuerzel": "ert"
+      }
+    ],
+    "beginn_datum": "2025-07-20",
+    "beginn_uhrzeit": "23:45",
+    "kennzeichnung_matrix_allgemein": {
+      "eurocontainer": "ja",
+      "proben_freigabe": "ja",
+      "restmenge": "ja"
+    },
+    "kennzeichnung_matrix_gacp": {
+      "proben_ipk": "ja",
+      "gebinde_rueckfragen": "ja",
+      "bruch": "ja"
+    },
+    "arbeitsraum_ist_druck_matrix": [
+      {
+        "eq52": 45
+      }
+    ],
+    "schleusen_ist_druck_matrix": [
+      {
+        "eq49": 45,
+        "eq50": 45,
+        "eq51": 45
+      }
+    ],
+    "reinraumstatus_ampel": "Grün",
+    "reinraum_nutzbar": true,
+    "produktbezeichnung_ist": "ert",
+    "artikelnummer_ist": "ert",
+    "charge_ist": "ert",
+    "umverpackung_dicht": true,
+    "primaerpackmittel_erfasst_kuerzel": "ert",
+    "bemerkungen": "ert"
+  },
+  "validation": {},
+  "currentPageNo": 5
+}

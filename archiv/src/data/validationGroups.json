@@ -3,14 +3,14 @@
     "name": "eingangsmaterialien_ausbuchen",
     "title": "Eingangsmaterialien ausbuchen",
     "validationType": "signature",
-    "signatureLabel": "Signatur Leiter der Herstellung",
-    "showMA2": false,
+    "label": "Signatur Leiter der Herstellung",
     "questions": ["eingangsmaterial_ausgebucht"]
   },
   {
     "name": "raumstatus_pruefen",
     "title": "Raumstatus überprüfen",
-    "requiresMA2": true,
+    "validationType": "validation",
+    "label": "Kürzel Mitarbeiter 2",
     "questions": [
       "arbeitsraum_ist_druck_matrix",
       "schleusen_ist_druck_matrix",
@@ -21,7 +21,8 @@
   {
     "name": "materialbereitstellung_primaerpackmittel",
     "title": "Materialbereitstellung Primärpackmittel",
-    "requiresMA2": true,
+    "validationType": "validation",
+    "label": "Kürzel Mitarbeiter 2",
     "questions": [
       "produktbezeichnung_ist",
       "artikelnummer_ist",
@@ -34,7 +35,8 @@
   {
     "name": "materialbereitstellung_bulk",
     "title": "Materialbereitstellung Bulkmaterial",
-    "requiresMA2": true,
+    "validationType": "validation",
+    "label": "Kürzel Mitarbeiter 2",
     "questions": [
       "produktbezeichnung_bulk_ist",
       "artikelnr_bulk_ist",
@@ -47,103 +49,120 @@
   {
     "name": "zubehör_schablonen",
     "title": "Zubehör Schablonen",
-    "requiresMA2": true,
+    "validationType": "validation",
+    "label": "Kürzel Mitarbeiter 2",
     "questions": ["schablonen_eq_ist", "schablonen_charge_ist", "schablonen_anzahl_ist", "schablonen_sollangaben_ok", "schablonen_verpackung_ok"]
   },
   {
     "name": "materialbereitstellung_abschluss",
     "title": "Materialbereitstellung Abschluss",
-    "requiresMA2": true,
+    "validationType": "validation",
+    "label": "Kürzel Mitarbeiter 2",
     "questions": ["materialbereitstellung_bemerkungen", "materialbereitstellung_ma1_signatur", "materialbereitstellung_ma2_kuerzel"]
   },
   {
     "name": "line_clearing",
     "title": "Line Clearing",
-    "requiresMA2": true,
+    "validationType": "validation",
+    "label": "Kürzel Mitarbeiter 2",
     "questions": ["raumtemperatur_eq47", "raumtemperatur_eq48", "raumtemperatur_entspricht", "line_clearing_erfolgt", "line_clearing_bemerkungen", "line_clearing_erfasst", "line_clearing_geprueft"]
   },
   {
     "name": "vorbereitung_waage",
     "title": "Vorbereitung Waage",
-    "requiresMA2": true,
+    "validationType": "validation",
+    "label": "Kürzel Mitarbeiter 2",
     "questions": ["waage_eq60_ausgerichtet", "waage_eq61_ausgerichtet", "kalibrierung_eq60_erfolgt", "kalibrierung_eq61_erfolgt", "waegung_eq60_korrekt", "waegung_eq61_korrekt", "waage_statusbericht_ma2", "waage_bemerkungen", "waage_erfasst", "waage_geprueft"]
   },
   {
     "name": "vorbereitung_schweissgeraet",
     "title": "Vorbereitung Schweißgerät",
-    "requiresMA2": true,
+    "validationType": "validation",
+    "label": "Kürzel Mitarbeiter 2",
     "questions": ["verschweiss_programm_ist", "verschweiss_programm_ok", "schweissgeraet_funktioniert", "schweissgeraet_bemerkungen", "schweissgeraet_erfasst", "schweissgeraet_geprueft"]
   },
   {
     "name": "primaerverpackung_bulkbeutel",
     "title": "Primärverpackung pro Bulkbeutel",
-    "requiresMA2": true,
+    "validationType": "validation",
+    "label": "Kürzel Mitarbeiter 2",
     "questions": ["bulk_beutel_production"]
   },
   {
     "name": "pause_details",
     "title": "Pause Details",
-    "requiresMA2": true,
+    "validationType": "validation",
+    "label": "Kürzel Mitarbeiter 2",
     "questions": ["pause_beginn", "pause_ende", "pause_bemerkung", "pause_ma1_signatur", "pause_ma2_signatur", "kalibrierung_nach_pause_eq60", "kalibrierung_nach_pause_eq61", "verschweiss_nach_pause_ist", "verschweiss_nach_pause_ok", "schweissgeraet_nach_pause_ok", "pause_nachbereitung_bemerkungen", "pause_nachbereitung_erfasst", "pause_nachbereitung_geprueft"]
   },
   {
     "name": "kumulierte_restmenge",
     "title": "Kumulierte Restmenge und Probenzug",
-    "requiresMA2": true,
+    "validationType": "validation",
+    "label": "Kürzel Mitarbeiter 2",
     "questions": ["restmenge_eingang", "restmenge_bemerkung", "probenzug_ipk_abgefuellt_ma1", "probenzug_ipk_abgefuellt_ma2", "gesamtmenge_probenzug_ipk", "probenzug_ipk_bestaetigung_ma2", "probenzug_freigabe_vorgesehen", "probegebinde_liste", "probegebinde_gekennzeichnet", "anzahl_zwischenprodukte", "zwischenprodukte_ueberpruefung_ma2", "bruch_abfuellung_restmenge", "gebinde_abgewogen_verschweisst_ma1", "gebinde_abgewogen_verschweisst_ma2"]
   },
   {
     "name": "restmenge_final",
     "title": "Finale Restmenge",
-    "requiresMA2": true,
+    "validationType": "validation",
+    "label": "Kürzel Mitarbeiter 2",
     "questions": ["bruch_finale_restmenge_ma1", "bruch_finale_restmenge_ma2", "finale_restmenge_gewicht", "finale_restmenge_pruefung_ma2", "bruch_aussortiert_abgefuellt_ma1", "bruch_aussortiert_abgefuellt_ma2", "finale_restmenge_abgefuellt_ma1", "finale_restmenge_abgefuellt_ma2", "testbeutel_verschweisst_ma1", "testbeutel_verschweisst_ma2", "primaerpackmittel_uebrig_ma1", "anzahl_primaerpackmittel_uebrig", "primaerpackmittel_uebrig_ma2", "restmenge_ende_uhrzeit", "restmenge_bemerkungen", "restmenge_erfasst", "restmenge_geprueft"]
   },
   {
     "name": "schleusung_eurocontainer",
     "title": "Schleusung Eurocontainer",
-    "requiresMA2": true,
+    "validationType": "validation",
+    "label": "Kürzel Mitarbeiter 2",
     "questions": ["produktliste", "herstellprozess_ma1_signatur", "herstellprozess_ma2_signatur"]
   },
   {
     "name": "nachbereitung_reinraum",
     "title": "Nachbereitung Reinraum",
-    "requiresMA2": true,
+    "validationType": "validation",
+    "label": "Kürzel Mitarbeiter 2",
     "questions": ["line_clearing_nachbereitung_ma1", "line_clearing_nachbereitung_ma2", "nachbereitung_reinraum_bemerkungen", "nachbereitung_reinraum_erfasst", "nachbereitung_reinraum_geprueft"]
   },
   {
     "name": "einlagern_zwischenprodukte",
     "title": "Einlagern Zwischenprodukte",
-    "requiresMA2": true,
+    "validationType": "validation",
+    "label": "Kürzel Mitarbeiter 2",
     "questions": ["zwischenprodukte_verpackt_ma1", "zwischenprodukte_verpackt_ma2", "zwischenprodukte_produktionslager_ma1", "zwischenprodukte_produktionslager_ma2"]
   },
   {
     "name": "einlagern_proben",
     "title": "Einlagern Proben",
-    "requiresMA2": true,
+    "validationType": "validation",
+    "label": "Kürzel Mitarbeiter 2",
     "questions": ["proben_gekennzeichnet_ma1", "proben_gekennzeichnet_ma2", "proben_produktionslager_ma1", "proben_produktionslager_ma2"]
   },
   {
     "name": "einlagern_restmenge",
     "title": "Einlagern Restmenge",
-    "requiresMA2": true,
+    "validationType": "validation",
+    "label": "Kürzel Mitarbeiter 2",
     "questions": ["restmenge_gekennzeichnet_ma1", "restmenge_gekennzeichnet_ma2", "restmenge_sperrlager_ma1", "restmenge_sperrlager_ma2"]
   },
   {
     "name": "einlagern_muell",
     "title": "Einlagern Müll",
-    "requiresMA2": true,
+    "validationType": "validation",
+    "label": "Kürzel Mitarbeiter 2",
     "questions": ["muell_gekennzeichnet_ma1", "muell_gekennzeichnet_ma2", "muell_sperrlager_ma1", "muell_sperrlager_ma2"]
   },
   {
     "name": "einlagern_eingangsmaterialien",
     "title": "Einlagern Eingangsmaterialien",
-    "requiresMA2": true,
+    "validationType": "validation",
+    "label": "Kürzel Mitarbeiter 2",
     "questions": ["ungeoefffnete_bulkbeutel_ma1", "ungeoefffnete_bulkbeutel_ma2", "primaerpackmittel_ungeöffnet_ma1", "primaerpackmittel_ungeöffnet_ma2", "primaerpackmittel_geoeffnet_ma1", "primaerpackmittel_geoeffnet_ma2", "eingangsmaterialien_begruendung", "schablonen_entfernt_ma1", "schablonen_entfernt_ma2", "schablonen_begruendung", "nachbereitung_bemerkung", "nachbereitung_erfasst", "nachbereitung_geprueft"]
   },
   {
     "name": "abschluss",
     "title": "Abschluss",
-    "requiresMA2": true,
+    "validationType": "validation",
+    "label": "Kürzel Mitarbeiter 2",
     "questions": ["geraete_logbuecher_eingetragen", "probenzugsplan_ausgefuellt", "abschluss_bemerkung", "abschluss_erfasst", "abschluss_geprueft"]
   }
 ]

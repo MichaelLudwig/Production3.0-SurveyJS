@@ -1,0 +1,1429 @@
+{
+  "showProgressBar": "top",
+  "showQuestionNumbers": "off",
+  "completedHtml": "<h3>Vielen Dank!</h3><p>Der Produktionsprozess wurde erfolgreich dokumentiert.</p>",
+  "pages": [
+    {
+      "name": "info_produktionsauftrag",
+      "title": "1.1 Information Produktionsauftrag",
+      "elements": [
+        {
+          "type": "html",
+          "name": "auftrag_display",
+          "html": "<div style='display: grid; grid-template-columns: 1fr 1fr; gap: 20px; max-width: 100%; font-size: 14px; line-height: 1.2;'><div><div style='margin-bottom: 12px;'><h4 style='font-size: 18px; margin: 0 0 5px 0; font-weight: bold; color: #333;'>Eingangsmaterial Arzneimittel/Wirkstoff</h4><p style='margin: 1px 0;'><strong>Produktbezeichnung:</strong> {eingangsmaterial.produktbezeichnung}</p><p style='margin: 1px 0;'><strong>Artikel-Nr.:</strong> {eingangsmaterial.artikelNummer}</p><p style='margin: 1px 0;'><strong>Charge:</strong> {eingangsmaterial.charge}</p><p style='margin: 1px 0;'><strong>Verfall:</strong> {eingangsmaterial.verfall}</p><p style='margin: 1px 0;'><strong>Menge:</strong> {eingangsmaterial.menge}</p></div><div style='margin-bottom: 12px;'><h4 style='font-size: 18px; margin: 16px 0 5px 0; font-weight: bold; color: #333;'>Eingangsmaterial Schablone</h4><p style='margin: 1px 0;'><strong>EQ-Nummer:</strong> {schablone.eqNummer}</p><p style='margin: 1px 0;'><strong>Charge:</strong> {schablone.charge}</p><p style='margin: 1px 0;'><strong>Anzahl:</strong> {schablone.anzahl}</p></div><div style='margin-bottom: 12px;'><h4 style='font-size: 18px; margin: 16px 0 5px 0; font-weight: bold; color: #333;'>Eingangsmaterial Primärpackmittel</h4><p style='margin: 1px 0;'><strong>Produktbezeichnung:</strong> {primaerPackmittel.produktbezeichnung}</p><p style='margin: 1px 0;'><strong>Artikel-Nr.:</strong> {primaerPackmittel.artikelNummer}</p><p style='margin: 1px 0;'><strong>Charge:</strong> {primaerPackmittel.charge}</p><p style='margin: 1px 0;'><strong>Anzahl:</strong> {primaerPackmittel.anzahl}</p></div></div><div><div style='margin-bottom: 12px;'><h4 style='font-size: 18px; margin: 0 0 5px 0; font-weight: bold; color: #333;'>Herzustellendes Zwischenprodukt</h4><p style='margin: 1px 0;'><strong>Zwischenprodukt:</strong> {produktName}</p><p style='margin: 1px 0;'><strong>Artikel-Nr.:</strong> {zwischenprodukt.artikelNummer}</p><p style='margin: 1px 0;'><strong>Charge:</strong> {zwischenprodukt.gebindeNummer}</p><p style='margin: 1px 0;'><strong>Anzahl:</strong> {zwischenprodukt.vorgGebindezahl}</p></div><div style='margin-bottom: 12px;'><h4 style='font-size: 18px; margin: 16px 0 5px 0; font-weight: bold; color: #333;'>Produktionsstraßen Anzahl</h4><p style='margin: 1px 0;'><strong>Anzahl:</strong> {bulkBeutelAnzahl}</p></div><div style='margin-bottom: 12px;'><h4 style='font-size: 18px; margin: 16px 0 5px 0; font-weight: bold; color: #333;'>Probenzugsplan der Kampagne</h4><p style='margin: 1px 0;'><strong>Freigabeanalytik vorgesehen?:</strong> {probenzug.freigabeVorgesehen}</p><p style='margin: 1px 0;'><strong>Plan:</strong> {probenzug.plan}</p><p style='margin: 1px 0;'><strong>Füllmenge:</strong></p><ul style='margin: 1px 0 0 15px; padding: 0;'><li style='margin: 0;'>1× {probenzug.fuellmenge1} g</li><li style='margin: 0;'>1× {probenzug.fuellmenge2} g</li></ul></div></div></div>"
+        },
+        {
+          "type": "boolean",
+          "name": "eingangsmaterial_ausgebucht",
+          "title": "Eingangsmaterialien ausgebucht und Beleg beigefügt?",
+          "isRequired": true
+        }
+      ]
+    },
+    {
+      "name": "beteiligte_mitarbeiter",
+      "title": "1.3 Beteiligte Mitarbeiter",
+      "elements": [
+        {
+          "type": "paneldynamic",
+          "name": "mitarbeiter_liste",
+          "title": "Liste beteiligte Mitarbeiter",
+          "templateElements": [
+            {
+              "type": "text",
+              "name": "name",
+              "title": "Name des Mitarbeiters",
+              "isRequired": true
+            },
+            {
+              "type": "text",
+              "name": "kuerzel",
+              "title": "Kürzel",
+              "isRequired": true,
+              "startWithNewLine": false
+            }
+          ],
+          "panelCount": 2,
+          "minPanelCount": 2,
+          "maxPanelCount": 10,
+          "panelAddText": "Mitarbeiter hinzufügen",
+          "panelRemoveText": "Entfernen"
+        }
+      ]
+    },
+    {
+      "name": "datum_uhrzeit_beginn",
+      "title": "1.4 Datum + Uhrzeit Beginn",
+      "elements": [
+        {
+          "type": "text",
+          "name": "beginn_datum",
+          "title": "Datum der Herstellung",
+          "inputType": "date",
+          "isRequired": true
+        },
+        {
+          "type": "text",
+          "name": "beginn_uhrzeit", 
+          "title": "Uhrzeit Beginn",
+          "inputType": "time",
+          "isRequired": true
+        }
+      ]
+    },
+    {
+      "name": "kennzeichnung_vorbereitung",
+      "title": "1.5 Vorbereitung Kennzeichnung",
+      "elements": [
+        {
+          "type": "html",
+          "name": "kennzeichnung_info",
+          "html": "<h4>Prüfung ob alles vorhanden ist</h4><p>Vorbereitung der Etiketten (Dymo-Label)</p>"
+        },
+        {
+          "type": "matrix",
+          "name": "kennzeichnung_matrix_allgemein",
+          "title": "Vorbereitung der Etiketten (Dymo-Label)",
+          "columns": [
+            { "value": "ja", "text": "Ja" },
+            { "value": "nein", "text": "Nein" },
+            { "value": "nicht_zutreffend", "text": "Nicht zutreffend" }
+          ],
+          "rows": [
+            { "value": "eurocontainer", "text": "Eurocontainer für Zwischenprodukte" },
+            { "value": "proben_freigabe", "text": "Proben Freigabeanalytik: Probengebinde und Eurocontainer" },
+            { "value": "restmenge", "text": "Finale Restmenge" }
+          ],
+          "isAllRowRequired": true
+        },
+        {
+          "type": "matrix",
+          "name": "kennzeichnung_matrix_gacp",
+          "title": "Vorbereitung der Etiketten (Dymo-Label) – GACP-spezifisch",
+          "visibleIf": "{materialType} = 'GACP'",
+          "columns": [
+            { "value": "ja", "text": "Ja" },
+            { "value": "nein", "text": "Nein" },
+            { "value": "nicht_zutreffend", "text": "Nicht zutreffend" }
+          ],
+          "rows": [
+            { "value": "proben_ipk", "text": "Proben Inprozesskontrolle: Probengebinde und Eurocontainer" },
+            { "value": "gebinde_rueckfragen", "text": "Gebinde „Rückfragen QK“" },
+            { "value": "bruch", "text": "Bruch und aussortiertes Material" }
+          ],
+          "isAllRowRequired": true
+        }
+      ]
+    },
+    {
+      "name": "raumstatus_pruefen",
+      "title": "1.6 Raumstatus überprüfen",
+      "elements": [
+        {
+          "type": "html",
+          "name": "raumstatus_info",
+          "html": "<h4>Info</h4><p>Der Status des Reinraums wird im 4-Augen Prinzip überprüft</p>"
+        },
+        {
+          "type": "matrixdynamic",
+          "name": "arbeitsraum_ist_druck_matrix",
+          "title": "Arbeitsraum Ist Druck (Soll: 25-35 Pa)",
+          "columns": [
+            { "name": "eq52", "title": "EQ-52", "cellType": "text", "inputType": "number", "isRequired": true }
+          ],
+          "rowCount": 1,
+          "minRowCount": 1,
+          "maxRowCount": 1,
+          "addRowText": "",
+          "removeRowText": ""
+        },
+        {
+          "type": "matrixdynamic",
+          "name": "schleusen_ist_druck_matrix",
+          "title": "Schleusen Ist Druck (Soll: 10-20 Pa)",
+          "columns": [
+            { "name": "eq49", "title": "EQ-49", "cellType": "text", "inputType": "number", "isRequired": true },
+            { "name": "eq50", "title": "EQ-50", "cellType": "text", "inputType": "number", "isRequired": true },
+            { "name": "eq51", "title": "EQ-51", "cellType": "text", "inputType": "number", "isRequired": true }
+          ],
+          "rowCount": 1,
+          "minRowCount": 1,
+          "maxRowCount": 1,
+          "addRowText": "",
+          "removeRowText": ""
+        },
+       
+        {
+          "type": "radiogroup",
+          "name": "reinraumstatus_ampel",
+          "title": "Reinraumstatus - Ampelstatus",
+          "choices": ["Grün", "Rot"],
+          "isRequired": true,
+          "colCount": 2
+        },
+        {
+          "type": "text",
+          "name": "bulkprodukt_name_rot",
+          "title": "Bei rot: Name des zu verarbeitenden Bulkprodukts + Charge",
+          "visibleIf": "{reinraumstatus_ampel} = 'Rot'",
+          "startWithNewLine": false
+        },
+        {
+          "type": "panel",
+          "name": "reinraum_nutzbar_panel",
+          "elements": [
+            {
+              "type": "boolean",
+              "name": "reinraum_nutzbar",
+              "title": "Reinraum kann genutzt werden?",
+              "isRequired": true
+            },
+            {
+              "type": "comment",
+              "name": "reinraum_nutzbar_kommentar",
+              "title": "Bitte Grund für 'Nein' angeben",
+              "visibleIf": "{reinraum_nutzbar} = false",
+              "isRequired": true,
+              "startWithNewLine": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "materialbereitstellung_primaerpackmittel",
+      "title": "2.1 Materialbereitstellung - Primärpackmittel",
+      "elements": [
+        {
+          "type": "html",
+          "name": "info_primärpackmittel",
+          "html": "<ul style='margin-bottom: 10px;'><li>Bereitstellung der Primärpackmittel entsprechend der Vorgabe der Übersicht</li><li>Abgleich der Sollangaben mit den Istangaben auf den Umverpackungen der Packmittel.</li></ul><div style='text-align:center;'><img src='/images/packmittel-etikett.png' alt='Beispiel Primärpackmittel' style='max-width: 400px; margin-top: 10px;'></div>"
+        },
+        {
+          "type": "text",
+          "name": "produktbezeichnung_ist",
+          "title": "Produktbezeichnung Ist",
+          "description": "Soll: {primaerPackmittel.produktbezeichnung}",
+          "isRequired": true
+        },
+        {
+          "type": "text",
+          "name": "artikelnummer_ist",
+          "title": "Artikel-Nr. Ist",
+          "description": "Soll: {primaerPackmittel.artikelNummer}",
+          "isRequired": true
+        },
+        {
+          "type": "text",
+          "name": "charge_ist",
+          "title": "Chargenbezeichnung Ist",
+          "description": "Soll: {primaerPackmittel.charge}",
+          "isRequired": true
+        },
+        {
+          "type": "text",
+          "name": "anzahl_ist",
+          "title": "Anzahl Gebinde Ist",
+          "description": "Soll: {primaerPackmittel.anzahl}",
+          "inputType": "number",
+          "isRequired": true
+        },
+        {
+          "type": "panel",
+          "name": "umverpackung_dicht_panel",
+          "elements": [
+            {
+              "type": "boolean",
+              "name": "umverpackung_dicht",
+              "title": "Packmittel in einer dicht verschlossenen Umverpackung?",
+              "isRequired": true
+            },
+            {
+              "type": "comment",
+              "name": "umverpackung_dicht_kommentar",
+              "title": "Bitte Grund für 'Nein' angeben",
+              "visibleIf": "{umverpackung_dicht} = false",
+              "isRequired": true,
+              "startWithNewLine": false
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "name": "primaerpackmittel_erfasst_kuerzel",
+          "title": "Mitarbeiterkürzel \"Erfasst\"",
+          "isRequired": true
+        },
+        {
+          "type": "comment",
+          "name": "bemerkungen",
+          "title": "Bemerkungen"
+        }
+      ]
+    },
+    {
+      "name": "materialbereitstellung_bulk",
+      "title": "2.2 Materialbereitstellung - Bulkmaterial",
+      "elements": [
+        {
+          "type": "html",
+          "name": "bulk_info",
+          "html": "<ul style='margin-bottom: 10px;'><li>Bereitstellung von Bulkmaterial entsprechend der Vorgabe der Übersicht</li><li>Abgleich der Sollangaben mit den Istangaben auf den Bulkbeuteln</li></ul><div style='text-align:center;'><img src='/images/bulkbeutel-etikett.png' alt='Beispiel Bulkbeutel-Etikett' style='max-width: 300px; margin-top: 10px;'></div>"
+        },
+        {
+          "type": "text",
+          "name": "produktbezeichnung_bulk_ist",
+          "title": "Produktbezeichnung Ist",
+          "description": "Soll: {eingangsmaterial.produktbezeichnung}",
+          "isRequired": true
+        },
+        {
+          "type": "text",
+          "name": "artikelnr_bulk_ist",
+          "title": "Artikel-Nr. Ist",
+          "description": "Soll: {eingangsmaterial.artikelNummer}",
+          "isRequired": true
+        },
+        {
+          "type": "text",
+          "name": "charge_bulk_ist",
+          "title": "Chargenbezeichnung Ist",
+          "description": "Soll: {eingangsmaterial.charge}",
+          "isRequired": true
+        },
+        {
+          "type": "text",
+          "name": "verfall_bulk_ist",
+          "title": "Verwendbar bis (TT/MM/JJJJ) Ist",
+          "description": "Soll: {eingangsmaterial.verfall}",
+          "inputType": "date",
+          "isRequired": true
+        },
+        {
+          "type": "matrixdynamic",
+          "name": "bulkgebinde_liste",
+          "title": "Angaben von Gebinde eintragen",
+          "columns": [
+            { "name": "anzahl", "title": "Anzahl", "cellType": "text", "inputType": "number", "isRequired": true },
+            { "name": "gebindegroesse", "title": "Gebindegröße (g)", "cellType": "text", "inputType": "number", "isRequired": true },
+            { "name": "probenzug_verwendet", "title": "Für Probenzug verwendet?", "cellType": "boolean", "isRequired": true },
+            { "name": "dicht_sauber", "title": "Dicht verschlossen und sauber?", "cellType": "boolean", "isRequired": true }
+          ],
+          "rowCount": 1,
+          "minRowCount": 1,
+          "addRowText": "Gebinde hinzufügen",
+          "removeRowText": "Entfernen"
+        },
+        {
+          "type": "text",
+          "name": "bulk_erfasst_kuerzel",
+          "title": "Mitarbeiterkürzel \"Erfasst\"",
+          "isRequired": true
+        },
+        {
+          "type": "comment",
+          "name": "bulk_bemerkungen",
+          "title": "Bemerkungen"
+        }
+      ]
+    },
+    {
+      "name": "zubehör_schablonen",
+      "title": "2.3 Zubehör - Schablonen",
+      "visibleIf": "{materialType} = 'GACP'",
+      "elements": [
+        {
+          "type": "text",
+          "name": "schablonen_eq_ist",
+          "title": "Schablonen: EQ Nummer Ist",
+          "inputType": "number",
+          "isRequired": true
+        },
+        {
+          "type": "text",
+          "name": "schablonen_charge_ist",
+          "title": "Schablonen: Charge/n Ist",
+          "isRequired": true
+        },
+        {
+          "type": "text",
+          "name": "schablonen_anzahl_ist",
+          "title": "Schablonen: Anzahl Ist",
+          "inputType": "number",
+          "isRequired": true
+        },
+        {
+          "type": "boolean",
+          "name": "schablonen_sollangaben_ok",
+          "title": "Entsprechen alle Schablonen den Soll-Angaben?",
+          "isRequired": true
+        },
+        {
+          "type": "boolean",
+          "name": "schablonen_verpackung_ok",
+          "title": "Schablonen: Verpackung unbeschädigt",
+          "isRequired": true
+        },
+        {
+          "type": "comment",
+          "name": "schablonen_bemerkung",
+          "title": "Bemerkung"
+        }
+      ]
+    },
+    {
+      "name": "materialbereitstellung_abschluss",
+      "title": "2.4 Materialbereitstellung - Abschluss",
+      "elements": [
+        {
+          "type": "comment",
+          "name": "materialbereitstellung_bemerkungen",
+          "title": "Bemerkungen zum Abschnitt Materialbereitstellung"
+        },
+        {
+          "type": "text",
+          "name": "materialbereitstellung_ma1_signatur",
+          "title": "Materialbereitstellung abgeschlossen - Signatur MA1",
+          "isRequired": true
+        },
+        {
+          "type": "text",
+          "name": "materialbereitstellung_ma2_kuerzel",
+          "title": "Materialbereitstellung abgeschlossen - Kürzel MA2",
+          "isRequired": true
+        }
+      ]
+    },
+    {
+      "name": "line_clearing",
+      "title": "3.1 Vorbereitung Reinraum - Line Clearing",
+      "elements": [
+        {
+          "type": "text",
+          "name": "raumtemperatur_eq47",
+          "title": "Raumtemperatur Ist [EQ-47] (Soll: 15-25°C)",
+          "inputType": "number",
+          "isRequired": true
+        },
+        {
+          "type": "text",
+          "name": "raumtemperatur_eq48",
+          "title": "Raumtemperatur Ist [EQ-48] (Soll: 15-25°C)",
+          "inputType": "number",
+          "isRequired": true
+        },
+        {
+          "type": "boolean",
+          "name": "raumtemperatur_entspricht",
+          "title": "Raumtemperatur entspricht Soll-Werten?",
+          "isRequired": true
+        },
+        {
+          "type": "html",
+          "name": "utensilien_info_gmp",
+          "html": "<h4>Utensilien am Arbeitsplatz (GMP)</h4><ul><li>Schüsseln für Bulkmaterial</li><li>Schüsseln für Restmenge</li><li>Einfüllschaufel</li></ul>",
+          "visibleIf": "{materialType} = 'GMP'"
+        },
+        {
+          "type": "html",
+          "name": "utensilien_info_gacp",
+          "html": "<h4>Utensilien am Arbeitsplatz (GACP)</h4><ul><li>Station Eingang Bulkmaterial (Waage 1)</li><li>Schüssel Bulkmaterial, Einfüllhilfe groß, Skalpell</li><li>Sortieren: Schüssel klein (IPK, Rückfrage QK), Schüssel mittel (Produkt), Schüssel groß (Aussortiertes)</li><li>Schablone CAN-MOE-EQ-[Wert], Einfüllhilfe groß</li><li>Abfüllen (Waage 2): Schüssel klein (Restmenge), Einfüllhilfe klein, Container für befüllte Gebinde</li></ul>",
+          "visibleIf": "{materialType} = 'GACP'"
+        },
+        {
+          "type": "boolean",
+          "name": "line_clearing_erfolgt",
+          "title": "Line Clearing erfolgt? (Arbeitsplatz sauber, Tablet geladen, nur erforderliche Gegenstände)",
+          "isRequired": true
+        },
+        {
+          "type": "comment",
+          "name": "line_clearing_bemerkungen",
+          "title": "Bemerkungen"
+        },
+        {
+          "type": "text",
+          "name": "line_clearing_erfasst",
+          "title": "Mitarbeiterkürzel \"Erfasst\"",
+          "isRequired": true
+        },
+        {
+          "type": "text",
+          "name": "line_clearing_geprueft",
+          "title": "Mitarbeiterkürzel \"Überprüft\"",
+          "isRequired": true
+        }
+      ]
+    },
+    {
+      "name": "vorbereitung_waage",
+      "title": "3.2 Vorbereitung Waage",
+      "elements": [
+        {
+          "type": "radiogroup",
+          "name": "waage_eq60_ausgerichtet",
+          "title": "Waage korrekt ausgerichtet [EQ-60]",
+          "choices": ["Ja", "Nein", "Nicht zutreffend"],
+          "isRequired": true
+        },
+        {
+          "type": "radiogroup",
+          "name": "waage_eq61_ausgerichtet",
+          "title": "Waage korrekt ausgerichtet [EQ-61]",
+          "choices": ["Ja", "Nein", "Nicht zutreffend"],
+          "isRequired": true
+        },
+        {
+          "type": "radiogroup",
+          "name": "kalibrierung_eq60_erfolgt",
+          "title": "Kalibrierung per ISO-Calc-Funktion [EQ-60]",
+          "choices": ["Ja", "Nein", "Nicht zutreffend"],
+          "isRequired": true
+        },
+        {
+          "type": "radiogroup",
+          "name": "kalibrierung_eq61_erfolgt",
+          "title": "Kalibrierung per ISO-Calc-Funktion [EQ-61]",
+          "choices": ["Ja", "Nein", "Nicht zutreffend"],
+          "isRequired": true
+        },
+        {
+          "type": "radiogroup",
+          "name": "waegung_eq60_korrekt",
+          "title": "Wägung Kalibriergewichte (2g/200g) [EQ-60]",
+          "choices": ["Ja", "Nein", "Nicht zutreffend"],
+          "isRequired": true
+        },
+        {
+          "type": "radiogroup",
+          "name": "waegung_eq61_korrekt",
+          "title": "Wägung Kalibriergewichte (2g/200g) [EQ-61]",
+          "choices": ["Ja", "Nein", "Nicht zutreffend"],
+          "isRequired": true
+        },
+        {
+          "type": "boolean",
+          "name": "waage_statusbericht_ma2",
+          "title": "Überprüfung Statusbericht durch MA2",
+          "isRequired": true
+        },
+        {
+          "type": "comment",
+          "name": "waage_bemerkungen",
+          "title": "Bemerkungen"
+        },
+        {
+          "type": "text",
+          "name": "waage_erfasst",
+          "title": "Mitarbeiterkürzel \"Erfasst\"",
+          "isRequired": true
+        },
+        {
+          "type": "text",
+          "name": "waage_geprueft",
+          "title": "Mitarbeiterkürzel \"Überprüft\"",
+          "isRequired": true
+        }
+      ]
+    },
+    {
+      "name": "vorbereitung_schweissgeraet",
+      "title": "3.3 Vorbereitung Kammerschweißgerät",
+      "elements": [
+        {
+          "type": "text",
+          "name": "verschweiss_programm_ist",
+          "title": "Verschweißprogramm für Gebinde: Ist",
+          "isRequired": true
+        },
+        {
+          "type": "boolean",
+          "name": "verschweiss_programm_ok",
+          "title": "Verschweißprogramm - Übereinstimmung?",
+          "isRequired": true
+        },
+        {
+          "type": "boolean",
+          "name": "schweissgeraet_funktioniert",
+          "title": "Maschine funktioniert ordnungsgemäß? (3 Testbeutel, Schweißnaht geprüft)",
+          "isRequired": true
+        },
+        {
+          "type": "comment",
+          "name": "schweissgeraet_bemerkungen",
+          "title": "Bemerkungen"
+        },
+        {
+          "type": "text",
+          "name": "schweissgeraet_erfasst",
+          "title": "Mitarbeiterkürzel \"Erfasst\"",
+          "isRequired": true
+        },
+        {
+          "type": "text",
+          "name": "schweissgeraet_geprueft",
+          "title": "Mitarbeiterkürzel \"Überprüft\"",
+          "isRequired": true
+        }
+      ]
+    },
+    {
+      "name": "herstellprozess_beginn",
+      "title": "4.1 Herstellprozess - Beginn",
+      "elements": [
+        {
+          "type": "text",
+          "name": "herstellung_beginn_uhrzeit",
+          "title": "Beginn Herstellung (Uhrzeit)",
+          "inputType": "time",
+          "isRequired": true
+        },
+        {
+          "type": "html",
+          "name": "herstellprozess_beschreibung",
+          "html": "<h4>Beschreibung des Herstellprozesses</h4><p>Die Herstellung umfasst die folgenden Schritte und wird gemäß Flussdiagramm und Begleitpräsentation durchgeführt. Der Prozess wird für jeden Bulkbeutel einzeln durchlaufen und die Durchführung wird in den folgenden Tabellen protokolliert.</p>"
+        }
+      ]
+    },
+    {
+      "name": "primaerverpackung_produktionslauf",
+      "title": "4.2 Primärverpackung - Produktionslauf",
+      "elements": [
+        {
+          "type": "paneldynamic",
+          "name": "bulk_beutel_production",
+          "title": "Produktionslauf pro Bulkbeutel",
+          "templateElements": [
+            {
+              "type": "text",
+              "name": "bulk_nummer",
+              "title": "Bulkbeutelnummer",
+              "isRequired": true
+            },
+            {
+              "type": "text",
+              "name": "soll_inhalt",
+              "title": "Soll-Inhalt Bulkbeutel (g)",
+              "inputType": "number",
+              "isRequired": true
+            },
+            {
+              "type": "text",
+              "name": "ist_inhalt",
+              "title": "Ist-Inhalt Bulkbeutel (g)",
+              "inputType": "number",
+              "isRequired": true
+            },
+            {
+              "type": "text",
+              "name": "anzahl_gebinde",
+              "title": "Anzahl gefüllter, verschweißter Gebinde",
+              "inputType": "number",
+              "isRequired": true
+            },
+            {
+              "type": "boolean",
+              "name": "blueten_unauffaellig",
+              "title": "Nur Blüten unauffälliger Identität abgefüllt?",
+              "isRequired": true
+            },
+            {
+              "type": "boolean",
+              "name": "gebinde_korrekt_abgewogen",
+              "title": "Gebinde korrekt abgewogen und verschweißt?",
+              "isRequired": true
+            },
+            {
+              "type": "text",
+              "name": "restmenge",
+              "title": "Restmenge (g)",
+              "inputType": "number",
+              "isRequired": true
+            },
+            {
+              "type": "text",
+              "name": "aussortiertes_material",
+              "title": "Aussortiertes Material (g)",
+              "inputType": "number",
+              "visibleIf": "{materialType} = 'GACP'"
+            },
+            {
+              "type": "text",
+              "name": "probenzug_ipk",
+              "title": "Probenzug IPK (g)",
+              "inputType": "number",
+              "visibleIf": "{materialType} = 'GACP'"
+            },
+            {
+              "type": "text",
+              "name": "bruch",
+              "title": "Bruch (g)",
+              "inputType": "number",
+              "isRequired": true
+            },
+            {
+              "type": "text",
+              "name": "erfasst_kuerzel",
+              "title": "Mitarbeiterkürzel \"Erfasst\"",
+              "isRequired": true
+            },
+            {
+              "type": "text",
+              "name": "geprueft_kuerzel",
+              "title": "Mitarbeiterkürzel \"Geprüft\"",
+              "isRequired": true
+            },
+            {
+              "type": "boolean",
+              "name": "schweissnaht_ok",
+              "title": "Schweißnaht des letzten Beutels ohne Beanstandung?",
+              "isRequired": true
+            }
+          ],
+          "panelCount": "{bulkBeutelAnzahl}",
+          "minPanelCount": 1,
+          "maxPanelCount": 10,
+          "panelAddText": "Bulkbeutel hinzufügen",
+          "panelRemoveText": "Entfernen"
+        }
+      ]
+    },
+    {
+      "name": "pause_check",
+      "title": "4.3 Pause",
+      "elements": [
+        {
+          "type": "boolean",
+          "name": "pause_durchgefuehrt",
+          "title": "Pause wird durchgeführt?",
+          "isRequired": true
+        }
+      ]
+    },
+    {
+      "name": "pause_details",
+      "title": "4.4 Pause Details",
+      "visibleIf": "{pause_durchgefuehrt} = true",
+      "elements": [
+        {
+          "type": "text",
+          "name": "pause_beginn",
+          "title": "Beginn Pause",
+          "inputType": "time",
+          "isRequired": true
+        },
+        {
+          "type": "text",
+          "name": "pause_ende",
+          "title": "Ende Pause", 
+          "inputType": "time",
+          "isRequired": true
+        },
+        {
+          "type": "comment",
+          "name": "pause_bemerkung",
+          "title": "Alle vorgesehenen Herstellschritte vor Pause beendet - Bemerkung"
+        },
+        {
+          "type": "text",
+          "name": "pause_ma1_signatur",
+          "title": "Signatur MA1",
+          "isRequired": true
+        },
+        {
+          "type": "text",
+          "name": "pause_ma2_signatur",
+          "title": "Signatur MA2",
+          "isRequired": true
+        },
+        {
+          "type": "radiogroup",
+          "name": "kalibrierung_nach_pause_eq60",
+          "title": "Kalibrierung nach Pause [EQ-60]",
+          "choices": ["Ja", "Nein", "Nicht zutreffend"],
+          "isRequired": true
+        },
+        {
+          "type": "radiogroup",
+          "name": "kalibrierung_nach_pause_eq61",
+          "title": "Kalibrierung nach Pause [EQ-61]",
+          "choices": ["Ja", "Nein", "Nicht zutreffend"],
+          "isRequired": true
+        },
+        {
+          "type": "text",
+          "name": "verschweiss_nach_pause_ist",
+          "title": "Verschweißprogramm nach Pause: Ist",
+          "isRequired": true
+        },
+        {
+          "type": "boolean",
+          "name": "verschweiss_nach_pause_ok",
+          "title": "Verschweißprogramm - Übereinstimmung?",
+          "isRequired": true
+        },
+        {
+          "type": "boolean",
+          "name": "schweissgeraet_nach_pause_ok",
+          "title": "Maschine nach Pause funktioniert ordnungsgemäß?",
+          "isRequired": true
+        },
+        {
+          "type": "comment",
+          "name": "pause_nachbereitung_bemerkungen",
+          "title": "Bemerkungen"
+        },
+        {
+          "type": "text",
+          "name": "pause_nachbereitung_erfasst",
+          "title": "Mitarbeiterkürzel \"Erfasst\"",
+          "isRequired": true
+        },
+        {
+          "type": "text",
+          "name": "pause_nachbereitung_geprueft",
+          "title": "Mitarbeiterkürzel \"Überprüft\"",
+          "isRequired": true
+        }
+      ]
+    },
+    {
+      "name": "kumulierte_restmenge",
+      "title": "4.5 Kumulierte Restmenge und Probenzug",
+      "elements": [
+        {
+          "type": "html",
+          "name": "probenzug_info",
+          "html": "<h4>Probenzug</h4><p>Probenzug Analytikmuster zur Freigabeanalytik vorgesehen? Probengebinde abfüllen und versiegeln, von sonstigen Gebinden separieren.</p><h4>Abfüllen</h4><p>Wägeprogramm Proben: [Wägen], Wägeprogramm Zwischenprodukte: [Kontrollwägen 100g], Leeren Beutel tarieren, Blüten einfüllen, Ergebnis speichern</p><h4>Versiegeln</h4><p>Beutel einlegen, Deckel schließen, Versiegelung prüfen</p><h4>Restmenge</h4><p>Wägeprogramm: [Wägen], Restmenge + Bruch + Aussortiertes Material wiegen, finale Restmenge in Gebinde überführen</p>"
+        },
+        {
+          "type": "text",
+          "name": "restmenge_eingang",
+          "title": "Restmenge Eingang (g)",
+          "inputType": "number",
+          "isRequired": true
+        },
+        {
+          "type": "comment",
+          "name": "restmenge_bemerkung",
+          "title": "Bemerkung"
+        },
+        {
+          "type": "radiogroup",
+          "name": "probenzug_ipk_abgefuellt_ma1",
+          "title": "Probenzug IPK abgefüllt und gekennzeichnet (MA1)",
+          "choices": ["Ja", "Nein", "Nicht zutreffend"],
+          "visibleIf": "{materialType} = 'GACP'"
+        },
+        {
+          "type": "radiogroup",
+          "name": "probenzug_ipk_abgefuellt_ma2",
+          "title": "Probenzug IPK abgefüllt und gekennzeichnet (MA2)",
+          "choices": ["Ja", "Nein", "Nicht zutreffend"],
+          "visibleIf": "{materialType} = 'GACP'"
+        },
+        {
+          "type": "text",
+          "name": "gesamtmenge_probenzug_ipk",
+          "title": "Gesamtmenge Probenzug IPK (g)",
+          "inputType": "number",
+          "visibleIf": "{materialType} = 'GACP'"
+        },
+        {
+          "type": "radiogroup",
+          "name": "probenzug_ipk_bestaetigung_ma2",
+          "title": "Gesamtmenge Probenzug IPK - Bestätigung MA2",
+          "choices": ["Ja", "Nein", "Nicht zutreffend"],
+          "visibleIf": "{materialType} = 'GACP'"
+        },
+        {
+          "type": "boolean",
+          "name": "probenzug_freigabe_vorgesehen",
+          "title": "Probenzug Freigabeanalytik vorgesehen?",
+          "isRequired": true
+        },
+        {
+          "type": "paneldynamic",
+          "name": "probegebinde_liste",
+          "title": "Abgefüllte Probegebinde",
+          "visibleIf": "{probenzug_freigabe_vorgesehen} = true",
+          "templateElements": [
+            {
+              "type": "text",
+              "name": "anzahl",
+              "title": "Anzahl",
+              "inputType": "number",
+              "isRequired": true
+            },
+            {
+              "type": "text",
+              "name": "inhalt",
+              "title": "Inhalt (g)",
+              "inputType": "number",
+              "isRequired": true
+            }
+          ],
+          "panelCount": 1,
+          "minPanelCount": 1,
+          "maxPanelCount": 5
+        },
+        {
+          "type": "radiogroup",
+          "name": "probegebinde_gekennzeichnet",
+          "title": "Probegebinde gekennzeichnet und in separaten Eurocontainer platziert",
+          "choices": ["Ja", "Nein", "Nicht zutreffend"],
+          "isRequired": true
+        },
+        {
+          "type": "text",
+          "name": "anzahl_zwischenprodukte",
+          "title": "Anzahl aus Restmenge hergestellter Zwischenprodukte",
+          "inputType": "number",
+          "isRequired": true
+        },
+        {
+          "type": "boolean",
+          "name": "zwischenprodukte_ueberpruefung_ma2",
+          "title": "Überprüfung Zwischenprodukte MA2",
+          "isRequired": true
+        },
+        {
+          "type": "text",
+          "name": "bruch_abfuellung_restmenge",
+          "title": "Bruch bei Abfüllung Restmenge (g)",
+          "inputType": "number",
+          "isRequired": true
+        },
+        {
+          "type": "boolean",
+          "name": "gebinde_abgewogen_verschweisst_ma1",
+          "title": "Gebinde ordnungsgemäß abgewogen und verschweißt? (MA1)",
+          "isRequired": true
+        },
+        {
+          "type": "boolean",
+          "name": "gebinde_abgewogen_verschweisst_ma2",
+          "title": "Gebinde ordnungsgemäß abgewogen und verschweißt? (MA2)",
+          "isRequired": true
+        }
+      ]
+    },
+    {
+      "name": "restmenge_final",
+      "title": "5.1 Restmenge",
+      "elements": [
+        {
+          "type": "radiogroup",
+          "name": "bruch_finale_restmenge_ma1",
+          "title": "Gesamtmenge Bruch zur finalen Restmenge beigefügt (MA1)",
+          "choices": ["Ja", "Nein", "Nicht zutreffend"],
+          "isRequired": true
+        },
+        {
+          "type": "radiogroup",
+          "name": "bruch_finale_restmenge_ma2",
+          "title": "Gesamtmenge Bruch zur finalen Restmenge beigefügt (MA2)",
+          "choices": ["Ja", "Nein", "Nicht zutreffend"],
+          "isRequired": true
+        },
+        {
+          "type": "text",
+          "name": "finale_restmenge_gewicht",
+          "title": "Finale Restmenge (g) inkl. Bruch",
+          "inputType": "number",
+          "isRequired": true
+        },
+        {
+          "type": "boolean",
+          "name": "finale_restmenge_pruefung_ma2",
+          "title": "Finale Restmenge - Prüfung MA2",
+          "isRequired": true
+        },
+        {
+          "type": "radiogroup",
+          "name": "bruch_aussortiert_abgefuellt_ma1",
+          "title": "Bruch und aussortiertes Material abgefüllt und gekennzeichnet (MA1)",
+          "choices": ["Ja", "Nein", "Nicht zutreffend"],
+          "visibleIf": "{materialType} = 'GACP'"
+        },
+        {
+          "type": "radiogroup",
+          "name": "bruch_aussortiert_abgefuellt_ma2",
+          "title": "Bruch und aussortiertes Material abgefüllt und gekennzeichnet (MA2)",
+          "choices": ["Ja", "Nein", "Nicht zutreffend"],
+          "visibleIf": "{materialType} = 'GACP'"
+        },
+        {
+          "type": "boolean",
+          "name": "finale_restmenge_abgefuellt_ma1",
+          "title": "Finale Restmenge abgefüllt und gekennzeichnet (MA1)",
+          "isRequired": true
+        },
+        {
+          "type": "boolean",
+          "name": "finale_restmenge_abgefuellt_ma2",
+          "title": "Finale Restmenge abgefüllt und gekennzeichnet (MA2)",
+          "isRequired": true
+        },
+        {
+          "type": "boolean",
+          "name": "testbeutel_verschweisst_ma1",
+          "title": "Testbeutel verschweißt und Schweißnaht geprüft (MA1)",
+          "isRequired": true
+        },
+        {
+          "type": "boolean",
+          "name": "testbeutel_verschweisst_ma2",
+          "title": "Testbeutel verschweißt und Schweißnaht geprüft (MA2)",
+          "isRequired": true
+        },
+        {
+          "type": "boolean",
+          "name": "primaerpackmittel_uebrig_ma1",
+          "title": "Primärpackmittel mit ungeöffneter Umverpackung übrig? (MA1)",
+          "isRequired": true
+        },
+        {
+          "type": "text",
+          "name": "anzahl_primaerpackmittel_uebrig",
+          "title": "Anzahl Primärpackmittel übrig",
+          "inputType": "number",
+          "visibleIf": "{primaerpackmittel_uebrig_ma1} = true"
+        },
+        {
+          "type": "boolean",
+          "name": "primaerpackmittel_uebrig_ma2",
+          "title": "Primärpackmittel übrig - Prüfung MA2",
+          "isRequired": true
+        },
+        {
+          "type": "text",
+          "name": "restmenge_ende_uhrzeit",
+          "title": "Ende (Uhrzeit)",
+          "inputType": "time",
+          "isRequired": true
+        },
+        {
+          "type": "comment",
+          "name": "restmenge_bemerkungen",
+          "title": "Bemerkungen"
+        },
+        {
+          "type": "text",
+          "name": "restmenge_erfasst",
+          "title": "Mitarbeiterkürzel \"Erfasst\"",
+          "isRequired": true
+        },
+        {
+          "type": "text",
+          "name": "restmenge_geprueft",
+          "title": "Mitarbeiterkürzel \"Geprüft\"",
+          "isRequired": true
+        }
+      ]
+    },
+    {
+      "name": "schleusung_eurocontainer",
+      "title": "6.1 Schleusung - Eurocontainer",
+      "elements": [
+        {
+          "type": "html",
+          "name": "eurocontainer_info",
+          "html": "<h4>Kennzeichnen der EC</h4><p>Dymo Etikett, Farbkennzeichnung, Menge angeben</p><h4>Verplomben der EC</h4><p>Eurocontainer ordnungsgemäß verplomben</p>"
+        },
+        {
+          "type": "paneldynamic",
+          "name": "produktliste",
+          "title": "Produktliste",
+          "templateElements": [
+            {
+              "type": "dropdown",
+              "name": "art_inhalt",
+              "title": "Art des Inhalts",
+              "choices": ["Hergestellte Zwischenprodukte", "Proben Freigabeanalytik", "Finale Restmenge", "Bruch und aussortiertes Material"],
+              "isRequired": true
+            },
+            {
+              "type": "text",
+              "name": "anzahl_gebinde",
+              "title": "Anzahl Gebinde",
+              "inputType": "number",
+              "isRequired": true
+            },
+            {
+              "type": "text",
+              "name": "plomben_nr",
+              "title": "Plomben-Nr.",
+              "isRequired": true
+            }
+          ],
+          "panelCount": 1,
+          "minPanelCount": 1,
+          "maxPanelCount": 10
+        },
+        {
+          "type": "text",
+          "name": "herstellprozess_ma1_signatur",
+          "title": "Abschluss Herstellprozess - Signatur MA1",
+          "isRequired": true
+        },
+        {
+          "type": "text",
+          "name": "herstellprozess_ma2_signatur",
+          "title": "Abschluss Herstellprozess - Signatur MA2",
+          "isRequired": true
+        },
+        {
+          "type": "html",
+          "name": "ausschleusen_info",
+          "html": "<h4>Vorbereitung für Ausschleusen</h4><p>Umladen der EC in Schleuse</p><p>Abfall und ungeöffnete Bulkware separat platzieren</p>"
+        }
+      ]
+    },
+    {
+      "name": "nachbereitung_reinraum",
+      "title": "7.1 Nachbereitung Reinraum",
+      "elements": [
+        {
+          "type": "boolean",
+          "name": "line_clearing_nachbereitung_ma1",
+          "title": "Line Clearing erfolgt: Arbeitsplatz aufgeräumt und gereinigt (MA1)",
+          "isRequired": true
+        },
+        {
+          "type": "boolean",
+          "name": "line_clearing_nachbereitung_ma2",
+          "title": "Line Clearing erfolgt: Arbeitsplatz aufgeräumt und gereinigt (MA2)",
+          "isRequired": true
+        },
+        {
+          "type": "comment",
+          "name": "nachbereitung_reinraum_bemerkungen",
+          "title": "Bemerkungen"
+        },
+        {
+          "type": "text",
+          "name": "nachbereitung_reinraum_erfasst",
+          "title": "Mitarbeiterkürzel \"Erfasst\"",
+          "isRequired": true
+        },
+        {
+          "type": "text",
+          "name": "nachbereitung_reinraum_geprueft",
+          "title": "Mitarbeiterkürzel \"Geprüft\"",
+          "isRequired": true
+        },
+        {
+          "type": "html",
+          "name": "schleusung_info",
+          "html": "<h4>Info</h4><p>Schleusung der Mitarbeiter</p><p>Mit Eurocontainern beladener Rollwagen aus Materialschleuse in Richtung Halle fahren</p>"
+        }
+      ]
+    },
+    {
+      "name": "einlagern_zwischenprodukte",
+      "title": "8.1 Einlagern - Hergestellte Zwischenprodukte",
+      "elements": [
+        {
+          "type": "boolean",
+          "name": "zwischenprodukte_verpackt_ma1",
+          "title": "Verpackt in EC, verplombt und gekennzeichnet (MA1)",
+          "isRequired": true
+        },
+        {
+          "type": "boolean",
+          "name": "zwischenprodukte_verpackt_ma2",
+          "title": "Verpackt in EC, verplombt und gekennzeichnet (MA2)",
+          "isRequired": true
+        },
+        {
+          "type": "boolean",
+          "name": "zwischenprodukte_produktionslager_ma1",
+          "title": "In Produktionslager (BtMP) überführt (MA1)",
+          "isRequired": true
+        },
+        {
+          "type": "boolean",
+          "name": "zwischenprodukte_produktionslager_ma2",
+          "title": "In Produktionslager (BtMP) überführt (MA2)",
+          "isRequired": true
+        }
+      ]
+    },
+    {
+      "name": "einlagern_proben",
+      "title": "8.2 Einlagern - Proben (Freigabeanalytik)",
+      "elements": [
+        {
+          "type": "boolean",
+          "name": "proben_gekennzeichnet_ma1",
+          "title": "Gekennzeichnet (Dymo Etikett, Farbmarkierung gelb-schwarz) (MA1)",
+          "isRequired": true
+        },
+        {
+          "type": "boolean",
+          "name": "proben_gekennzeichnet_ma2",
+          "title": "Gekennzeichnet (Dymo Etikett, Farbmarkierung gelb-schwarz) (MA2)",
+          "isRequired": true
+        },
+        {
+          "type": "boolean",
+          "name": "proben_produktionslager_ma1",
+          "title": "In Produktionslager (BtMP) überführt (MA1)",
+          "isRequired": true
+        },
+        {
+          "type": "boolean",
+          "name": "proben_produktionslager_ma2",
+          "title": "In Produktionslager (BtMP) überführt (MA2)",
+          "isRequired": true
+        }
+      ]
+    },
+    {
+      "name": "einlagern_restmenge",
+      "title": "8.3 Einlagern - Finale Restmenge",
+      "elements": [
+        {
+          "type": "boolean",
+          "name": "restmenge_gekennzeichnet_ma1",
+          "title": "Gekennzeichnet (Dymo Etikett, Farbmarkierung rot) (MA1)",
+          "isRequired": true
+        },
+        {
+          "type": "boolean",
+          "name": "restmenge_gekennzeichnet_ma2",
+          "title": "Gekennzeichnet (Dymo Etikett, Farbmarkierung rot) (MA2)",
+          "isRequired": true
+        },
+        {
+          "type": "boolean",
+          "name": "restmenge_sperrlager_ma1",
+          "title": "Zur Überführung in Sperrlager (BtMS) bereitgestellt (MA1)",
+          "isRequired": true
+        },
+        {
+          "type": "boolean",
+          "name": "restmenge_sperrlager_ma2",
+          "title": "Zur Überführung in Sperrlager (BtMS) bereitgestellt (MA2)",
+          "isRequired": true
+        }
+      ]
+    },
+    {
+      "name": "einlagern_muell",
+      "title": "8.4 Einlagern - Müllbeutel",
+      "elements": [
+        {
+          "type": "boolean",
+          "name": "muell_gekennzeichnet_ma1",
+          "title": "Gekennzeichnet (Farbmarkierung rot) (MA1)",
+          "isRequired": true
+        },
+        {
+          "type": "boolean",
+          "name": "muell_gekennzeichnet_ma2",
+          "title": "Gekennzeichnet (Farbmarkierung rot) (MA2)",
+          "isRequired": true
+        },
+        {
+          "type": "boolean",
+          "name": "muell_sperrlager_ma1",
+          "title": "Zur Überführung in Sperrlager (BtMS) bereitgestellt (MA1)",
+          "isRequired": true
+        },
+        {
+          "type": "boolean",
+          "name": "muell_sperrlager_ma2",
+          "title": "Zur Überführung in Sperrlager (BtMS) bereitgestellt (MA2)",
+          "isRequired": true
+        }
+      ]
+    },
+    {
+      "name": "einlagern_eingangsmaterialien",
+      "title": "8.5 Einlagern - Nicht genutzte Eingangsmaterialien",
+      "elements": [
+        {
+          "type": "radiogroup",
+          "name": "ungeoefffnete_bulkbeutel_ma1",
+          "title": "Ungeöffnete Bulkbeutel auf ursprünglichen Lagerplatz überführt (MA1)",
+          "choices": ["Ja", "Nein", "Nicht zutreffend"],
+          "isRequired": true
+        },
+        {
+          "type": "radiogroup",
+          "name": "ungeoefffnete_bulkbeutel_ma2",
+          "title": "Ungeöffnete Bulkbeutel auf ursprünglichen Lagerplatz überführt (MA2)",
+          "choices": ["Ja", "Nein", "Nicht zutreffend"],
+          "isRequired": true
+        },
+        {
+          "type": "radiogroup",
+          "name": "primaerpackmittel_ungeöffnet_ma1",
+          "title": "Primärpackmittel ungeöffnet auf ursprünglichen Lagerplatz überführt (MA1)",
+          "choices": ["Ja", "Nein", "Nicht zutreffend"],
+          "isRequired": true
+        },
+        {
+          "type": "radiogroup",
+          "name": "primaerpackmittel_ungeöffnet_ma2",
+          "title": "Primärpackmittel ungeöffnet auf ursprünglichen Lagerplatz überführt (MA2)",
+          "choices": ["Ja", "Nein", "Nicht zutreffend"],
+          "isRequired": true
+        },
+        {
+          "type": "radiogroup",
+          "name": "primaerpackmittel_geoeffnet_ma1",
+          "title": "Primärpackmittel geöffnet vernichtet (MA1)",
+          "choices": ["Ja", "Nein", "Nicht zutreffend"],
+          "isRequired": true
+        },
+        {
+          "type": "radiogroup",
+          "name": "primaerpackmittel_geoeffnet_ma2",
+          "title": "Primärpackmittel geöffnet vernichtet (MA2)",
+          "choices": ["Ja", "Nein", "Nicht zutreffend"],
+          "isRequired": true
+        },
+        {
+          "type": "comment",
+          "name": "eingangsmaterialien_begruendung",
+          "title": "Falls nein, bitte begründen"
+        },
+        {
+          "type": "boolean",
+          "name": "schablonen_entfernt_ma1",
+          "title": "Verwendete Schablonen entfernt und eingelagert (MA1)",
+          "visibleIf": "{materialType} = 'GACP'",
+          "isRequired": true
+        },
+        {
+          "type": "boolean",
+          "name": "schablonen_entfernt_ma2",
+          "title": "Verwendete Schablonen entfernt und eingelagert (MA2)",
+          "visibleIf": "{materialType} = 'GACP'",
+          "isRequired": true
+        },
+        {
+          "type": "comment",
+          "name": "schablonen_begruendung",
+          "title": "Falls nein, bitte begründen",
+          "visibleIf": "{materialType} = 'GACP'"
+        },
+        {
+          "type": "comment",
+          "name": "nachbereitung_bemerkung",
+          "title": "Bemerkung"
+        },
+        {
+          "type": "text",
+          "name": "nachbereitung_erfasst",
+          "title": "Mitarbeiterkürzel \"Erfasst\"",
+          "isRequired": true
+        },
+        {
+          "type": "text",
+          "name": "nachbereitung_geprueft",
+          "title": "Mitarbeiterkürzel \"Geprüft\"",
+          "isRequired": true
+        }
+      ]
+    },
+    {
+      "name": "nachbereitung_reinraum_final",
+      "title": "9.1 Nachbereitung Reinraum - Final",
+      "elements": [
+        {
+          "type": "radiogroup",
+          "name": "eurocontainer_bereitgestellt",
+          "title": "Leere, gereinigte Eurocontainer bereitgestellt",
+          "choices": ["Ja", "Nein", "Nicht zutreffend"],
+          "isRequired": true
+        },
+        {
+          "type": "radiogroup",
+          "name": "zwischenreinigung_durchgefuehrt",
+          "title": "Zwischenreinigung durchgeführt und dokumentiert",
+          "choices": ["Ja", "Nein", "Nicht zutreffend"],
+          "isRequired": true
+        }
+      ]
+    },
+    {
+      "name": "abschluss",
+      "title": "10.1 Abschluss",
+      "elements": [
+        {
+          "type": "radiogroup",
+          "name": "geraete_logbuecher_eingetragen",
+          "title": "Nutzung aller eingesetzten Geräte in Logbücher eingetragen",
+          "choices": ["Ja", "Nein", "Keine Geräte verwendet"],
+          "isRequired": true
+        },
+        {
+          "type": "radiogroup",
+          "name": "probenzugsplan_ausgefuellt",
+          "title": "Probenzugsplan ausgefüllt",
+          "choices": ["Ja", "Nein", "Nicht zutreffend"],
+          "isRequired": true
+        },
+        {
+          "type": "comment",
+          "name": "abschluss_bemerkung",
+          "title": "Bemerkung"
+        },
+        {
+          "type": "text",
+          "name": "abschluss_erfasst",
+          "title": "Mitarbeiterkürzel \"Erfasst\"",
+          "isRequired": true
+        },
+        {
+          "type": "text",
+          "name": "abschluss_geprueft",
+          "title": "Mitarbeiterkürzel \"Geprüft\"",
+          "isRequired": true
+        }
+      ]
+    },
+    {
+      "name": "herstellung_abgeschlossen",
+      "title": "10.2 Herstellung abgeschlossen",
+      "elements": [
+        {
+          "type": "html",
+          "name": "mitarbeiter_signaturen_info",
+          "html": "<h4>Liste der an der Produktion beteiligten Mitarbeiter</h4><p>Alle beteiligten Mitarbeiter bestätigen mit ihrer Signatur die ordnungsgemäße Durchführung des Produktionsprozesses.</p>"
+        },
+        {
+          "type": "paneldynamic",
+          "name": "mitarbeiter_signaturen",
+          "title": "Mitarbeiter-Signaturen",
+          "templateElements": [
+            {
+              "type": "text",
+              "name": "name",
+              "title": "Name",
+              "isRequired": true
+            },
+            {
+              "type": "text",
+              "name": "signatur",
+              "title": "Signatur",
+              "isRequired": true
+            }
+          ],
+          "panelCount": 2,
+          "minPanelCount": 2,
+          "maxPanelCount": 10
+        },
+        {
+          "type": "html",
+          "name": "benachrichtigung_info",
+          "html": "<h4>Benachrichtigung</h4><p>Durch Abschluss dieses Protokolls wird die Leitung der Herstellung automatisch benachrichtigt.</p>"
+        }
+      ]
+    }
+  ]
+}
