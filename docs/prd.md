@@ -6,9 +6,10 @@ Das Ziel dieses Projekts ist die Entwicklung einer digitalen, tablet-optimierten
 
 ## 2. Systemüberblick
 
-- **Frontend-Only:** React SPA, keine Backend- oder SAP-Anbindung, alle Datenverarbeitung und -speicherung erfolgt clientseitig.
+- **Frontend-Backend-Architektur:** React SPA mit Node.js/Express Backend für lokale Datenpersistenz und Multi-User-Unterstützung.
 - **SurveyJS-Integration:** Der gesamte Produktionsprozess wird als hierarchischer, dynamischer Fragebogen abgebildet.
 - **Tablet-Optimierung:** UI/UX ist für Touch-Bedienung und große Bedienelemente ausgelegt.
+- **Lokale Datenpersistenz:** Backend speichert Survey-Fortschritt und Validierungsdaten lokal (keine SAP-Anbindung).
 - **Datenexport:** Export als JSON (strukturiert) und PDF (menschenlesbar) für Archivierung und Qualitätssicherung.
 
 ## 3. Hauptfunktionen
@@ -28,8 +29,10 @@ Das Ziel dieses Projekts ist die Entwicklung einer digitalen, tablet-optimierten
 - Fortschrittsanzeige, seitenweise Navigation, Breadcrumbs.
 
 ### 3.3 Datenpersistenz & Wiederaufnahme
-- Automatisches Speichern des Bearbeitungsstands im Local Storage.
+- Automatisches Speichern des Bearbeitungsstands im Backend bei Seitenwechsel und Auftragswechsel.
 - Möglichkeit, einen begonnenen Auftrag fortzusetzen oder neu zu starten.
+- Multi-User-Unterstützung: Verschiedene Benutzer können gleichzeitig an verschiedenen Aufträgen arbeiten.
+- Auftragsliste zeigt alle in Bearbeitung befindlichen Surveys an.
 
 ### 3.4 Abschluss & Export
 - Abschlussseite mit Zusammenfassung und Platzhalter für Produktionsleitung-Benachrichtigung.
@@ -83,26 +86,97 @@ interface ProductionOrder {
 ```
 
 ### 4.2 Survey-Antworten & Audit-Trail
+
+Die Survey-Antworten werden als einfaches Key-Value-Objekt gespeichert:
 ```typescript
-interface SurveyAnswerItem {
-  value: any;
-  audit?: {
-    ma1Kuerzel?: string;
-    ma1Timestamp?: string;
-    ma2Kuerzel?: string;
-    ma2Timestamp?: string;
-    ma2Kommentar?: string;
-  };
+survey: Record<string, any>;
+```
+
+Der Audit-Trail (Vier-Augen-Prinzip / MA2) erfolgt **pro Validierungsgruppe** und wird im `validation`-Objekt abgelegt. Jede Validierungsgruppe enthält:
+- den Status der Validierung ("pending", "completed", "aborted")
+- Kürzel und Zeitstempel des zweiten Mitarbeiters (MA2)
+- optional einen Kommentar
+- ein explizites Feld, ob die Validierung erfolgreich war (`validationOK`)
+- ein Array der validierten Fragen (`validatedQuestions`)
+
+```typescript
+interface ValidationGroupStatus {
+  status: 'pending' | 'completed' | 'aborted';
+  ma2Kuerzel?: string;
+  ma2Timestamp?: string;
+  ma2Kommentar?: string;
+  validationOK?: boolean;
+  validatedQuestions?: string[];
 }
 ```
+
+Die Survey-Antworten selbst enthalten **keinen** Audit-Trail mehr auf Feldebene.
+
+---
 
 ### 4.3 Validierungsgruppen (Vier-Augen-Prinzip)
 ```typescript
 interface ValidationGroup {
   name: string;
-  questions: string[];
   title: string;
-  requiresMA2: boolean;
+  validationType: "signature" | "validation";
+  label: string;
+  questions: string[];
+}
+```
+
+### 4.4 Backend-Datenmodell (Survey-Datei)
+
+Die Survey-Datei speichert alle relevanten Informationen zu einem Bearbeitungsstand:
+
+```typescript
+interface SurveyFile {
+  orderId: string;
+  timestamp: string;
+  status: 'in_progress' | 'completed' | 'aborted';
+  survey: Record<string, any>; // Survey-Antworten
+  validation: Record<string, ValidationGroupStatus>; // Validierungsgruppen inkl. Audit-Trail
+  currentPageNo?: number;
+}
+```
+
+**Beispiel:**
+```json
+{
+  "orderId": "3",
+  "timestamp": "2025-07-15T22:34:17.058Z",
+  "status": "in_progress",
+  "survey": {
+    "eingangsmaterial_ausgebucht": true,
+    "mitarbeiter_liste": [
+      { "name": "ert", "kuerzel": "ert" },
+      { "name": "ert", "kuerzel": "ert" }
+    ]
+    // ... weitere Antworten ...
+  },
+  "validation": {
+    "eingangsmaterialien_ausbuchen": {
+      "status": "completed",
+      "ma2Kuerzel": "ert",
+      "ma2Timestamp": "2025-07-15T21:45:23.925Z",
+      "validationOK": true,
+      "validatedQuestions": ["eingangsmaterial_ausgebucht"]
+    },
+    "raumstatus_pruefen": {
+      "status": "completed",
+      "ma2Kuerzel": "34",
+      "ma2Timestamp": "2025-07-15T21:46:23.979Z",
+      "validationOK": true,
+      "validatedQuestions": [
+        "arbeitsraum_ist_druck_matrix",
+        "schleusen_ist_druck_matrix",
+        "reinraumstatus_ampel",
+        "reinraum_nutzbar"
+      ]
+    }
+    // ... weitere Validierungsgruppen ...
+  },
+  "currentPageNo": 6
 }
 ```
 
@@ -121,24 +195,57 @@ interface ValidationGroup {
 - **PDF-Export:** Formatierter, menschenlesbarer Bericht mit allen beantworteten Fragen, Audit-Trail, Unterschriften/Kürzel.
 - **Audit-Trail:** Jede kritische Antwort enthält Kürzel und Zeitstempel von MA1 und ggf. MA2.
 - **Vier-Augen-Prinzip:** Für alle Validierungsgruppen wird die Bestätigung durch einen zweiten Mitarbeiter (MA2) mit Kürzel und Zeitstempel dokumentiert.
-- **Keine Backend-Übertragung:** Alle Exporte werden ausschließlich clientseitig generiert und heruntergeladen.
+- **Lokale Datenhaltung:** Alle Daten werden lokal im Backend gespeichert, Exporte werden clientseitig generiert und heruntergeladen.
 
-## 7. Nicht im Umfang (Out of Scope)
+## 7. Architektur & Projektstruktur
 
-- Keine SAP- oder Backend-Integration.
+### 7.1 Frontend (React SPA)
+```
+/src
+  /components     # React-Komponenten
+  /types         # TypeScript-Interfaces
+  /utils         # Hilfsfunktionen und API-Client
+  /styles        # CSS-Dateien
+```
+
+### 7.2 Backend (Node.js/Express)
+```
+/backend
+  /src
+    /controllers # API-Controller
+    /routes      # Express-Routes
+    /types       # TypeScript-Interfaces
+    /middleware  # Express-Middleware
+    server.ts    # Server-Hauptdatei
+  /data
+    /orders      # Produktionsaufträge
+    /surveys     # Survey-Fortschritt und -Abschlüsse
+    /master-data # Fragekatalog und Validierungsgruppen
+```
+
+### 7.3 API-Endpunkte
+- `GET /api/orders` - Produktionsaufträge laden
+- `GET /api/master-data/survey-definition` - Fragekatalog laden
+- `GET /api/master-data/validation-groups` - Validierungsgruppen laden
+- `GET /api/surveys/:orderId/data` - Survey-Fortschritt laden
+- `POST /api/surveys/:orderId/data` - Survey-Fortschritt speichern
+
+## 8. Nicht im Umfang (Out of Scope)
+
+- Keine SAP-Integration (lokale Datenhaltung).
 - Keine Benutzerverwaltung oder Authentifizierung.
 - Keine elektronische Signatur nach 21 CFR Part 11 (nur Kürzel als Textfeld).
 - Keine Mehrsprachigkeit (nur Deutsch).
 - Keine Admin-UI zur Konfiguration des Fragekatalogs (Survey-Definition ist statisch als JSON).
 
-## 8. Akzeptanzkriterien (Auszug)
+## 9. Akzeptanzkriterien (Auszug)
 
 - Der gesamte Produktionsprozess ist digital, lückenlos und nachvollziehbar dokumentierbar.
 - Alle Pflichtfelder und Validierungen funktionieren wie spezifiziert.
 - Die Anwendung ist auf Tablets intuitiv und performant bedienbar.
 - Exportierte Dokumente (JSON, PDF) enthalten alle relevanten Daten und Audit-Trail.
 - Das Vier-Augen-Prinzip ist an allen kritischen Stellen technisch und UI-seitig umgesetzt.
-- Keine Daten werden an einen Server übertragen.
+- Alle Daten werden lokal im Backend gespeichert und verwaltet.
 
 ---
 

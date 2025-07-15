@@ -330,32 +330,32 @@
 
 ### 8. Backend-Architektur & Node.js-Server
 
-#### 8.1 Architektur & Grundgerüst 📋 [geplant]
-- 8.1.1 Anforderungsanalyse & Zieldefinition 📋 [geplant]
-  - Detaillierte Analyse der Anforderungen an das Backend (Datei-API, Auth, Multi-User, SAP-Readiness, GMP-Anforderungen, Audit-Trail, Performance, Fehlerbehandlung).
-- 8.1.2 Technologiewahl & Projektsetup 📋 [geplant]
-  - Auswahl der Node.js-Basis (Express.js), Projektinitialisierung, Verzeichnisstruktur, Linter, TypeScript (optional), Package-Management.
-- 8.1.3 API-Design & Schnittstellendefinition 📋 [geplant]
-  - Definition der REST-API-Endpunkte für CRUD-Operationen auf Orders, Surveys, Master-Data, inkl. Dateinamen-Konventionen, Fehlercodes, Response-Formate.
+#### 8.1 Architektur & Grundgerüst ✅ [umgesetzt]
+- 8.1.1 Anforderungsanalyse & Zieldefinition ✅ [umgesetzt]
+  - Detaillierte Analyse der Anforderungen an das Backend (Datei-API, Multi-User, GMP-Anforderungen, Audit-Trail, Performance, Fehlerbehandlung).
+- 8.1.2 Technologiewahl & Projektsetup ✅ [umgesetzt]
+  - Node.js/Express.js, TypeScript, Projektinitialisierung, Verzeichnisstruktur, Package-Management.
+- 8.1.3 API-Design & Schnittstellendefinition ✅ [umgesetzt]
+  - REST-API-Endpunkte für CRUD-Operationen auf Orders, Surveys, Master-Data, Dateinamen-Konventionen, Response-Formate.
 
-#### 8.2 Implementierung der Datei-API 📋 [geplant]
-- 8.2.1 Implementierung: Lesen/Schreiben von JSON-Dateien 📋 [geplant]
-  - Entwicklung von Utility-Funktionen im Backend zum sicheren Lesen, Schreiben, Listen und Löschen von JSON-Dateien in den Verzeichnissen `data/master-data/`, `data/orders/`, `data/surveys/`.
-- 8.2.2 API-Endpunkte für Orders 📋 [geplant]
-  - Endpunkte zum Abrufen, Anlegen, Bearbeiten und Löschen von Produktionsaufträgen (`orders.json`).
-- 8.2.3 API-Endpunkte für Surveys 📋 [geplant]
-  - Endpunkte zum Anlegen, Laden, Aktualisieren, Listen und Löschen von Survey-JSONs pro Auftrag und Bearbeitungsstand (inkl. Statuswechsel, Audit-Trail).
-- 8.2.4 API-Endpunkte für Master-Data 📋 [geplant]
+#### 8.2 Implementierung der Datei-API ✅ [umgesetzt]
+- 8.2.1 Implementierung: Lesen/Schreiben von JSON-Dateien ✅ [umgesetzt]
+  - Utility-Funktionen im Backend zum sicheren Lesen, Schreiben, Listen und Löschen von JSON-Dateien in `data/master-data/`, `data/orders/`, `data/surveys/`.
+- 8.2.2 API-Endpunkte für Orders ✅ [umgesetzt]
+  - GET/POST Endpunkte zum Abrufen und Verwalten von Produktionsaufträgen (`orders.json`).
+- 8.2.3 API-Endpunkte für Surveys ✅ [umgesetzt]
+  - Endpunkte zum Laden, Aktualisieren von Survey-JSONs pro Auftrag und Bearbeitungsstand (inkl. Statuswechsel, Audit-Trail).
+- 8.2.4 API-Endpunkte für Master-Data ✅ [umgesetzt]
   - Endpunkte zum Abrufen der Survey-Definition und Validierungsgruppen (Read-Only).
-- 8.2.5 Fehlerbehandlung & Validierung 📋 [geplant]
+- 8.2.5 Fehlerbehandlung & Validierung ✅ [umgesetzt]
   - Robuste Fehlerbehandlung, Validierung der Dateiinhalte, Logging von Fehlern und Zugriffen.
 
-#### 8.3 Integration Frontend <-> Backend 📋 [geplant]
-- 8.3.1 Anpassung der Utility-Funktionen im Frontend 📋 [geplant]
-  - Refaktorierung der Utility-Funktionen (`readJsonFile`, `writeJsonFile`, etc.) im Frontend, sodass sie per HTTP-Request mit dem Backend kommunizieren.
-- 8.3.2 CORS & Sicherheit 📋 [geplant]
-  - Konfiguration von CORS im Backend, um lokale Entwicklung und späteren produktiven Betrieb zu ermöglichen.
-- 8.3.3 Test: End-to-End-Durchläufe 📋 [geplant]
+#### 8.3 Integration Frontend <-> Backend ✅ [umgesetzt]
+- 8.3.1 Anpassung der Utility-Funktionen im Frontend ✅ [umgesetzt]
+  - Refaktorierung der Utility-Funktionen (`readJsonFile`, `writeJsonFile`, etc.) im Frontend für HTTP-Request mit dem Backend.
+- 8.3.2 CORS & Sicherheit ✅ [umgesetzt]
+  - Konfiguration von CORS im Backend für lokale Entwicklung und produktiven Betrieb.
+- 8.3.3 Test: End-to-End-Durchläufe ✅ [umgesetzt]
   - Testen aller Kern-Workflows (Anlegen, Unterbrechen, Fortsetzen, Abschließen von Surveys, parallele Bearbeitung) über die neue API.
 
 #### 8.4 Erweiterungen & GMP/SAP-Readiness 📋 [geplant]
