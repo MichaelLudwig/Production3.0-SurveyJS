@@ -1,5 +1,31 @@
 import { ExportData } from '../types';
 
+// Utility-Funktionen für lokale, dateibasierte Datenhaltung (Phase 3)
+// Hinweis: Die Implementierung muss ggf. je nach Umgebung (Browser vs. Node.js) angepasst werden.
+
+// Platzhalter-Implementierung für Browser: File System Access API (experimentell)
+// In Node.js-Umgebung: fs/promises verwenden
+
+export async function readJsonFile(path: string): Promise<any> {
+  // TODO: Implementierung je nach Umgebung
+  throw new Error('readJsonFile: Implementierung für die Zielumgebung erforderlich');
+}
+
+export async function writeJsonFile(path: string, data: any): Promise<void> {
+  // TODO: Implementierung je nach Umgebung
+  throw new Error('writeJsonFile: Implementierung für die Zielumgebung erforderlich');
+}
+
+export async function listSurveyFiles(orderId?: string): Promise<string[]> {
+  // TODO: Implementierung je nach Umgebung
+  throw new Error('listSurveyFiles: Implementierung für die Zielumgebung erforderlich');
+}
+
+export async function deleteSurveyFile(filename: string): Promise<void> {
+  // TODO: Implementierung je nach Umgebung
+  throw new Error('deleteSurveyFile: Implementierung für die Zielumgebung erforderlich');
+}
+
 export const exportToJSON = async (data: ExportData): Promise<void> => {
   try {
     const fileName = `Protokoll_${data.productionOrder.id}_${formatDateForFilename(data.completedAt)}.json`;

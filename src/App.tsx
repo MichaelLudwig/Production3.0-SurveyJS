@@ -4,6 +4,7 @@ import ProductionOrderManager from './components/ProductionOrderManager';
 import SurveyComponent from './components/SurveyComponent';
 import CompletionScreen from './components/CompletionScreen';
 import './App.css';
+import { readJsonFile, writeJsonFile, listSurveyFiles } from './utils/exportUtils';
 
 const App: React.FC = () => {
   const [appState, setAppState] = useState<AppState>('order-selection');
@@ -11,54 +12,61 @@ const App: React.FC = () => {
   const [surveyAnswers, setSurveyAnswers] = useState<SurveyAnswer>({});
   const [exportData, setExportData] = useState<ExportData | null>(null);
 
-  // Check for saved state but don't auto-load it
+  // Resume-Dialog State
   const [hasSavedState, setHasSavedState] = useState(false);
-  const [savedStateData, setSavedStateData] = useState<any>(null);
+  const [savedOrderId, setSavedOrderId] = useState<string | null>(null);
+  const [savedOrder, setSavedOrder] = useState<ProductionOrder | null>(null);
+  const [savedAnswers, setSavedAnswers] = useState<SurveyAnswer>({});
 
+  // Prüfe beim Start, ob ein in-progress Survey existiert
   useEffect(() => {
-    const savedState = localStorage.getItem('productionSurveyState');
-    if (savedState) {
+    (async () => {
       try {
-        const parsed = JSON.parse(savedState);
-        if (parsed.currentOrder) {
-          setHasSavedState(true);
-          setSavedStateData(parsed);
+        const files = await listSurveyFiles();
+        const inProgressFile = files.find(f => f.endsWith('-inprogress.json'));
+        if (inProgressFile) {
+          // Extrahiere orderId
+          const match = inProgressFile.match(/survey-(.+)-inprogress\.json/);
+          const orderId = match ? match[1] : null;
+          if (orderId) {
+            setHasSavedState(true);
+            setSavedOrderId(orderId);
+            // Lade Order und Answers
+            const orders = await readJsonFile('data/orders/orders.json');
+            const order = orders.find((o: ProductionOrder) => o.id === orderId) || null;
+            setSavedOrder(order);
+            const progress = await readJsonFile(inProgressFile);
+            setSavedAnswers(progress.enhancedData || {});
+          }
         }
       } catch (error) {
-        console.error('Error loading saved state:', error);
+        setHasSavedState(false);
       }
-    }
+    })();
   }, []);
 
   const handleContinueSaved = () => {
-    if (savedStateData) {
-      setCurrentOrder(savedStateData.currentOrder);
-      setSurveyAnswers(savedStateData.surveyAnswers || {});
-      setAppState(savedStateData.appState || 'survey');
+    if (savedOrder) {
+      setCurrentOrder(savedOrder);
+      setSurveyAnswers(savedAnswers);
+      setAppState('survey');
       setHasSavedState(false);
     }
   };
 
-  const handleStartFresh = () => {
-    // Clear ALL localStorage data for completely fresh start
-    localStorage.clear(); // This removes everything
+  const handleStartFresh = async () => {
+    // Lösche alle in-progress Survey-Dateien
+    const files = await listSurveyFiles();
+    const inProgressFiles = files.filter(f => f.endsWith('-inprogress.json'));
+    for (const file of inProgressFiles) {
+      await writeJsonFile(file, {});
+    }
     setHasSavedState(false);
-    setSavedStateData(null);
-    // Force page reload to ensure clean state
+    setSavedOrderId(null);
+    setSavedOrder(null);
+    setSavedAnswers({});
     window.location.reload();
   };
-
-  // Save state to localStorage whenever it changes
-  useEffect(() => {
-    if (currentOrder) {
-      const stateToSave = {
-        currentOrder,
-        surveyAnswers,
-        appState
-      };
-      localStorage.setItem('productionSurveyState', JSON.stringify(stateToSave));
-    }
-  }, [currentOrder, surveyAnswers, appState]);
 
   const handleOrderSelected = (order: ProductionOrder) => {
     setCurrentOrder(order);
@@ -82,7 +90,6 @@ const App: React.FC = () => {
     setSurveyAnswers({});
     setExportData(null);
     setAppState('order-selection');
-    localStorage.removeItem('productionSurveyState');
   };
 
   const handleBackToOrder = () => {
@@ -91,18 +98,17 @@ const App: React.FC = () => {
 
   return (
     <div className="app">
-
       <main className="app-content">
-        {hasSavedState && (
+        {hasSavedState && savedOrder && (
           <div className="saved-state-dialog">
             <div className="dialog-content">
               <h2>Gespeicherter Fortschritt gefunden</h2>
               <p>
                 Sie haben einen unvollständigen Produktionsauftrag:
                 <br />
-                <strong>{savedStateData?.currentOrder?.produktName}</strong>
+                <strong>{savedOrder.produktName}</strong>
                 <br />
-                ({savedStateData?.currentOrder?.materialType})
+                ({savedOrder.materialType})
               </p>
               <div className="dialog-buttons">
                 <button 
@@ -121,7 +127,6 @@ const App: React.FC = () => {
             </div>
           </div>
         )}
-
         {!hasSavedState && appState === 'order-selection' && (
           <ProductionOrderManager 
             onOrderSelected={handleOrderSelected}
@@ -129,7 +134,6 @@ const App: React.FC = () => {
             onContinueSurvey={() => setAppState('survey')}
           />
         )}
-
         {appState === 'survey' && currentOrder && (
           <SurveyComponent
             productionOrder={currentOrder}
@@ -138,7 +142,6 @@ const App: React.FC = () => {
             onBackToOrder={handleBackToOrder}
           />
         )}
-
         {appState === 'completed' && exportData && (
           <CompletionScreen
             exportData={exportData}

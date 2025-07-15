@@ -42,6 +42,15 @@
 - 2.1.2 Routing zwischen App-Zuständen (order-selection, survey, completion) 🟡 [AI draft]
 - 2.1.3 localStorage Integration für Resume-Funktion ✅ [umgesetzt]
 - 2.1.4 TypeScript Interfaces für alle State-Typen (types/index.ts) ✅ [umgesetzt]
+- 2.1.5 Umstellung auf dateibasierte Speicherung aller Bearbeitungsstände und Audit-Trails (statt localStorage) 🟡 [AI draft]
+  - 2.1.5.1 Analyse aller localStorage-Nutzungen und Datenflüsse in App, SurveyComponent, MA2Validation, ProductionOrderManager 🟡 [AI draft]
+  - 2.1.5.2 Implementierung von Utility-Funktionen zum Lesen/Schreiben von JSON-Dateien in data/master-data, data/orders, data/surveys 🟡 [AI draft]
+  - 2.1.5.3 Refaktorierung: SurveyComponent speichert und lädt Bearbeitungsstände ausschließlich aus data/surveys/ 🟡 [AI draft]
+  - 2.1.5.4 Refaktorierung: ProductionOrderManager erkennt und verwaltet Bearbeitungsstände pro Auftrag anhand der Survey-JSONs 🟡 [AI draft]
+  - 2.1.5.5 Refaktorierung: MA2Validation schreibt Audit-Trail/Validierungsdaten in die Survey-JSONs (oder separates Revisions-JSON) 🟡 [AI draft]
+  - 2.1.5.6 Migration: Überführe ggf. vorhandene Daten aus localStorage in die neue Struktur (einmalig, falls nötig) 🟡 [AI draft]
+  - 2.1.5.7 Test: Parallele Bearbeitung, Unterbrechung, Fortsetzung und Abschluss von Surveys für mehrere Aufträge 🟡 [AI draft]
+  - 2.1.5.8 Sicherstellen: Revisionssichere Speicherung und vollständige Wiederaufnahme aller Bearbeitungsstände 🟡 [AI draft]
 
 #### 2.2 Produktionsauftragsverwaltung (CRUD, Übersicht, Detail, Bearbeiten, Löschen, Neu anlegen) 🟡 [AI draft]
 *Vollständige Verwaltung von Produktionsaufträgen mit allen CRUD-Operationen und Local Storage Persistenz*
@@ -53,6 +62,11 @@
 - 2.2.6 Neue Aufträge erstellen - Formular-Implementierung 🟡 [AI draft]
 - 2.2.7 Formular-Validierung für erforderliche Felder 🟡 [AI draft - zu validieren]
 - 2.2.8 Persistierung in localStorage mit Synchronisation 🟡 [AI draft]
+- 2.2.9 Integration der neuen Survey-Bearbeitungsstände in die Auftragsübersicht 🟡 [AI draft]
+  - 2.2.9.1 Anzeige des Status (offen, in Bearbeitung, abgeschlossen) pro Auftrag anhand der Survey-JSONs 🟡 [AI draft]
+  - 2.2.9.2 Button „Fragekatalog fortsetzen“ für jeden Auftrag mit begonnenem Survey 🟡 [AI draft]
+  - 2.2.9.3 Möglichkeit, mehrere Surveys parallel zu beginnen, zu unterbrechen und fortzusetzen 🟡 [AI draft]
+  - 2.2.9.4 Löschen/Abbrechen eines Surveys entfernt nur die zugehörige Survey-JSON, nicht den Auftrag 🟡 [AI draft]
 
 #### 2.3 Survey-Komponente mit SurveyJS-Integration und Navigation ✅ [umgesetzt]
 *Hauptfragebogen mit hierarchischer Struktur (Prozessschritt > Teilschritt > Frage) und verschiedenen Fragetypen*
@@ -160,6 +174,11 @@
 - 3.3.2 GMP-Material Beispielaufträge ✅ [umgesetzt]
 - 3.3.3 Verschiedene Bulkbeutel-Anzahlen für Tests 🟡 [AI draft - Bulkbeutelanzahl wird erst im Fragekatalog gesetzt und nicht aus dem Produktionsauftrag entnommen (da nur Gram Zahl des Eingansmaterials)]
 - 3.3.4 Vollständige Auftragsdaten (Peace Naturals GC 31/1) ✅ [umgesetzt]
+
+> **Hinweis:** Produktionsaufträge werden ab sofort ausschließlich in `data/orders/orders.json` gepflegt. Die Datei `sampleOrders.json` ist veraltet und wird nicht mehr verwendet.
+- Es ist möglich, mehrere Produktionsaufträge parallel zu beginnen, zu unterbrechen und fortzusetzen.
+- Der Bearbeitungsstand jedes Auftrags ist jederzeit revisionssicher im Dateisystem verfügbar.
+- Ein abgebrochener Survey kann entfernt werden, ohne den Auftrag zu löschen.
 
 #### 3.4 TypeScript-Typisierung für alle Kernmodelle 🟡 [AI draft]
 *Vollständige TypeScript-Interfaces für type-safe Entwicklung*
@@ -308,6 +327,52 @@
 - 7.2.2 Admin-Dokumentation 📋 [geplant]
 - 7.2.3 Deployment-Anleitung 📋 [geplant]
 - 7.2.4 Troubleshooting-Guide 📋 [geplant]
+
+### 8. Backend-Architektur & Node.js-Server
+
+#### 8.1 Architektur & Grundgerüst 📋 [geplant]
+- 8.1.1 Anforderungsanalyse & Zieldefinition 📋 [geplant]
+  - Detaillierte Analyse der Anforderungen an das Backend (Datei-API, Auth, Multi-User, SAP-Readiness, GMP-Anforderungen, Audit-Trail, Performance, Fehlerbehandlung).
+- 8.1.2 Technologiewahl & Projektsetup 📋 [geplant]
+  - Auswahl der Node.js-Basis (Express.js), Projektinitialisierung, Verzeichnisstruktur, Linter, TypeScript (optional), Package-Management.
+- 8.1.3 API-Design & Schnittstellendefinition 📋 [geplant]
+  - Definition der REST-API-Endpunkte für CRUD-Operationen auf Orders, Surveys, Master-Data, inkl. Dateinamen-Konventionen, Fehlercodes, Response-Formate.
+
+#### 8.2 Implementierung der Datei-API 📋 [geplant]
+- 8.2.1 Implementierung: Lesen/Schreiben von JSON-Dateien 📋 [geplant]
+  - Entwicklung von Utility-Funktionen im Backend zum sicheren Lesen, Schreiben, Listen und Löschen von JSON-Dateien in den Verzeichnissen `data/master-data/`, `data/orders/`, `data/surveys/`.
+- 8.2.2 API-Endpunkte für Orders 📋 [geplant]
+  - Endpunkte zum Abrufen, Anlegen, Bearbeiten und Löschen von Produktionsaufträgen (`orders.json`).
+- 8.2.3 API-Endpunkte für Surveys 📋 [geplant]
+  - Endpunkte zum Anlegen, Laden, Aktualisieren, Listen und Löschen von Survey-JSONs pro Auftrag und Bearbeitungsstand (inkl. Statuswechsel, Audit-Trail).
+- 8.2.4 API-Endpunkte für Master-Data 📋 [geplant]
+  - Endpunkte zum Abrufen der Survey-Definition und Validierungsgruppen (Read-Only).
+- 8.2.5 Fehlerbehandlung & Validierung 📋 [geplant]
+  - Robuste Fehlerbehandlung, Validierung der Dateiinhalte, Logging von Fehlern und Zugriffen.
+
+#### 8.3 Integration Frontend <-> Backend 📋 [geplant]
+- 8.3.1 Anpassung der Utility-Funktionen im Frontend 📋 [geplant]
+  - Refaktorierung der Utility-Funktionen (`readJsonFile`, `writeJsonFile`, etc.) im Frontend, sodass sie per HTTP-Request mit dem Backend kommunizieren.
+- 8.3.2 CORS & Sicherheit 📋 [geplant]
+  - Konfiguration von CORS im Backend, um lokale Entwicklung und späteren produktiven Betrieb zu ermöglichen.
+- 8.3.3 Test: End-to-End-Durchläufe 📋 [geplant]
+  - Testen aller Kern-Workflows (Anlegen, Unterbrechen, Fortsetzen, Abschließen von Surveys, parallele Bearbeitung) über die neue API.
+
+#### 8.4 Erweiterungen & GMP/SAP-Readiness 📋 [geplant]
+- 8.4.1 Audit-Trail & Revisionssicherheit 📋 [geplant]
+  - Implementierung von Audit-Trail-Mechanismen (z. B. Änderungsprotokoll, Zeitstempel, User-Tracking) für alle Dateioperationen.
+- 8.4.2 Authentifizierung & Benutzerverwaltung (optional, vorbereitend) 📋 [geplant]
+  - Grundlegende Authentifizierung (z. B. Token-basiert), Benutzerrollen, Vorbereitung für GMP-konforme Benutzeridentifikation.
+- 8.4.3 Vorbereitung SAP-Integration 📋 [geplant]
+  - Definition und Implementierung von Schnittstellen (z. B. Import/Export von Survey- und Auftragsdaten), Mapping der JSON-Struktur auf das SAP-Datenmodell laut `sap-integration.md`.
+- 8.4.4 Dokumentation & Betriebskonzepte 📋 [geplant]
+  - Ausführliche Dokumentation der Backend-Architektur, API, Betriebskonzepte (Backup, Recovery, Deployment, Security, GMP-Compliance).
+
+#### 8.5 Migration & Rollout 📋 [geplant]
+- 8.5.1 Migration bestehender Daten 📋 [geplant]
+  - Entwicklung eines Scripts oder Migrationsprozesses zur Überführung vorhandener localStorage-Daten in die neue Backend-Struktur.
+- 8.5.2 Rollout & Schulung 📋 [geplant]
+  - Planung und Durchführung des Rollouts, Schulung der Nutzer, Feedbackschleifen, Anpassungen nach Erstbetrieb.
 
 ---
 

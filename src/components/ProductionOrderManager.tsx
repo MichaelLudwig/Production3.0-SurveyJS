@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ProductionOrder } from '../types';
-import sampleOrders from '../data/sampleOrders.json';
+import { readJsonFile, writeJsonFile } from '../utils/exportUtils';
 import './ProductionOrderManager.css';
 
 interface ProductionOrderManagerProps {
@@ -9,12 +9,14 @@ interface ProductionOrderManagerProps {
   onContinueSurvey: () => void;
 }
 
+const ORDERS_PATH = 'data/orders/orders.json';
+
 const ProductionOrderManager: React.FC<ProductionOrderManagerProps> = ({
   onOrderSelected,
   currentOrder,
   onContinueSurvey
 }) => {
-  const [orders, setOrders] = useState<ProductionOrder[]>(sampleOrders as ProductionOrder[]);
+  const [orders, setOrders] = useState<ProductionOrder[]>([]);
   const [editingOrder, setEditingOrder] = useState<ProductionOrder | null>(null);
   const [viewMode, setViewMode] = useState<'list' | 'details' | 'edit' | 'create'>('list');
   const [newOrder, setNewOrder] = useState<Partial<ProductionOrder>>({
@@ -48,18 +50,28 @@ const ProductionOrderManager: React.FC<ProductionOrderManagerProps> = ({
     bulkBeutelAnzahl: 1
   });
 
+  // Lade Aufträge aus JSON-Datei
   useEffect(() => {
-    const savedOrders = localStorage.getItem('productionOrders');
-    if (savedOrders) {
+    (async () => {
       try {
-        const parsed = JSON.parse(savedOrders);
-        setOrders(parsed);
+        const loadedOrders = await readJsonFile(ORDERS_PATH);
+        setOrders(loadedOrders || []);
       } catch (error) {
-        console.error('Error loading saved orders:', error);
+        console.error('Fehler beim Laden der Aufträge:', error);
+        setOrders([]);
       }
-    }
+    })();
   }, []);
 
+  // Speichere Aufträge in JSON-Datei
+  const saveOrders = async (updatedOrders: ProductionOrder[]) => {
+    setOrders(updatedOrders);
+    try {
+      await writeJsonFile(ORDERS_PATH, updatedOrders);
+    } catch (error) {
+      console.error('Fehler beim Speichern der Aufträge:', error);
+    }
+  };
 
   const handleViewOrder = (orderId: string) => {
     const order = orders.find(o => o.id === orderId);
@@ -78,17 +90,16 @@ const ProductionOrderManager: React.FC<ProductionOrderManagerProps> = ({
     }
   };
 
+  // handleDeleteOrder, handleUpdateOrder, handleCreateOrder: nutze saveOrders statt localStorage
   const handleDeleteOrder = (orderId: string) => {
     if (confirm('Sind Sie sicher, dass Sie diesen Produktionsauftrag löschen möchten?')) {
       const updatedOrders = orders.filter(o => o.id !== orderId);
-      setOrders(updatedOrders);
-      localStorage.setItem('productionOrders', JSON.stringify(updatedOrders));
+      saveOrders(updatedOrders);
     }
   };
 
   const handleUpdateOrder = () => {
     if (!newOrder.produktName || !editingOrder) return;
-
     const updatedOrder: ProductionOrder = {
       ...editingOrder,
       produktName: newOrder.produktName,
@@ -100,11 +111,8 @@ const ProductionOrderManager: React.FC<ProductionOrderManagerProps> = ({
       probenzug: newOrder.probenzug!,
       bulkBeutelAnzahl: newOrder.bulkBeutelAnzahl || 1
     };
-
     const updatedOrders = orders.map(o => o.id === editingOrder.id ? updatedOrder : o);
-    setOrders(updatedOrders);
-    localStorage.setItem('productionOrders', JSON.stringify(updatedOrders));
-    
+    saveOrders(updatedOrders);
     setViewMode('list');
     setEditingOrder(null);
   };
@@ -114,7 +122,6 @@ const ProductionOrderManager: React.FC<ProductionOrderManagerProps> = ({
       alert('Bitte füllen Sie alle erforderlichen Felder aus.');
       return;
     }
-
     const order: ProductionOrder = {
       id: Date.now().toString(),
       createdAt: new Date().toISOString(),
@@ -127,11 +134,8 @@ const ProductionOrderManager: React.FC<ProductionOrderManagerProps> = ({
       probenzug: newOrder.probenzug,
       bulkBeutelAnzahl: newOrder.bulkBeutelAnzahl || 1
     };
-
     const updatedOrders = [...orders, order];
-    setOrders(updatedOrders);
-    localStorage.setItem('productionOrders', JSON.stringify(updatedOrders));
-    
+    saveOrders(updatedOrders);
     onOrderSelected(order);
     setNewOrder({
       produktName: '',
