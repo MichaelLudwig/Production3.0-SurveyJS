@@ -335,26 +335,14 @@
         {
           "type": "text",
           "name": "schablonen_eq_ist",
-          "title": "Schablonen EQ Nummer Ist",
+          "title": "Schablonen: EQ Nummer Ist",
           "inputType": "number",
-          "isRequired": true
-        },
-        {
-          "type": "boolean",
-          "name": "schablonen_eq_ok",
-          "title": "EQ Nummer - Übereinstimmung?",
           "isRequired": true
         },
         {
           "type": "text",
           "name": "schablonen_charge_ist",
           "title": "Schablonen: Charge/n Ist",
-          "isRequired": true
-        },
-        {
-          "type": "boolean",
-          "name": "schablonen_charge_ok",
-          "title": "Charge/n - Übereinstimmung?",
           "isRequired": true
         },
         {
@@ -366,9 +354,20 @@
         },
         {
           "type": "boolean",
-          "name": "schablonen_anzahl_ok",
-          "title": "Anzahl - Übereinstimmung?",
+          "name": "schablonen_sollangaben_ok",
+          "title": "Entsprechen alle Schablonen den Soll-Angaben?",
           "isRequired": true
+        },
+        {
+          "type": "boolean",
+          "name": "schablonen_verpackung_ok",
+          "title": "Schablonen: Verpackung unbeschädigt",
+          "isRequired": true
+        },
+        {
+          "type": "comment",
+          "name": "schablonen_bemerkung",
+          "title": "Bemerkung"
         }
       ]
     },

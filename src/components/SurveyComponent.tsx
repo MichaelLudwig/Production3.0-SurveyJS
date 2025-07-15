@@ -7,6 +7,8 @@ import surveyDefinition from '../data/surveyDefinition.json';
 import validationGroups from '../data/validationGroups.json';
 import MA2Validation from './MA2Validation';
 import './SurveyComponent.css';
+import { surveyLocalization } from 'survey-core';
+surveyLocalization.currentLocale = 'de';
 
 interface SurveyComponentProps {
   productionOrder: ProductionOrder;

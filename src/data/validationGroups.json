@@ -48,7 +48,7 @@
     "name": "zubehör_schablonen",
     "title": "Zubehör Schablonen",
     "requiresMA2": true,
-    "questions": ["schablonen_eq_ist", "schablonen_eq_ok", "schablonen_charge_ist", "schablonen_charge_ok", "schablonen_anzahl_ist", "schablonen_anzahl_ok"]
+    "questions": ["schablonen_eq_ist", "schablonen_charge_ist", "schablonen_anzahl_ist", "schablonen_sollangaben_ok", "schablonen_verpackung_ok"]
   },
   {
     "name": "materialbereitstellung_abschluss",

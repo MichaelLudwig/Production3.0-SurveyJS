@@ -54,6 +54,12 @@ const sollMappingBulk: Record<string, string> = {
   charge_bulk_ist: "charge",
   verfall_bulk_ist: "verwendbarBis"
 };
+// Mapping für Soll-Werte aus Schablonen
+const sollMappingSchablonen: Record<string, string> = {
+  schablonen_eq_ist: "eqNummer",
+  schablonen_charge_ist: "charge",
+  schablonen_anzahl_ist: "anzahl"
+};
 
 const MA2Validation: React.FC<MA2ValidationProps> = ({
   group,
@@ -101,10 +107,21 @@ const MA2Validation: React.FC<MA2ValidationProps> = ({
   };
 
   const renderQuestionSummary = () => {
-    // Erkenne, ob es sich um die Bulkmaterial-Seite handelt
+    // Erkenne, ob es sich um die Bulkmaterial-Seite oder Schablonen-Seite handelt
     const isBulk = group.name === "materialbereitstellung_bulk";
-    const sollWerte = isBulk ? surveyData?.bulkmaterial || {} : surveyData?.primaerPackmittel || {};
-    const mapping = isBulk ? sollMappingBulk : sollMapping;
+    const isSchablonen = group.name === "zubehör_schablonen";
+    let sollWerte: any = {};
+    let mapping: Record<string, string> = {};
+    if (isBulk) {
+      sollWerte = surveyData?.bulkmaterial || {};
+      mapping = sollMappingBulk;
+    } else if (isSchablonen) {
+      sollWerte = surveyData?.schablone || {};
+      mapping = sollMappingSchablonen;
+    } else {
+      sollWerte = surveyData?.primaerPackmittel || {};
+      mapping = sollMapping;
+    }
     return (
       <div className="ma2-question-summary">
         <h4>Zu prüfende Antworten:</h4>
