@@ -372,6 +372,18 @@
       ]
     },
     {
+      "name": "zubehör_gmp",
+      "title": "2.3 Zubehör - GMP",
+      "visibleIf": "{materialType} = 'GMP'",
+      "elements": [
+        {
+          "type": "html",
+          "name": "zubehör_gmp_info",
+          "html": "<ul style='margin-bottom: 10px;'><li>Für GMP Material wird kein weiteres Zubehör benötigt</li></ul>"
+        }
+      ]
+    },
+    {
       "name": "materialbereitstellung_abschluss",
       "title": "2.4 Materialbereitstellung - Abschluss",
       "elements": [
@@ -407,7 +419,7 @@
         {
           "type": "html",
           "name": "bulk_info",
-          "html": "<h4>Utensilien am Arbeitsplatz (GMP)</h4><ul style='margin-bottom: 10px;'><li>Die Arbeitsplätze werden mit den folgenden Utensilien ausgestattet:</li></ul><div style='text-align:center;'><img src='/images/raum-GMP.png' alt='Arbeitsplatz GMP' style='max-width: 500px; margin-top: 10px;'><ul><li>Schüsseln für Bulkmaterial</li><li>Schüsseln für Restmenge</li><li>Einfüllschaufel</li></ul></div>",
+          "html": "<h4>Utensilien am Arbeitsplatz (GMP)</h4>Die Arbeitsplätze werden mit den folgenden Utensilien ausgestattet:<ul style='margin-bottom: 10px;'><li>Schüsseln für Bulkmaterial</li><li>Schüsseln für Restmenge</li><li>Einfüllschaufel</li></ul><div style='text-align:center;'><img src='/images/raum-GMP.png' alt='Arbeitsplatz GMP' style='max-width: 500px; margin-top: 10px;'></div>",
           "visibleIf": "{materialType} = 'GMP'"
         },
         {

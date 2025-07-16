@@ -1,12 +1,12 @@
 {
   "orderId": "3",
-  "timestamp": "2025-07-16T12:04:46.651Z",
+  "timestamp": "2025-07-16T13:25:07.893Z",
   "status": "in_progress",
   "survey": {
     "eingangsmaterial_ausgebucht": true,
     "mitarbeiter_liste": [
       {
-        "name": "er",
+        "name": "wer",
         "kuerzel": "wer"
       },
       {
@@ -15,7 +15,7 @@
       }
     ],
     "beginn_datum": "2025-07-26",
-    "beginn_uhrzeit": "11:33",
+    "beginn_uhrzeit": "14:43",
     "kennzeichnung_matrix_allgemein": {
       "eurocontainer": "ja",
       "proben_freigabe": "ja",
@@ -28,28 +28,28 @@
     },
     "arbeitsraum_ist_druck_matrix": [
       {
-        "eq52": 2
+        "eq52": 12
       }
     ],
     "schleusen_ist_druck_matrix": [
       {
-        "eq49": 2,
-        "eq50": 2,
-        "eq51": 0
+        "eq49": 12,
+        "eq50": 12,
+        "eq51": 12
       }
     ],
     "reinraumstatus_ampel": "Grün",
     "reinraum_nutzbar": true,
-    "produktbezeichnung_ist": "e",
-    "artikelnummer_ist": "e",
-    "charge_ist": "e",
-    "anzahl_ist": 3,
+    "produktbezeichnung_ist": "1",
+    "artikelnummer_ist": "1",
+    "charge_ist": "1",
+    "anzahl_ist": 1,
     "umverpackung_dicht": true,
-    "primaerpackmittel_erfasst_kuerzel": "e",
-    "produktbezeichnung_bulk_ist": "e",
-    "artikelnr_bulk_ist": "e",
-    "charge_bulk_ist": "e",
-    "verfall_bulk_ist": "2025-07-19",
+    "primaerpackmittel_erfasst_kuerzel": "1",
+    "produktbezeichnung_bulk_ist": "1",
+    "artikelnr_bulk_ist": "1",
+    "charge_bulk_ist": "1",
+    "verfall_bulk_ist": "2025-07-17",
     "bulkgebinde_liste": [
       {
         "anzahl": 1,
@@ -58,31 +58,31 @@
         "dicht_sauber": true
       }
     ],
-    "bulk_erfasst_kuerzel": "e",
-    "schablonen_eq_ist": 2,
-    "schablonen_charge_ist": "2",
-    "schablonen_anzahl_ist": 2,
+    "bulk_erfasst_kuerzel": "1",
+    "schablonen_eq_ist": 1,
+    "schablonen_charge_ist": "1",
+    "schablonen_anzahl_ist": 1,
     "schablonen_sollangaben_ok": true,
     "schablonen_verpackung_ok": true,
-    "materialbereitstellung_ma1_kuerzel": "2",
-    "materialbereitstellung_ma2_kuerzel": "2",
-    "materialbereitstellung_bemerkungen": "2",
+    "materialbereitstellung_bemerkungen": "1",
+    "materialbereitstellung_ma1_kuerzel": "1",
+    "materialbereitstellung_ma2_kuerzel": "1",
     "material_entspricht": true,
     "raumtemperatur_ist_matrix": [
       {
-        "raumtemperatur_eq47": 2,
-        "raumtemperatur_eq48": -1
+        "raumtemperatur_eq47": 4,
+        "raumtemperatur_eq48": 4
       }
     ],
     "line_clearing_erfolgt": true,
-    "line_clearing_bemerkungen": "2",
-    "line_clearing_erfasst": "2"
+    "line_clearing_bemerkungen": "4",
+    "line_clearing_erfasst": "4"
   },
   "validation": {
     "eingangsmaterialien_ausbuchen": {
       "status": "completed",
-      "ma2Kuerzel": "ert",
-      "ma2Timestamp": "2025-07-16T09:29:10.210Z",
+      "ma2Kuerzel": "wer",
+      "ma2Timestamp": "2025-07-16T12:39:57.933Z",
       "validationOK": true,
       "validatedQuestions": [
         "eingangsmaterial_ausgebucht"
@@ -90,8 +90,8 @@
     },
     "raumstatus_pruefen": {
       "status": "completed",
-      "ma2Kuerzel": "2",
-      "ma2Timestamp": "2025-07-16T09:29:32.326Z",
+      "ma2Kuerzel": "1",
+      "ma2Timestamp": "2025-07-16T12:40:22.143Z",
       "validationOK": true,
       "validatedQuestions": [
         "arbeitsraum_ist_druck_matrix",
@@ -102,8 +102,8 @@
     },
     "materialbereitstellung_primaerpackmittel": {
       "status": "completed",
-      "ma2Kuerzel": "e",
-      "ma2Timestamp": "2025-07-16T09:29:47.520Z",
+      "ma2Kuerzel": "1",
+      "ma2Timestamp": "2025-07-16T12:40:36.634Z",
       "validationOK": true,
       "validatedQuestions": [
         "produktbezeichnung_ist",
@@ -116,8 +116,8 @@
     },
     "materialbereitstellung_bulk": {
       "status": "completed",
-      "ma2Kuerzel": "e",
-      "ma2Timestamp": "2025-07-16T09:30:11.761Z",
+      "ma2Kuerzel": "1",
+      "ma2Timestamp": "2025-07-16T12:40:55.147Z",
       "validationOK": true,
       "validatedQuestions": [
         "produktbezeichnung_bulk_ist",
@@ -130,8 +130,8 @@
     },
     "zubehör_schablonen": {
       "status": "completed",
-      "ma2Kuerzel": "2",
-      "ma2Timestamp": "2025-07-16T09:30:23.040Z",
+      "ma2Kuerzel": "1",
+      "ma2Timestamp": "2025-07-16T12:41:16.440Z",
       "validationOK": true,
       "validatedQuestions": [
         "schablonen_eq_ist",
@@ -143,15 +143,28 @@
     },
     "materialbereitstellung_abschluss": {
       "status": "completed",
-      "ma2Kuerzel": "2",
-      "ma2Timestamp": "2025-07-16T09:30:42.961Z",
+      "ma2Kuerzel": "1",
+      "ma2Timestamp": "2025-07-16T12:41:35.002Z",
       "validationOK": true,
       "validatedQuestions": [
         "materialbereitstellung_bemerkungen",
         "materialbereitstellung_ma1_kuerzel",
         "materialbereitstellung_ma2_kuerzel"
       ]
+    },
+    "line_clearing": {
+      "status": "completed",
+      "ma2Kuerzel": "4",
+      "ma2Timestamp": "2025-07-16T12:50:43.044Z",
+      "validationOK": true,
+      "validatedQuestions": [
+        "raumtemperatur_ist_matrix",
+        "material_entspricht",
+        "line_clearing_erfolgt",
+        "line_clearing_bemerkungen",
+        "line_clearing_erfasst"
+      ]
     }
   },
-  "currentPageNo": 9
+  "currentPageNo": 10
 }

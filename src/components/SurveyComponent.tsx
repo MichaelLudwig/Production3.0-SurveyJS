@@ -16,6 +16,11 @@ interface SurveyComponentProps {
   onBackToOrder: () => void;
 }
 
+// Lokale Erweiterung für materialType
+interface ValidationGroupWithMaterialType extends ValidationGroup {
+  materialType?: string;
+}
+
 const SurveyComponent: React.FC<SurveyComponentProps> = ({
   productionOrder,
   initialAnswers,
@@ -324,7 +329,7 @@ const SurveyComponent: React.FC<SurveyComponentProps> = ({
   const getCurrentPageValidationGroups = () => {
     if (!survey) return [];
     
-    const currentPage = survey.pages[currentPageIndex];
+    const currentPage = survey.visiblePages[survey.currentPageNo];
     if (!currentPage) return [];
 
     // Function to recursively find all questions in elements (including panels)
@@ -349,7 +354,11 @@ const SurveyComponent: React.FC<SurveyComponentProps> = ({
     const allPageQuestions = getAllQuestionNames(currentPage.elements);
     console.log(`Page ${currentPageIndex} all questions:`, allPageQuestions);
 
-    const groups = validationGroups.filter(group => {
+    const currentMaterialType = survey?.data?.materialType || "ALL";
+    const groups = (validationGroups as ValidationGroupWithMaterialType[]).filter(group => {
+      if (group.materialType && group.materialType !== "ALL" && group.materialType !== currentMaterialType) {
+        return false;
+      }
       // Check if any question from this group is on the current page
       const hasQuestionOnPage = group.questions.some(questionName => 
         allPageQuestions.includes(questionName)
