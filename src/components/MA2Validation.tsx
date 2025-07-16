@@ -65,6 +65,8 @@ const MA2Validation: React.FC<MA2ValidationProps> = ({
   const [ma2Kuerzel, setMa2Kuerzel] = useState('');
   const [ma2Kommentar, setMa2Kommentar] = useState('');
   const [ma2PruefungOK, setMa2PruefungOK] = useState<boolean>(true);
+  const [showKuerzelError, setShowKuerzelError] = useState(false);
+  const [kuerzelErrorHighlight, setKuerzelErrorHighlight] = useState(false);
 
   // Check if all questions in group are answered
   const allQuestionsAnswered = group.questions.every(
@@ -84,9 +86,13 @@ const MA2Validation: React.FC<MA2ValidationProps> = ({
 
   const handleMA2Submit = () => {
     if (!ma2Kuerzel.trim()) {
-      alert('Bitte geben Sie Ihr Kürzel ein.');
+      setShowKuerzelError(true);
+      setKuerzelErrorHighlight(true);
+      setTimeout(() => setKuerzelErrorHighlight(false), 2000);
       return;
     }
+    setShowKuerzelError(false);
+    setKuerzelErrorHighlight(false);
     if (ma2PruefungOK === null) {
       alert('Bitte geben Sie an, ob die Prüfung OK ist.');
       return;
@@ -201,13 +207,22 @@ const MA2Validation: React.FC<MA2ValidationProps> = ({
               id="ma2-kuerzel"
               type="text"
               value={ma2Kuerzel}
-              onChange={(e) => setMa2Kuerzel(e.target.value)}
+              onChange={(e) => {
+                setMa2Kuerzel(e.target.value);
+                if (showKuerzelError && e.target.value.trim()) setShowKuerzelError(false);
+              }}
               placeholder="z.B. AB"
               maxLength={30}
               required
               disabled={!isEnabled || ma2ValidationCompleted}
               readOnly={ma2ValidationCompleted}
             />
+            {showKuerzelError && (
+              <div className={`ma2-kuerzel-error${kuerzelErrorHighlight ? ' highlight' : ''}`}>
+                <span className="icon">⚠️</span>
+                <span><strong>Bitte geben Sie Ihr Kürzel ein.</strong></span>
+              </div>
+            )}
           </div>
 
           <div className="ma2-form-group">

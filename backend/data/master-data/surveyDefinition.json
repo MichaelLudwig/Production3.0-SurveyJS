@@ -382,8 +382,8 @@
         },
         {
           "type": "text",
-          "name": "materialbereitstellung_ma1_signatur",
-          "title": "Materialbereitstellung abgeschlossen - Signatur MA1",
+          "name": "materialbereitstellung_ma1_kuerzel",
+          "title": "Materialbereitstellung abgeschlossen - Kürzel MA1",
           "isRequired": true
         },
         {
@@ -399,41 +399,41 @@
       "title": "3.1 Vorbereitung Reinraum - Line Clearing",
       "elements": [
         {
-          "type": "text",
-          "name": "raumtemperatur_eq47",
-          "title": "Raumtemperatur Ist [EQ-47] (Soll: 15-25°C)",
-          "inputType": "number",
-          "isRequired": true
-        },
-        {
-          "type": "text",
-          "name": "raumtemperatur_eq48",
-          "title": "Raumtemperatur Ist [EQ-48] (Soll: 15-25°C)",
-          "inputType": "number",
-          "isRequired": true
-        },
-        {
-          "type": "boolean",
-          "name": "raumtemperatur_entspricht",
-          "title": "Raumtemperatur entspricht Soll-Werten?",
-          "isRequired": true
+          "type": "html",
+          "name": "bulk_info",
+          "html": "<h4>Utensilien am Arbeitsplatz (GACP)</h4><ul style='margin-bottom: 10px;'><li>Die Arbeitsplätze werden mit den folgenden Utensilien ausgestattet:</li></ul><div style='text-align:center;'><img src='/images/raum-GACP.png' alt='Arbeitsplatz GACP' style='max-width: 500px; margin-top: 10px;'></div><table style=\"width:100%; border-collapse: collapse; margin-top: 16px;\"><thead><tr style=\"background: #f5f5f5;\"><th style=\"border: 1px solid #ccc; padding: 8px; text-align: left;\">Station</th><th style=\"border: 1px solid #ccc; padding: 8px; text-align: left;\">Equipment</th><th style=\"border: 1px solid #ccc; padding: 8px; text-align: left;\">Anzahl</th></tr></thead><tbody><tr><td style=\"border: 1px solid #ccc; padding: 8px;\" rowspan=\"3\">Eingang Bulkmaterial<br>(Waage 1)</td><td style=\"border: 1px solid #ccc; padding: 8px;\">Schüssel Bulkmaterial</td><td style=\"border: 1px solid #ccc; padding: 8px;\">1</td></tr><tr><td style=\"border: 1px solid #ccc; padding: 8px;\">Einfüllhilfe groß</td><td style=\"border: 1px solid #ccc; padding: 8px;\">1</td></tr><tr><td style=\"border: 1px solid #ccc; padding: 8px;\">Skalpell</td><td style=\"border: 1px solid #ccc; padding: 8px;\">1</td></tr><tr><td style=\"border: 1px solid #ccc; padding: 8px;\" rowspan=\"5\">Sortieren und Aufreinigen:<br>1 oder 2 Arbeitsplatz</td><td style=\"border: 1px solid #ccc; padding: 8px;\">Schüssel klein (IPK, Rückfrage QK)</td><td style=\"border: 1px solid #ccc; padding: 8px;\">2</td></tr><tr><td style=\"border: 1px solid #ccc; padding: 8px;\">Schüssel mittel (Produkt zur Abfüllung)</td><td style=\"border: 1px solid #ccc; padding: 8px;\">Min. 1</td></tr><tr><td style=\"border: 1px solid #ccc; padding: 8px;\">Schüssel groß (Aussortiertes Material)</td><td style=\"border: 1px solid #ccc; padding: 8px;\">2</td></tr><tr><td style=\"border: 1px solid #ccc; padding: 8px;\">Schablone CAN-MOE-EQ-68</td><td style=\"border: 1px solid #ccc; padding: 8px;\">2</td></tr><tr><td style=\"border: 1px solid #ccc; padding: 8px;\">Einfüllhilfe groß</td><td style=\"border: 1px solid #ccc; padding: 8px;\">2</td></tr><tr><td style=\"border: 1px solid #ccc; padding: 8px;\" rowspan=\"3\">Abfüllen<br>(Waage 2)</td><td style=\"border: 1px solid #ccc; padding: 8px;\">Schüssel klein (Restmenge)</td><td style=\"border: 1px solid #ccc; padding: 8px;\">1</td></tr><tr><td style=\"border: 1px solid #ccc; padding: 8px;\">Einfüllhilfe klein</td><td style=\"border: 1px solid #ccc; padding: 8px;\">1</td></tr><tr><td style=\"border: 1px solid #ccc; padding: 8px;\">Container für befüllte Gebinde</td><td style=\"border: 1px solid #ccc; padding: 8px;\">2</td></tr></tbody></table>",
+          "visibleIf": "{materialType} = 'GACP'"
         },
         {
           "type": "html",
-          "name": "utensilien_info_gmp",
-          "html": "<h4>Utensilien am Arbeitsplatz (GMP)</h4><ul><li>Schüsseln für Bulkmaterial</li><li>Schüsseln für Restmenge</li><li>Einfüllschaufel</li></ul>",
+          "name": "bulk_info",
+          "html": "<h4>Utensilien am Arbeitsplatz (GMP)</h4><ul style='margin-bottom: 10px;'><li>Die Arbeitsplätze werden mit den folgenden Utensilien ausgestattet:</li></ul><div style='text-align:center;'><img src='/images/raum-GMP.png' alt='Arbeitsplatz GMP' style='max-width: 500px; margin-top: 10px;'><ul><li>Schüsseln für Bulkmaterial</li><li>Schüsseln für Restmenge</li><li>Einfüllschaufel</li></ul></div>",
           "visibleIf": "{materialType} = 'GMP'"
         },
         {
-          "type": "html",
-          "name": "utensilien_info_gacp",
-          "html": "<h4>Utensilien am Arbeitsplatz (GACP)</h4><ul><li>Station Eingang Bulkmaterial (Waage 1)</li><li>Schüssel Bulkmaterial, Einfüllhilfe groß, Skalpell</li><li>Sortieren: Schüssel klein (IPK, Rückfrage QK), Schüssel mittel (Produkt), Schüssel groß (Aussortiertes)</li><li>Schablone CAN-MOE-EQ-[Wert], Einfüllhilfe groß</li><li>Abfüllen (Waage 2): Schüssel klein (Restmenge), Einfüllhilfe klein, Container für befüllte Gebinde</li></ul>",
-          "visibleIf": "{materialType} = 'GACP'"
+          "type": "boolean",
+          "name": "material_entspricht",
+          "title": "Material entsprechend bereitgestellt?",
+          "isRequired": true
+        },
+        {
+          "type": "matrixdynamic",
+          "name": "raumtemperatur_ist_matrix",
+          "title": "Raumtemperatur Ist (Soll: 15-25°C)",
+          "columns": [
+            { "name": "raumtemperatur_eq47", "title": "EQ-47", "cellType": "text", "inputType": "number", "isRequired": true },
+            { "name": "raumtemperatur_eq48", "title": "EQ-48", "cellType": "text", "inputType": "number", "isRequired": true }
+          ],
+          "rowCount": 1,
+          "minRowCount": 1,
+          "maxRowCount": 1,
+          "addRowText": "",
+          "removeRowText": ""
         },
         {
           "type": "boolean",
           "name": "line_clearing_erfolgt",
-          "title": "Line Clearing erfolgt? (Arbeitsplatz sauber, Tablet geladen, nur erforderliche Gegenstände)",
+          "title": "Line Clearing erfolgt? (Arbeitsplatz und Geräte sauber, Tablet geladen und eingesteckt, nur erforderliche Gegenstände auf den Arbeitsplätzen)",
           "isRequired": true
         },
         {
@@ -445,12 +445,6 @@
           "type": "text",
           "name": "line_clearing_erfasst",
           "title": "Mitarbeiterkürzel \"Erfasst\"",
-          "isRequired": true
-        },
-        {
-          "type": "text",
-          "name": "line_clearing_geprueft",
-          "title": "Mitarbeiterkürzel \"Überprüft\"",
           "isRequired": true
         }
       ]

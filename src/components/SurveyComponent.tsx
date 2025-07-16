@@ -39,6 +39,7 @@ const SurveyComponent: React.FC<SurveyComponentProps> = ({
     }
   }, [validationGroups]);
   const [validationTrigger, setValidationTrigger] = useState(0);
+  const [ma2NoticeHighlight, setMa2NoticeHighlight] = useState(false);
 
   // Hilfsfunktionen für Dateipfade
   const getSurveyInProgressPath = () => `data/surveys/survey-${productionOrder.id}-inprogress.json`;
@@ -243,7 +244,8 @@ const SurveyComponent: React.FC<SurveyComponentProps> = ({
       survey.onCurrentPageChanging.add((_sender, options) => {
         if (pendingMA2Groups.length > 0) {
           options.allowChanging = false;
-          alert('Bitte alle MA2-Validierungen abschließen, bevor Sie fortfahren.');
+          setMa2NoticeHighlight(true);
+          setTimeout(() => setMa2NoticeHighlight(false), 2000);
         }
       });
     }
@@ -378,17 +380,18 @@ const SurveyComponent: React.FC<SurveyComponentProps> = ({
     console.log('[Survey] Survey data changed, re-checking validation');
     
     const currentGroups = getCurrentPageValidationGroups();
+    // Jetzt: Sowohl 'validation' als auch 'signature' blockieren
     const newPendingGroups = currentGroups
-      .filter(group => group.validationType === "validation") // Gruppen die MA2 benötigen
-      .filter(group => !validationData[group.name] || validationData[group.name].status !== 'completed') // Noch nicht abgeschlossen
+      .filter(group => (group.validationType === "validation" || group.validationType === "signature"))
+      .filter(group => !validationData[group.name] || validationData[group.name].status !== 'completed')
       .map(group => group.name);
     
-    console.log(`[MA2] Page ${currentPageIndex} - New pending MA2 groups:`, newPendingGroups);
+    console.log(`[MA2] Page ${currentPageIndex} - New pending groups:`, newPendingGroups);
     console.log(`[MA2] Current validation data:`, validationData);
     
     if (newPendingGroups.length !== pendingMA2Groups.length || 
         !newPendingGroups.every(name => pendingMA2Groups.includes(name))) {
-      console.log(`[MA2] Updating pending MA2 groups from [${pendingMA2Groups}] to [${newPendingGroups}]`);
+      console.log(`[MA2] Updating pending groups from [${pendingMA2Groups}] to [${newPendingGroups}]`);
       setPendingMA2Groups(newPendingGroups);
     }
   }, [currentPageIndex, survey, validationGroups, validationData, validationTrigger]);
@@ -500,15 +503,8 @@ const SurveyComponent: React.FC<SurveyComponentProps> = ({
               })}
               
               {pendingMA2Groups.length > 0 && (
-                <div className="ma2-pending-notice">
-                  <div style={{
-                    background: '#fff3cd',
-                    border: '1px solid #ffeaa7',
-                    borderRadius: '4px',
-                    padding: '1rem',
-                    marginBottom: '1rem',
-                    textAlign: 'center'
-                  }}>
+                <div className={`ma2-pending-notice${ma2NoticeHighlight ? ' highlight' : ''}`}>
+                  <div>
                     <strong>⚠️ Zweite Person erforderlich</strong>
                     <p>Bitte alle Validierungen abschließen, bevor Sie fortfahren können.</p>
                   </div>

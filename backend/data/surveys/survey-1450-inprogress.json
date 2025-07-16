@@ -1,6 +1,6 @@
 {
   "orderId": "1450",
-  "timestamp": "2025-07-15T21:45:15.469Z",
+  "timestamp": "2025-07-16T08:13:13.251Z",
   "status": "in_progress",
   "survey": {
     "eingangsmaterial_ausgebucht": true,
@@ -48,5 +48,5 @@
     "bemerkungen": "ert"
   },
   "validation": {},
-  "currentPageNo": 5
+  "currentPageNo": -1
 }

@@ -308,18 +308,6 @@ const ProductionOrderManager: React.FC<ProductionOrderManagerProps> = ({
                   >
                     Details
                   </button>
-                  <button 
-                    className="btn btn-outline btn-small"
-                    onClick={() => handleEditOrder(order.id)}
-                  >
-                    Bearbeiten
-                  </button>
-                  <button 
-                    className="btn btn-danger btn-small"
-                    onClick={() => handleDeleteOrder(order.id)}
-                  >
-                    Löschen
-                  </button>
                 </div>
               </div>
             ))}

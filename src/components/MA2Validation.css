@@ -360,3 +360,28 @@ input:checked + .slider .switch-label-no {
 input:checked + .slider .switch-label-yes {
   color: #19b394;
 }
+
+.ma2-kuerzel-error {
+  margin-top: 0.5rem;
+  background: #fff3cd;
+  border: 1px solid #ffeaa7;
+  border-radius: 4px;
+  padding: 1rem;
+  text-align: center;
+  font-weight: bold;
+  font-size: 1.05rem;
+  color: #7c5a00;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: background 0.3s, border 0.3s;
+}
+.ma2-kuerzel-error.highlight {
+  background: #ffe0b2;
+  border: 2px solid #ff9800;
+}
+.ma2-kuerzel-error .icon {
+  font-size: 1.2rem;
+  margin-right: 0.5rem;
+}

@@ -110,6 +110,19 @@
   border-top: 1px solid #e7e7e7;
 }
 
+.order-card-actions .btn {
+  width: 100%;
+  max-width: none;
+}
+
+.order-card-actions .btn,
+.order-card-actions .btn-small {
+  padding-top: 24px;
+  padding-bottom: 24px;
+  min-height: 56px;
+  font-size: 1rem;
+}
+
 /* Details view */
 .order-details-view {
   background: white;
@@ -260,7 +273,7 @@
 
 /* SurveyJS button styles */
 .btn {
-  padding: 8px 16px;
+  padding: 16px 16px; /* vorher 8px 16px, jetzt 50% höher */
   border: 1px solid #e7e7e7;
   border-radius: 4px;
   font-size: 0.875rem;
@@ -268,7 +281,7 @@
   cursor: pointer;
   transition: all 0.2s;
   min-width: 80px;
-  min-height: 32px;
+  min-height: 48px; /* vorher 32px, jetzt 50% höher */
   background-color: #fff;
   color: #404040;
   font-family: inherit;
@@ -292,9 +305,9 @@
 }
 
 .btn-small {
-  padding: 6px 12px;
+  padding: 12px 12px; /* vorher 6px 12px, jetzt 50% höher */
   font-size: 0.75rem;
-  min-height: 28px;
+  min-height: 42px; /* vorher 28px, jetzt 50% höher */
   min-width: 60px;
 }
 
@@ -418,9 +431,7 @@
     gap: 1.5rem;
   }
   
-  .order-card-actions {
-    grid-template-columns: repeat(4, 1fr);
-  }
+  /* Entferne die 4er-Spalte für .order-card-actions */
 }
 
 /* Standard tablets (portrait and small landscape) - 768px to 1023px */
@@ -451,8 +462,12 @@
   }
   
   .order-card-actions {
-    grid-template-columns: 1fr;
-    gap: 0.5rem;
+    grid-template-columns: 1fr 1fr;
+    flex-direction: unset;
+  }
+  .order-card-actions .btn {
+    width: 100%;
+    max-width: none;
   }
   
   .details-header {

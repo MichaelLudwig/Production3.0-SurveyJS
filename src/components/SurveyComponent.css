@@ -392,6 +392,20 @@
   display: none !important;
 }
 
+.ma2-pending-notice > div {
+  background: #fff3cd;
+  border: 1px solid #ffeaa7;
+  border-radius: 4px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  text-align: center;
+  transition: background 0.3s, border 0.3s;
+}
+.ma2-pending-notice.highlight > div {
+  background: #ffe0b2;
+  border: 2px solid #ff9800;
+}
+
 /* Mobile/Portrait fallback - stack vertically */
 @media (max-width: 1024px) or (orientation: portrait) {
   .survey-split-container {

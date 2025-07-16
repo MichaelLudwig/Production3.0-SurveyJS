@@ -56,16 +56,16 @@
   {
     "name": "materialbereitstellung_abschluss",
     "title": "Materialbereitstellung Abschluss",
-    "validationType": "validation",
-    "label": "Kürzel Mitarbeiter 2",
-    "questions": ["materialbereitstellung_bemerkungen", "materialbereitstellung_ma1_signatur", "materialbereitstellung_ma2_kuerzel"]
+    "validationType": "signature",
+    "label": "Signatur Mitarbeiter 1",
+    "questions": ["materialbereitstellung_bemerkungen", "materialbereitstellung_ma1_kuerzel", "materialbereitstellung_ma2_kuerzel"]
   },
   {
     "name": "line_clearing",
     "title": "Line Clearing",
     "validationType": "validation",
     "label": "Kürzel Mitarbeiter 2",
-    "questions": ["raumtemperatur_eq47", "raumtemperatur_eq48", "raumtemperatur_entspricht", "line_clearing_erfolgt", "line_clearing_bemerkungen", "line_clearing_erfasst", "line_clearing_geprueft"]
+    "questions": ["raumtemperatur_ist_matrix", "material_entspricht", "line_clearing_erfolgt", "line_clearing_bemerkungen", "line_clearing_erfasst"]
   },
   {
     "name": "vorbereitung_waage",
