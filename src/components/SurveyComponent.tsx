@@ -68,6 +68,11 @@ const SurveyComponent: React.FC<SurveyComponentProps> = ({
     return surveyAnswers;
   };
 
+  // Hilfsfunktion für sicheren Zugriff auf verschachtelte Properties
+  function getNested(obj: any, path: string[]) {
+    return path.reduce((acc, key) => (acc && acc[key] !== undefined ? acc[key] : undefined), obj);
+  }
+
   // Lade Survey-Definition und Validierungsgruppen über API
   useEffect(() => {
     (async () => {
@@ -125,6 +130,31 @@ const SurveyComponent: React.FC<SurveyComponentProps> = ({
       schablone: productionOrder.schablone,
       bulkmaterial: productionOrder.eingangsmaterial // NEU: für Soll-Ist-Vergleich Bulkmaterial
     };
+    // Dynamische Soll-Wert-Beschreibungen für relevante Felder setzen
+    const sollMappings = [
+      // Bulkmaterial
+      { frage: "produktbezeichnung_bulk_ist", pfad: ["bulkmaterial", "produktbezeichnung"] },
+      { frage: "artikelnr_bulk_ist", pfad: ["bulkmaterial", "artikelNummer"] },
+      { frage: "charge_bulk_ist", pfad: ["bulkmaterial", "charge"] },
+      { frage: "verfall_bulk_ist", pfad: ["bulkmaterial", "verwendbarBis"] },
+      // Schablonen
+      { frage: "schablonen_eq_ist", pfad: ["schablone", "eqNummer"] },
+      { frage: "schablonen_charge_ist", pfad: ["schablone", "charge"] },
+      { frage: "schablonen_anzahl_ist", pfad: ["schablone", "anzahl"] },
+      // Primärpackmittel (Beispiel)
+      { frage: "produktbezeichnung_ist", pfad: ["primaerPackmittel", "produktbezeichnung"] },
+      { frage: "artikelnummer_ist", pfad: ["primaerPackmittel", "artikelNummer"] },
+      { frage: "charge_ist", pfad: ["primaerPackmittel", "charge"] },
+      { frage: "anzahl_ist", pfad: ["primaerPackmittel", "anzahl"] },
+      // ... weitere Felder nach Bedarf
+    ];
+    sollMappings.forEach(({ frage, pfad }) => {
+      const question = surveyModel.getQuestionByName(frage);
+      const soll = getNested(orderData, pfad);
+      if (question && soll !== undefined) {
+        question.description = `Soll: ${soll}`;
+      }
+    });
     // Initialisiere Survey-Model nur mit Auftragsdaten, nicht mit initialAnswers
     surveyModel.data = { ...orderData };
     surveyModel.onComplete.add(async (sender) => {
@@ -247,11 +277,16 @@ const SurveyComponent: React.FC<SurveyComponentProps> = ({
     if (survey) {
       survey.onCurrentPageChanging.clear();
       survey.onCurrentPageChanging.add((_sender, options) => {
-        if (pendingMA2Groups.length > 0) {
+        // Prüfe, ob zurück navigiert wird
+        const isBackwards = options.newCurrentPage && options.oldCurrentPage &&
+          survey.visiblePages.indexOf(options.newCurrentPage) < survey.visiblePages.indexOf(options.oldCurrentPage);
+
+        if (!isBackwards && pendingMA2Groups.length > 0) {
           options.allowChanging = false;
           setMa2NoticeHighlight(true);
           setTimeout(() => setMa2NoticeHighlight(false), 2000);
         }
+        // Beim Zurückgehen: keine Blockade!
       });
     }
   }, [survey, pendingMA2Groups]);
