@@ -80,7 +80,7 @@
     "validationType": "validation",
     "label": "Kürzel Mitarbeiter 2",
     "materialType": "ALL",
-    "questions": ["waage_eq60_ausgerichtet", "waage_eq61_ausgerichtet", "kalibrierung_eq60_erfolgt", "kalibrierung_eq61_erfolgt", "waegung_eq60_korrekt", "waegung_eq61_korrekt", "waage_statusbericht_ma2", "waage_bemerkungen", "waage_erfasst", "waage_geprueft"]
+    "questions": ["vorbereitung_waage_matrix", "waage_bemerkungen", "waage_erfasst"]
   },
   {
     "name": "vorbereitung_schweissgeraet",

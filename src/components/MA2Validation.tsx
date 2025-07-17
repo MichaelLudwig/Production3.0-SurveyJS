@@ -127,13 +127,34 @@ const MA2Validation: React.FC<MA2ValidationProps> = ({
         <div className="question-answers">
           {group.questions.map(questionName => {
             const ist = groupAnswers[questionName];
+            // NEU: MatrixDropdown speziell behandeln
+            if (ist && typeof ist === 'object' && !Array.isArray(ist)) {
+              // MatrixDropdown: Jede Zelle als eigene Zeile anzeigen
+              return Object.entries(ist).map(([rowKey, rowValue]) => {
+                if (typeof rowValue === 'object' && rowValue !== null) {
+                  return Object.entries(rowValue).map(([colKey, cellValue]) => {
+                    // Optional: Klartext für Zeile/Spalte
+                    const label = `${questionName} (${rowKey}, ${colKey})`;
+                    const isWarn = isNoAnswer(cellValue);
+                    return (
+                      <div key={`${questionName}_${rowKey}_${colKey}`} className={`question-answer-row${isWarn ? ' warn' : ''}`}>
+                        <span className="question-name">{label}:</span>
+                        <span className="answer-value">{renderMatrixAnswer(cellValue)}</span>
+                      </div>
+                    );
+                  });
+                }
+                // Falls kein Objekt (sollte nicht vorkommen)
+                return null;
+              });
+            }
+            // Standard: Einzelwert wie bisher
             let isWarn = false;
             let soll = undefined;
             if (mapping[questionName] && sollWerte) {
               soll = sollWerte[mapping[questionName]];
               isWarn = ist !== undefined && soll !== undefined && ist !== soll;
             }
-            // NEU: Ja/Nein-Fragen unabhängig vom Sollwert gelb markieren, wenn "Nein"
             if (isNoAnswer(ist)) {
               isWarn = true;
             }

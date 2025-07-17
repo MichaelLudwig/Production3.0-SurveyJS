@@ -466,52 +466,53 @@
       "title": "3.2 Vorbereitung Waage",
       "elements": [
         {
-          "type": "radiogroup",
-          "name": "waage_eq60_ausgerichtet",
-          "title": "Waage korrekt ausgerichtet [EQ-60]",
-          "choices": ["Ja", "Nein", "Nicht zutreffend"],
-          "isRequired": true
-        },
-        {
-          "type": "radiogroup",
-          "name": "waage_eq61_ausgerichtet",
-          "title": "Waage korrekt ausgerichtet [EQ-61]",
-          "choices": ["Ja", "Nein", "Nicht zutreffend"],
-          "isRequired": true
-        },
-        {
-          "type": "radiogroup",
-          "name": "kalibrierung_eq60_erfolgt",
-          "title": "Kalibrierung per ISO-Calc-Funktion [EQ-60]",
-          "choices": ["Ja", "Nein", "Nicht zutreffend"],
-          "isRequired": true
-        },
-        {
-          "type": "radiogroup",
-          "name": "kalibrierung_eq61_erfolgt",
-          "title": "Kalibrierung per ISO-Calc-Funktion [EQ-61]",
-          "choices": ["Ja", "Nein", "Nicht zutreffend"],
-          "isRequired": true
-        },
-        {
-          "type": "radiogroup",
-          "name": "waegung_eq60_korrekt",
-          "title": "Wägung Kalibriergewichte (2g/200g) [EQ-60]",
-          "choices": ["Ja", "Nein", "Nicht zutreffend"],
-          "isRequired": true
-        },
-        {
-          "type": "radiogroup",
-          "name": "waegung_eq61_korrekt",
-          "title": "Wägung Kalibriergewichte (2g/200g) [EQ-61]",
-          "choices": ["Ja", "Nein", "Nicht zutreffend"],
-          "isRequired": true
-        },
-        {
-          "type": "boolean",
-          "name": "waage_statusbericht_ma2",
-          "title": "Überprüfung Statusbericht durch MA2",
-          "isRequired": true
+          "type": "matrixdropdown",
+          "name": "vorbereitung_waage_matrix",
+          "title": "Vorbereitung Waage",
+          "columns": [
+            {
+              "name": "eq73",
+              "title": "EQ-73",
+              "cellType": "radiogroup",
+              "choices": ["Ja", "Nein", "Nicht zutreffend"]
+            },
+            {
+              "name": "eq61",
+              "title": "EQ-61",
+              "cellType": "radiogroup",
+              "choices": ["Ja", "Nein", "Nicht zutreffend"]
+            }
+          ],
+          "rows": [
+            {
+              "value": "ausgerichtet",
+              "text": "Waage korrekt ausgerichtet (Nivellierung, Wägeplatte zentriert)",
+              "cellType": "radiogroup",
+              "cells": {
+                "eq73": { "name": "waage_eq73_ausgerichtet" },
+                "eq61": { "name": "waage_eq61_ausgerichtet" }
+              }
+            },
+            {
+              "value": "kalibrierung",
+              "text": "Kalibrierung per ISO-Calc-Funktion erfolgte ohne Fehler",
+              "cellType": "radiogroup",
+              "cells": {
+                "eq73": { "name": "kalibrierung_eq73_erfolgt" },
+                "eq61": { "name": "kalibrierung_eq61_erfolgt" }
+              }
+            },
+            {
+              "value": "waegung",
+              "text": "Wägung der Kalibriergewichte (2g/200g) ohne Abweichung",
+              "cellType": "radiogroup",
+              "cells": {
+                "eq73": { "name": "waegung_eq73_korrekt" },
+                "eq61": { "name": "waegung_eq61_korrekt" }
+              }
+            }
+          ],
+          "isAllRowRequired": true
         },
         {
           "type": "comment",
@@ -522,12 +523,6 @@
           "type": "text",
           "name": "waage_erfasst",
           "title": "Mitarbeiterkürzel \"Erfasst\"",
-          "isRequired": true
-        },
-        {
-          "type": "text",
-          "name": "waage_geprueft",
-          "title": "Mitarbeiterkürzel \"Überprüft\"",
           "isRequired": true
         }
       ]
