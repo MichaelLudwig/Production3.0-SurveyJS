@@ -57,6 +57,22 @@
   margin-left: 0.5rem;
 }
 
+.material-type-badge {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 8px;
+  font-size: 0.95em;
+  font-weight: bold;
+  margin-left: 10px;
+  color: #fff;
+}
+.badge-gmp {
+  background: #ff9800;
+}
+.badge-gacp {
+  background: #009688;
+}
+
 .btn-minimal {
   background: none;
   border: 1px solid #ddd;

@@ -203,28 +203,24 @@
           "type": "text",
           "name": "produktbezeichnung_ist",
           "title": "Produktbezeichnung Ist",
-          "description": "Soll: {primaerPackmittel.produktbezeichnung}",
           "isRequired": true
         },
         {
           "type": "text",
           "name": "artikelnummer_ist",
           "title": "Artikel-Nr. Ist",
-          "description": "Soll: {primaerPackmittel.artikelNummer}",
           "isRequired": true
         },
         {
           "type": "text",
           "name": "charge_ist",
           "title": "Chargenbezeichnung Ist",
-          "description": "Soll: {primaerPackmittel.charge}",
           "isRequired": true
         },
         {
           "type": "text",
           "name": "anzahl_ist",
           "title": "Anzahl Gebinde Ist",
-          "description": "Soll: {primaerPackmittel.anzahl}",
           "inputType": "number",
           "isRequired": true
         },
@@ -274,28 +270,24 @@
           "type": "text",
           "name": "produktbezeichnung_bulk_ist",
           "title": "Produktbezeichnung Ist",
-          "description": "Soll: {eingangsmaterial.produktbezeichnung}",
           "isRequired": true
         },
         {
           "type": "text",
           "name": "artikelnr_bulk_ist",
           "title": "Artikel-Nr. Ist",
-          "description": "Soll: {eingangsmaterial.artikelNummer}",
           "isRequired": true
         },
         {
           "type": "text",
           "name": "charge_bulk_ist",
           "title": "Chargenbezeichnung Ist",
-          "description": "Soll: {eingangsmaterial.charge}",
           "isRequired": true
         },
         {
           "type": "text",
           "name": "verfall_bulk_ist",
           "title": "Verwendbar bis (TT/MM/JJJJ) Ist",
-          "description": "Soll: {eingangsmaterial.verfall}",
           "inputType": "date",
           "isRequired": true
         },

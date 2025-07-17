@@ -46,7 +46,7 @@ const sollMappingBulk: Record<string, string> = {
   produktbezeichnung_bulk_ist: "produktbezeichnung",
   artikelnr_bulk_ist: "artikelNummer",
   charge_bulk_ist: "charge",
-  verfall_bulk_ist: "verwendbarBis"
+  verfall_bulk_ist: "verfall"
 };
 // Mapping für Soll-Werte aus Schablonen
 const sollMappingSchablonen: Record<string, string> = {
@@ -112,7 +112,7 @@ const MA2Validation: React.FC<MA2ValidationProps> = ({
     let sollWerte: any = {};
     let mapping: Record<string, string> = {};
     if (isBulk) {
-      sollWerte = surveyData?.bulkmaterial || {};
+      sollWerte = surveyData?.eingangsmaterial || {};
       mapping = sollMappingBulk;
     } else if (isSchablonen) {
       sollWerte = surveyData?.schablone || {};

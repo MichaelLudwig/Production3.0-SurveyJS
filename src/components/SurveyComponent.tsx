@@ -133,10 +133,10 @@ const SurveyComponent: React.FC<SurveyComponentProps> = ({
     // Dynamische Soll-Wert-Beschreibungen für relevante Felder setzen
     const sollMappings = [
       // Bulkmaterial
-      { frage: "produktbezeichnung_bulk_ist", pfad: ["bulkmaterial", "produktbezeichnung"] },
-      { frage: "artikelnr_bulk_ist", pfad: ["bulkmaterial", "artikelNummer"] },
-      { frage: "charge_bulk_ist", pfad: ["bulkmaterial", "charge"] },
-      { frage: "verfall_bulk_ist", pfad: ["bulkmaterial", "verwendbarBis"] },
+      { frage: "produktbezeichnung_bulk_ist", pfad: ["eingangsmaterial", "produktbezeichnung"] },
+      { frage: "artikelnr_bulk_ist", pfad: ["eingangsmaterial", "artikelNummer"] },
+      { frage: "charge_bulk_ist", pfad: ["eingangsmaterial", "charge"] },
+      { frage: "verfall_bulk_ist", pfad: ["eingangsmaterial", "verfall"] },
       // Schablonen
       { frage: "schablonen_eq_ist", pfad: ["schablone", "eqNummer"] },
       { frage: "schablonen_charge_ist", pfad: ["schablone", "charge"] },
@@ -497,7 +497,11 @@ const SurveyComponent: React.FC<SurveyComponentProps> = ({
       <div className="survey-header-compact">
         <div className="header-line-1">
           <span className="order-name">{productionOrder.produktName}</span>
-          <span className="material-type">({productionOrder.materialType})</span>
+          <span
+            className={`material-type-badge ${productionOrder.materialType === 'GMP' ? 'badge-gmp' : 'badge-gacp'}`}
+          >
+            {productionOrder.materialType}
+          </span>
           <button className="btn-minimal" onClick={handleBackToOrder}>Auftrag wechseln</button>
         </div>
         <div className="header-line-2">

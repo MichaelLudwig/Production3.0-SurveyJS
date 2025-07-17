@@ -1,6 +1,6 @@
 {
   "orderId": "3",
-  "timestamp": "2025-07-17T09:25:49.096Z",
+  "timestamp": "2025-07-17T10:00:10.060Z",
   "status": "in_progress",
   "survey": {
     "eingangsmaterial_ausgebucht": true,
@@ -76,7 +76,23 @@
     ],
     "line_clearing_erfolgt": true,
     "line_clearing_bemerkungen": "4",
-    "line_clearing_erfasst": "4"
+    "line_clearing_erfasst": "4",
+    "vorbereitung_waage_matrix": {
+      "ausgerichtet": {
+        "eq73": "Ja",
+        "eq61": "Ja"
+      },
+      "kalibrierung": {
+        "eq73": "Ja",
+        "eq61": "Ja"
+      },
+      "waegung": {
+        "eq73": "Ja",
+        "eq61": "Ja"
+      }
+    },
+    "waage_erfasst": "ert",
+    "waage_bemerkungen": "rt"
   },
   "validation": {
     "eingangsmaterialien_ausbuchen": {
@@ -164,7 +180,18 @@
         "line_clearing_bemerkungen",
         "line_clearing_erfasst"
       ]
+    },
+    "vorbereitung_waage": {
+      "status": "completed",
+      "ma2Kuerzel": "ert",
+      "ma2Timestamp": "2025-07-17T09:46:29.306Z",
+      "validationOK": true,
+      "validatedQuestions": [
+        "vorbereitung_waage_matrix",
+        "waage_bemerkungen",
+        "waage_erfasst"
+      ]
     }
   },
-  "currentPageNo": 7
+  "currentPageNo": 11
 }
