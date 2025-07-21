@@ -1,6 +1,6 @@
 {
   "orderId": "2",
-  "timestamp": "2025-07-21T11:45:25.692Z",
+  "timestamp": "2025-07-21T12:22:54.028Z",
   "status": "in_progress",
   "survey": {
     "eingangsmaterial_ausgebucht": true,
@@ -87,7 +87,19 @@
     "verschweiss_programm_ist": "sdf",
     "schweissgeraet_bemerkungen": "sdf",
     "schweissgeraet_funktioniert": true,
-    "schweissgeraet_erfasst": "sdf"
+    "schweissgeraet_erfasst": "sdf",
+    "herstellung_beginn_uhrzeit": "14:21",
+    "bulk_beutel_production": [
+      {
+        "bulk_nummer": "1",
+        "soll_inhalt": 1000,
+        "ist_inhalt": 988,
+        "anzahl_gebinde": 7,
+        "blueten_unauffaellig": true,
+        "gebinde_korrekt_abgewogen": true,
+        "restmenge": 32.82
+      }
+    ]
   },
   "validation": {
     "eingangsmaterialien_ausbuchen": {
@@ -187,5 +199,5 @@
       ]
     }
   },
-  "currentPageNo": 12
+  "currentPageNo": 13
 }
