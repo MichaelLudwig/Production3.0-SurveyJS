@@ -4,6 +4,7 @@ import { Model } from 'survey-core';
 import { Survey } from 'survey-react-ui';
 import { ProductionOrder, SurveyAnswer, ValidationGroup } from '../types';
 import MA2Validation from './MA2Validation';
+import BulkBeutelDashboard from './BulkBeutelDashboard';
 import './SurveyComponent.css';
 import { surveyLocalization } from 'survey-core';
 surveyLocalization.currentLocale = 'de';
@@ -45,6 +46,7 @@ const SurveyComponent: React.FC<SurveyComponentProps> = ({
   }, [validationGroups]);
   const [validationTrigger, setValidationTrigger] = useState(0);
   const [ma2NoticeHighlight, setMa2NoticeHighlight] = useState(false);
+  const [surveyData, setSurveyData] = useState<any>(null);
 
   // Hilfsfunktionen für Dateipfade
   const getSurveyInProgressPath = () => `data/surveys/survey-${productionOrder.id}-inprogress.json`;
@@ -73,11 +75,11 @@ const SurveyComponent: React.FC<SurveyComponentProps> = ({
     return path.reduce((acc, key) => (acc && acc[key] !== undefined ? acc[key] : undefined), obj);
   }
 
-  // Lade Survey-Definition und Validierungsgruppen über API
+  // Lade Survey-Definition, Validierungsgruppen und Survey-Daten über API
   useEffect(() => {
     (async () => {
       try {
-        console.log('[Survey] Loading survey definition and validation groups from API...');
+        console.log('[Survey] Loading survey definition, validation groups and survey data from API...');
         
         // Lade Survey-Definition
         const surveyDef = await readJsonFile('data/master-data/surveyDefinition.json');
@@ -92,6 +94,20 @@ const SurveyComponent: React.FC<SurveyComponentProps> = ({
         console.log('[DEBUG] Setting validationGroups state...');
         setValidationGroups(validationGroupsData || []);
         console.log('[DEBUG] setValidationGroups called with:', validationGroupsData || []);
+        
+        // Lade Survey-Daten für Dashboard
+        const surveyDataPath = getSurveyInProgressPath();
+        console.log('[Survey] Loading survey data from:', surveyDataPath);
+        const surveyDataFromFile = await readJsonFile(surveyDataPath);
+        console.log('[Survey] Survey data loaded:', surveyDataFromFile ? 'success' : 'failed');
+        console.log('[Survey] Survey data content:', surveyDataFromFile);
+        
+        if (surveyDataFromFile) {
+          setSurveyData(surveyDataFromFile);
+        } else {
+          // Fallback zu initialAnswers wenn keine Datei existiert
+          setSurveyData(initialAnswers);
+        }
         
       } catch (error) {
         console.error('[Survey] Error loading survey configuration:', error);
@@ -517,6 +533,28 @@ const SurveyComponent: React.FC<SurveyComponentProps> = ({
     });
   }, [currentPageIndex, survey]);
 
+  // Prüfe ob wir auf der Dashboard-Seite sind
+  const isDashboardPage = () => {
+    const currentTitle = getCurrentPageTitle();
+    return currentTitle === '4.2 Primärverpackung - Produktionslauf';
+  };
+
+  // Handler für Dashboard-Daten-Updates
+  const handleDashboardDataUpdate = (data: any) => {
+    setSurveyData(data);
+    // Hier später: Speichern in Survey JSON
+    console.log('[Dashboard] Data updated:', data);
+  };
+
+  // Navigation Handler für Dashboard
+  const handleDashboardNavigation = (direction: 'prev' | 'next') => {
+    if (direction === 'prev' && currentPageIndex > 0) {
+      survey?.prevPage();
+    } else if (direction === 'next' && currentPageIndex < getTotalPages() - 1) {
+      survey?.nextPage();
+    }
+  };
+
   if (!surveyDefinition || !survey) {
     return (
       <div className="survey-loading">
@@ -562,48 +600,74 @@ const SurveyComponent: React.FC<SurveyComponentProps> = ({
       </div>
       
       <div className="survey-content">
-        
-        <div className="survey-split-container">
-          {/* Left Panel: MA1 Questions */}
-          <div className="survey-left-panel">
-            <div className={`survey-wrapper ${pendingMA2Groups.length > 0 ? 'ma2-pending' : ''}`}>
-              <Survey model={survey} />
+        {isDashboardPage() ? (
+          <>
+            <BulkBeutelDashboard
+              productionOrder={productionOrder}
+              surveyData={surveyData}
+              onSurveyDataUpdate={handleDashboardDataUpdate}
+            />
+            {/* Navigation für Dashboard */}
+            <div className="dashboard-navigation">
+              <button 
+                className="nav-btn nav-prev"
+                onClick={() => handleDashboardNavigation('prev')}
+                disabled={currentPageIndex === 0}
+              >
+                ← Zurück
+              </button>
+              <button 
+                className="nav-btn nav-next"
+                onClick={() => handleDashboardNavigation('next')}
+                disabled={currentPageIndex === getTotalPages() - 1}
+              >
+                Weiter →
+              </button>
             </div>
-          </div>
-          
-          {/* Right Panel: MA2 Validation */}
-          <div className="survey-right-panel">
-            <div className="ma2-validation-wrapper">
-              {getCurrentPageValidationGroups().map(group => {
-                console.log(`[DEBUG] Rendering MA2Validation for group: ${group.name}`, {
-                  validationType: group.validationType,
-                  label: group.label,
-                  title: group.title,
-                  fullGroup: group
-                });
-                return (
-                  <MA2Validation
-                    key={group.name}
-                    group={group}
-                    groupAnswers={getGroupAnswers(group)}
-                    onMA2Validation={handleMA2Validation}
-                    isCompleted={validationData[group.name]?.status === 'completed' || false}
-                    surveyData={productionOrder}
-                  />
-                );
-              })}
-              
-              {pendingMA2Groups.length > 0 && (
-                <div className={`ma2-pending-notice${ma2NoticeHighlight ? ' highlight' : ''}`}>
-                  <div>
-                    <strong>⚠️ Zweite Person erforderlich</strong>
-                    <p>Bitte alle Validierungen abschließen, bevor Sie fortfahren können.</p>
+          </>
+        ) : (
+          <div className="survey-split-container">
+            {/* Left Panel: MA1 Questions */}
+            <div className="survey-left-panel">
+              <div className={`survey-wrapper ${pendingMA2Groups.length > 0 ? 'ma2-pending' : ''}`}>
+                <Survey model={survey} />
+              </div>
+            </div>
+            
+            {/* Right Panel: MA2 Validation */}
+            <div className="survey-right-panel">
+              <div className="ma2-validation-wrapper">
+                {getCurrentPageValidationGroups().map(group => {
+                  console.log(`[DEBUG] Rendering MA2Validation for group: ${group.name}`, {
+                    validationType: group.validationType,
+                    label: group.label,
+                    title: group.title,
+                    fullGroup: group
+                  });
+                  return (
+                    <MA2Validation
+                      key={group.name}
+                      group={group}
+                      groupAnswers={getGroupAnswers(group)}
+                      onMA2Validation={handleMA2Validation}
+                      isCompleted={validationData[group.name]?.status === 'completed' || false}
+                      surveyData={productionOrder}
+                    />
+                  );
+                })}
+                
+                {pendingMA2Groups.length > 0 && (
+                  <div className={`ma2-pending-notice${ma2NoticeHighlight ? ' highlight' : ''}`}>
+                    <div>
+                      <strong>⚠️ Zweite Person erforderlich</strong>
+                      <p>Bitte alle Validierungen abschließen, bevor Sie fortfahren können.</p>
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
+              </div>
             </div>
           </div>
-        </div>
+        )}
       </div>
       
       <div className="survey-footer-compact">

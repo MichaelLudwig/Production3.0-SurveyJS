@@ -1,6 +1,6 @@
 {
   "orderId": "3",
-  "timestamp": "2025-07-21T12:22:55.606Z",
+  "timestamp": "2025-07-21T13:49:02.824Z",
   "status": "in_progress",
   "survey": {
     "eingangsmaterial_ausgebucht": true,
@@ -52,8 +52,20 @@
     "verfall_bulk_ist": "2025-07-17",
     "bulkgebinde_liste": [
       {
+        "anzahl": 14,
+        "gebindegroesse": 1000,
+        "probenzug_verwendet": false,
+        "dicht_sauber": true
+      },
+      {
+        "anzahl": 7,
+        "gebindegroesse": 988,
+        "probenzug_verwendet": true,
+        "dicht_sauber": true
+      },
+      {
         "anzahl": 1,
-        "gebindegroesse": 1,
+        "gebindegroesse": 979.76,
         "probenzug_verwendet": true,
         "dicht_sauber": true
       }
@@ -99,7 +111,28 @@
     "schweissgeraet_erfasst": "fg",
     "herstellung_beginn_uhrzeit": "13:47",
     "bulk_beutel_production": [
-      {}
+      {
+        "bulk_nummer": "1",
+        "soll_inhalt": 1000,
+        "ist_inhalt": 988,
+        "anzahl_gebinde": 6,
+        "blueten_unauffaellig": true,
+        "gebinde_korrekt_abgewogen": true,
+        "restmenge": 32.82,
+        "aussortiertes_material": 332.85,
+        "probenzug_ipk": 3.94,
+        "bruch": 0,
+        "erfasst_kuerzel": "nya",
+        "schweissnaht_ok": true
+      },
+      {
+        "bulk_nummer": "2",
+        "soll_inhalt": 1000,
+        "ist_inhalt": 988,
+        "anzahl_gebinde": 7,
+        "blueten_unauffaellig": true,
+        "gebinde_korrekt_abgewogen": true
+      }
     ]
   },
   "validation": {
