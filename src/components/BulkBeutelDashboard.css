@@ -324,6 +324,51 @@
   margin-bottom: 10px;
 }
 
+/* Output Box (Material Ausgang) */
+.output-box {
+  background: white;
+  border: 2px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.output-box:hover {
+  border-color: #19b394;
+  box-shadow: 0 4px 12px rgba(25, 179, 148, 0.2);
+}
+
+.output-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.output-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.output-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #19b394;
+  background: linear-gradient(135deg, #19b394, #16a085);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.output-subtitle {
+  font-size: 0.9rem;
+  color: #666;
+  font-style: italic;
+}
+
 /* Responsive Design */
 @media (max-width: 1200px) {
   .bulk-beutel-dashboard {

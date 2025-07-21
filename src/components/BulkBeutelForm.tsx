@@ -104,7 +104,7 @@ const BulkBeutelForm: React.FC<BulkBeutelFormProps> = ({ bulkBeutel, onSave, onC
         <div className="form-row">
           <div className="form-field">
             <label className="form-label">
-              Bulkbeutelnummer *
+              Bulkbeutelnummer
             </label>
             <input
               type="text"
@@ -118,7 +118,7 @@ const BulkBeutelForm: React.FC<BulkBeutelFormProps> = ({ bulkBeutel, onSave, onC
         <div className="form-row">
           <div className="form-field">
             <label className="form-label">
-              Soll-Inhalt Bulkbeutel (g) *
+              Soll-Inhalt Bulkbeutel (g)
             </label>
             <input
               type="number"
@@ -132,7 +132,7 @@ const BulkBeutelForm: React.FC<BulkBeutelFormProps> = ({ bulkBeutel, onSave, onC
         <div className="form-row">
           <div className="form-field">
             <label className="form-label">
-              Ist-Inhalt Bulkbeutel (g) *
+              Ist-Inhalt Bulkbeutel (g)
             </label>
             <input
               type="number"
@@ -148,7 +148,7 @@ const BulkBeutelForm: React.FC<BulkBeutelFormProps> = ({ bulkBeutel, onSave, onC
         <div className="form-row">
           <div className="form-field">
             <label className="form-label">
-              Anzahl gefüllter, verschweißter Gebinde *
+              Anzahl gefüllter, verschweißter Gebinde
             </label>
             <input
               type="number"
@@ -164,7 +164,7 @@ const BulkBeutelForm: React.FC<BulkBeutelFormProps> = ({ bulkBeutel, onSave, onC
         <div className="form-row">
           <div className="form-field">
             <label className="form-label">
-              Blüten unauffällig? *
+              Blüten unauffällig?
             </label>
             <div className="toggle-switch">
               <button
@@ -189,7 +189,7 @@ const BulkBeutelForm: React.FC<BulkBeutelFormProps> = ({ bulkBeutel, onSave, onC
         <div className="form-row">
           <div className="form-field">
             <label className="form-label">
-              Gebinde korrekt abgewogen? *
+              Gebinde korrekt abgewogen?
             </label>
             <div className="toggle-switch">
               <button
@@ -214,7 +214,7 @@ const BulkBeutelForm: React.FC<BulkBeutelFormProps> = ({ bulkBeutel, onSave, onC
         <div className="form-row">
           <div className="form-field">
             <label className="form-label">
-              Restmenge (g) *
+              Restmenge (g)
             </label>
             <input
               type="number"
@@ -230,7 +230,7 @@ const BulkBeutelForm: React.FC<BulkBeutelFormProps> = ({ bulkBeutel, onSave, onC
         <div className="form-row">
           <div className="form-field">
             <label className="form-label">
-              Aussortiertes Material (g) *
+              Aussortiertes Material (g)
             </label>
             <input
               type="number"
@@ -246,7 +246,7 @@ const BulkBeutelForm: React.FC<BulkBeutelFormProps> = ({ bulkBeutel, onSave, onC
         <div className="form-row">
           <div className="form-field">
             <label className="form-label">
-              Probenzug IPK (g) *
+              Probenzug IPK (g)
             </label>
             <input
               type="number"
@@ -262,7 +262,7 @@ const BulkBeutelForm: React.FC<BulkBeutelFormProps> = ({ bulkBeutel, onSave, onC
         <div className="form-row">
           <div className="form-field">
             <label className="form-label">
-              Bruch (g) *
+              Bruch (g)
             </label>
             <input
               type="number"
@@ -278,7 +278,7 @@ const BulkBeutelForm: React.FC<BulkBeutelFormProps> = ({ bulkBeutel, onSave, onC
         <div className="form-row">
           <div className="form-field">
             <label className="form-label">
-              Erfasst (Kürzel) *
+              Erfasst (Kürzel)
             </label>
             <input
               type="text"
@@ -294,7 +294,7 @@ const BulkBeutelForm: React.FC<BulkBeutelFormProps> = ({ bulkBeutel, onSave, onC
         <div className="form-row">
           <div className="form-field">
             <label className="form-label">
-              Geprüft (Kürzel) *
+              Geprüft (Kürzel)
             </label>
             <input
               type="text"
@@ -310,7 +310,7 @@ const BulkBeutelForm: React.FC<BulkBeutelFormProps> = ({ bulkBeutel, onSave, onC
         <div className="form-row">
           <div className="form-field">
             <label className="form-label">
-              Schweißnaht des letzten Beutels ohne Beanstandung? *
+              Schweißnaht des letzten Beutels ohne Beanstandung?
             </label>
             <div className="toggle-switch">
               <button

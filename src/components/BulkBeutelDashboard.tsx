@@ -168,12 +168,20 @@ const BulkBeutelDashboard: React.FC<BulkBeutelDashboardProps> = ({
 
   const getGesamtAnzahl = () => bulkBeutelList.length;
 
+  const getErzeugteGebindeAnzahl = () => {
+    const existingProduction = surveyData?.survey?.bulk_beutel_production || [];
+    return existingProduction.reduce((total: number, entry: any) => {
+      const anzahl = parseInt(entry.anzahl_gebinde) || 0;
+      return total + anzahl;
+    }, 0);
+  };
+
   return (
     <div className="bulk-beutel-dashboard">
       {/* Spalte 1: Eingangsmaterial */}
       <div className="dashboard-column column-1">
         <div className="dashboard-header">
-          <h3>Eingangsmaterial</h3>
+          <h3>Material Eingang</h3>
         </div>
         
         {/* Doughnut Chart */}
@@ -257,11 +265,21 @@ const BulkBeutelDashboard: React.FC<BulkBeutelDashboardProps> = ({
         )}
       </div>
 
-      {/* Spalte 3: Platzhalter */}
+      {/* Spalte 3: Material Ausgang */}
       <div className="dashboard-column column-3">
-        <div className="placeholder">
-          <h3>Spalte 3</h3>
-          <p>Platzhalter für zukünftige Funktionen</p>
+        <div className="dashboard-header">
+          <h3>Material Ausgang</h3>
+        </div>
+        
+        {/* Erzeugte Gebinde Box */}
+        <div className="output-box">
+          <div className="output-header">
+            <span className="output-title">Erzeugte Gebinde</span>
+            <span className="output-value">{getErzeugteGebindeAnzahl()}</span>
+          </div>
+          <div className="output-subtitle">
+            <span>Gesamt aus Produktionslauf</span>
+          </div>
         </div>
       </div>
 
