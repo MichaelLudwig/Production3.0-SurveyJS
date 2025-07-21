@@ -19,6 +19,9 @@ export interface ProductionOrder {
     charge: string;
     anzahl: number;
   };
+  verschweissProgramm?: {
+    programm: string;
+  };
   zwischenprodukt: {
     artikelNummer: string;
     gebindeNummer: string;

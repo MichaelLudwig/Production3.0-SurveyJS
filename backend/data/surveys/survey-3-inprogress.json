@@ -1,6 +1,6 @@
 {
   "orderId": "3",
-  "timestamp": "2025-07-17T10:00:10.060Z",
+  "timestamp": "2025-07-21T11:45:44.946Z",
   "status": "in_progress",
   "survey": {
     "eingangsmaterial_ausgebucht": true,
@@ -92,7 +92,15 @@
       }
     },
     "waage_erfasst": "ert",
-    "waage_bemerkungen": "rt"
+    "waage_bemerkungen": "rt",
+    "verschweiss_programm_ist": "ert",
+    "schweissgeraet_funktioniert": true,
+    "schweissgeraet_bemerkungen": "fg",
+    "schweissgeraet_erfasst": "fg",
+    "herstellung_beginn_uhrzeit": "13:47",
+    "bulk_beutel_production": [
+      {}
+    ]
   },
   "validation": {
     "eingangsmaterialien_ausbuchen": {
@@ -191,7 +199,19 @@
         "waage_bemerkungen",
         "waage_erfasst"
       ]
+    },
+    "vorbereitung_schweissgeraet": {
+      "status": "completed",
+      "ma2Kuerzel": "ert",
+      "ma2Timestamp": "2025-07-21T11:16:57.283Z",
+      "validationOK": true,
+      "validatedQuestions": [
+        "verschweiss_programm_ist",
+        "schweissgeraet_funktioniert",
+        "schweissgeraet_bemerkungen",
+        "schweissgeraet_erfasst"
+      ]
     }
   },
-  "currentPageNo": 11
+  "currentPageNo": 13
 }

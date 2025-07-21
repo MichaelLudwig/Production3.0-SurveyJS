@@ -215,6 +215,29 @@ const ProductionOrderManager: React.FC<ProductionOrderManagerProps> = ({
     }
   };
 
+  // Neue Funktion zum Zurücksetzen der Survey
+  const handleResetSurvey = async (orderId: string) => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/surveys/${orderId}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      });
+
+      if (response.ok) {
+        // Update local status
+        setOrderStatuses(prev => ({ ...prev, [orderId]: 'none' }));
+      } else {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Unbekannter Fehler');
+      }
+    } catch (error) {
+      console.error('Fehler beim Zurücksetzen der Survey:', error);
+      alert(`Fehler beim Zurücksetzen der Survey: ${error instanceof Error ? error.message : 'Unbekannter Fehler'}`);
+    }
+  };
+
   const handleInputChange = (section: string, field: string, value: any) => {
     setNewOrder(prev => {
       const currentSection = prev[section as keyof typeof prev] as any;
@@ -294,7 +317,7 @@ const ProductionOrderManager: React.FC<ProductionOrderManagerProps> = ({
                     </span>
                   </p>
                 </div>
-                <div className="order-card-actions">
+                <div className={`order-card-actions ${(orderStatuses[order.id] === 'in_progress' || orderStatuses[order.id] === 'completed') ? 'three-buttons' : 'two-buttons'}`}>
                   <button 
                     className="btn btn-primary btn-small"
                     onClick={() => onOrderSelected(order)}
@@ -308,6 +331,14 @@ const ProductionOrderManager: React.FC<ProductionOrderManagerProps> = ({
                   >
                     Details
                   </button>
+                  {(orderStatuses[order.id] === 'in_progress' || orderStatuses[order.id] === 'completed') && (
+                    <button 
+                      className="btn btn-warning btn-small"
+                      onClick={() => handleResetSurvey(order.id)}
+                    >
+                      Survey zurücksetzen
+                    </button>
+                  )}
                 </div>
               </div>
             ))}
@@ -338,6 +369,14 @@ const ProductionOrderManager: React.FC<ProductionOrderManagerProps> = ({
               >
                 Bearbeiten
               </button>
+              {(orderStatuses[editingOrder.id] === 'in_progress' || orderStatuses[editingOrder.id] === 'completed') && (
+                <button 
+                  className="btn btn-warning"
+                  onClick={() => handleResetSurvey(editingOrder.id)}
+                >
+                  Survey zurücksetzen
+                </button>
+              )}
             </div>
           </div>
           

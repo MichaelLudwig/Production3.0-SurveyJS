@@ -482,6 +482,41 @@ const SurveyComponent: React.FC<SurveyComponentProps> = ({
     return survey?.currentPage?.title || '';
   };
 
+  // Neue Funktion: Bestimme den aktuellen Standort basierend auf der Seite
+  const getCurrentLocation = () => {
+    const currentTitle = getCurrentPageTitle();
+    
+    // Lager-Bereich: Alle Seiten bis einschließlich "2.4 Materialbereitstellung - Abschluss"
+    if (currentTitle.startsWith('1.') || 
+        currentTitle.startsWith('2.')) {
+      return 'lager';
+    }
+    
+    // Reinraum-Bereich: Alle Seiten ab "3.1 Vorbereitung Reinraum"
+    if (currentTitle.startsWith('3.') || 
+        currentTitle.startsWith('4.') || 
+        currentTitle.startsWith('5.') || 
+        currentTitle.startsWith('6.') || 
+        currentTitle.startsWith('7.') || 
+        currentTitle.startsWith('8.') || 
+        currentTitle.startsWith('9.')) {
+      return 'reinraum';
+    }
+    
+    return 'lager'; // Default
+  };
+
+  // Debug: Log location changes
+  useEffect(() => {
+    const currentLocation = getCurrentLocation();
+    console.log('[Location Debug]', {
+      currentTitle: getCurrentPageTitle(),
+      location: currentLocation,
+      pageIndex: currentPageIndex,
+      containerClasses: `survey-container location-${currentLocation}`
+    });
+  }, [currentPageIndex, survey]);
+
   if (!surveyDefinition || !survey) {
     return (
       <div className="survey-loading">
@@ -493,7 +528,8 @@ const SurveyComponent: React.FC<SurveyComponentProps> = ({
   }
 
   return (
-    <div className="survey-container">
+    <div className={`survey-container location-${getCurrentLocation()}`} 
+         data-location={getCurrentLocation()}>
       <div className="survey-header-compact">
         <div className="header-line-1">
           <span className="order-name">{productionOrder.produktName}</span>
@@ -505,7 +541,14 @@ const SurveyComponent: React.FC<SurveyComponentProps> = ({
           <button className="btn-minimal" onClick={handleBackToOrder}>Auftrag wechseln</button>
         </div>
         <div className="header-line-2">
-          <div className="current-step">{getCurrentPageTitle()}</div>
+          <div className="current-step">
+            <span className={`location-indicator ${getCurrentLocation()}`}>
+              {getCurrentLocation() === 'lager' ? 'LAGER' : 'REINRAUM'}
+            </span>
+            {getCurrentPageTitle()}
+
+
+          </div>
           <div className="progress-info">Seite {currentPageIndex + 1} von {getTotalPages()}</div>
         </div>
       </div>
@@ -545,7 +588,7 @@ const SurveyComponent: React.FC<SurveyComponentProps> = ({
                     groupAnswers={getGroupAnswers(group)}
                     onMA2Validation={handleMA2Validation}
                     isCompleted={validationData[group.name]?.status === 'completed' || false}
-                    surveyData={survey?.data}
+                    surveyData={productionOrder}
                   />
                 );
               })}

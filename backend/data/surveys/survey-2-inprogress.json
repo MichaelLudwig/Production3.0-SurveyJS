@@ -1,6 +1,6 @@
 {
   "orderId": "2",
-  "timestamp": "2025-07-17T10:43:53.957Z",
+  "timestamp": "2025-07-21T11:45:25.692Z",
   "status": "in_progress",
   "survey": {
     "eingangsmaterial_ausgebucht": true,
@@ -83,13 +83,17 @@
         "eq61": "Ja"
       }
     },
-    "waage_bemerkungen": "d"
+    "waage_bemerkungen": "d",
+    "verschweiss_programm_ist": "sdf",
+    "schweissgeraet_bemerkungen": "sdf",
+    "schweissgeraet_funktioniert": true,
+    "schweissgeraet_erfasst": "sdf"
   },
   "validation": {
     "eingangsmaterialien_ausbuchen": {
       "status": "completed",
-      "ma2Kuerzel": "d",
-      "ma2Timestamp": "2025-07-16T12:42:05.680Z",
+      "ma2Kuerzel": "ert",
+      "ma2Timestamp": "2025-07-21T10:18:32.973Z",
       "validationOK": true,
       "validatedQuestions": [
         "eingangsmaterial_ausgebucht"
@@ -97,8 +101,8 @@
     },
     "raumstatus_pruefen": {
       "status": "completed",
-      "ma2Kuerzel": "2",
-      "ma2Timestamp": "2025-07-16T12:42:41.281Z",
+      "ma2Kuerzel": "ert",
+      "ma2Timestamp": "2025-07-21T10:18:41.425Z",
       "validationOK": true,
       "validatedQuestions": [
         "arbeitsraum_ist_druck_matrix",
@@ -109,8 +113,8 @@
     },
     "materialbereitstellung_primaerpackmittel": {
       "status": "completed",
-      "ma2Kuerzel": "2",
-      "ma2Timestamp": "2025-07-16T12:42:53.258Z",
+      "ma2Kuerzel": "ert",
+      "ma2Timestamp": "2025-07-21T10:18:46.706Z",
       "validationOK": true,
       "validatedQuestions": [
         "produktbezeichnung_ist",
@@ -123,8 +127,8 @@
     },
     "materialbereitstellung_bulk": {
       "status": "completed",
-      "ma2Kuerzel": "2",
-      "ma2Timestamp": "2025-07-16T12:43:20.500Z",
+      "ma2Kuerzel": "ret",
+      "ma2Timestamp": "2025-07-21T10:18:54.746Z",
       "validationOK": true,
       "validatedQuestions": [
         "produktbezeichnung_bulk_ist",
@@ -137,8 +141,8 @@
     },
     "materialbereitstellung_abschluss": {
       "status": "completed",
-      "ma2Kuerzel": "ert",
-      "ma2Timestamp": "2025-07-16T13:18:09.980Z",
+      "ma2Kuerzel": "rte",
+      "ma2Timestamp": "2025-07-21T10:19:06.559Z",
       "validationOK": true,
       "validatedQuestions": [
         "materialbereitstellung_bemerkungen",
@@ -148,8 +152,8 @@
     },
     "line_clearing": {
       "status": "completed",
-      "ma2Kuerzel": "ert",
-      "ma2Timestamp": "2025-07-16T13:24:55.475Z",
+      "ma2Kuerzel": "er",
+      "ma2Timestamp": "2025-07-21T10:33:26.142Z",
       "validationOK": true,
       "validatedQuestions": [
         "raumtemperatur_ist_matrix",
@@ -161,15 +165,27 @@
     },
     "vorbereitung_waage": {
       "status": "completed",
-      "ma2Kuerzel": "er",
-      "ma2Timestamp": "2025-07-16T15:58:05.776Z",
+      "ma2Kuerzel": "345",
+      "ma2Timestamp": "2025-07-21T10:36:45.664Z",
       "validationOK": true,
       "validatedQuestions": [
         "vorbereitung_waage_matrix",
         "waage_bemerkungen",
         "waage_erfasst"
       ]
+    },
+    "vorbereitung_schweissgeraet": {
+      "status": "completed",
+      "ma2Kuerzel": "sdf",
+      "ma2Timestamp": "2025-07-21T11:31:39.398Z",
+      "validationOK": true,
+      "validatedQuestions": [
+        "verschweiss_programm_ist",
+        "schweissgeraet_funktioniert",
+        "schweissgeraet_bemerkungen",
+        "schweissgeraet_erfasst"
+      ]
     }
   },
-  "currentPageNo": 9
+  "currentPageNo": 12
 }

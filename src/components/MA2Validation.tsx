@@ -41,6 +41,10 @@ const sollMapping: Record<string, string> = {
   charge_ist: "charge",
   anzahl_ist: "anzahl"
 };
+// Mapping für Soll-Werte aus Verschweißprogramm
+const sollMappingVerschweiss: Record<string, string> = {
+  verschweiss_programm_ist: "programm"
+};
 // Mapping für Soll-Werte aus Bulkmaterial
 const sollMappingBulk: Record<string, string> = {
   produktbezeichnung_bulk_ist: "produktbezeichnung",
@@ -106,9 +110,10 @@ const MA2Validation: React.FC<MA2ValidationProps> = ({
   };
 
   const renderQuestionSummary = () => {
-    // Erkenne, ob es sich um die Bulkmaterial-Seite oder Schablonen-Seite handelt
+    // Erkenne, ob es sich um die Bulkmaterial-Seite, Schablonen-Seite oder Verschweißprogramm-Seite handelt
     const isBulk = group.name === "materialbereitstellung_bulk";
     const isSchablonen = group.name === "zubehör_schablonen";
+    const isVerschweiss = group.name === "vorbereitung_schweissgeraet";
     let sollWerte: any = {};
     let mapping: Record<string, string> = {};
     if (isBulk) {
@@ -117,6 +122,9 @@ const MA2Validation: React.FC<MA2ValidationProps> = ({
     } else if (isSchablonen) {
       sollWerte = surveyData?.schablone || {};
       mapping = sollMappingSchablonen;
+    } else if (isVerschweiss) {
+      sollWerte = surveyData?.verschweissProgramm || {};
+      mapping = sollMappingVerschweiss;
     } else {
       sollWerte = surveyData?.primaerPackmittel || {};
       mapping = sollMapping;

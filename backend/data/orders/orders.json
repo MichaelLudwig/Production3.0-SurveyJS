@@ -22,6 +22,9 @@
       "charge": "O100074-20240726-001",
       "anzahl": 200
     },
+    "verschweissProgramm": {
+      "programm": "Daklapack Beutel"
+    },
     "zwischenprodukt": {
       "artikelNummer": "Bulk-18350663",
       "gebindeNummer": "25061450",
@@ -54,6 +57,9 @@
       "produktbezeichnung": "Glasflasche 30ml braun",
       "charge": "PKM-2024-002",
       "anzahl": 50
+    },
+    "verschweissProgramm": {
+      "programm": "Glasflasche Verschweißung"
     },
     "zwischenprodukt": {
       "artikelNummer": "ZP-002",
@@ -92,6 +98,9 @@
       "produktbezeichnung": "Standbodenbeutel 5000ml transparent",
       "charge": "PKM-2024-003",
       "anzahl": 75
+    },
+    "verschweissProgramm": {
+      "programm": "Daklapack Beutel"
     },
     "zwischenprodukt": {
       "artikelNummer": "ZP-003",

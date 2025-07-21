@@ -526,15 +526,10 @@
         {
           "type": "text",
           "name": "verschweiss_programm_ist",
-          "title": "Verschweißprogramm für Gebinde: Ist",
+          "title": "Verschweißprogramm für die Gebinde: Ist",
           "isRequired": true
         },
-        {
-          "type": "boolean",
-          "name": "verschweiss_programm_ok",
-          "title": "Verschweißprogramm - Übereinstimmung?",
-          "isRequired": true
-        },
+
         {
           "type": "boolean",
           "name": "schweissgeraet_funktioniert",
@@ -551,12 +546,6 @@
           "name": "schweissgeraet_erfasst",
           "title": "Mitarbeiterkürzel \"Erfasst\"",
           "isRequired": true
-        },
-        {
-          "type": "text",
-          "name": "schweissgeraet_geprueft",
-          "title": "Mitarbeiterkürzel \"Überprüft\"",
-          "isRequired": true
         }
       ]
     },
@@ -565,17 +554,35 @@
       "title": "4.1 Herstellprozess - Beginn",
       "elements": [
         {
+          "type": "html",
+          "name": "herstellprozess_beschreibung",
+          "html": "<h4>Beschreibung des Herstellprozesses</h4><p>Die Herstellung umfasst die folgenden Schritte und wird gemäß Flussdiagramm und Begleitpräsentation durchgeführt. Der Prozess wird für jeden Bulkbeutel einzeln durchlaufen und die Durchführung wird in den folgenden Tabellen protokolliert.</p>"
+        },
+        {
+          "type": "html",
+          "name": "herstellprozess_beschreibung_GACP",
+          "html": "<div style='text-align:center;'><img src='/images/herstellung-GACP-1.png' alt='herstellung-GACP-1' style='max-width: 100%; margin-top: 10px;'><img src='/images/herstellung-GACP-2.png' alt='herstellung-GACP-2' style='max-width: 100%; margin-top: 10px;'><img src='/images/herstellung-GACP-3.png' alt='herstellung-GACP-3' style='max-width: 100%; margin-top: 10px;'></div>",
+          "visibleIf": "{materialType} = 'GACP'"
+        },
+        {
+          "type": "html",
+          "name": "probezug_GACP",
+          "html": "<h4>Probenzug Inprozesskontrolle (IPK) QK</h4><p>Aus dem Material, welches aus dem ersten, einem mittleren und dem letzten Bulkbeutel hergestellt wird, muss jeweils eine Probe für die Inprozesskontrolle QK gezogen werden. Diese wird nach Sortierung und Aufreinigung aus dem Material gezogen, welches für die Abfüllung vorgesehen ist. Es werden jeweils entnommen:</p><ul style='margin-bottom: 10px;'><li>2 kleine Blüten</li><li>2 mittlere Blüten</li><li>2 große Blüten</li></ul><p>Die Blüten sollen so gewählt werden, dass sie den bearbeiteten Bulkbeutel repräsentieren. Die Beutel, die beprobt werden müssen, sind in den folgenden Tabellen farblich markiert:</p><div style='text-align:center;'><img src='/images/probenzug-GACP-1.png' alt='probenzug-GACP-1' style='max-width: 80%; margin-top: 10px;'><img src='/images/probenzug-GACP-2.png' alt='probenzug-GACP-2' style='max-width: 100%; margin-top: 10px;'>",
+          "visibleIf": "{materialType} = 'GACP'"
+        },
+        {
+          "type": "html",
+          "name": "herstellprozess_beschreibung_GMP",
+          "html": "<div style='text-align:center;'><img src='/images/herstellung-GMP-1.png' alt='herstellung-GMP-1' style='max-width: 100%; margin-top: 10px;'></div>",
+          "visibleIf": "{materialType} = 'GMP'"
+        },
+        {
           "type": "text",
           "name": "herstellung_beginn_uhrzeit",
           "title": "Beginn Herstellung (Uhrzeit)",
           "inputType": "time",
           "isRequired": true
-        },
-        {
-          "type": "html",
-          "name": "herstellprozess_beschreibung",
-          "html": "<h4>Beschreibung des Herstellprozesses</h4><p>Die Herstellung umfasst die folgenden Schritte und wird gemäß Flussdiagramm und Begleitpräsentation durchgeführt. Der Prozess wird für jeden Bulkbeutel einzeln durchlaufen und die Durchführung wird in den folgenden Tabellen protokolliert.</p>"
-        }
+        }        
       ]
     },
     {
@@ -749,12 +756,7 @@
           "title": "Verschweißprogramm nach Pause: Ist",
           "isRequired": true
         },
-        {
-          "type": "boolean",
-          "name": "verschweiss_nach_pause_ok",
-          "title": "Verschweißprogramm - Übereinstimmung?",
-          "isRequired": true
-        },
+
         {
           "type": "boolean",
           "name": "schweissgeraet_nach_pause_ok",
@@ -770,12 +772,6 @@
           "type": "text",
           "name": "pause_nachbereitung_erfasst",
           "title": "Mitarbeiterkürzel \"Erfasst\"",
-          "isRequired": true
-        },
-        {
-          "type": "text",
-          "name": "pause_nachbereitung_geprueft",
-          "title": "Mitarbeiterkürzel \"Überprüft\"",
           "isRequired": true
         }
       ]

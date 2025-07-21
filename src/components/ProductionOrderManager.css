@@ -110,6 +110,15 @@
   border-top: 1px solid #e7e7e7;
 }
 
+/* Button grid variations */
+.order-card-actions.two-buttons {
+  grid-template-columns: 1fr 1fr;
+}
+
+.order-card-actions.three-buttons {
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
 .order-card-actions .btn {
   width: 100%;
   max-width: none;
@@ -355,6 +364,17 @@
   border-color: #c8082f;
 }
 
+.btn-warning {
+  background-color: #ff9814;
+  color: white;
+  border-color: #ff9814;
+}
+
+.btn-warning:hover:not(:disabled) {
+  background-color: #e68912;
+  border-color: #e68912;
+}
+
 .btn-back {
   background-color: #f8f8f8;
   color: #404040;
@@ -440,7 +460,8 @@
     grid-template-columns: repeat(2, 1fr);
   }
   
-  .order-card-actions {
+  .order-card-actions.two-buttons,
+  .order-card-actions.three-buttons {
     grid-template-columns: repeat(2, 1fr);
   }
 }
@@ -461,7 +482,8 @@
     grid-template-columns: 1fr;
   }
   
-  .order-card-actions {
+  .order-card-actions.two-buttons,
+  .order-card-actions.three-buttons {
     grid-template-columns: 1fr 1fr;
     flex-direction: unset;
   }

@@ -88,7 +88,7 @@
     "validationType": "validation",
     "label": "Kürzel Mitarbeiter 2",
     "materialType": "ALL",
-    "questions": ["verschweiss_programm_ist", "verschweiss_programm_ok", "schweissgeraet_funktioniert", "schweissgeraet_bemerkungen", "schweissgeraet_erfasst", "schweissgeraet_geprueft"]
+    "questions": ["verschweiss_programm_ist", "schweissgeraet_funktioniert", "schweissgeraet_bemerkungen", "schweissgeraet_erfasst"]
   },
   {
     "name": "primaerverpackung_bulkbeutel",
@@ -104,7 +104,7 @@
     "validationType": "validation",
     "label": "Kürzel Mitarbeiter 2",
     "materialType": "ALL",
-    "questions": ["pause_beginn", "pause_ende", "pause_bemerkung", "pause_ma1_signatur", "pause_ma2_signatur", "kalibrierung_nach_pause_eq60", "kalibrierung_nach_pause_eq61", "verschweiss_nach_pause_ist", "verschweiss_nach_pause_ok", "schweissgeraet_nach_pause_ok", "pause_nachbereitung_bemerkungen", "pause_nachbereitung_erfasst", "pause_nachbereitung_geprueft"]
+    "questions": ["pause_beginn", "pause_ende", "pause_bemerkung", "pause_ma1_signatur", "pause_ma2_signatur", "kalibrierung_nach_pause_eq60", "kalibrierung_nach_pause_eq61", "verschweiss_nach_pause_ist", "schweissgeraet_nach_pause_ok", "pause_nachbereitung_bemerkungen", "pause_nachbereitung_erfasst"]
   },
   {
     "name": "kumulierte_restmenge",
