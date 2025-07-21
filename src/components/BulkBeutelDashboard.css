@@ -149,6 +149,14 @@
   color: #333;
 }
 
+.bulk-beutel-size {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #19b394;
+  text-align: center;
+  flex: 1;
+}
+
 .status-badge {
   padding: 4px 8px;
   border-radius: 12px;

@@ -164,15 +164,12 @@ const BulkBeutelDashboard: React.FC<BulkBeutelDashboardProps> = ({
             >
               <div className="bulk-beutel-header">
                 <span className="bulk-beutel-number">#{bulkBeutel.id}</span>
+                <span className="bulk-beutel-size">{bulkBeutel.gebindegroesse} g</span>
                 <span className={`status-badge ${bulkBeutel.status}`}>
                   {bulkBeutel.status === 'nicht_verarbeitet' && 'Nicht verarbeitet'}
                   {bulkBeutel.status === 'in_bearbeitung' && 'In Bearbeitung'}
                   {bulkBeutel.status === 'abgeschlossen' && 'Abgeschlossen'}
                 </span>
-              </div>
-              <div className="bulk-beutel-details">
-                <p><strong>Gebindegröße:</strong> {bulkBeutel.gebindegroesse} g</p>
-                <p><strong>Anzahl:</strong> {bulkBeutel.anzahl}</p>
               </div>
               {bulkBeutel.status === 'nicht_verarbeitet' && (
                 <button 
