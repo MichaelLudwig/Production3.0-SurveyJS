@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ProductionOrder } from '../types';
+import BulkBeutelForm from './BulkBeutelForm';
 import './BulkBeutelDashboard.css';
 
 interface BulkBeutel {
@@ -15,12 +16,14 @@ interface BulkBeutelDashboardProps {
   productionOrder: ProductionOrder;
   surveyData: any;
   onSurveyDataUpdate: (data: any) => void;
+  surveyDefinition?: any;
 }
 
 const BulkBeutelDashboard: React.FC<BulkBeutelDashboardProps> = ({
   productionOrder,
   surveyData,
-  onSurveyDataUpdate
+  onSurveyDataUpdate,
+  surveyDefinition
 }) => {
   const [selectedBulkBeutel, setSelectedBulkBeutel] = useState<number | null>(null);
   const [bulkBeutelList, setBulkBeutelList] = useState<BulkBeutel[]>([]);
@@ -75,6 +78,8 @@ const BulkBeutelDashboard: React.FC<BulkBeutelDashboardProps> = ({
     }
   }, [surveyData, onSurveyDataUpdate]);
 
+  // Entferne die SurveyJS Model Logik - verwende stattdessen die BulkBeutelForm
+
   const handleAbfuellen = (bulkBeutelId: number) => {
     setSelectedBulkBeutel(bulkBeutelId);
     
@@ -99,8 +104,27 @@ const BulkBeutelDashboard: React.FC<BulkBeutelDashboardProps> = ({
     onSurveyDataUpdate(updatedData);
   };
 
-  const handleBulkBeutelAbgeschlossen = () => {
+  const handleBulkBeutelAbgeschlossen = (formData: any) => {
     if (selectedBulkBeutel) {
+      console.log('[Dashboard] Completing bulkBeutel:', selectedBulkBeutel);
+      console.log('[Dashboard] Form data:', formData);
+      
+      // Speichere die Form-Daten in bulk_beutel_production
+      const existingProduction = surveyData?.survey?.bulk_beutel_production || [];
+      
+      // Erstelle oder aktualisiere den Eintrag für diesen BulkBeutel
+      const productionEntry = {
+        ...formData,
+        timestamp: new Date().toISOString()
+      };
+      
+      // Entferne existierenden Eintrag und füge neuen hinzu
+      const updatedProduction = existingProduction.filter((entry: any) => 
+        entry.bulk_nummer !== selectedBulkBeutel.toString()
+      );
+      updatedProduction.push(productionEntry);
+      
+      // Update BulkBeutel Status
       const updatedBulkBeutel = bulkBeutelList.map(bb => 
         bb.id === selectedBulkBeutel 
           ? { ...bb, status: 'abgeschlossen' }
@@ -110,9 +134,13 @@ const BulkBeutelDashboard: React.FC<BulkBeutelDashboardProps> = ({
       setBulkBeutelList(updatedBulkBeutel);
       setSelectedBulkBeutel(null);
       
-      // Speichere in surveyData
+      // Speichere alles in surveyData
       const updatedData = {
         ...surveyData,
+        survey: {
+          ...surveyData?.survey,
+          bulk_beutel_production: updatedProduction
+        },
         produktionslauf: {
           ...surveyData?.produktionslauf,
           bulkBeutel: updatedBulkBeutel,
@@ -121,6 +149,11 @@ const BulkBeutelDashboard: React.FC<BulkBeutelDashboardProps> = ({
       };
       onSurveyDataUpdate(updatedData);
     }
+  };
+
+  const handleCancelForm = () => {
+    // Reset selected BulkBeutel ohne Speichern
+    setSelectedBulkBeutel(null);
   };
 
   const getVerarbeiteteAnzahl = () => {
@@ -194,25 +227,22 @@ const BulkBeutelDashboard: React.FC<BulkBeutelDashboardProps> = ({
         </div>
       </div>
 
-      {/* Spalte 2: SurveyJS Element */}
+      {/* Spalte 2: BulkBeutel Form */}
       <div className="dashboard-column column-2">
         {selectedBulkBeutel ? (
-          <div className="survey-container">
-            <div className="survey-header">
-              <h3>Produktionslauf BulkBeutel #{selectedBulkBeutel}</h3>
-              <button 
-                className="btn-abschliessen"
-                onClick={handleBulkBeutelAbgeschlossen}
-              >
-                BulkBeutel abgefüllt
-              </button>
+          <>
+            <div className="dashboard-header">
+              <h3>Produktionslauf</h3>
             </div>
-            <div className="survey-content">
-              {/* Hier kommt das SurveyJS Element hin */}
-              <p>SurveyJS Element für BulkBeutel #{selectedBulkBeutel}</p>
-              <p>Soll-Inhalt: {bulkBeutelList.find(bb => bb.id === selectedBulkBeutel)?.gebindegroesse} g</p>
+            <div className="bulk-beutel-badge">
+              Bulk Beutel #{selectedBulkBeutel}
             </div>
-          </div>
+            <BulkBeutelForm
+              bulkBeutel={bulkBeutelList.find(bb => bb.id === selectedBulkBeutel)!}
+              onSave={handleBulkBeutelAbgeschlossen}
+              onCancel={handleCancelForm}
+            />
+          </>
         ) : (
           <div className="empty-state">
             <h3>Produktionslauf</h3>

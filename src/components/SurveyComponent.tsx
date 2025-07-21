@@ -606,6 +606,7 @@ const SurveyComponent: React.FC<SurveyComponentProps> = ({
               productionOrder={productionOrder}
               surveyData={surveyData}
               onSurveyDataUpdate={handleDashboardDataUpdate}
+              surveyDefinition={surveyDefinition}
             />
             {/* Navigation für Dashboard */}
             <div className="dashboard-navigation">
