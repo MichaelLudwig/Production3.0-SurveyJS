@@ -33,40 +33,46 @@ const BulkBeutelDashboard: React.FC<BulkBeutelDashboardProps> = ({
     console.log('[Dashboard] surveyData:', surveyData);
     console.log('[Dashboard] surveyData.survey:', surveyData?.survey);
     console.log('[Dashboard] bulkgebinde_liste:', surveyData?.survey?.bulkgebinde_liste);
+    console.log('[Dashboard] bulk_beutel_production:', surveyData?.survey?.bulk_beutel_production);
     
     const produktionslauf = surveyData?.produktionslauf;
+    const existingProduction = surveyData?.survey?.bulk_beutel_production || [];
     
-    if (produktionslauf?.bulkBeutel) {
-      console.log('[Dashboard] Using existing bulkBeutel from produktionslauf');
-      setBulkBeutelList(produktionslauf.bulkBeutel as BulkBeutel[]);
-    } else {
-      console.log('[Dashboard] Creating new bulkBeutel from bulkgebinde_liste');
-      // Fallback: Erstelle aus bulkgebinde_liste (aus survey.survey)
-      const bulkgebinde = surveyData?.survey?.bulkgebinde_liste || [];
-      console.log('[Dashboard] bulkgebinde array:', bulkgebinde);
-      
-      const newBulkBeutel: BulkBeutel[] = [];
-      
-      // Erstelle für jede Gruppe die entsprechende Anzahl von BulkBeuteln
-      let bulkBeutelId = 1;
-      bulkgebinde.forEach((item: any, groupIndex: number) => {
-        console.log(`[Dashboard] Processing group ${groupIndex}:`, item);
-        for (let i = 0; i < item.anzahl; i++) {
-          newBulkBeutel.push({
-            id: bulkBeutelId++,
-            gebindegroesse: item.gebindegroesse,
-            anzahl: 1, // Jeder BulkBeutel repräsentiert 1 Einheit
-            probenzug_verwendet: item.probenzug_verwendet,
-            dicht_sauber: item.dicht_sauber,
-            status: 'nicht_verarbeitet' as const
-          });
-        }
-      });
-      
-      console.log('[Dashboard] Created bulkBeutel array:', newBulkBeutel);
-      setBulkBeutelList(newBulkBeutel);
-      
-      // Speichere initial in surveyData
+    // Erstelle BulkBeutel-Liste basierend auf bulkgebinde_liste
+    const bulkgebinde = surveyData?.survey?.bulkgebinde_liste || [];
+    console.log('[Dashboard] bulkgebinde array:', bulkgebinde);
+    
+    const newBulkBeutel: BulkBeutel[] = [] as BulkBeutel[];
+    
+    // Erstelle für jede Gruppe die entsprechende Anzahl von BulkBeuteln
+    let bulkBeutelId = 1;
+    bulkgebinde.forEach((item: any, groupIndex: number) => {
+      console.log(`[Dashboard] Processing group ${groupIndex}:`, item);
+      for (let i = 0; i < item.anzahl; i++) {
+        // Prüfe, ob dieser BulkBeutel bereits abgeschlossen ist
+        const isCompleted = existingProduction.some((entry: any) => 
+          entry.bulk_nummer === bulkBeutelId.toString()
+        );
+        
+        const status: 'nicht_verarbeitet' | 'in_bearbeitung' | 'abgeschlossen' = 
+          isCompleted ? 'abgeschlossen' : 'nicht_verarbeitet';
+        
+        newBulkBeutel.push({
+          id: bulkBeutelId++,
+          gebindegroesse: item.gebindegroesse,
+          anzahl: 1, // Jeder BulkBeutel repräsentiert 1 Einheit
+          probenzug_verwendet: item.probenzug_verwendet,
+          dicht_sauber: item.dicht_sauber,
+          status
+        });
+      }
+    });
+    
+    console.log('[Dashboard] Created bulkBeutel array with status:', newBulkBeutel);
+    setBulkBeutelList(newBulkBeutel);
+    
+    // Speichere in surveyData (nur wenn sich was geändert hat)
+    if (!produktionslauf?.bulkBeutel || JSON.stringify(produktionslauf.bulkBeutel) !== JSON.stringify(newBulkBeutel)) {
       const updatedData = {
         ...surveyData,
         produktionslauf: {

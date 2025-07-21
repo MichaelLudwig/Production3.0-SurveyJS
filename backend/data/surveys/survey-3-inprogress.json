@@ -1,6 +1,6 @@
 {
   "orderId": "3",
-  "timestamp": "2025-07-21T14:27:43.878Z",
+  "timestamp": "2025-07-21T14:56:45.812Z",
   "status": "in_progress",
   "survey": {
     "eingangsmaterial_ausgebucht": true,
@@ -114,24 +114,34 @@
       {
         "bulk_nummer": "1",
         "soll_inhalt": 1000,
-        "ist_inhalt": 988,
-        "anzahl_gebinde": 6,
+        "ist_inhalt": "988",
+        "anzahl_gebinde": "7",
         "blueten_unauffaellig": true,
         "gebinde_korrekt_abgewogen": true,
-        "restmenge": 32.82,
-        "aussortiertes_material": 332.85,
-        "probenzug_ipk": 3.94,
-        "bruch": 0,
-        "erfasst_kuerzel": "nya",
-        "schweissnaht_ok": true
+        "restmenge": "32",
+        "aussortiertes_material": "322",
+        "probenzug_ipk": "4",
+        "bruch": "0",
+        "erfasst_kuerzel": "ert",
+        "geprueft_kuerzel": "ert",
+        "schweissnaht_ok": true,
+        "timestamp": "2025-07-21T14:50:03.777Z"
       },
       {
         "bulk_nummer": "2",
         "soll_inhalt": 1000,
-        "ist_inhalt": 988,
-        "anzahl_gebinde": 7,
+        "ist_inhalt": "988",
+        "anzahl_gebinde": "6",
         "blueten_unauffaellig": true,
-        "gebinde_korrekt_abgewogen": true
+        "gebinde_korrekt_abgewogen": true,
+        "restmenge": "33",
+        "aussortiertes_material": "433",
+        "probenzug_ipk": "0",
+        "bruch": "0",
+        "erfasst_kuerzel": "ert",
+        "geprueft_kuerzel": "ert",
+        "schweissnaht_ok": true,
+        "timestamp": "2025-07-21T14:52:05.844Z"
       }
     ]
   },
@@ -246,5 +256,5 @@
       ]
     }
   },
-  "currentPageNo": 13
+  "currentPageNo": 12
 }

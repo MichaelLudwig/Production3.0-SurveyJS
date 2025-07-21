@@ -22,7 +22,9 @@ const BulkBeutelForm: React.FC<BulkBeutelFormProps> = ({ bulkBeutel, onSave, onC
     aussortiertes_material: '',
     probenzug_ipk: '',
     bruch: '',
-    erfasst_kuerzel: ''
+    erfasst_kuerzel: '',
+    geprueft_kuerzel: '',
+    schweissnaht_ok: ''
   });
 
   const [errors, setErrors] = useState<{[key: string]: string}>({});
@@ -51,10 +53,10 @@ const BulkBeutelForm: React.FC<BulkBeutelFormProps> = ({ bulkBeutel, onSave, onC
     if (!formData.anzahl_gebinde) {
       newErrors.anzahl_gebinde = 'Dieses Feld ist erforderlich';
     }
-    if (!formData.blueten_unauffaellig) {
+    if (!formData.blueten_unauffaellig || formData.blueten_unauffaellig === '') {
       newErrors.blueten_unauffaellig = 'Dieses Feld ist erforderlich';
     }
-    if (!formData.gebinde_korrekt_abgewogen) {
+    if (!formData.gebinde_korrekt_abgewogen || formData.gebinde_korrekt_abgewogen === '') {
       newErrors.gebinde_korrekt_abgewogen = 'Dieses Feld ist erforderlich';
     }
     if (!formData.restmenge) {
@@ -72,6 +74,12 @@ const BulkBeutelForm: React.FC<BulkBeutelFormProps> = ({ bulkBeutel, onSave, onC
     if (!formData.erfasst_kuerzel) {
       newErrors.erfasst_kuerzel = 'Dieses Feld ist erforderlich';
     }
+    if (!formData.geprueft_kuerzel) {
+      newErrors.geprueft_kuerzel = 'Dieses Feld ist erforderlich';
+    }
+    if (!formData.schweissnaht_ok || formData.schweissnaht_ok === '') {
+      newErrors.schweissnaht_ok = 'Dieses Feld ist erforderlich';
+    }
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -79,7 +87,14 @@ const BulkBeutelForm: React.FC<BulkBeutelFormProps> = ({ bulkBeutel, onSave, onC
 
   const handleSubmit = () => {
     if (validateForm()) {
-      onSave(formData);
+      // Konvertiere String-Werte zu Boolean für SurveyJS-Kompatibilität
+      const processedData = {
+        ...formData,
+        blueten_unauffaellig: formData.blueten_unauffaellig === 'ja',
+        gebinde_korrekt_abgewogen: formData.gebinde_korrekt_abgewogen === 'ja',
+        schweissnaht_ok: formData.schweissnaht_ok === 'ja'
+      };
+      onSave(processedData);
     }
   };
 
@@ -151,15 +166,22 @@ const BulkBeutelForm: React.FC<BulkBeutelFormProps> = ({ bulkBeutel, onSave, onC
             <label className="form-label">
               Blüten unauffällig? *
             </label>
-            <select
-              className={`form-input ${errors.blueten_unauffaellig ? 'error' : ''}`}
-              value={formData.blueten_unauffaellig}
-              onChange={(e) => handleInputChange('blueten_unauffaellig', e.target.value)}
-            >
-              <option value="">Bitte wählen</option>
-              <option value="ja">Ja</option>
-              <option value="nein">Nein</option>
-            </select>
+            <div className="toggle-switch">
+              <button
+                type="button"
+                className={`toggle-option ${formData.blueten_unauffaellig === 'nein' ? 'active' : ''}`}
+                onClick={() => handleInputChange('blueten_unauffaellig', 'nein')}
+              >
+                Nein
+              </button>
+              <button
+                type="button"
+                className={`toggle-option ${formData.blueten_unauffaellig === 'ja' ? 'active' : ''}`}
+                onClick={() => handleInputChange('blueten_unauffaellig', 'ja')}
+              >
+                Ja
+              </button>
+            </div>
             {errors.blueten_unauffaellig && <div className="error-message">{errors.blueten_unauffaellig}</div>}
           </div>
         </div>
@@ -169,15 +191,22 @@ const BulkBeutelForm: React.FC<BulkBeutelFormProps> = ({ bulkBeutel, onSave, onC
             <label className="form-label">
               Gebinde korrekt abgewogen? *
             </label>
-            <select
-              className={`form-input ${errors.gebinde_korrekt_abgewogen ? 'error' : ''}`}
-              value={formData.gebinde_korrekt_abgewogen}
-              onChange={(e) => handleInputChange('gebinde_korrekt_abgewogen', e.target.value)}
-            >
-              <option value="">Bitte wählen</option>
-              <option value="ja">Ja</option>
-              <option value="nein">Nein</option>
-            </select>
+            <div className="toggle-switch">
+              <button
+                type="button"
+                className={`toggle-option ${formData.gebinde_korrekt_abgewogen === 'nein' ? 'active' : ''}`}
+                onClick={() => handleInputChange('gebinde_korrekt_abgewogen', 'nein')}
+              >
+                Nein
+              </button>
+              <button
+                type="button"
+                className={`toggle-option ${formData.gebinde_korrekt_abgewogen === 'ja' ? 'active' : ''}`}
+                onClick={() => handleInputChange('gebinde_korrekt_abgewogen', 'ja')}
+              >
+                Ja
+              </button>
+            </div>
             {errors.gebinde_korrekt_abgewogen && <div className="error-message">{errors.gebinde_korrekt_abgewogen}</div>}
           </div>
         </div>
@@ -259,6 +288,47 @@ const BulkBeutelForm: React.FC<BulkBeutelFormProps> = ({ bulkBeutel, onSave, onC
               placeholder="Ihr Kürzel"
             />
             {errors.erfasst_kuerzel && <div className="error-message">{errors.erfasst_kuerzel}</div>}
+          </div>
+        </div>
+
+        <div className="form-row">
+          <div className="form-field">
+            <label className="form-label">
+              Geprüft (Kürzel) *
+            </label>
+            <input
+              type="text"
+              className={`form-input ${errors.geprueft_kuerzel ? 'error' : ''}`}
+              value={formData.geprueft_kuerzel}
+              onChange={(e) => handleInputChange('geprueft_kuerzel', e.target.value)}
+              placeholder="Kürzel des Prüfers"
+            />
+            {errors.geprueft_kuerzel && <div className="error-message">{errors.geprueft_kuerzel}</div>}
+          </div>
+        </div>
+
+        <div className="form-row">
+          <div className="form-field">
+            <label className="form-label">
+              Schweißnaht des letzten Beutels ohne Beanstandung? *
+            </label>
+            <div className="toggle-switch">
+              <button
+                type="button"
+                className={`toggle-option ${formData.schweissnaht_ok === 'nein' ? 'active' : ''}`}
+                onClick={() => handleInputChange('schweissnaht_ok', 'nein')}
+              >
+                Nein
+              </button>
+              <button
+                type="button"
+                className={`toggle-option ${formData.schweissnaht_ok === 'ja' ? 'active' : ''}`}
+                onClick={() => handleInputChange('schweissnaht_ok', 'ja')}
+              >
+                Ja
+              </button>
+            </div>
+            {errors.schweissnaht_ok && <div className="error-message">{errors.schweissnaht_ok}</div>}
           </div>
         </div>
       </div>

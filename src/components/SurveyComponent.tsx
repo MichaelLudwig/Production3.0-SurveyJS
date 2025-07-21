@@ -540,10 +540,35 @@ const SurveyComponent: React.FC<SurveyComponentProps> = ({
   };
 
   // Handler für Dashboard-Daten-Updates
-  const handleDashboardDataUpdate = (data: any) => {
+  const handleDashboardDataUpdate = async (data: any) => {
     setSurveyData(data);
-    // Hier später: Speichern in Survey JSON
-    console.log('[Dashboard] Data updated:', data);
+    
+    // Aktualisiere auch das Survey-Model für Konsistenz
+    if (survey && data.survey) {
+      survey.data = data.survey;
+    }
+    
+    // Speichere die aktualisierten Daten in die Survey JSON
+    try {
+      const response = await fetch(`/api/surveys/${productionOrder.id}/progress`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          ...data,
+          currentPageNo: currentPageIndex
+        })
+      });
+      
+      if (response.ok) {
+        console.log('[Dashboard] Survey data saved successfully');
+      } else {
+        console.error('[Dashboard] Failed to save survey data:', response.statusText);
+      }
+    } catch (error) {
+      console.error('[Dashboard] Error saving survey data:', error);
+    }
   };
 
   // Navigation Handler für Dashboard

@@ -7,6 +7,46 @@
   margin-bottom: 24px;
 }
 
+/* Toggle Switch (wie im Vier-Augen-Prinzip) */
+.toggle-switch {
+  display: flex;
+  border: 2px solid #19b394;
+  border-radius: 8px;
+  overflow: hidden;
+  background: white;
+  width: fit-content;
+}
+
+.toggle-option {
+  padding: 12px 24px;
+  border: none;
+  background: white;
+  color: #666;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 80px;
+  text-align: center;
+}
+
+.toggle-option:hover {
+  background: #f8f9fa;
+}
+
+.toggle-option.active {
+  background: #19b394;
+  color: white;
+}
+
+.toggle-option:first-child {
+  border-radius: 6px 0 0 6px;
+}
+
+.toggle-option:last-child {
+  border-radius: 0 6px 6px 0;
+}
+
 .form-row {
   margin-bottom: 20px;
 }
