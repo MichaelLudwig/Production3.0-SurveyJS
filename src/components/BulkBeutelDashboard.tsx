@@ -187,6 +187,7 @@ const BulkBeutelDashboard: React.FC<BulkBeutelDashboardProps> = ({
         {/* Doughnut Chart */}
         <div className="doughnut-chart">
           <div className="chart-container">
+            <span className="chart-label">Verarbeitete Bulk Beutel</span>
             <div className="chart-circle">
               <div className="chart-progress" 
                    style={{ 
@@ -195,10 +196,9 @@ const BulkBeutelDashboard: React.FC<BulkBeutelDashboardProps> = ({
               </div>
               <div className="chart-center">
                 <span className="chart-number">{getVerarbeiteteAnzahl()}</span>
-                <span className="chart-label">von {getGesamtAnzahl()}</span>
+                <span className="chart-inner-label">von {getGesamtAnzahl()}</span>
               </div>
             </div>
-            <p className="chart-title">Verarbeitete Bulk Beutel</p>
           </div>
         </div>
 

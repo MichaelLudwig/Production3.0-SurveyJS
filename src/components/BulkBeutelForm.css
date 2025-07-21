@@ -14,19 +14,20 @@
   border-radius: 8px;
   overflow: hidden;
   background: white;
-  width: fit-content;
+  width: 100%;
+  flex: 1;
 }
 
 .toggle-option {
-  padding: 12px 24px;
+  padding: 8px 16px;
   border: none;
   background: white;
   color: #666;
-  font-size: 1rem;
+  font-size: 0.9rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
-  min-width: 80px;
+  flex: 1;
   text-align: center;
 }
 
@@ -48,21 +49,36 @@
 }
 
 .form-row {
-  margin-bottom: 20px;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
 .form-field {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  align-items: center;
+  flex: 1;
+  min-width: 0;
+}
+
+.form-input {
+  flex: 1;
+  min-width: 0;
 }
 
 .form-label {
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   font-weight: 600;
   color: #333;
-  margin-bottom: 8px;
+  width: 200px;
+  min-width: 200px;
+  max-width: 200px;
   display: flex;
   align-items: center;
+  margin-right: 12px;
+  flex-shrink: 0;
 }
 
 .form-label::after {
@@ -72,10 +88,10 @@
 }
 
 .form-input {
-  padding: 12px 16px;
+  padding: 8px 12px;
   border: 2px solid #e0e0e0;
   border-radius: 8px;
-  font-size: 1rem;
+  font-size: 0.9rem;
   transition: all 0.3s ease;
   background: white;
   color: #333;
@@ -114,7 +130,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding-top: 20px;
+  padding-top: 12px;
   border-top: 1px solid #e0e0e0;
 }
 
@@ -122,9 +138,9 @@
   background: #f8f9fa;
   color: #666;
   border: 2px solid #e0e0e0;
-  padding: 12px 24px;
+  padding: 8px 16px;
   border-radius: 8px;
-  font-size: 1rem;
+  font-size: 0.9rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -139,9 +155,9 @@
   background: linear-gradient(135deg, #19b394, #16a085);
   color: white;
   border: none;
-  padding: 12px 24px;
+  padding: 8px 16px;
   border-radius: 8px;
-  font-size: 1rem;
+  font-size: 0.9rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -161,6 +177,26 @@
 @media (max-width: 768px) {
   .bulk-beutel-form {
     padding: 16px;
+  }
+  
+  .form-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+  
+  .form-field {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .form-label {
+    width: auto;
+    min-width: auto;
+    max-width: none;
+    margin-right: 0;
+    margin-bottom: 8px;
+    flex-shrink: 1;
   }
   
   .form-actions {
