@@ -176,6 +176,42 @@ const BulkBeutelDashboard: React.FC<BulkBeutelDashboardProps> = ({
     }, 0);
   };
 
+  const getProbenzugAnzahl = () => {
+    const existingProduction = surveyData?.survey?.bulk_beutel_production || [];
+    return existingProduction.filter((entry: any) => entry.probenzug_ipk && parseFloat(entry.probenzug_ipk) > 0).length;
+  };
+
+  const getProbenzugListe = () => {
+    const existingProduction = surveyData?.survey?.bulk_beutel_production || [];
+    return existingProduction
+      .filter((entry: any) => entry.probenzug_ipk && parseFloat(entry.probenzug_ipk) > 0)
+      .map((entry: any) => parseFloat(entry.probenzug_ipk).toFixed(2));
+  };
+
+  const getKummulierteRestmenge = () => {
+    const existingProduction = surveyData?.survey?.bulk_beutel_production || [];
+    return existingProduction.reduce((total: number, entry: any) => {
+      const restmenge = parseFloat(entry.restmenge) || 0;
+      return total + restmenge;
+    }, 0).toFixed(2);
+  };
+
+  const getBruchSumme = () => {
+    const existingProduction = surveyData?.survey?.bulk_beutel_production || [];
+    return existingProduction.reduce((total: number, entry: any) => {
+      const bruch = parseFloat(entry.bruch) || 0;
+      return total + bruch;
+    }, 0).toFixed(2);
+  };
+
+  const getAussortiertesMaterial = () => {
+    const existingProduction = surveyData?.survey?.bulk_beutel_production || [];
+    return existingProduction.reduce((total: number, entry: any) => {
+      const aussortiert = parseFloat(entry.aussortiertes_material) || 0;
+      return total + aussortiert;
+    }, 0).toFixed(2);
+  };
+
   return (
     <div className="bulk-beutel-dashboard">
       {/* Spalte 1: Eingangsmaterial */}
@@ -204,7 +240,16 @@ const BulkBeutelDashboard: React.FC<BulkBeutelDashboardProps> = ({
 
         {/* BulkBeutel Boxen */}
         <div className="bulk-beutel-list">
-          {bulkBeutelList.map((bulkBeutel) => (
+          {bulkBeutelList
+            .sort((a, b) => {
+              // Sortiere nach Status: in_bearbeitung > nicht_verarbeitet > abgeschlossen
+              const statusOrder = { 'in_bearbeitung': 0, 'nicht_verarbeitet': 1, 'abgeschlossen': 2 };
+              const statusDiff = statusOrder[a.status] - statusOrder[b.status];
+              
+              // Bei gleichem Status sortiere nach ID
+              return statusDiff !== 0 ? statusDiff : a.id - b.id;
+            })
+            .map((bulkBeutel) => (
             <div 
               key={bulkBeutel.id} 
               className={`bulk-beutel-box ${bulkBeutel.status} ${selectedBulkBeutel === bulkBeutel.id ? 'selected' : ''}`}
@@ -258,10 +303,14 @@ const BulkBeutelDashboard: React.FC<BulkBeutelDashboardProps> = ({
             />
           </>
         ) : (
-          <div className="empty-state">
-            <h3>Produktionslauf</h3>
-            <p>Wähle einen BulkBeutel aus, um mit der Abfüllung zu beginnen.</p>
-          </div>
+          <>
+            <div className="dashboard-header">
+              <h3>Produktionslauf</h3>
+            </div>
+            <div className="empty-state">
+              <p>Wähle einen BulkBeutel aus, um mit der Abfüllung zu beginnen.</p>
+            </div>
+          </>
         )}
       </div>
 
@@ -279,6 +328,57 @@ const BulkBeutelDashboard: React.FC<BulkBeutelDashboardProps> = ({
           </div>
           <div className="output-subtitle">
             <span>Gesamt aus Produktionslauf</span>
+          </div>
+        </div>
+
+        {/* Probenzug Box */}
+        <div className="output-box">
+          <div className="output-header">
+            <span className="output-title">Gezogene Proben</span>
+            <span className="output-value">{getProbenzugAnzahl()}</span>
+          </div>
+          {getProbenzugListe().length > 0 && (
+            <div className="output-details">
+              {getProbenzugListe().map((probe, index) => (
+                <div key={index} className="output-detail-item">
+                  <span className="detail-label">Probe {index + 1}:</span>
+                  <span className="detail-value">{probe} g</span>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* Kummulierte Restmenge Box */}
+        <div className="output-box">
+          <div className="output-header">
+            <span className="output-title">Kummulierte Restmenge</span>
+            <span className="output-value">{getKummulierteRestmenge()} g</span>
+          </div>
+          <div className="output-subtitle">
+            <span>Summe aller Restmengen</span>
+          </div>
+        </div>
+
+        {/* Bruch Box */}
+        <div className="output-box">
+          <div className="output-header">
+            <span className="output-title">Bruch</span>
+            <span className="output-value">{getBruchSumme()} g</span>
+          </div>
+          <div className="output-subtitle">
+            <span>Summe aller Bruch-Einträge</span>
+          </div>
+        </div>
+
+        {/* Aussortiertes Material Box */}
+        <div className="output-box">
+          <div className="output-header">
+            <span className="output-title">Aussortiertes Material</span>
+            <span className="output-value">{getAussortiertesMaterial()} g</span>
+          </div>
+          <div className="output-subtitle">
+            <span>Summe aller Aussortierungen</span>
           </div>
         </div>
       </div>
