@@ -361,10 +361,7 @@ const generatePDFContent = (data: ExportData): string => {
                     <label>Eingangsmaterial:</label>
                     <span>${productionOrder.eingangsmaterial.artikelNummer} (${productionOrder.eingangsmaterial.charge})</span>
                 </div>
-                <div class="info-item">
-                    <label>Bulk-Beutel:</label>
-                    <span>${productionOrder.bulkBeutelAnzahl}</span>
-                </div>
+
                 <div class="info-item">
                     <label>Abgeschlossen am:</label>
                     <span>${formatDateForDisplay(completedAt)}</span>

@@ -48,7 +48,7 @@ const ProductionOrderManager: React.FC<ProductionOrderManagerProps> = ({
       anzahl: 2,
       fuellmenge: 10
     },
-    bulkBeutelAnzahl: 1
+
   });
 
   // Lade Aufträge über API
@@ -129,7 +129,7 @@ const ProductionOrderManager: React.FC<ProductionOrderManagerProps> = ({
       primaerPackmittel: newOrder.primaerPackmittel!,
       zwischenprodukt: newOrder.zwischenprodukt!,
       probenzug: newOrder.probenzug!,
-      bulkBeutelAnzahl: newOrder.bulkBeutelAnzahl || 1
+
     };
     const updatedOrders = orders.map(o => o.id === editingOrder.id ? updatedOrder : o);
     saveOrders(updatedOrders);
@@ -152,7 +152,7 @@ const ProductionOrderManager: React.FC<ProductionOrderManagerProps> = ({
         primaerPackmittel: newOrder.primaerPackmittel,
         zwischenprodukt: newOrder.zwischenprodukt,
         probenzug: newOrder.probenzug,
-        bulkBeutelAnzahl: newOrder.bulkBeutelAnzahl || 1
+
       };
       
       // Create order via API
@@ -207,7 +207,7 @@ const ProductionOrderManager: React.FC<ProductionOrderManagerProps> = ({
           anzahl: 2,
           fuellmenge: 10
         },
-        bulkBeutelAnzahl: 1
+
       });
     } catch (error) {
       console.error('Fehler beim Erstellen des Auftrags:', error);
@@ -267,7 +267,7 @@ const ProductionOrderManager: React.FC<ProductionOrderManagerProps> = ({
             <p><strong>Produkt:</strong> {currentOrder.produktName}</p>
             <p><strong>Material-Typ:</strong> {currentOrder.materialType}</p>
             <p><strong>Eingangsmaterial:</strong> {currentOrder.eingangsmaterial.artikelNummer} (Charge: {currentOrder.eingangsmaterial.charge})</p>
-            <p><strong>Bulk-Beutel Anzahl:</strong> {currentOrder.bulkBeutelAnzahl}</p>
+
           </div>
           <div className="order-actions">
             <button className="btn btn-primary" onClick={onContinueSurvey}>
@@ -309,7 +309,7 @@ const ProductionOrderManager: React.FC<ProductionOrderManagerProps> = ({
                   <p><strong>Erstellt:</strong> {new Date(order.createdAt).toLocaleDateString('de-DE')}</p>
                   <p><strong>Eingangsmaterial:</strong> {order.eingangsmaterial.artikelNummer}</p>
                   <p><strong>Charge:</strong> {order.eingangsmaterial.charge}</p>
-                  <p><strong>Bulk-Beutel:</strong> {order.bulkBeutelAnzahl}</p>
+
                   <p><strong>Status:</strong> 
                     <span className={`survey-status ${orderStatuses[order.id] || 'none'}`}>
                       {orderStatuses[order.id] === 'in_progress' ? 'In Bearbeitung' : 
@@ -387,7 +387,7 @@ const ProductionOrderManager: React.FC<ProductionOrderManagerProps> = ({
                 <div><strong>Produktname:</strong> {editingOrder.produktName}</div>
                 <div><strong>Material-Typ:</strong> {editingOrder.materialType}</div>
                 <div><strong>Erstellt am:</strong> {new Date(editingOrder.createdAt).toLocaleDateString('de-DE')}</div>
-                <div><strong>Bulk-Beutel Anzahl:</strong> {editingOrder.bulkBeutelAnzahl}</div>
+
               </div>
             </div>
 
@@ -630,16 +630,7 @@ const ProductionOrderManager: React.FC<ProductionOrderManagerProps> = ({
             </div>
           </div>
 
-          <div className="form-group">
-            <label>Anzahl Bulk-Beutel *</label>
-            <input
-              type="number"
-              min="1"
-              value={newOrder.bulkBeutelAnzahl}
-              onChange={(e) => handleDirectInputChange('bulkBeutelAnzahl', parseInt(e.target.value))}
-              placeholder="z.B. 3"
-            />
-          </div>
+
 
           <div className="form-actions">
             <button 

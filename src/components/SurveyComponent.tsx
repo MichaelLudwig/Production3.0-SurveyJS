@@ -60,7 +60,7 @@ const SurveyComponent: React.FC<SurveyComponentProps> = ({
     delete surveyAnswers.produktName;
     delete surveyAnswers.materialType;
     delete surveyAnswers.protokollNummer;
-    delete surveyAnswers.bulkBeutelAnzahl;
+
     delete surveyAnswers.eingangsmaterial;
     delete surveyAnswers.primaerPackmittel;
     delete surveyAnswers.zwischenprodukt;
@@ -138,7 +138,7 @@ const SurveyComponent: React.FC<SurveyComponentProps> = ({
       produktName: productionOrder.produktName,
       materialType: productionOrder.materialType,
       protokollNummer: productionOrder.protokollNummer,
-      bulkBeutelAnzahl: productionOrder.bulkBeutelAnzahl,
+
       eingangsmaterial: productionOrder.eingangsmaterial,
       primaerPackmittel: productionOrder.primaerPackmittel,
       zwischenprodukt: productionOrder.zwischenprodukt,

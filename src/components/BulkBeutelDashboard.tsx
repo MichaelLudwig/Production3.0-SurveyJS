@@ -237,6 +237,11 @@ const BulkBeutelDashboard: React.FC<BulkBeutelDashboardProps> = ({
     return getErzeugteGebindeAnzahl() - getGebindeInEurocontainerAnzahl();
   };
 
+  // Soll-Wert für zu erzeugende Gebinde aus dem Produktionsauftrag
+  const getSollGebindeAnzahl = () => {
+    return productionOrder.zwischenprodukt.vorgGebindezahl || 0;
+  };
+
   const getProbenzugAnzahl = () => {
     const existingProduction = surveyData?.survey?.bulk_beutel_production || [];
     return existingProduction.filter((entry: any) => entry.probenzug_ipk && parseFloat(entry.probenzug_ipk) > 0).length;
@@ -397,7 +402,7 @@ const BulkBeutelDashboard: React.FC<BulkBeutelDashboardProps> = ({
             <div className="chart-circle">
               <div className="chart-progress" 
                    style={{ 
-                     background: `conic-gradient(#19b394 ${(getVerarbeiteteAnzahl() / getGesamtAnzahl()) * 360}deg, #e0e0e0 0deg)` 
+                     background: `conic-gradient(${getVerarbeiteteAnzahl() >= getGesamtAnzahl() ? '#19b394' : '#49b6bb'} ${(getVerarbeiteteAnzahl() / getGesamtAnzahl()) * 360}deg, #e0e0e0 0deg)` 
                    }}>
               </div>
               <div className="chart-center">
@@ -469,6 +474,7 @@ const BulkBeutelDashboard: React.FC<BulkBeutelDashboardProps> = ({
             </div>
             <BulkBeutelForm
               bulkBeutel={bulkBeutelList.find(bb => bb.id === selectedBulkBeutel)!}
+              totalBulkBeutel={bulkBeutelList.length}
               onSave={handleBulkBeutelAbgeschlossen}
               onCancel={handleCancelForm}
             />
@@ -491,11 +497,23 @@ const BulkBeutelDashboard: React.FC<BulkBeutelDashboardProps> = ({
           <h3>Material Ausgang</h3>
         </div>
         
-        {/* Erzeugte Gebinde Box */}
+        {/* Erzeugte Gebinde Box mit Donut-Chart */}
         <div className="output-box">
-          <div className="output-header">
-            <span className="output-title">Erzeugte Gebinde</span>
-            <span className="output-value">{getErzeugteGebindeAnzahl()}</span>
+          <div className="doughnut-chart">
+            <div className="chart-container">
+              <span className="chart-label">Erzeugte Gebinde</span>
+              <div className="chart-circle">
+                <div className="chart-progress" 
+                     style={{ 
+                       background: `conic-gradient(${getErzeugteGebindeAnzahl() >= getSollGebindeAnzahl() ? '#19b394' : '#49b6bb'} ${(getErzeugteGebindeAnzahl() / getSollGebindeAnzahl()) * 360}deg, #e0e0e0 0deg)` 
+                     }}>
+                </div>
+                <div className="chart-center">
+                  <span className="chart-number">{getErzeugteGebindeAnzahl()}</span>
+                  <span className="chart-inner-label">von {getSollGebindeAnzahl()}</span>
+                </div>
+              </div>
+            </div>
           </div>
           <div className="output-subtitle">
             <span>Gesamt aus Produktionslauf</span>
@@ -512,11 +530,23 @@ const BulkBeutelDashboard: React.FC<BulkBeutelDashboardProps> = ({
           </div>
         </div>
 
-        {/* Probenzug Box */}
+        {/* Probenzug Box mit Donut-Chart */}
         <div className="output-box">
-          <div className="output-header">
-            <span className="output-title">Gezogene Proben</span>
-            <span className="output-value">{getProbenzugAnzahl()}</span>
+          <div className="doughnut-chart">
+            <div className="chart-container">
+              <span className="chart-label">Gezogene IPK Proben</span>
+              <div className="chart-circle">
+                <div className="chart-progress" 
+                     style={{ 
+                       background: `conic-gradient(${getProbenzugAnzahl() >= 3 ? '#19b394' : '#49b6bb'} ${(getProbenzugAnzahl() / 3) * 360}deg, #e0e0e0 0deg)` 
+                     }}>
+                </div>
+                <div className="chart-center">
+                  <span className="chart-number">{getProbenzugAnzahl()}</span>
+                  <span className="chart-inner-label">von 3</span>
+                </div>
+              </div>
+            </div>
           </div>
           {getProbenzugListe().length > 0 && (
             <div className="output-details">

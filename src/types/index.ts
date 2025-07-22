@@ -25,13 +25,13 @@ export interface ProductionOrder {
   zwischenprodukt: {
     artikelNummer: string;
     gebindeNummer: string;
+    vorgGebindezahl?: number;
   };
   probenzug: {
     plan: string;
     anzahl: number;
     fuellmenge: number;
   };
-  bulkBeutelAnzahl: number;
   createdAt: string;
 }
 

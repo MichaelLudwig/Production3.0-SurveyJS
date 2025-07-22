@@ -95,10 +95,7 @@ const CompletionScreen: React.FC<CompletionScreenProps> = ({
               <label>Material-Typ:</label>
               <span>{exportData.productionOrder.materialType}</span>
             </div>
-            <div className="summary-item">
-              <label>Bulk-Beutel:</label>
-              <span>{exportData.productionOrder.bulkBeutelAnzahl}</span>
-            </div>
+
             <div className="summary-item">
               <label>Abgeschlossen am:</label>
               <span>{formatDate(exportData.completedAt)}</span>

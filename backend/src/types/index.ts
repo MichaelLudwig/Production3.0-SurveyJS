@@ -41,7 +41,6 @@ export interface ProductionOrder {
     fuellmenge1?: number;
     fuellmenge2?: number;
   };
-  bulkBeutelAnzahl: number;
   createdAt: string;
 }
 

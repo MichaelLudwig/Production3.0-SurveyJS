@@ -6,11 +6,12 @@ interface BulkBeutelFormProps {
     id: number;
     gebindegroesse: number;
   };
+  totalBulkBeutel: number;
   onSave: (data: any) => void;
   onCancel: () => void;
 }
 
-const BulkBeutelForm: React.FC<BulkBeutelFormProps> = ({ bulkBeutel, onSave, onCancel }) => {
+const BulkBeutelForm: React.FC<BulkBeutelFormProps> = ({ bulkBeutel, totalBulkBeutel, onSave, onCancel }) => {
   const [formData, setFormData] = useState({
     bulk_nummer: bulkBeutel.id.toString(),
     soll_inhalt: bulkBeutel.gebindegroesse,
@@ -28,6 +29,25 @@ const BulkBeutelForm: React.FC<BulkBeutelFormProps> = ({ bulkBeutel, onSave, onC
   });
 
   const [errors, setErrors] = useState<{[key: string]: string}>({});
+  const [warnings, setWarnings] = useState<{[key: string]: string}>({});
+
+  // Prüfe, ob es sich um den ersten oder letzten Bulk Beutel handelt
+  const isFirstBulkBeutel = bulkBeutel.id === 1;
+  const isLastBulkBeutel = bulkBeutel.id === totalBulkBeutel;
+
+  // Prüfe initial die Probenzug-Warnung
+  useEffect(() => {
+    if ((isFirstBulkBeutel || isLastBulkBeutel) && formData.probenzug_ipk === '0') {
+      const warningMessage = isFirstBulkBeutel 
+        ? 'Probe aus dem ersten Bulk Beutel entnehmen!' 
+        : 'Probe aus dem letzten Bulk Beutel entnehmen!';
+      
+      setWarnings(prev => ({
+        ...prev,
+        probenzug_ipk: warningMessage
+      }));
+    }
+  }, [isFirstBulkBeutel, isLastBulkBeutel, formData.probenzug_ipk]);
 
   const handleInputChange = (field: string, value: string) => {
     setFormData(prev => ({
@@ -41,6 +61,26 @@ const BulkBeutelForm: React.FC<BulkBeutelFormProps> = ({ bulkBeutel, onSave, onC
         ...prev,
         [field]: ''
       }));
+    }
+
+    // Prüfe Probenzug-Warnung für den ersten oder letzten Bulk Beutel
+    if (field === 'probenzug_ipk' && (isFirstBulkBeutel || isLastBulkBeutel)) {
+      const probenzugValue = parseFloat(value) || 0;
+      if (probenzugValue === 0) {
+        const warningMessage = isFirstBulkBeutel 
+          ? 'Probe aus dem ersten Bulk Beutel entnehmen!' 
+          : 'Probe aus dem letzten Bulk Beutel entnehmen!';
+        
+        setWarnings(prev => ({
+          ...prev,
+          probenzug_ipk: warningMessage
+        }));
+      } else {
+        setWarnings(prev => ({
+          ...prev,
+          probenzug_ipk: ''
+        }));
+      }
     }
   };
 
@@ -250,12 +290,13 @@ const BulkBeutelForm: React.FC<BulkBeutelFormProps> = ({ bulkBeutel, onSave, onC
             </label>
             <input
               type="number"
-              className={`form-input ${errors.probenzug_ipk ? 'error' : ''}`}
+              className={`form-input ${errors.probenzug_ipk ? 'error' : ''} ${warnings.probenzug_ipk ? 'warning' : ''}`}
               value={formData.probenzug_ipk}
               onChange={(e) => handleInputChange('probenzug_ipk', e.target.value)}
               placeholder="Probenzug IPK in Gramm"
             />
             {errors.probenzug_ipk && <div className="error-message">{errors.probenzug_ipk}</div>}
+            {warnings.probenzug_ipk && <div className="warning-message">{warnings.probenzug_ipk}</div>}
           </div>
         </div>
 

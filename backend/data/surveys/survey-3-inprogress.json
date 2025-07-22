@@ -1,6 +1,6 @@
 {
   "orderId": "3",
-  "timestamp": "2025-07-21T20:37:33.053Z",
+  "timestamp": "2025-07-22T12:18:41.011Z",
   "status": "in_progress",
   "survey": {
     "eingangsmaterial_ausgebucht": true,
@@ -52,13 +52,13 @@
     "verfall_bulk_ist": "2025-07-17",
     "bulkgebinde_liste": [
       {
-        "anzahl": 14,
+        "anzahl": 10,
         "gebindegroesse": 1000,
         "probenzug_verwendet": false,
         "dicht_sauber": true
       },
       {
-        "anzahl": 7,
+        "anzahl": 1,
         "gebindegroesse": 988,
         "probenzug_verwendet": true,
         "dicht_sauber": true
@@ -254,6 +254,38 @@
         "geprueft_kuerzel": "ert",
         "schweissnaht_ok": true,
         "timestamp": "2025-07-21T19:44:59.770Z"
+      },
+      {
+        "bulk_nummer": "10",
+        "soll_inhalt": 1000,
+        "ist_inhalt": "977",
+        "anzahl_gebinde": "7",
+        "blueten_unauffaellig": true,
+        "gebinde_korrekt_abgewogen": true,
+        "restmenge": "54",
+        "aussortiertes_material": "344",
+        "probenzug_ipk": "0",
+        "bruch": "0",
+        "erfasst_kuerzel": "ert",
+        "geprueft_kuerzel": "ert",
+        "schweissnaht_ok": true,
+        "timestamp": "2025-07-22T11:50:38.489Z"
+      },
+      {
+        "bulk_nummer": "11",
+        "soll_inhalt": 988,
+        "ist_inhalt": "988",
+        "anzahl_gebinde": "8",
+        "blueten_unauffaellig": true,
+        "gebinde_korrekt_abgewogen": true,
+        "restmenge": "65",
+        "aussortiertes_material": "344",
+        "probenzug_ipk": "0",
+        "bruch": "0",
+        "erfasst_kuerzel": "ert",
+        "geprueft_kuerzel": "ert",
+        "schweissnaht_ok": true,
+        "timestamp": "2025-07-22T12:06:05.129Z"
       }
     ],
     "schleusung_eurocontainer": {

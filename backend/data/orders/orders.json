@@ -37,7 +37,6 @@
       "fuellmenge1": 55.0,
       "fuellmenge2": 50.0
     },
-    "bulkBeutelAnzahl": 2,
     "createdAt": "2025-01-09T10:00:00Z"
   },
   {
@@ -73,7 +72,6 @@
       "fuellmenge1": 5.0,
       "fuellmenge2": 5.0
     },
-    "bulkBeutelAnzahl": 2,
     "createdAt": "2024-01-16T14:15:00Z"
   },
   {
@@ -114,7 +112,6 @@
       "fuellmenge1": 15.0,
       "fuellmenge2": 12.5
     },
-    "bulkBeutelAnzahl": 1,
     "createdAt": "2024-01-17T09:00:00Z"
   }
 ]

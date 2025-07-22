@@ -119,8 +119,25 @@
   box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.2);
 }
 
+.form-input.warning {
+  border-color: #ff9500;
+  box-shadow: 0 0 0 3px rgba(255, 149, 0, 0.1);
+}
+
+.form-input.warning:focus {
+  border-color: #ff9500;
+  box-shadow: 0 0 0 3px rgba(255, 149, 0, 0.2);
+}
+
 .error-message {
   color: #e74c3c;
+  font-size: 0.85rem;
+  margin-top: 4px;
+  font-weight: 500;
+}
+
+.warning-message {
+  color: #ff9500;
   font-size: 0.85rem;
   margin-top: 4px;
   font-weight: 500;
