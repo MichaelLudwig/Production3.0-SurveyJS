@@ -1,6 +1,6 @@
 {
   "orderId": "3",
-  "timestamp": "2025-07-21T15:53:52.466Z",
+  "timestamp": "2025-07-21T20:37:33.053Z",
   "status": "in_progress",
   "survey": {
     "eingangsmaterial_ausgebucht": true,
@@ -190,8 +190,92 @@
         "geprueft_kuerzel": "ert",
         "schweissnaht_ok": true,
         "timestamp": "2025-07-21T15:43:54.783Z"
+      },
+      {
+        "bulk_nummer": "6",
+        "soll_inhalt": 1000,
+        "ist_inhalt": "988",
+        "anzahl_gebinde": "8",
+        "blueten_unauffaellig": true,
+        "gebinde_korrekt_abgewogen": true,
+        "restmenge": "32",
+        "aussortiertes_material": "334",
+        "probenzug_ipk": "0",
+        "bruch": "0",
+        "erfasst_kuerzel": "ert",
+        "geprueft_kuerzel": "ert",
+        "schweissnaht_ok": true,
+        "timestamp": "2025-07-21T19:43:24.411Z"
+      },
+      {
+        "bulk_nummer": "7",
+        "soll_inhalt": 1000,
+        "ist_inhalt": "988",
+        "anzahl_gebinde": "8",
+        "blueten_unauffaellig": true,
+        "gebinde_korrekt_abgewogen": true,
+        "restmenge": "56",
+        "aussortiertes_material": "666",
+        "probenzug_ipk": "0",
+        "bruch": "0",
+        "erfasst_kuerzel": "ert",
+        "geprueft_kuerzel": "ert",
+        "schweissnaht_ok": true,
+        "timestamp": "2025-07-21T19:44:09.225Z"
+      },
+      {
+        "bulk_nummer": "8",
+        "soll_inhalt": 1000,
+        "ist_inhalt": "999",
+        "anzahl_gebinde": "8",
+        "blueten_unauffaellig": true,
+        "gebinde_korrekt_abgewogen": true,
+        "restmenge": "56",
+        "aussortiertes_material": "665",
+        "probenzug_ipk": "0",
+        "bruch": "0",
+        "erfasst_kuerzel": "ert",
+        "geprueft_kuerzel": "ert",
+        "schweissnaht_ok": true,
+        "timestamp": "2025-07-21T19:44:35.911Z"
+      },
+      {
+        "bulk_nummer": "9",
+        "soll_inhalt": 1000,
+        "ist_inhalt": "988",
+        "anzahl_gebinde": "8",
+        "blueten_unauffaellig": true,
+        "gebinde_korrekt_abgewogen": true,
+        "restmenge": "67",
+        "aussortiertes_material": "777",
+        "probenzug_ipk": "0",
+        "bruch": "0",
+        "erfasst_kuerzel": "ert",
+        "geprueft_kuerzel": "ert",
+        "schweissnaht_ok": true,
+        "timestamp": "2025-07-21T19:44:59.770Z"
       }
-    ]
+    ],
+    "schleusung_eurocontainer": {
+      "produktliste": [
+        {
+          "art_inhalt": "Hergestellte Zwischenprodukte",
+          "anzahl_gebinde": "32",
+          "plomben_nr": "1000001"
+        },
+        {
+          "art_inhalt": "Hergestellte Zwischenprodukte",
+          "anzahl_gebinde": "32",
+          "plomben_nr": "1000002"
+        },
+        {
+          "art_inhalt": "Hergestellte Zwischenprodukte",
+          "anzahl_gebinde": "2",
+          "plomben_nr": "1000003",
+          "plomben_nr_2": "1000004"
+        }
+      ]
+    }
   },
   "validation": {
     "eingangsmaterialien_ausbuchen": {

@@ -27,6 +27,18 @@ const BulkBeutelDashboard: React.FC<BulkBeutelDashboardProps> = ({
 }) => {
   const [selectedBulkBeutel, setSelectedBulkBeutel] = useState<number | null>(null);
   const [bulkBeutelList, setBulkBeutelList] = useState<BulkBeutel[]>([]);
+  const [showEcDialog, setShowEcDialog] = useState(false);
+  const [ecFormData, setEcFormData] = useState({
+    anzahlGebinde: 32,
+    plombenNr: '',
+    plombenNr2: ''
+  });
+  const [ecFormErrors, setEcFormErrors] = useState<{[key: string]: string}>({});
+  const [verplombteContainer, setVerplombteContainer] = useState<Array<{
+    plombenNr: string;
+    anzahlGebinde: number;
+    timestamp: string;
+  }>>([]);
 
   // Initialisiere BulkBeutel aus surveyData oder productionOrder
   useEffect(() => {
@@ -54,8 +66,17 @@ const BulkBeutelDashboard: React.FC<BulkBeutelDashboardProps> = ({
           entry.bulk_nummer === bulkBeutelId.toString()
         );
         
-        const status: 'nicht_verarbeitet' | 'in_bearbeitung' | 'abgeschlossen' = 
-          isCompleted ? 'abgeschlossen' : 'nicht_verarbeitet';
+        // Prüfe, ob dieser BulkBeutel in Bearbeitung ist
+        const isInProgress = produktionslauf?.selectedBulkBeutel === bulkBeutelId;
+        
+        let status: 'nicht_verarbeitet' | 'in_bearbeitung' | 'abgeschlossen';
+        if (isCompleted) {
+          status = 'abgeschlossen';
+        } else if (isInProgress) {
+          status = 'in_bearbeitung';
+        } else {
+          status = 'nicht_verarbeitet';
+        }
         
         newBulkBeutel.push({
           id: bulkBeutelId++,
@@ -71,8 +92,13 @@ const BulkBeutelDashboard: React.FC<BulkBeutelDashboardProps> = ({
     console.log('[Dashboard] Created bulkBeutel array with status:', newBulkBeutel);
     setBulkBeutelList(newBulkBeutel);
     
-    // Speichere in surveyData (nur wenn sich was geändert hat)
-    if (!produktionslauf?.bulkBeutel || JSON.stringify(produktionslauf.bulkBeutel) !== JSON.stringify(newBulkBeutel)) {
+    // Setze selectedBulkBeutel basierend auf produktionslauf
+    if (produktionslauf?.selectedBulkBeutel && !selectedBulkBeutel) {
+      setSelectedBulkBeutel(produktionslauf.selectedBulkBeutel);
+    }
+    
+    // Speichere in surveyData (nur wenn sich was geändert hat UND es noch nicht existiert)
+    if (!produktionslauf?.bulkBeutel) {
       const updatedData = {
         ...surveyData,
         produktionslauf: {
@@ -82,7 +108,7 @@ const BulkBeutelDashboard: React.FC<BulkBeutelDashboardProps> = ({
       };
       onSurveyDataUpdate(updatedData);
     }
-  }, [surveyData, onSurveyDataUpdate]);
+  }, [surveyData?.survey?.bulkgebinde_liste, surveyData?.survey?.bulk_beutel_production, surveyData?.produktionslauf?.selectedBulkBeutel, onSurveyDataUpdate, selectedBulkBeutel]);
 
   // Entferne die SurveyJS Model Logik - verwende stattdessen die BulkBeutelForm
 
@@ -158,8 +184,28 @@ const BulkBeutelDashboard: React.FC<BulkBeutelDashboardProps> = ({
   };
 
   const handleCancelForm = () => {
-    // Reset selected BulkBeutel ohne Speichern
-    setSelectedBulkBeutel(null);
+    if (selectedBulkBeutel) {
+      // Reset selected BulkBeutel Status zurück zu "nicht_verarbeitet"
+      const updatedBulkBeutel = bulkBeutelList.map(bb => 
+        bb.id === selectedBulkBeutel 
+          ? { ...bb, status: 'nicht_verarbeitet' }
+          : bb
+      );
+      
+      setBulkBeutelList(updatedBulkBeutel);
+      setSelectedBulkBeutel(null);
+      
+      // Speichere in surveyData
+      const updatedData = {
+        ...surveyData,
+        produktionslauf: {
+          ...surveyData?.produktionslauf,
+          bulkBeutel: updatedBulkBeutel,
+          selectedBulkBeutel: null
+        }
+      };
+      onSurveyDataUpdate(updatedData);
+    }
   };
 
   const getVerarbeiteteAnzahl = () => {
@@ -174,6 +220,21 @@ const BulkBeutelDashboard: React.FC<BulkBeutelDashboardProps> = ({
       const anzahl = parseInt(entry.anzahl_gebinde) || 0;
       return total + anzahl;
     }, 0);
+  };
+
+  const getGebindeInEurocontainerAnzahl = () => {
+    // Lese aus Survey-JSON-Struktur
+    const produktliste = surveyData?.survey?.schleusung_eurocontainer?.produktliste || [];
+    return produktliste.reduce((total: number, item: any) => {
+      if (item.art_inhalt === "Hergestellte Zwischenprodukte") {
+        return total + (parseInt(item.anzahl_gebinde) || 0);
+      }
+      return total;
+    }, 0);
+  };
+
+  const getFertigeGebindeAnzahl = () => {
+    return getErzeugteGebindeAnzahl() - getGebindeInEurocontainerAnzahl();
   };
 
   const getProbenzugAnzahl = () => {
@@ -210,6 +271,115 @@ const BulkBeutelDashboard: React.FC<BulkBeutelDashboardProps> = ({
       const aussortiert = parseFloat(entry.aussortiertes_material) || 0;
       return total + aussortiert;
     }, 0).toFixed(2);
+  };
+
+  const isNextAvailableBulkBeutel = (bulkBeutelId: number) => {
+    // Prüfe, ob ein Bulk Beutel in Bearbeitung ist
+    const hasInProgress = bulkBeutelList.some(bb => bb.status === 'in_bearbeitung');
+    
+    // Wenn ein Bulk Beutel in Bearbeitung ist, ist keiner verfügbar
+    if (hasInProgress) {
+      return false;
+    }
+    
+    // Finde den ersten Bulk Beutel mit Status 'nicht_verarbeitet'
+    const nextAvailable = bulkBeutelList.find(bb => bb.status === 'nicht_verarbeitet');
+    return nextAvailable?.id === bulkBeutelId;
+  };
+
+  // EC Dialog Handler
+  const handleEcDialogOpen = () => {
+    setShowEcDialog(true);
+    setEcFormErrors({});
+  };
+
+  const handleEcDialogClose = () => {
+    setShowEcDialog(false);
+    setEcFormData({
+      anzahlGebinde: 32,
+      plombenNr: '',
+      plombenNr2: ''
+    });
+    setEcFormErrors({});
+  };
+
+  const handleEcFormChange = (field: string, value: string | number) => {
+    setEcFormData(prev => ({
+      ...prev,
+      [field]: value
+    }));
+    
+    // Clear error when user starts typing
+    if (ecFormErrors[field]) {
+      setEcFormErrors(prev => ({
+        ...prev,
+        [field]: ''
+      }));
+    }
+  };
+
+  const validateEcForm = () => {
+    const errors: {[key: string]: string} = {};
+    
+    if (!ecFormData.plombenNr) {
+      errors.plombenNr = 'Plomben-Nr. ist erforderlich';
+    } else if (!/^\d{7}$/.test(ecFormData.plombenNr)) {
+      errors.plombenNr = 'Plomben-Nr. muss genau 7 Ziffern haben';
+    }
+    
+    if (ecFormData.anzahlGebinde < 0) {
+      errors.anzahlGebinde = 'Anzahl Gebinde darf nicht negativ sein';
+    }
+    
+    // Prüfe, ob genügend Gebinde verfügbar sind
+    const verfuegbareGebinde = getFertigeGebindeAnzahl();
+    if (ecFormData.anzahlGebinde > verfuegbareGebinde) {
+      errors.anzahlGebinde = `Nur ${verfuegbareGebinde} Gebinde verfügbar (${getErzeugteGebindeAnzahl()} erstellt, ${getGebindeInEurocontainerAnzahl()} bereits verpackt)`;
+    }
+    
+    setEcFormErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+
+  const handleEcVerplomben = () => {
+    if (validateEcForm()) {
+      const newContainer = {
+        plombenNr: ecFormData.plombenNr,
+        anzahlGebinde: ecFormData.anzahlGebinde,
+        timestamp: new Date().toLocaleString('de-DE')
+      };
+      
+      // Speichere in Survey-JSON-Struktur
+      const updatedSurveyData = { ...surveyData };
+      
+      // Initialisiere schleusung_eurocontainer falls nicht vorhanden
+      if (!updatedSurveyData.survey) {
+        updatedSurveyData.survey = {};
+      }
+      if (!updatedSurveyData.survey.schleusung_eurocontainer) {
+        updatedSurveyData.survey.schleusung_eurocontainer = {};
+      }
+      if (!updatedSurveyData.survey.schleusung_eurocontainer.produktliste) {
+        updatedSurveyData.survey.schleusung_eurocontainer.produktliste = [];
+      }
+      
+      // Füge neue Produktliste hinzu
+      const newProduktliste = {
+        art_inhalt: "Hergestellte Zwischenprodukte",
+        anzahl_gebinde: ecFormData.anzahlGebinde.toString(),
+        plomben_nr: ecFormData.plombenNr,
+        plomben_nr_2: ecFormData.plombenNr2 || null
+      };
+      
+      updatedSurveyData.survey.schleusung_eurocontainer.produktliste.push(newProduktliste);
+      
+      // Update Survey Data
+      onSurveyDataUpdate(updatedSurveyData);
+      
+      // Update lokalen State für UI
+      setVerplombteContainer(prev => [...prev, newContainer]);
+      handleEcDialogClose();
+    }
   };
 
   return (
@@ -265,8 +435,9 @@ const BulkBeutelDashboard: React.FC<BulkBeutelDashboardProps> = ({
               </div>
               {bulkBeutel.status === 'nicht_verarbeitet' && (
                 <button 
-                  className="btn-abfuellen"
+                  className={`btn-abfuellen ${isNextAvailableBulkBeutel(bulkBeutel.id) ? '' : 'disabled'}`}
                   onClick={() => handleAbfuellen(bulkBeutel.id)}
+                  disabled={!isNextAvailableBulkBeutel(bulkBeutel.id)}
                 >
                   Abfüllen
                 </button>
@@ -329,6 +500,16 @@ const BulkBeutelDashboard: React.FC<BulkBeutelDashboardProps> = ({
           <div className="output-subtitle">
             <span>Gesamt aus Produktionslauf</span>
           </div>
+          <div className="output-details">
+            <div className="output-detail-item">
+              <span className="detail-label">Fertige Gebinde:</span>
+              <span className="detail-value">{getFertigeGebindeAnzahl()}</span>
+            </div>
+            <div className="output-detail-item">
+              <span className="detail-label">Gebinde in Eurocontainer:</span>
+              <span className="detail-value">{getGebindeInEurocontainerAnzahl()}</span>
+            </div>
+          </div>
         </div>
 
         {/* Probenzug Box */}
@@ -383,13 +564,104 @@ const BulkBeutelDashboard: React.FC<BulkBeutelDashboardProps> = ({
         </div>
       </div>
 
-      {/* Spalte 4: Platzhalter */}
+      {/* Spalte 4: Eurocontainer */}
       <div className="dashboard-column column-4">
-        <div className="placeholder">
-          <h3>Spalte 4</h3>
-          <p>Platzhalter für zukünftige Funktionen</p>
+        <div className="dashboard-header">
+          <h3>Eurocontainer</h3>
         </div>
+        
+        {/* EC Packen und Verplomben Button */}
+        <div className="ec-action-section">
+          <button className="btn-ec-packen" onClick={handleEcDialogOpen}>
+            <span className="btn-icon">{showEcDialog ? '−' : '+'}</span>
+            <span className="btn-text">EC packen und verplomben</span>
+          </button>
+        </div>
+        
+        {/* EC Expander */}
+        {showEcDialog && (
+          <div className="ec-expander">
+            <div className="ec-expander-content">
+              <div className="ec-form-row">
+                <label className="ec-form-label">Anzahl Gebinde:</label>
+                <input
+                  type="number"
+                  className="ec-form-input"
+                  value={ecFormData.anzahlGebinde}
+                  onChange={(e) => handleEcFormChange('anzahlGebinde', parseInt(e.target.value) || 0)}
+                  min="0"
+                />
+                {ecFormErrors.anzahlGebinde && (
+                  <span className="ec-form-error">{ecFormErrors.anzahlGebinde}</span>
+                )}
+              </div>
+              
+              <div className="ec-form-row">
+                <label className="ec-form-label">Plomben-Nr.:</label>
+                <input
+                  type="text"
+                  className="ec-form-input"
+                  value={ecFormData.plombenNr}
+                  onChange={(e) => handleEcFormChange('plombenNr', e.target.value)}
+                  placeholder="7-stellige Nummer"
+                  maxLength={7}
+                />
+                {ecFormErrors.plombenNr && (
+                  <span className="ec-form-error">{ecFormErrors.plombenNr}</span>
+                )}
+              </div>
+              
+              <div className="ec-form-row">
+                <label className="ec-form-label">Plomben-Nr. 2:</label>
+                <input
+                  type="text"
+                  className="ec-form-input"
+                  value={ecFormData.plombenNr2}
+                  onChange={(e) => handleEcFormChange('plombenNr2', e.target.value)}
+                  placeholder="7-stellige Nummer (optional)"
+                  maxLength={7}
+                />
+              </div>
+              
+              <div className="ec-expander-actions">
+                <button className="btn-ec-verplomben" onClick={handleEcVerplomben}>
+                  EC Verplomben
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+        
+        {/* Verplombte Container */}
+        {(() => {
+          const produktliste = surveyData?.survey?.schleusung_eurocontainer?.produktliste || [];
+          const hergestellteProdukte = produktliste.filter((item: any) => item.art_inhalt === "Hergestellte Zwischenprodukte");
+          
+          return hergestellteProdukte.length > 0 ? (
+            <div className="verplombte-container-list">
+              {hergestellteProdukte.map((container: any, index: number) => (
+                <div key={index} className="verplombte-container-box">
+                  <div className="container-header">
+                    <span className="container-plomben">
+                      Plomben-Nr.: {container.plomben_nr}
+                      {container.plomben_nr_2 && ` / ${container.plomben_nr_2}`}
+                    </span>
+                  </div>
+                  <div className="container-details">
+                    <span className="container-gebinde">Anzahl Gebinde: {container.anzahl_gebinde}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="placeholder">
+              <p>Platzhalter für zukünftige Funktionen</p>
+            </div>
+          );
+        })()}
       </div>
+
+
     </div>
   );
 };

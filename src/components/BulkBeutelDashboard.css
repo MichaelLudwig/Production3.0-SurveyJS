@@ -1,6 +1,6 @@
 .bulk-beutel-dashboard {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-columns: 300px 2fr 1fr 1fr;
   gap: 20px;
   height: 100%;
   padding: 20px;
@@ -222,6 +222,21 @@
   box-shadow: 0 2px 8px rgba(25, 179, 148, 0.3);
 }
 
+.btn-abfuellen.disabled {
+  background: #e0e0e0;
+  color: #999;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.btn-abfuellen.disabled:hover {
+  background: #e0e0e0;
+  color: #999;
+  transform: none;
+  box-shadow: none;
+}
+
 .in-progress-indicator {
   text-align: center;
   padding: 8px;
@@ -369,13 +384,14 @@
 }
 
 .output-value {
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   font-weight: 700;
   color: #19b394;
   background: linear-gradient(135deg, #19b394, #16a085);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  white-space: nowrap;
 }
 
 .output-subtitle {
@@ -406,6 +422,200 @@
 .detail-value {
   color: #19b394;
   font-weight: 600;
+}
+
+/* EC Action Section */
+.ec-action-section {
+  margin-bottom: 20px;
+}
+
+.btn-ec-packen {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: linear-gradient(135deg, #19b394, #16a085);
+  color: white;
+  border: none;
+  padding: 16px 24px;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 1rem;
+  box-shadow: 0 4px 12px rgba(25, 179, 148, 0.3);
+  width: 100%;
+  justify-content: center;
+}
+
+.btn-ec-packen:hover {
+  background: linear-gradient(135deg, #16a085, #138d75);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(25, 179, 148, 0.4);
+}
+
+.btn-icon {
+  font-size: 1.3rem;
+  font-weight: bold;
+  line-height: 1;
+}
+
+.btn-text {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+/* EC Expander */
+.ec-expander {
+  background: white;
+  border: 2px solid #19b394;
+  border-radius: 12px;
+  margin-top: 12px;
+  margin-bottom: 12px;
+  overflow: hidden;
+  animation: expanderSlideDown 0.3s ease-out;
+}
+
+@keyframes expanderSlideDown {
+  from {
+    opacity: 0;
+    max-height: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    max-height: 500px;
+    transform: translateY(0);
+  }
+}
+
+.ec-expander-content {
+  padding: 20px;
+}
+
+.ec-form-row {
+  margin-bottom: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.ec-form-label {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.ec-form-input {
+  padding: 10px 12px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+  background: white;
+  color: #333;
+}
+
+.ec-form-input:focus {
+  outline: none;
+  border-color: #19b394;
+  box-shadow: 0 0 0 3px rgba(25, 179, 148, 0.1);
+}
+
+.ec-form-error {
+  color: #e74c3c;
+  font-size: 0.85rem;
+  font-weight: 500;
+  background: #fdf2f2;
+  border: 1px solid #fecaca;
+  border-radius: 6px;
+  padding: 8px 12px;
+  margin-top: 4px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ec-form-error::before {
+  content: "⚠️";
+  font-size: 1rem;
+}
+
+.ec-expander-actions {
+  display: flex;
+  justify-content: center;
+  padding-top: 16px;
+  border-top: 1px solid #f0f0f0;
+  margin-top: 16px;
+}
+
+.btn-ec-verplomben {
+  background: linear-gradient(135deg, #19b394, #16a085);
+  color: white;
+  border: none;
+  padding: 12px 32px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 1rem;
+  min-width: 150px;
+}
+
+.btn-ec-verplomben:hover {
+  background: linear-gradient(135deg, #16a085, #138d75);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(25, 179, 148, 0.3);
+}
+
+/* Verplombte Container */
+.verplombte-container-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.verplombte-container-box {
+  background: white;
+  border: 2px solid #19b394;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 2px 8px rgba(25, 179, 148, 0.2);
+  transition: all 0.3s ease;
+}
+
+.verplombte-container-box:hover {
+  box-shadow: 0 4px 12px rgba(25, 179, 148, 0.3);
+  transform: translateY(-1px);
+}
+
+.container-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.container-plomben {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #19b394;
+}
+
+.container-timestamp {
+  font-size: 0.85rem;
+  color: #666;
+  font-style: italic;
+}
+
+.container-details {
+  display: flex;
+  align-items: center;
+}
+
+.container-gebinde {
+  font-size: 0.95rem;
+  color: #333;
+  font-weight: 500;
 }
 
 /* Responsive Design */

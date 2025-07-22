@@ -1044,6 +1044,12 @@
               "name": "plomben_nr",
               "title": "Plomben-Nr.",
               "isRequired": true
+            },
+            {
+              "type": "text",
+              "name": "plomben_nr_2",
+              "title": "Plomben-Nr. 2:",
+              "isRequired": false
             }
           ],
           "panelCount": 1,
