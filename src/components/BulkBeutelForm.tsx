@@ -23,6 +23,7 @@ const BulkBeutelForm: React.FC<BulkBeutelFormProps> = ({ bulkBeutel, totalBulkBe
     aussortiertes_material: '',
     probenzug_ipk: '',
     bruch: '',
+    kommentar: '',
     erfasst_kuerzel: '',
     geprueft_kuerzel: '',
     schweissnaht_ok: ''
@@ -313,6 +314,21 @@ const BulkBeutelForm: React.FC<BulkBeutelFormProps> = ({ bulkBeutel, totalBulkBe
               placeholder="Bruch in Gramm"
             />
             {errors.bruch && <div className="error-message">{errors.bruch}</div>}
+          </div>
+        </div>
+
+        <div className="form-row">
+          <div className="form-field">
+            <label className="form-label">
+              Kommentar (optional)
+            </label>
+            <textarea
+              className="form-textarea"
+              value={formData.kommentar}
+              onChange={(e) => handleInputChange('kommentar', e.target.value)}
+              placeholder="Optionaler Kommentar..."
+              rows={3}
+            />
           </div>
         </div>
 

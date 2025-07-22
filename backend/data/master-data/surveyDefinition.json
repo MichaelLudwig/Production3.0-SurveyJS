@@ -662,6 +662,11 @@
               "isRequired": true
             },
             {
+              "type": "comment",
+              "name": "kommentar",
+              "title": "Kommentar (optional)"
+            },
+            {
               "type": "text",
               "name": "erfasst_kuerzel",
               "title": "Mitarbeiterkürzel \"Erfasst\"",

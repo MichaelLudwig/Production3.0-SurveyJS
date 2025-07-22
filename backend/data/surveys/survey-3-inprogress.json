@@ -1,6 +1,6 @@
 {
   "orderId": "3",
-  "timestamp": "2025-07-22T12:18:41.011Z",
+  "timestamp": "2025-07-22T13:05:10.524Z",
   "status": "in_progress",
   "survey": {
     "eingangsmaterial_ausgebucht": true,
@@ -286,6 +286,22 @@
         "geprueft_kuerzel": "ert",
         "schweissnaht_ok": true,
         "timestamp": "2025-07-22T12:06:05.129Z"
+      },
+      {
+        "bulk_nummer": "12",
+        "soll_inhalt": 979.76,
+        "ist_inhalt": "988",
+        "anzahl_gebinde": "8",
+        "blueten_unauffaellig": true,
+        "gebinde_korrekt_abgewogen": true,
+        "restmenge": "43",
+        "aussortiertes_material": "344",
+        "probenzug_ipk": "3.34",
+        "bruch": "0",
+        "erfasst_kuerzel": "ert",
+        "geprueft_kuerzel": "ert",
+        "schweissnaht_ok": true,
+        "timestamp": "2025-07-22T12:32:28.405Z"
       }
     ],
     "schleusung_eurocontainer": {
@@ -307,7 +323,8 @@
           "plomben_nr_2": "1000004"
         }
       ]
-    }
+    },
+    "restmenge_eingang": "560.00"
   },
   "validation": {
     "eingangsmaterialien_ausbuchen": {
@@ -420,5 +437,5 @@
       ]
     }
   },
-  "currentPageNo": 13
+  "currentPageNo": 12
 }

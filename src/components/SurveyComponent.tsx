@@ -110,8 +110,15 @@ const SurveyComponent: React.FC<SurveyComponentProps> = ({
         }
         
       } catch (error) {
-        console.error('[Survey] Error loading survey configuration:', error);
-        alert('Fehler beim Laden der Survey-Konfiguration. Bitte versuchen Sie es erneut.');
+        console.error('[Survey] Error loading survey data:', error);
+        // Wenn die Datei nicht existiert, ist das normal - starte mit leeren Daten
+        if ((error as any).message?.includes('File not found')) {
+          console.log('[Survey] No existing survey data found - starting fresh');
+          setSurveyData(initialAnswers);
+        } else {
+          // Nur bei echten Fehlern eine Warnung anzeigen
+          alert('Fehler beim Laden der Survey-Daten. Bitte versuchen Sie es erneut.');
+        }
       }
     })();
   }, []);
@@ -576,6 +583,27 @@ const SurveyComponent: React.FC<SurveyComponentProps> = ({
     if (direction === 'prev' && currentPageIndex > 0) {
       survey?.prevPage();
     } else if (direction === 'next' && currentPageIndex < getTotalPages() - 1) {
+      // Prüfe, ob alle Bulk Beutel abgeschlossen sind und setze restmenge_eingang
+      if (isDashboardPage()) {
+        const existingProduction = surveyData?.survey?.bulk_beutel_production || [];
+        const totalBulkBeutel = surveyData?.survey?.bulkgebinde_liste?.reduce((total: number, item: any) => total + item.anzahl, 0) || 0;
+        
+        // Wenn alle Bulk Beutel abgeschlossen sind
+        if (existingProduction.length === totalBulkBeutel && totalBulkBeutel > 0) {
+          // Berechne kummulierte Restmenge
+          const kummulierteRestmenge = existingProduction.reduce((total: number, entry: any) => {
+            const restmenge = parseFloat(entry.restmenge) || 0;
+            return total + restmenge;
+          }, 0);
+          
+          // Setze den Wert in das restmenge_eingang Feld
+          if (survey && kummulierteRestmenge > 0) {
+            console.log(`[Survey] Setting restmenge_eingang to ${kummulierteRestmenge} after completing all bulk beutels`);
+            survey.setValue('restmenge_eingang', kummulierteRestmenge.toFixed(2));
+          }
+        }
+      }
+      
       survey?.nextPage();
     }
   };

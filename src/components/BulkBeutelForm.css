@@ -103,6 +103,27 @@
   box-shadow: 0 0 0 3px rgba(25, 179, 148, 0.1);
 }
 
+.form-textarea {
+  flex: 1;
+  min-width: 0;
+  padding: 8px 12px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+  background: white;
+  color: #333;
+  font-family: inherit;
+  resize: vertical;
+  min-height: 80px;
+}
+
+.form-textarea:focus {
+  outline: none;
+  border-color: #19b394;
+  box-shadow: 0 0 0 3px rgba(25, 179, 148, 0.1);
+}
+
 .form-input:disabled {
   background: #f8f9fa;
   color: #666;

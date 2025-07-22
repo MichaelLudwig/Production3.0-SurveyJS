@@ -91,14 +91,6 @@
     "questions": ["verschweiss_programm_ist", "schweissgeraet_funktioniert", "schweissgeraet_bemerkungen", "schweissgeraet_erfasst"]
   },
   {
-    "name": "primaerverpackung_bulkbeutel",
-    "title": "Primärverpackung pro Bulkbeutel",
-    "validationType": "validation",
-    "label": "Kürzel Mitarbeiter 2",
-    "materialType": "ALL",
-    "questions": ["bulk_beutel_production"]
-  },
-  {
     "name": "pause_details",
     "title": "Pause Details",
     "validationType": "validation",
