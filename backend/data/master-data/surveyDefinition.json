@@ -574,7 +574,7 @@
           "type": "html",
           "name": "herstellprozess_beschreibung_GMP",
           "html": "<div style='text-align:center;'><img src='/images/herstellung-GMP-1.png' alt='herstellung-GMP-1' style='max-width: 100%; margin-top: 10px;'></div>",
-          "visibleIf": "{materialType} = 'GMP'"
+          "visibleIf": "{materialType} == 'GMP'"
         },
         {
           "type": "text",
@@ -685,9 +685,8 @@
               "isRequired": true
             }
           ],
-          "panelCount": 2,
-          "minPanelCount": 1,
-          "maxPanelCount": 10,
+          "panelCount": 0,
+          "minPanelCount": 0,
           "panelAddText": "Bulkbeutel hinzufügen",
           "panelRemoveText": "Entfernen"
         }
@@ -787,8 +786,8 @@
       "elements": [
         {
           "type": "html",
-          "name": "probenzug_info",
-          "html": "<h4>Probenzug</h4><p>Probenzug Analytikmuster zur Freigabeanalytik vorgesehen? Probengebinde abfüllen und versiegeln, von sonstigen Gebinden separieren.</p><h4>Abfüllen</h4><p>Wägeprogramm Proben: [Wägen], Wägeprogramm Zwischenprodukte: [Kontrollwägen 100g], Leeren Beutel tarieren, Blüten einfüllen, Ergebnis speichern</p><h4>Versiegeln</h4><p>Beutel einlegen, Deckel schließen, Versiegelung prüfen</p><h4>Restmenge</h4><p>Wägeprogramm: [Wägen], Restmenge + Bruch + Aussortiertes Material wiegen, finale Restmenge in Gebinde überführen</p>"
+          "name": "info",
+          "html": "<h4>Kumulierte Restmenge und Probenzug</h4><p>Die Abfüllung der kumulierten Restmenge umfasst die folgenden Schritte und wird gemäß Flussdiagramm und Begleitpräsentation durchgeführt. Die Durchführung wird auf der folgenden Seite protokolliert.</p><div style='text-align:center;'><img src='/images/restmenge.png' alt='restmenge' style='max-width: 100%; margin-top: 10px;'></div>"
         },
         {
           "type": "text",
@@ -1057,9 +1056,8 @@
               "isRequired": false
             }
           ],
-          "panelCount": 1,
-          "minPanelCount": 1,
-          "maxPanelCount": 10
+          "panelCount": 0,
+          "minPanelCount": 0
         },
         {
           "type": "text",

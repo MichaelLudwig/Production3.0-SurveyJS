@@ -1,6 +1,6 @@
 {
   "orderId": "1450",
-  "timestamp": "2025-07-22T13:18:15.663Z",
+  "timestamp": "2025-07-22T15:30:03.355Z",
   "status": "in_progress",
   "survey": {
     "eingangsmaterial_ausgebucht": true,
@@ -102,8 +102,109 @@
     "herstellung_beginn_uhrzeit": "15:20",
     "bulk_beutel_production": [
       {},
+      {},
+      {
+        "bulk_nummer": "1",
+        "soll_inhalt": 1000,
+        "ist_inhalt": "988",
+        "anzahl_gebinde": "8",
+        "blueten_unauffaellig": true,
+        "gebinde_korrekt_abgewogen": true,
+        "restmenge": "43",
+        "aussortiertes_material": "433",
+        "probenzug_ipk": "3",
+        "bruch": "0",
+        "kommentar": "",
+        "erfasst_kuerzel": "ert",
+        "geprueft_kuerzel": "ert",
+        "schweissnaht_ok": true,
+        "timestamp": "2025-07-22T13:23:33.180Z"
+      },
+      {
+        "bulk_nummer": "2",
+        "soll_inhalt": 1000,
+        "ist_inhalt": "988",
+        "anzahl_gebinde": "7",
+        "blueten_unauffaellig": true,
+        "gebinde_korrekt_abgewogen": true,
+        "restmenge": "65",
+        "aussortiertes_material": "65",
+        "probenzug_ipk": "0",
+        "bruch": "0",
+        "kommentar": "",
+        "erfasst_kuerzel": "ert",
+        "geprueft_kuerzel": "ert",
+        "schweissnaht_ok": true,
+        "timestamp": "2025-07-22T13:24:23.550Z"
+      },
+      {
+        "bulk_nummer": "3",
+        "soll_inhalt": 1000,
+        "ist_inhalt": "988",
+        "anzahl_gebinde": "8",
+        "blueten_unauffaellig": true,
+        "gebinde_korrekt_abgewogen": true,
+        "restmenge": "43",
+        "aussortiertes_material": "43",
+        "probenzug_ipk": "5",
+        "bruch": "0",
+        "kommentar": "",
+        "erfasst_kuerzel": "ert",
+        "geprueft_kuerzel": "ert",
+        "schweissnaht_ok": true,
+        "timestamp": "2025-07-22T13:24:50.461Z"
+      },
+      {
+        "bulk_nummer": "4",
+        "soll_inhalt": 1000,
+        "ist_inhalt": "988",
+        "anzahl_gebinde": "7",
+        "blueten_unauffaellig": true,
+        "gebinde_korrekt_abgewogen": true,
+        "restmenge": "56",
+        "aussortiertes_material": "56",
+        "probenzug_ipk": "0",
+        "bruch": "6",
+        "kommentar": "",
+        "erfasst_kuerzel": "ert",
+        "geprueft_kuerzel": "ert",
+        "schweissnaht_ok": true,
+        "timestamp": "2025-07-22T13:25:15.235Z"
+      },
+      {
+        "bulk_nummer": "5",
+        "soll_inhalt": 1000,
+        "ist_inhalt": "988",
+        "anzahl_gebinde": "6",
+        "blueten_unauffaellig": true,
+        "gebinde_korrekt_abgewogen": true,
+        "restmenge": "34",
+        "aussortiertes_material": "34",
+        "probenzug_ipk": "3",
+        "bruch": "5",
+        "kommentar": "",
+        "erfasst_kuerzel": "ert",
+        "geprueft_kuerzel": "ert",
+        "schweissnaht_ok": true,
+        "timestamp": "2025-07-22T13:25:47.051Z"
+      }
+    ],
+    "schleusung_eurocontainer": {
+      "produktliste": [
+        {
+          "art_inhalt": "Hergestellte Zwischenprodukte",
+          "anzahl_gebinde": "32",
+          "plomben_nr": "1000003",
+          "plomben_nr_2": "1000004"
+        }
+      ]
+    },
+    "restmenge_eingang": "241.00",
+    "probegebinde_liste": [
       {}
-    ]
+    ],
+    "pause_durchgefuehrt": false,
+    "probenzug_freigabe_vorgesehen": true
   },
   "validation": {
     "eingangsmaterialien_ausbuchen": {
@@ -216,5 +317,5 @@
       ]
     }
   },
-  "currentPageNo": 13
+  "currentPageNo": 12
 }

@@ -108,7 +108,7 @@ const BulkBeutelDashboard: React.FC<BulkBeutelDashboardProps> = ({
       };
       onSurveyDataUpdate(updatedData);
     }
-  }, [surveyData?.survey?.bulkgebinde_liste, surveyData?.survey?.bulk_beutel_production, surveyData?.produktionslauf?.selectedBulkBeutel, onSurveyDataUpdate, selectedBulkBeutel]);
+  }, [surveyData?.survey?.bulkgebinde_liste, surveyData?.survey?.bulk_beutel_production, surveyData?.produktionslauf?.selectedBulkBeutel, onSurveyDataUpdate]);
 
   // Entferne die SurveyJS Model Logik - verwende stattdessen die BulkBeutelForm
 

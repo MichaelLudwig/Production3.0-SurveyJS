@@ -1,6 +1,6 @@
 {
   "orderId": "2",
-  "timestamp": "2025-07-21T12:22:54.028Z",
+  "timestamp": "2025-07-22T15:31:44.559Z",
   "status": "in_progress",
   "survey": {
     "eingangsmaterial_ausgebucht": true,
@@ -99,6 +99,9 @@
         "gebinde_korrekt_abgewogen": true,
         "restmenge": 32.82
       }
+    ],
+    "probegebinde_liste": [
+      {}
     ]
   },
   "validation": {
@@ -199,5 +202,5 @@
       ]
     }
   },
-  "currentPageNo": 13
+  "currentPageNo": 14
 }

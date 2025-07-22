@@ -588,8 +588,15 @@ const SurveyComponent: React.FC<SurveyComponentProps> = ({
         const existingProduction = surveyData?.survey?.bulk_beutel_production || [];
         const totalBulkBeutel = surveyData?.survey?.bulkgebinde_liste?.reduce((total: number, item: any) => total + item.anzahl, 0) || 0;
         
+        // Zähle nur die tatsächlich ausgefüllten BulkBeutel (mit bulk_nummer)
+        const completedBulkBeutel = existingProduction.filter((entry: any) => 
+          entry.bulk_nummer && entry.bulk_nummer !== ""
+        ).length;
+        
+        console.log(`[Navigation] Total bulk beutel: ${totalBulkBeutel}, Completed: ${completedBulkBeutel}`);
+        
         // Wenn alle Bulk Beutel abgeschlossen sind
-        if (existingProduction.length === totalBulkBeutel && totalBulkBeutel > 0) {
+        if (completedBulkBeutel === totalBulkBeutel && totalBulkBeutel > 0) {
           // Berechne kummulierte Restmenge
           const kummulierteRestmenge = existingProduction.reduce((total: number, entry: any) => {
             const restmenge = parseFloat(entry.restmenge) || 0;
@@ -604,7 +611,31 @@ const SurveyComponent: React.FC<SurveyComponentProps> = ({
         }
       }
       
-      survey?.nextPage();
+      // Stelle sicher, dass SurveyJS die Seite als valid betrachtet
+      if (survey) {
+        // Setze alle required fields der paneldynamic als "beantwortet"
+        const currentPage = survey.currentPage;
+        if (currentPage && currentPage.elements) {
+          currentPage.elements.forEach((element: any) => {
+            if (element.type === 'paneldynamic' && element.name === 'bulk_beutel_production') {
+              // Markiere das paneldynamic als valid
+              survey.setValue(element.name, surveyData?.survey?.bulk_beutel_production || []);
+            }
+          });
+        }
+        
+        console.log('[Navigation] Attempting to navigate to next page...');
+        
+        // Direkte Navigation umgeht SurveyJS-Validierung
+        const nextPageIndex = currentPageIndex + 1;
+        if (nextPageIndex < getTotalPages()) {
+          console.log(`[Navigation] Direct navigation to page ${nextPageIndex}`);
+          survey.currentPageNo = nextPageIndex;
+          setCurrentPageIndex(nextPageIndex);
+        } else {
+          console.log('[Navigation] Already on last page');
+        }
+      }
     }
   };
 
