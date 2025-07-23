@@ -1,6 +1,6 @@
 {
   "orderId": "2",
-  "timestamp": "2025-07-23T10:10:25.360Z",
+  "timestamp": "2025-07-23T12:51:59.111Z",
   "status": "in_progress",
   "survey": {
     "eingangsmaterial_ausgebucht": true,
@@ -161,7 +161,9 @@
         "plomben_nr": "1234567",
         "plomben_nr_2": "1234568"
       }
-    ]
+    ],
+    "herstellprozess_ma1_signatur": "ert",
+    "herstellprozess_ma2_signatur": "ert"
   },
   "validation": {
     "eingangsmaterialien_ausbuchen": {
@@ -294,5 +296,5 @@
       ]
     }
   },
-  "currentPageNo": 17
+  "currentPageNo": 18
 }

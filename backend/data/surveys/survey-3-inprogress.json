@@ -1,6 +1,6 @@
 {
   "orderId": "3",
-  "timestamp": "2025-07-23T10:09:32.461Z",
+  "timestamp": "2025-07-23T13:13:10.509Z",
   "status": "in_progress",
   "survey": {
     "eingangsmaterial_ausgebucht": true,
@@ -374,7 +374,12 @@
         "plomben_nr": "1000003",
         "plomben_nr_2": "1000004"
       }
-    ]
+    ],
+    "herstellprozess_ma1_signatur": "ert",
+    "herstellprozess_ma2_signatur": "ert",
+    "line_clearing_nachbereitung_ma1": true,
+    "nachbereitung_reinraum_bemerkungen": "-",
+    "nachbereitung_reinraum_erfasst": "ert"
   },
   "validation": {
     "eingangsmaterialien_ausbuchen": {
@@ -541,7 +546,18 @@
         "bruch_abfuellung_restmenge",
         "gebinde_abgewogen_verschweisst_ma1"
       ]
+    },
+    "nachbereitung_reinraum": {
+      "status": "completed",
+      "ma2Kuerzel": "ert",
+      "ma2Timestamp": "2025-07-23T12:45:36.072Z",
+      "validationOK": true,
+      "validatedQuestions": [
+        "line_clearing_nachbereitung_ma1",
+        "nachbereitung_reinraum_bemerkungen",
+        "nachbereitung_reinraum_erfasst"
+      ]
     }
   },
-  "currentPageNo": 17
+  "currentPageNo": 19
 }

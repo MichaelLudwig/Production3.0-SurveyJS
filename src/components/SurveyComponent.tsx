@@ -547,24 +547,17 @@ const SurveyComponent: React.FC<SurveyComponentProps> = ({
   const getCurrentLocation = () => {
     const currentTitle = getCurrentPageTitle();
     
-    // Lager-Bereich: Alle Seiten bis einschließlich "2.4 Materialbereitstellung - Abschluss"
-    if (currentTitle.startsWith('1.') || 
-        currentTitle.startsWith('2.')) {
-      return 'lager';
-    }
-    
-    // Reinraum-Bereich: Alle Seiten ab "3.1 Vorbereitung Reinraum"
+    // Reinraum-Bereich: Nur Produktionsseiten "3.x" bis "7.x"
     if (currentTitle.startsWith('3.') || 
         currentTitle.startsWith('4.') || 
         currentTitle.startsWith('5.') || 
         currentTitle.startsWith('6.') || 
-        currentTitle.startsWith('7.') || 
-        currentTitle.startsWith('8.') || 
-        currentTitle.startsWith('9.')) {
+        currentTitle.startsWith('7.')) {
       return 'reinraum';
     }
     
-    return 'lager'; // Default
+    // Lager-Bereich: Alle anderen Seiten (1.x, 2.x, 8.x, 9.x, 10.x, 11.x, 12.x)
+    return 'lager';
   };
 
   // Debug: Log location changes

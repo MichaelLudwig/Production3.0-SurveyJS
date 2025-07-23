@@ -1,6 +1,6 @@
 {
   "orderId": "1450",
-  "timestamp": "2025-07-23T10:09:02.248Z",
+  "timestamp": "2025-07-23T12:51:59.111Z",
   "status": "in_progress",
   "survey": {
     "eingangsmaterial_ausgebucht": true,
@@ -226,7 +226,21 @@
     "probegebinde_gekennzeichnet": "Ja",
     "anzahl_zwischenprodukte": 6,
     "bruch_abfuellung_restmenge": 5,
-    "gebinde_abgewogen_verschweisst_ma1": true
+    "gebinde_abgewogen_verschweisst_ma1": true,
+    "bruch_aussortiertes_material_ma1": "Ja",
+    "aussortiertes_material_bruch": 45,
+    "finale_restmenge_gewicht": 45,
+    "bruch_aussortiert_abgefuellt_ma1": "Ja",
+    "finale_restmenge_abgefuellt_ma1": true,
+    "blueten_an_qk": "Ja",
+    "testbeutel_verschweisst_ma1": true,
+    "primaerpackmittel_uebrig_ma1": true,
+    "restmenge_ende_uhrzeit": "13:24",
+    "restmenge_bemerkungen": "4",
+    "restmenge_erfasst": "4",
+    "anzahl_primaerpackmittel_uebrig": 4,
+    "herstellprozess_ma1_signatur": "ert",
+    "herstellprozess_ma2_signatur": "ert"
   },
   "validation": {
     "eingangsmaterialien_ausbuchen": {
@@ -355,7 +369,38 @@
         "bruch_abfuellung_restmenge",
         "gebinde_abgewogen_verschweisst_ma1"
       ]
+    },
+    "restmenge_final_gacp": {
+      "status": "completed",
+      "ma2Kuerzel": "ert",
+      "ma2Timestamp": "2025-07-23T11:23:35.190Z",
+      "validationOK": true,
+      "validatedQuestions": [
+        "bruch_aussortiertes_material_ma1",
+        "aussortiertes_material_bruch",
+        "finale_restmenge_gewicht",
+        "bruch_aussortiert_abgefuellt_ma1",
+        "finale_restmenge_abgefuellt_ma1",
+        "blueten_an_qk",
+        "testbeutel_verschweisst_ma1",
+        "primaerpackmittel_uebrig_ma1",
+        "anzahl_primaerpackmittel_uebrig",
+        "restmenge_ende_uhrzeit",
+        "restmenge_bemerkungen",
+        "restmenge_erfasst"
+      ]
+    },
+    "schleusung_eurocontainer": {
+      "status": "completed",
+      "ma2Kuerzel": "ert",
+      "ma2Timestamp": "2025-07-23T12:44:06.018Z",
+      "validationOK": true,
+      "validatedQuestions": [
+        "produktliste",
+        "herstellprozess_ma1_signatur",
+        "herstellprozess_ma2_signatur"
+      ]
     }
   },
-  "currentPageNo": 16
+  "currentPageNo": 18
 }

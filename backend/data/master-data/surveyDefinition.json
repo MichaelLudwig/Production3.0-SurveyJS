@@ -1027,7 +1027,7 @@
               "title": "Art des Inhalts",
               "cellType": "dropdown",
               "isRequired": true,
-              "choices": ["Hergestellte Zwischenprodukte", "Proben Freigabeanalytik", "Finale Restmenge", "Bruch und aussortiertes Material"]
+              "choices": ["Hergestellte Zwischenprodukte", "Proben Freigabeanalytik", "Probenzug IPK / Materialrückfragen QK"]
             },
             {
               "name": "anzahl_gebinde",
@@ -1062,28 +1062,27 @@
           "name": "herstellprozess_ma2_signatur",
           "title": "Abschluss Herstellprozess - Signatur MA2",
           "isRequired": true
-        },
-        {
-          "type": "html",
-          "name": "ausschleusen_info",
-          "html": "<h4>Vorbereitung für Ausschleusen</h4><p>Umladen der EC in Schleuse</p><p>Abfall und ungeöffnete Bulkware separat platzieren</p>"
-        }
+        }        
       ]
     },
     {
-      "name": "nachbereitung_reinraum",
-      "title": "7.1 Nachbereitung Reinraum",
+      "name": "schleusung_nachbereitung",
+      "title": "7.1 Schleusung und Nachbereitung Reinraum",
       "elements": [
         {
-          "type": "boolean",
-          "name": "line_clearing_nachbereitung_ma1",
-          "title": "Line Clearing erfolgt: Arbeitsplatz aufgeräumt und gereinigt (MA1)",
-          "isRequired": true
+          "type": "html",
+          "name": "ausschleusen_info",
+          "html": "<h4>Vorbereitung der Eurocontainer für das Ausschleusen</h4><div style='text-align:center;'><img src='/images/ausschleusen_ec.png' alt='ausschleusen_ec' style='max-width: 100%; margin-top: 10px;'></div>"
+        },
+        {
+          "type": "html",
+          "name": "nachbereitung_info",
+          "html": "<h4>Nachbereitung des Reinraums</h4><p>Arbeitsplatz und Geräte sind aufgeräumt und von sichtbaren Rückständen gereinigt</p><div style='text-align:center;'><img src='/images/reinraum_clearing.png' alt='reinraum_clearing' style='max-width: 100%; margin-top: 10px;'></div>"
         },
         {
           "type": "boolean",
-          "name": "line_clearing_nachbereitung_ma2",
-          "title": "Line Clearing erfolgt: Arbeitsplatz aufgeräumt und gereinigt (MA2)",
+          "name": "line_clearing_nachbereitung_ma1",
+          "title": "Line Clearing erfolgt: Arbeitsplatz aufgeräumt und gereinigt",
           "isRequired": true
         },
         {
@@ -1094,13 +1093,7 @@
         {
           "type": "text",
           "name": "nachbereitung_reinraum_erfasst",
-          "title": "Mitarbeiterkürzel \"Erfasst\"",
-          "isRequired": true
-        },
-        {
-          "type": "text",
-          "name": "nachbereitung_reinraum_geprueft",
-          "title": "Mitarbeiterkürzel \"Geprüft\"",
+          "title": "Mitarbeiterkürzel",
           "isRequired": true
         },
         {
@@ -1111,121 +1104,75 @@
       ]
     },
     {
-      "name": "einlagern_zwischenprodukte",
-      "title": "8.1 Einlagern - Hergestellte Zwischenprodukte",
+      "name": "einlagern_materialien",
+      "title": "8.1 Einlagern",
       "elements": [
         {
-          "type": "boolean",
-          "name": "zwischenprodukte_verpackt_ma1",
-          "title": "Verpackt in EC, verplombt und gekennzeichnet (MA1)",
-          "isRequired": true
+          "type": "html",
+          "name": "zwischenprodukte_titel",
+          "html": "<h4>Hergestellte Zwischenprodukte</h4><ul><li>Verpackt in EC</li><li>EC verplombt</li><li>EC gekennzeichnet: Dymo Etikett mit Mengenangabe, Farbmarkierung gelb-schwarz</li></ul>"
         },
         {
           "type": "boolean",
-          "name": "zwischenprodukte_verpackt_ma2",
-          "title": "Verpackt in EC, verplombt und gekennzeichnet (MA2)",
+          "name": "zwischenprodukte_verpackt_ma1",
+          "title": "Verpackt in EC, verplombt und gekennzeichnet",
           "isRequired": true
         },
         {
           "type": "boolean",
           "name": "zwischenprodukte_produktionslager_ma1",
-          "title": "In Produktionslager (BtMP) überführt (MA1)",
+          "title": "In Produktionslager (BtMP) überführt",
           "isRequired": true
         },
         {
-          "type": "boolean",
-          "name": "zwischenprodukte_produktionslager_ma2",
-          "title": "In Produktionslager (BtMP) überführt (MA2)",
-          "isRequired": true
-        }
-      ]
-    },
-    {
-      "name": "einlagern_proben",
-      "title": "8.2 Einlagern - Proben (Freigabeanalytik)",
-      "elements": [
+          "type": "html",
+          "name": "proben_titel",
+          "html": "<h4>Proben (Freigabeanalytik)</h4>"
+        },
         {
           "type": "boolean",
           "name": "proben_gekennzeichnet_ma1",
-          "title": "Gekennzeichnet (Dymo Etikett, Farbmarkierung gelb-schwarz) (MA1)",
-          "isRequired": true
-        },
-        {
-          "type": "boolean",
-          "name": "proben_gekennzeichnet_ma2",
-          "title": "Gekennzeichnet (Dymo Etikett, Farbmarkierung gelb-schwarz) (MA2)",
+          "title": "Gekennzeichnet: Dymo Etikett mit Mengenangabe, Farbmarkierung gelb-schwarz",
           "isRequired": true
         },
         {
           "type": "boolean",
           "name": "proben_produktionslager_ma1",
-          "title": "In Produktionslager (BtMP) überführt (MA1)",
+          "title": "In Produktionslager (BtMP) überführt",
           "isRequired": true
         },
         {
-          "type": "boolean",
-          "name": "proben_produktionslager_ma2",
-          "title": "In Produktionslager (BtMP) überführt (MA2)",
-          "isRequired": true
-        }
-      ]
-    },
-    {
-      "name": "einlagern_restmenge",
-      "title": "8.3 Einlagern - Finale Restmenge",
-      "elements": [
+          "type": "html",
+          "name": "restmenge_titel",
+          "html": "<h4>Finale Restmenge</h4>"
+        },
         {
           "type": "boolean",
           "name": "restmenge_gekennzeichnet_ma1",
-          "title": "Gekennzeichnet (Dymo Etikett, Farbmarkierung rot) (MA1)",
-          "isRequired": true
-        },
-        {
-          "type": "boolean",
-          "name": "restmenge_gekennzeichnet_ma2",
-          "title": "Gekennzeichnet (Dymo Etikett, Farbmarkierung rot) (MA2)",
+          "title": "Gekennzeichnet: Dymo Etikett mit Mengenangabe, Farbmarkierung rot",
           "isRequired": true
         },
         {
           "type": "boolean",
           "name": "restmenge_sperrlager_ma1",
-          "title": "Zur Überführung in Sperrlager (BtMS) bereitgestellt (MA1)",
+          "title": "Zur Überführung in Sperrlager (BtMS) bereitgestellt",
           "isRequired": true
         },
         {
-          "type": "boolean",
-          "name": "restmenge_sperrlager_ma2",
-          "title": "Zur Überführung in Sperrlager (BtMS) bereitgestellt (MA2)",
-          "isRequired": true
-        }
-      ]
-    },
-    {
-      "name": "einlagern_muell",
-      "title": "8.4 Einlagern - Müllbeutel",
-      "elements": [
+          "type": "html",
+          "name": "muellbeutel_titel",
+          "html": "<h4>Müllbeutel (inkl. leerer Bulkbeutel)</h4>"
+        },
         {
           "type": "boolean",
           "name": "muell_gekennzeichnet_ma1",
-          "title": "Gekennzeichnet (Farbmarkierung rot) (MA1)",
-          "isRequired": true
-        },
-        {
-          "type": "boolean",
-          "name": "muell_gekennzeichnet_ma2",
-          "title": "Gekennzeichnet (Farbmarkierung rot) (MA2)",
+          "title": "Gekennzeichnet: Farbmarkierung rot",
           "isRequired": true
         },
         {
           "type": "boolean",
           "name": "muell_sperrlager_ma1",
-          "title": "Zur Überführung in Sperrlager (BtMS) bereitgestellt (MA1)",
-          "isRequired": true
-        },
-        {
-          "type": "boolean",
-          "name": "muell_sperrlager_ma2",
-          "title": "Zur Überführung in Sperrlager (BtMS) bereitgestellt (MA2)",
+          "title": "Zur Überführung in Sperrlager (BtMS) bereitgestellt",
           "isRequired": true
         }
       ]

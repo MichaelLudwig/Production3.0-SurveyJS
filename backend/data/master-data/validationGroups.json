@@ -149,7 +149,6 @@
       "blueten_an_qk",
       "testbeutel_verschweisst_ma1",
       "primaerpackmittel_uebrig_ma1",
-      "anzahl_primaerpackmittel_uebrig",
       "restmenge_ende_uhrzeit",
       "restmenge_bemerkungen",
       "restmenge_erfasst"
@@ -167,19 +166,10 @@
       "finale_restmenge_abgefuellt_ma1",
       "testbeutel_verschweisst_ma1",
       "primaerpackmittel_uebrig_ma1",
-      "anzahl_primaerpackmittel_uebrig",
       "restmenge_ende_uhrzeit",
       "restmenge_bemerkungen",
       "restmenge_erfasst"
     ]
-  },
-  {
-    "name": "schleusung_eurocontainer",
-    "title": "Schleusung Eurocontainer",
-    "validationType": "validation",
-    "label": "Kürzel Mitarbeiter 2",
-    "materialType": "ALL",
-    "questions": ["produktliste", "herstellprozess_ma1_signatur", "herstellprozess_ma2_signatur"]
   },
   {
     "name": "nachbereitung_reinraum",
@@ -187,39 +177,15 @@
     "validationType": "validation",
     "label": "Kürzel Mitarbeiter 2",
     "materialType": "ALL",
-    "questions": ["line_clearing_nachbereitung_ma1", "line_clearing_nachbereitung_ma2", "nachbereitung_reinraum_bemerkungen", "nachbereitung_reinraum_erfasst", "nachbereitung_reinraum_geprueft"]
+    "questions": ["line_clearing_nachbereitung_ma1", "nachbereitung_reinraum_bemerkungen", "nachbereitung_reinraum_erfasst"]
   },
   {
-    "name": "einlagern_zwischenprodukte",
+    "name": "einlagern",
     "title": "Einlagern Zwischenprodukte",
     "validationType": "validation",
     "label": "Kürzel Mitarbeiter 2",
     "materialType": "ALL",
-    "questions": ["zwischenprodukte_verpackt_ma1", "zwischenprodukte_verpackt_ma2", "zwischenprodukte_produktionslager_ma1", "zwischenprodukte_produktionslager_ma2"]
-  },
-  {
-    "name": "einlagern_proben",
-    "title": "Einlagern Proben",
-    "validationType": "validation",
-    "label": "Kürzel Mitarbeiter 2",
-    "materialType": "ALL",
-    "questions": ["proben_gekennzeichnet_ma1", "proben_gekennzeichnet_ma2", "proben_produktionslager_ma1", "proben_produktionslager_ma2"]
-  },
-  {
-    "name": "einlagern_restmenge",
-    "title": "Einlagern Restmenge",
-    "validationType": "validation",
-    "label": "Kürzel Mitarbeiter 2",
-    "materialType": "ALL",
-    "questions": ["restmenge_gekennzeichnet_ma1", "restmenge_gekennzeichnet_ma2", "restmenge_sperrlager_ma1", "restmenge_sperrlager_ma2"]
-  },
-  {
-    "name": "einlagern_muell",
-    "title": "Einlagern Müll",
-    "validationType": "validation",
-    "label": "Kürzel Mitarbeiter 2",
-    "materialType": "ALL",
-    "questions": ["muell_gekennzeichnet_ma1", "muell_gekennzeichnet_ma2", "muell_sperrlager_ma1", "muell_sperrlager_ma2"]
+    "questions": ["zwischenprodukte_verpackt_ma1", "zwischenprodukte_produktionslager_ma1", "proben_gekennzeichnet_ma1", "proben_produktionslager_ma1", "restmenge_gekennzeichnet_ma1",  "restmenge_sperrlager_ma1", "muell_gekennzeichnet_ma1", "muell_sperrlager_ma1"]
   },
   {
     "name": "einlagern_eingangsmaterialien",
