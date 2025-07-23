@@ -1,9 +1,11 @@
 export interface ProductionOrder {
   id: string;
+  produktionsauftragsnummer?: string;
   produktName: string;
   protokollNummer?: string;
   materialType: 'GACP' | 'GMP';
   eingangsmaterial: {
+    produktbezeichnung?: string;
     artikelNummer: string;
     charge: string;
     verfallsdatum: string;

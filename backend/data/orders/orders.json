@@ -1,15 +1,16 @@
 [
   {
     "id": "1450",
+    "produktionsauftragsnummer": "NA",
     "produktName": "Peace Naturals GC 31/1, 100g",
     "protokollNummer": "PRBZ-2025-067",
     "materialType": "GACP",
     "eingangsmaterial": {
       "artikelNummer": "18350663",
-      "produktbezeichnung": "Peace Naturals GC 31/1 Blüten",
+      "produktbezeichnung": "Cannabis Peace Naturals GC 31/1, 1g",
       "charge": "25041378",
       "verfall": "08.07.2025",
-      "menge": "21.895,78 g"
+      "menge": "21.895,78"
     },
     "schablone": {
       "eqNummer": "68",
@@ -27,7 +28,7 @@
     },
     "zwischenprodukt": {
       "artikelNummer": "Bulk-18350663",
-      "gebindeNummer": "25061450",
+      "gebindeNummer": "25061450 01",
       "vorgGebindezahl": 220
     },
     "probenzug": {
@@ -37,81 +38,88 @@
       "fuellmenge1": 55.0,
       "fuellmenge2": 50.0
     },
-    "createdAt": "2025-01-09T10:00:00Z"
+    "createdAt": "2025-06-24T10:00:00Z"
   },
   {
     "id": "2",
-    "produktName": "Cannabis Extrakt 25% CBD",
+    "produktionsauftragsnummer": "1331",
+    "produktName": "Cannabis Holigen T30 BL Miniz (weiße Beutel), 100g",
     "materialType": "GMP",
-    "protokollNummer": "PRBZ-2025-068",
+    "protokollNummer": "NA",
     "eingangsmaterial": {
-      "artikelNummer": "CAN-002",
-      "produktbezeichnung": "Cannabis Extrakt 25% CBD",
-      "charge": "2024-002",
-      "verfall": "30.06.2025",
-      "menge": "500,00 g"
-    },
-    "primaerPackmittel": {
-      "artikelNummer": "PKM-002",
-      "produktbezeichnung": "Glasflasche 30ml braun",
-      "charge": "PKM-2024-002",
-      "anzahl": 50
-    },
-    "verschweissProgramm": {
-      "programm": "Glasflasche Verschweißung"
-    },
-    "zwischenprodukt": {
-      "artikelNummer": "ZP-002",
-      "gebindeNummer": "GB-002",
-      "vorgGebindezahl": 50
-    },
-    "probenzug": {
-      "plan": "PRBZ-2025-068",
-      "freigabeVorgesehen": "ja",
-      "anzahl": 2,
-      "fuellmenge1": 5.0,
-      "fuellmenge2": 5.0
-    },
-    "createdAt": "2024-01-16T14:15:00Z"
-  },
-  {
-    "id": "3",
-    "produktName": "Medizinisches Cannabis 15% THC",
-    "materialType": "GACP",
-    "protokollNummer": "PRBZ-2025-069",
-    "eingangsmaterial": {
-      "artikelNummer": "CAN-003",
-      "produktbezeichnung": "Medizinisches Cannabis 15% THC Blüten",
-      "charge": "2024-003",
-      "verfall": "30.09.2025",
-      "menge": "750,00 g"
+      "artikelNummer": "19602049",
+      "produktbezeichnung": "Cannabis Holigen T30 BL, 1g",
+      "charge": "25031329",
+      "verfall": "27.03.2025",
+      "menge": "9.412 g"
     },
     "schablone": {
-      "eqNummer": "EQ-002",
-      "charge": "SCH-002",
-      "anzahl": 3
+      "eqNummer": "NA",
+      "charge": "NA",
+      "anzahl": 0
     },
     "primaerPackmittel": {
-      "artikelNummer": "PKM-003",
-      "produktbezeichnung": "Standbodenbeutel 5000ml transparent",
-      "charge": "PKM-2024-003",
-      "anzahl": 75
+      "artikelNummer": "0100074",
+      "produktbezeichnung": "Standbodenbeutel 3000ml Weiß Matt, 1 Stk.",
+      "charge": "0100074-20240726-001",
+      "anzahl": 100
     },
     "verschweissProgramm": {
       "programm": "Daklapack Beutel"
     },
     "zwischenprodukt": {
-      "artikelNummer": "ZP-003",
-      "gebindeNummer": "GB-003",
-      "vorgGebindezahl": 75
+      "artikelNummer": "Bulk-B-W-Miniz-19602049",
+      "gebindeNummer": "NA",
+      "vorgGebindezahl": 95
     },
     "probenzug": {
-      "plan": "PRBZ-2025-069",
+      "plan": "PRBZ-2025-032",
       "freigabeVorgesehen": "ja",
-      "anzahl": 3,
-      "fuellmenge1": 15.0,
-      "fuellmenge2": 12.5
+      "anzahl": 2,
+      "fuellmenge1": 55.0,
+      "fuellmenge2": 50.0
     },
-    "createdAt": "2024-01-17T09:00:00Z"
+    "createdAt": "2024-01-16T14:15:00Z"
+  },
+  {
+    "id": "3",
+    "produktionsauftragsnummer": "1409",
+    "produktName": "Peace Naturals ASG 27/1 100g",
+    "materialType": "GACP",
+    "protokollNummer": "HP-2025-095",
+    "eingangsmaterial": {
+      "artikelNummer": "19086381",
+      "produktbezeichnung": "Cannabis Peace Naturals ASG 27/1, 1g",
+      "charge": "25051402",
+      "verfall": "24.02.2026",
+      "menge": "50.000"
+    },
+    "schablone": {
+      "eqNummer": "68",
+      "charge": "R100018-20250509-001",
+      "anzahl": 3
+    },
+    "primaerPackmittel": {
+      "artikelNummer": "O100068",
+      "produktbezeichnung": "Standbodenbeutel 3000ml Gold, 1 Stk.",
+      "charge": "O100068-20240405-001",
+      "anzahl": 500
+    },
+    "verschweissProgramm": {
+      "programm": "Daklapack Beutel"
+    },
+    "zwischenprodukt": {
+      "artikelNummer": "Bulk-19086381",
+      "gebindeNummer": "25051402 01",
+      "vorgGebindezahl": 500
+    },
+    "probenzug": {
+      "plan": "PRBZ-2025-055",
+      "freigabeVorgesehen": "ja",
+      "anzahl": 2,
+      "fuellmenge1": 19.0,
+      "fuellmenge2": 17.0
+    },
+    "createdAt": "2025-05-14T10:00:00Z"
   }
 ]

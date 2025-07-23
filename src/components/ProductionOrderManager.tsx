@@ -21,14 +21,16 @@ const ProductionOrderManager: React.FC<ProductionOrderManagerProps> = ({
   const [viewMode, setViewMode] = useState<'list' | 'details' | 'edit' | 'create'>('list');
   const [orderStatuses, setOrderStatuses] = useState<Record<string, string>>({});
   const [newOrder, setNewOrder] = useState<Partial<ProductionOrder>>({
+    produktionsauftragsnummer: '',
     produktName: '',
     materialType: 'GACP',
-    eingangsmaterial: {
-      artikelNummer: '',
-      charge: '',
-      verfallsdatum: '',
-      eingangsMenge: 0
-    },
+            eingangsmaterial: {
+          produktbezeichnung: '',
+          artikelNummer: '',
+          charge: '',
+          verfallsdatum: '',
+          eingangsMenge: 0
+        },
     schablone: {
       eqNummer: '',
       charge: '',
@@ -145,6 +147,7 @@ const ProductionOrderManager: React.FC<ProductionOrderManagerProps> = ({
     
     try {
       const orderData = {
+        produktionsauftragsnummer: newOrder.produktionsauftragsnummer,
         produktName: newOrder.produktName,
         materialType: newOrder.materialType as 'GACP' | 'GMP',
         eingangsmaterial: newOrder.eingangsmaterial,
@@ -180,9 +183,11 @@ const ProductionOrderManager: React.FC<ProductionOrderManagerProps> = ({
       
       // Reset form
       setNewOrder({
+        produktionsauftragsnummer: '',
         produktName: '',
         materialType: 'GACP',
         eingangsmaterial: {
+          produktbezeichnung: '',
           artikelNummer: '',
           charge: '',
           verfallsdatum: '',
@@ -306,9 +311,10 @@ const ProductionOrderManager: React.FC<ProductionOrderManagerProps> = ({
                   </span>
                 </div>
                 <div className="order-card-body">
+                  <p><strong>Auftragsnummer:</strong> {order.produktionsauftragsnummer || 'NA'}</p>
                   <p><strong>Erstellt:</strong> {new Date(order.createdAt).toLocaleDateString('de-DE')}</p>
-                  <p><strong>Eingangsmaterial:</strong> {order.eingangsmaterial.artikelNummer}</p>
-                  <p><strong>Charge:</strong> {order.eingangsmaterial.charge}</p>
+                  <p><strong>Eingangsmaterial:</strong> {order.eingangsmaterial.produktbezeichnung || order.eingangsmaterial.artikelNummer}</p>
+                  <p><strong>Vorgesehene Gebindezahl:</strong> {order.zwischenprodukt.vorgGebindezahl || 'NA'}</p>
 
                   <p><strong>Status:</strong> 
                     <span className={`survey-status ${orderStatuses[order.id] || 'none'}`}>
@@ -385,6 +391,7 @@ const ProductionOrderManager: React.FC<ProductionOrderManagerProps> = ({
               <h3>Grunddaten</h3>
               <div className="details-grid">
                 <div><strong>Produktname:</strong> {editingOrder.produktName}</div>
+                <div><strong>Auftragsnummer:</strong> {editingOrder.produktionsauftragsnummer || 'NA'}</div>
                 <div><strong>Material-Typ:</strong> {editingOrder.materialType}</div>
                 <div><strong>Erstellt am:</strong> {new Date(editingOrder.createdAt).toLocaleDateString('de-DE')}</div>
 
@@ -454,6 +461,16 @@ const ProductionOrderManager: React.FC<ProductionOrderManagerProps> = ({
           </div>
           
           <div className="form-group">
+            <label>Produktionsauftragsnummer</label>
+            <input
+              type="text"
+              value={newOrder.produktionsauftragsnummer}
+              onChange={(e) => handleDirectInputChange('produktionsauftragsnummer', e.target.value)}
+              placeholder="z.B. 1331"
+            />
+          </div>
+
+          <div className="form-group">
             <label>Produktname *</label>
             <input
               type="text"
@@ -476,6 +493,15 @@ const ProductionOrderManager: React.FC<ProductionOrderManagerProps> = ({
 
           <div className="form-section">
             <h4>Eingangsmaterial</h4>
+            <div className="form-group">
+              <label>Produktbezeichnung</label>
+              <input
+                type="text"
+                value={newOrder.eingangsmaterial?.produktbezeichnung}
+                onChange={(e) => handleInputChange('eingangsmaterial', 'produktbezeichnung', e.target.value)}
+                placeholder="z.B. Cannabis Peace Naturals GC 31/1, 100g"
+              />
+            </div>
             <div className="form-group">
               <label>Artikelnummer *</label>
               <input
