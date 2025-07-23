@@ -1,6 +1,6 @@
 {
   "orderId": "2",
-  "timestamp": "2025-07-23T16:09:45.929Z",
+  "timestamp": "2025-07-23T17:53:12.923Z",
   "status": "in_progress",
   "survey": {
     "eingangsmaterial_ausgebucht": true,
@@ -157,9 +157,13 @@
     "produktliste": [
       {
         "art_inhalt": "Hergestellte Zwischenprodukte",
-        "anzahl_gebinde": "14",
-        "plomben_nr": "1234567",
-        "plomben_nr_2": "1234568"
+        "anzahl_gebinde": 7,
+        "plomben_nr": "1000001"
+      },
+      {
+        "art_inhalt": "Hergestellte Zwischenprodukte",
+        "anzahl_gebinde": 7,
+        "plomben_nr": "1000002"
       }
     ],
     "herstellprozess_ma1_signatur": "ert",
@@ -388,5 +392,5 @@
       ]
     }
   },
-  "currentPageNo": 23
+  "currentPageNo": 22
 }

@@ -8,6 +8,7 @@ Das Ziel dieses Projekts ist die Entwicklung einer digitalen, tablet-optimierten
 
 - **Frontend-Backend-Architektur:** React SPA mit Node.js/Express Backend für lokale Datenpersistenz und Multi-User-Unterstützung.
 - **SurveyJS-Integration:** Der gesamte Produktionsprozess wird als hierarchischer, dynamischer Fragebogen abgebildet.
+- **Custom Dashboard für Produktionslauf:** Spezielle Benutzeroberfläche für die Abfüllung von Bulkbeuteln mit Echtzeit-Überwachung und automatischer Datenintegration.
 - **Tablet-Optimierung:** UI/UX ist für Touch-Bedienung und große Bedienelemente ausgelegt.
 - **Lokale Datenpersistenz:** Backend speichert Survey-Fortschritt und Validierungsdaten lokal (keine SAP-Anbindung).
 - **Datenexport:** Export als JSON (strukturiert) und PDF (menschenlesbar) für Archivierung und Qualitätssicherung.
@@ -18,11 +19,26 @@ Das Ziel dieses Projekts ist die Entwicklung einer digitalen, tablet-optimierten
 - Anlegen, Bearbeiten, Löschen und Auswählen von Produktionsaufträgen.
 - Auftragsdaten umfassen Produkt, Materialtyp (GACP/GMP), Chargen, Mengen, Probenzug, Packmittel, Schablonen etc.
 - Persistenz im Local Storage.
+- **Erweiterte Auftragsverwaltung:** Status-Tracking für jeden Auftrag (none, in_progress, completed) mit direkter Fortsetzung von begonnenen Surveys.
 
 ### 3.2 Geführter Fragebogen (Survey)
+- **Gesamtstruktur:** 26 Seiten in 10 Kapiteln:
+  - **Kapitel 1:** Information/Auftrag (1.1-1.5): Information Produktionsauftrag; Beteiligte Mitarbeiter; Datum + Uhrzeit Beginn; Vorbereitung Kennzeichnung; Raumstatus überprüfen
+  - **Kapitel 2:** Materialbereitstellung (2.1-2.4): Primärpackmittel; Bulkmaterial; Zubehör Schablonen/GMP; Abschluss
+  - **Kapitel 3:** Reinraum-Vorbereitung (3.1-3.3): Line Clearing; Waage; Kammerschweißgerät
+  - **Kapitel 4:** Produktion (4.1-4.5): Herstellprozess Beginn; Primärverpackung Produktionslauf; Pause; Pause Details; Kumulierte Restmenge und Probenzug
+  - **Kapitel 5:** Restmenge (5.1): Restmenge
+  - **Kapitel 6:** Schleusung (6.1): Eurocontainer
+  - **Kapitel 7:** Nachbereitung Reinraum (7.1): Schleusung und Nachbereitung
+  - **Kapitel 8:** Einlagern (8.1-8.2): Einlagern; Nicht genutzte Eingangsmaterialien
+  - **Kapitel 9:** Nachbereitung (9.1): Reinraum Final
+  - **Kapitel 10:** Abschluss (10.1-10.2): Abschluss; Herstellung abgeschlossen
 - Hierarchische Struktur: Prozessschritt > Teilschritt > Frage.
 - Verschiedene Fragetypen: Checkbox, Radiobutton, Matrix, Zahl, Datum/Uhrzeit, Freitext, Signatur/Kürzel, dynamische Panels.
-- Bedingte Sichtbarkeit: Fragen/Abschnitte erscheinen nur, wenn sie relevant sind (z.B. GACP-spezifisch, Pause durchgeführt).
+- **MaterialType-spezifische Sichtbarkeit:** Fragen/Abschnitte erscheinen nur, wenn sie für den jeweiligen Materialtyp (GACP/GMP) relevant sind.
+- **MaterialType-spezifische Validierungsgruppen:** Separate Vier-Augen-Validierungen je nach Materialtyp aufgrund unterschiedlicher Prozessschritte.
+- **Standort-basierte Orientierung:** Farbliche Unterscheidung zwischen Lager- (blau: Kapitel 1 "Information/Auftrag", 2 "Materialbereitstellung", 8 "Einlagern", 9 "Nachbereitung", 10 "Abschluss") und Reinraum-Bereichen (grün: Kapitel 3 "Reinraum-Vorbereitung", 4 "Produktion", 5 "Restmenge", 6 "Schleusung", 7 "Nachbereitung Reinraum"). Hintergrund und Seitenrahmen passen sich automatisch an.
+- **Integrierte Infografiken:** Prozessabläufe, Etiketten-Beispiele und Zielzustände werden durch Grafiken veranschaulicht.
 - Dynamische Wiederholungen: z.B. für Bulkbeutel, Mitarbeiterlisten.
 - Pflichtfelder und Validierungen (inkl. bedingter Validierung).
 - Vier-Augen-Prinzip: Kritische Kontrollpunkte erfordern Bestätigung durch zwei Personen (MA1/MA2) inkl. Audit-Trail.
@@ -33,11 +49,24 @@ Das Ziel dieses Projekts ist die Entwicklung einer digitalen, tablet-optimierten
 - Möglichkeit, einen begonnenen Auftrag fortzusetzen oder neu zu starten.
 - Multi-User-Unterstützung: Verschiedene Benutzer können gleichzeitig an verschiedenen Aufträgen arbeiten.
 - Auftragsliste zeigt alle in Bearbeitung befindlichen Surveys an.
+- **Erweiterte Persistenz:** Separate Speicherung von Survey-Daten und Dashboard-Zustand.
 
-### 3.4 Abschluss & Export
+### 3.4 Custom Dashboard für Produktionslauf
+- **Spezielle Benutzeroberfläche:** Ersetzt die Standard-SurveyJS-Seite für "4.2 Primärverpackung - Produktionslauf".
+- **Vier-Spalten-Layout:** Material Eingang, Produktionslauf, Material Ausgang, Eurocontainer.
+- **Automatische Bulkbeutel-Generierung:** Erstellt Bulkbeutel-Liste basierend auf den eingegebenen Gebinden beim Material-Eingang (`bulkgebinde_liste`).
+- **Echtzeit-Status-Tracking:** Jeder Bulkbeutel hat einen Status (nicht_verarbeitet, in_bearbeitung, abgeschlossen).
+- **Visuelle Fortschrittsanzeige:** Donut-Charts für verarbeitete Bulkbeutel und erzeugte Gebinde.
+- **Integrierte Abfüllform:** Custom Formular für jeden Bulkbeutel mit Validierung und Warnungen.
+- **Automatische Datenintegration:** Speichert Abfüll-Daten direkt in das SurveyJS `bulk_beutel_production` paneldynamic.
+- **Eurocontainer-Verwaltung:** Verplomben von Gebinden mit Plomben-Nummern und automatische Integration in die Schleusungsseite.
+- **Automatische Datenverarbeitung:** Berechnung der kumulierten Restmenge und automatische Erstellung der Eurocontainer-Liste.
+
+### 3.5 Abschluss & Export
 - Abschlussseite mit Zusammenfassung und Platzhalter für Produktionsleitung-Benachrichtigung.
 - Export als JSON (strukturierte Rohdaten inkl. Audit-Trail) und PDF (formatierter Bericht).
 - Dateinamen-Konvention: `Protokoll_{orderID}_{timestamp}.{extension}`.
+
 
 ## 4. Datenmodelle (Auszug)
 
@@ -85,7 +114,53 @@ interface ProductionOrder {
 }
 ```
 
-### 4.2 Survey-Antworten & Audit-Trail
+### 4.2 Dashboard-spezifische Datenmodelle
+
+#### BulkBeutel Interface
+```typescript
+interface BulkBeutel {
+  id: number;
+  gebindegroesse: number;
+  anzahl: number;
+  probenzug_verwendet: boolean;
+  dicht_sauber: boolean;
+  status: 'nicht_verarbeitet' | 'in_bearbeitung' | 'abgeschlossen';
+}
+```
+
+#### Dashboard State
+```typescript
+interface DashboardState {
+  produktionslauf: {
+    bulkBeutel: BulkBeutel[];
+    selectedBulkBeutel: number | null;
+  };
+  survey: Record<string, any>; // SurveyJS-Daten
+}
+```
+
+#### BulkBeutel Production Entry
+```typescript
+interface BulkBeutelProductionEntry {
+  bulk_nummer: string;
+  soll_inhalt: number;
+  ist_inhalt: string;
+  anzahl_gebinde: string;
+  blueten_unauffaellig: boolean;
+  gebinde_korrekt_abgewogen: boolean;
+  restmenge: string;
+  aussortiertes_material: string;
+  probenzug_ipk: string;
+  bruch: string;
+  kommentar: string;
+  erfasst_kuerzel: string;
+  geprueft_kuerzel: string;
+  schweissnaht_ok: boolean;
+  timestamp: string;
+}
+```
+
+### 4.3 Survey-Antworten & Audit-Trail
 
 Die Survey-Antworten werden als einfaches Key-Value-Objekt gespeichert:
 ```typescript
@@ -114,18 +189,37 @@ Die Survey-Antworten selbst enthalten **keinen** Audit-Trail mehr auf Feldebene.
 
 ---
 
-### 4.3 Validierungsgruppen (Vier-Augen-Prinzip)
+### 4.4 Validierungsgruppen (Vier-Augen-Prinzip)
 ```typescript
 interface ValidationGroup {
   name: string;
   title: string;
   validationType: "signature" | "validation";
   label: string;
+  materialType?: "ALL" | "GACP" | "GMP"; // MaterialType-spezifische Validierung
   questions: string[];
 }
 ```
 
-### 4.4 Backend-Datenmodell (Survey-Datei)
+**MaterialType-spezifische Validierungsgruppen:**
+Das System unterstützt separate Validierungsgruppen je nach Materialtyp (GACP/GMP), da die Eingabefelder und Prozessschritte teilweise stark unterschiedlich sind:
+
+- **GACP-spezifische Gruppen:** Zubehör Schablonen, Kumulierte Restmenge (GACP), Finale Restmenge (GACP), Einlagern Eingangsmaterialien (GACP)
+- **GMP-spezifische Gruppen:** Kumulierte Restmenge (GMP), Finale Restmenge (GMP), Einlagern Eingangsmaterialien (GMP)  
+- **ALL-Gruppen:** Für beide Materialtypen gültige Validierungen (Eingangsmaterialien, Raumstatus, etc.)
+
+**Beispiele für GACP-spezifische Unterschiede:**
+- Schablonen-Verwaltung (nur GACP)
+- IPK-Probenzug (erste, mittlere, letzte Probe bei GACP)
+- Aussortiertes Material und Bruch-Trennung (GACP)
+- Schablonen-Entsorgung (nur GACP)
+
+**Beispiele für GMP-spezifische Unterschiede:**
+- Vereinfachte Restmenge-Berechnung (Bruch wird zur Restmenge hinzugefügt)
+- Keine Schablonen-Verwaltung
+- Keine IPK-Probenzug-Anforderungen
+
+### 4.5 Backend-Datenmodell (Survey-Datei)
 
 Die Survey-Datei speichert alle relevanten Informationen zu einem Bearbeitungsstand:
 
@@ -151,6 +245,32 @@ interface SurveyFile {
     "mitarbeiter_liste": [
       { "name": "ert", "kuerzel": "ert" },
       { "name": "ert", "kuerzel": "ert" }
+    ],
+    "bulkgebinde_liste": [
+      {
+        "anzahl": 2,
+        "gebindegroesse": 500,
+        "probenzug_verwendet": true,
+        "dicht_sauber": true
+      }
+    ],
+    "bulk_beutel_production": [
+      {
+        "bulk_nummer": "1",
+        "soll_inhalt": 500,
+        "ist_inhalt": "485.5",
+        "anzahl_gebinde": "32",
+        "blueten_unauffaellig": true,
+        "gebinde_korrekt_abgewogen": true,
+        "restmenge": "14.5",
+        "aussortiertes_material": "2.3",
+        "probenzug_ipk": "1.2",
+        "bruch": "0.5",
+        "erfasst_kuerzel": "MA1",
+        "geprueft_kuerzel": "MA2",
+        "schweissnaht_ok": true,
+        "timestamp": "2025-07-15T22:30:00.000Z"
+      }
     ]
     // ... weitere Antworten ...
   },
@@ -188,6 +308,12 @@ interface SurveyFile {
 - **Barrierefreiheit:** Fokus-Indikatoren, hohe Kontraste, Unterstützung für reduzierte Bewegung und Dark Mode.
 - **Fortschrittsanzeige:** Fortschrittsbalken, Seitenzähler, Breadcrumbs.
 - **Hilfetexte:** Inline-Hilfen und Kontextbeschreibungen für kritische Felder.
+- **Dashboard-spezifische UI:** 
+  - Vier-Spalten-Layout für optimale Übersicht
+  - Donut-Charts für visuelle Fortschrittsanzeige
+  - Status-basierte Farbkodierung (grün/rot/gelb)
+  - Toggle-Switches für Ja/Nein-Fragen
+  - Warnungen für kritische Probenzug-Anforderungen
 
 ## 6. Export & Compliance
 
@@ -196,6 +322,22 @@ interface SurveyFile {
 - **Audit-Trail:** Jede kritische Antwort enthält Kürzel und Zeitstempel von MA1 und ggf. MA2.
 - **Vier-Augen-Prinzip:** Für alle Validierungsgruppen wird die Bestätigung durch einen zweiten Mitarbeiter (MA2) mit Kürzel und Zeitstempel dokumentiert.
 - **Lokale Datenhaltung:** Alle Daten werden lokal im Backend gespeichert, Exporte werden clientseitig generiert und heruntergeladen.
+- **Dashboard-Datenintegration:** Alle Dashboard-Eingaben werden vollständig in die SurveyJS-Struktur integriert und sind im Export enthalten.
+
+### 6.1 Angepasster SurveyJS-Export
+
+**Signifikante Anpassungen am Standard-SurveyJS-Export:**
+
+- **Tabellarische Darstellung:** Matrix-Daten (Mitarbeiterlisten, Druck-Messungen, Bulkgebinde, etc.) werden in übersichtlichen Tabellen dargestellt statt als JSON-Arrays
+- **Strukturierte Sektionen:** Export ist nach Survey-Seiten organisiert mit klaren Überschriften und Unterabschnitten
+- **Intelligente Datenformatierung:** 
+  - Boolean-Werte werden als ✓ Ja / ✗ Nein dargestellt
+  - Datum/Uhrzeit-Werte werden im deutschen Format formatiert
+  - Leere Werte werden ausgeblendet
+- **Vier-Augen-Validierung Integration:** Validierungsdaten werden direkt in die jeweiligen Sektionen integriert mit spezieller Formatierung
+- **Produktionslauf-Details:** Bulk-Beutel-Produktionsdaten werden in detaillierten Tabellen mit allen relevanten Feldern dargestellt
+- **Responsive Design:** PDF-Layout ist für A4-Druck optimiert mit angepassten Schriftgrößen und Spacing
+- **Vollständige Datenabdeckung:** Alle SurveyJS-Felder, Dashboard-Eingaben und Backend-Daten werden konsolidiert exportiert
 
 ## 7. Architektur & Projektstruktur
 
@@ -203,6 +345,11 @@ interface SurveyFile {
 ```
 /src
   /components     # React-Komponenten
+    /BulkBeutelDashboard.tsx    # Custom Dashboard für Produktionslauf
+    /BulkBeutelForm.tsx         # Formular für einzelne Bulkbeutel
+    /ProductionOrderManager.tsx # Auftragsverwaltung
+    /SurveyComponent.tsx        # Haupt-Survey-Komponente
+    /MA2Validation.tsx          # Vier-Augen-Validierung
   /types         # TypeScript-Interfaces
   /utils         # Hilfsfunktionen und API-Client
   /styles        # CSS-Dateien
@@ -229,16 +376,69 @@ interface SurveyFile {
 - `GET /api/master-data/validation-groups` - Validierungsgruppen laden
 - `GET /api/surveys/:orderId/data` - Survey-Fortschritt laden
 - `POST /api/surveys/:orderId/data` - Survey-Fortschritt speichern
+- `PUT /api/surveys/:orderId/progress` - Dashboard-Daten speichern
+- `GET /api/surveys/:orderId/status` - Survey-Status abfragen
 
-## 8. Nicht im Umfang (Out of Scope)
+## 9. Integrierte Infografiken
+
+### 8.1 Prozessablauf-Grafiken
+- **Herstellprozess GACP:** Drei-stufige Flussdiagramme (`herstellung-GACP-1.png`, `herstellung-GACP-2.png`, `herstellung-GACP-3.png`) zeigen den kompletten Abfüllungsprozess für GACP-Material
+- **Herstellprozess GMP:** Vereinfachtes Flussdiagramm (`herstellung-GMP-1.png`) für GMP-Material
+- **Probenzug GACP:** Spezielle Grafiken (`probenzug-GACP-1.png`, `probenzug-GACP-2.png`) zeigen die IPK-Probenzug-Anforderungen für erste, mittlere und letzte Bulkbeutel
+- **Restmenge-Verarbeitung:** Flussdiagramm (`restmenge.png`) für die Abfüllung der kumulierten Restmenge
+
+### 8.2 Etiketten- und Material-Beispiele
+- **Primärpackmittel-Etikett:** Beispiel (`packmittel-etikett.png`) für die Identifikation von Primärpackmitteln
+- **Bulkbeutel-Etikett:** Beispiel (`bulkbeutel-etikett.png`) für die Identifikation von Bulkmaterial
+- **Eurocontainer:** Referenzbild (`eurocontainer.png`) für die korrekte Verpackung
+
+### 8.3 Arbeitsplatz- und Zielzustand-Grafiken
+- **Arbeitsplatz GACP:** Layout (`raum-GACP.png`) mit Utensilien und Equipment für GACP-Prozesse
+- **Arbeitsplatz GMP:** Layout (`raum-GMP.png`) mit vereinfachtem Equipment für GMP-Prozesse
+- **Reinraum-Clearing:** Zielzustand (`reinraum_clearing.png`) nach der Nachbereitung
+- **Ausschleusung:** Prozess (`ausschleusen_ec.png`) für die Vorbereitung der Eurocontainer
+
+### 8.4 Integration in SurveyJS
+- **HTML-Elemente:** Alle Grafiken sind als HTML-Elemente in der Survey-Definition integriert
+- **Responsive Design:** Grafiken sind mit `max-width` und `margin-top` für optimale Darstellung konfiguriert
+- **MaterialType-spezifisch:** Einige Grafiken werden nur für bestimmte Materialtypen angezeigt (z.B. GACP-spezifische Herstellprozesse)
+
+## 10. Dashboard-Funktionalitäten
+
+### 9.1 Material Eingang (Spalte 1)
+- **Bulkbeutel-Liste:** Automatische Generierung basierend auf `bulkgebinde_liste`
+- **Status-Tracking:** Visuelle Anzeige des Verarbeitungsstatus jedes Bulkbeutels
+- **Fortschritts-Chart:** Donut-Chart für verarbeitete vs. Gesamt-Bulkbeutel
+- **Sequentielle Verarbeitung:** Nur der nächste verfügbare Bulkbeutel kann bearbeitet werden
+
+### 9.2 Produktionslauf (Spalte 2)
+- **Dynamisches Formular:** Custom Formular für jeden Bulkbeutel
+- **Validierung:** Pflichtfelder und Warnungen für kritische Probenzug-Anforderungen
+- **Datenintegration:** Automatische Speicherung in `bulk_beutel_production`
+- **Status-Management:** Übergang zwischen Bearbeitungszuständen
+
+### 9.3 Material Ausgang (Spalte 3)
+- **Erzeugte Gebinde:** Donut-Chart mit Soll-Ist-Vergleich
+- **Probenzug-Überwachung:** Tracking der IPK-Proben (erste, mittlere, letzte)
+- **Kummulierte Werte:** Automatische Berechnung von Restmenge, Bruch, aussortiertem Material
+- **Echtzeit-Updates:** Alle Werte werden automatisch aktualisiert
+
+### 9.4 Eurocontainer (Spalte 4)
+- **Verplomben-Funktion:** Verpacken von Gebinden mit Plomben-Nummern
+- **Validierung:** 7-stellige Plomben-Nummern, Verfügbarkeitsprüfung
+- **Automatische Integration:** Daten werden in die Schleusungsseite übertragen
+- **Container-Liste:** Übersicht aller verplombten Container
+
+## 10. Nicht im Umfang (Out of Scope)
 
 - Keine SAP-Integration (lokale Datenhaltung).
 - Keine Benutzerverwaltung oder Authentifizierung.
 - Keine elektronische Signatur nach 21 CFR Part 11 (nur Kürzel als Textfeld).
 - Keine Mehrsprachigkeit (nur Deutsch).
 - Keine Admin-UI zur Konfiguration des Fragekatalogs (Survey-Definition ist statisch als JSON).
+- Keine automatische Synchronisation zwischen mehreren Geräten.
 
-## 9. Akzeptanzkriterien (Auszug)
+## 12. Akzeptanzkriterien (Auszug)
 
 - Der gesamte Produktionsprozess ist digital, lückenlos und nachvollziehbar dokumentierbar.
 - Alle Pflichtfelder und Validierungen funktionieren wie spezifiziert.
@@ -246,6 +446,15 @@ interface SurveyFile {
 - Exportierte Dokumente (JSON, PDF) enthalten alle relevanten Daten und Audit-Trail.
 - Das Vier-Augen-Prinzip ist an allen kritischen Stellen technisch und UI-seitig umgesetzt.
 - Alle Daten werden lokal im Backend gespeichert und verwaltet.
+- **MaterialType-spezifisch:**
+  - GACP- und GMP-spezifische Fragen werden korrekt angezeigt/versteckt
+  - Separate Validierungsgruppen funktionieren je nach Materialtyp
+  - Prozessschritte werden materialtyp-spezifisch validiert
+- **Dashboard-spezifisch:**
+  - Bulkbeutel werden automatisch aus den Material-Eingangsdaten generiert
+  - Produktionslauf-Daten werden vollständig in die SurveyJS-Struktur integriert
+  - Eurocontainer-Verwaltung funktioniert nahtlos mit der Schleusungsseite
+  - Alle Berechnungen (Restmenge, Bruch, etc.) erfolgen automatisch und korrekt
 
 ---
 

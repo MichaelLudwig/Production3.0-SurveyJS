@@ -1,7 +1,7 @@
 {
   "orderId": "1450",
-  "timestamp": "2025-07-23T17:53:02.699Z",
-  "status": "in_progress",
+  "timestamp": "2025-07-23T17-03-53-839Z",
+  "status": "completed",
   "survey": {
     "eingangsmaterial_ausgebucht": true,
     "mitarbeiter_liste": [
@@ -20,11 +20,6 @@
       "eurocontainer": "ja",
       "proben_freigabe": "ja",
       "restmenge": "ja"
-    },
-    "kennzeichnung_matrix_gacp": {
-      "proben_ipk": "nicht_zutreffend",
-      "gebinde_rueckfragen": "nein",
-      "bruch": "nein"
     },
     "arbeitsraum_ist_druck_matrix": [
       {
@@ -61,11 +56,6 @@
     ],
     "bulk_erfasst_kuerzel": "ert",
     "bulk_bemerkungen": "ert",
-    "schablonen_eq_ist": 34,
-    "schablonen_charge_ist": "ert",
-    "schablonen_anzahl_ist": 2,
-    "schablonen_sollangaben_ok": true,
-    "schablonen_verpackung_ok": true,
     "materialbereitstellung_bemerkungen": "rtz",
     "materialbereitstellung_ma1_kuerzel": "rtz",
     "materialbereitstellung_ma2_kuerzel": "rtz",
@@ -111,8 +101,6 @@
         "blueten_unauffaellig": true,
         "gebinde_korrekt_abgewogen": true,
         "restmenge": "43",
-        "aussortiertes_material": "433",
-        "probenzug_ipk": "3",
         "bruch": "0",
         "kommentar": "",
         "erfasst_kuerzel": "ert",
@@ -128,8 +116,6 @@
         "blueten_unauffaellig": true,
         "gebinde_korrekt_abgewogen": true,
         "restmenge": "65",
-        "aussortiertes_material": "65",
-        "probenzug_ipk": "0",
         "bruch": "0",
         "kommentar": "",
         "erfasst_kuerzel": "ert",
@@ -145,8 +131,6 @@
         "blueten_unauffaellig": true,
         "gebinde_korrekt_abgewogen": true,
         "restmenge": "43",
-        "aussortiertes_material": "43",
-        "probenzug_ipk": "5",
         "bruch": "0",
         "kommentar": "",
         "erfasst_kuerzel": "ert",
@@ -162,8 +146,6 @@
         "blueten_unauffaellig": true,
         "gebinde_korrekt_abgewogen": true,
         "restmenge": "56",
-        "aussortiertes_material": "56",
-        "probenzug_ipk": "0",
         "bruch": "6",
         "kommentar": "",
         "erfasst_kuerzel": "ert",
@@ -179,8 +161,6 @@
         "blueten_unauffaellig": true,
         "gebinde_korrekt_abgewogen": true,
         "restmenge": "34",
-        "aussortiertes_material": "34",
-        "probenzug_ipk": "3",
         "bruch": "5",
         "kommentar": "",
         "erfasst_kuerzel": "ert",
@@ -250,18 +230,11 @@
       }
     ],
     "restmenge_bemerkung": "z",
-    "probenzug_ipk_abgefuellt_ma1": "Ja",
-    "gesamtmenge_probenzug_ipk": 55,
     "probegebinde_gekennzeichnet": "Ja",
     "anzahl_zwischenprodukte": 6,
     "bruch_abfuellung_restmenge": 5,
     "gebinde_abgewogen_verschweisst_ma1": true,
-    "bruch_aussortiertes_material_ma1": "Ja",
-    "aussortiertes_material_bruch": 45,
-    "finale_restmenge_gewicht": 45,
-    "bruch_aussortiert_abgefuellt_ma1": "Ja",
     "finale_restmenge_abgefuellt_ma1": true,
-    "blueten_an_qk": "Ja",
     "testbeutel_verschweisst_ma1": true,
     "primaerpackmittel_uebrig_ma1": true,
     "restmenge_ende_uhrzeit": "13:24",
@@ -269,167 +242,41 @@
     "restmenge_erfasst": "4",
     "anzahl_primaerpackmittel_uebrig": 4,
     "herstellprozess_ma1_signatur": "ert",
-    "herstellprozess_ma2_signatur": "ert"
+    "herstellprozess_ma2_signatur": "ert",
+    "line_clearing_nachbereitung_ma1": true,
+    "nachbereitung_reinraum_bemerkungen": "sdfsdf",
+    "nachbereitung_reinraum_erfasst": "sdf",
+    "zwischenprodukte_verpackt_ma1": true,
+    "zwischenprodukte_produktionslager_ma1": true,
+    "proben_gekennzeichnet_ma1": true,
+    "proben_produktionslager_ma1": true,
+    "restmenge_gekennzeichnet_ma1": true,
+    "restmenge_sperrlager_ma1": true,
+    "muell_gekennzeichnet_ma1": true,
+    "muell_sperrlager_ma1": true,
+    "ungeoefffnete_bulkbeutel_ma1": "Ja",
+    "primaerpackmittel_ungeöffnet_ma1": "Ja",
+    "primaerpackmittel_geoeffnet_ma1": "Ja",
+    "eingangsmaterialien_begruendung": "d",
+    "nachbereitung_bemerkung": "d",
+    "nachbereitung_erfasst": "sdfdsfsd",
+    "eurocontainer_bereitgestellt": "Ja",
+    "zwischenreinigung_durchgefuehrt": "Ja",
+    "nachbereitung_reinraum_final_bemerkung": "d",
+    "geraete_logbuecher_eingetragen": "Ja",
+    "probenzugsplan_ausgefuellt": "Ja",
+    "abschluss_bemerkung": "d",
+    "abschluss_erfasst": "sdf",
+    "mitarbeiter_signaturen": [
+      {
+        "name": "sdfsdfsdf",
+        "signatur": "sdf"
+      },
+      {
+        "name": "sdfsdfsdf",
+        "signatur": "sdf"
+      }
+    ]
   },
-  "validation": {
-    "eingangsmaterialien_ausbuchen": {
-      "status": "completed",
-      "ma2Kuerzel": "ert",
-      "ma2Timestamp": "2025-07-22T13:15:27.009Z",
-      "validationOK": true,
-      "validatedQuestions": [
-        "eingangsmaterial_ausgebucht"
-      ]
-    },
-    "raumstatus_pruefen": {
-      "status": "completed",
-      "ma2Kuerzel": "34",
-      "ma2Timestamp": "2025-07-22T13:16:13.406Z",
-      "validationOK": true,
-      "validatedQuestions": [
-        "arbeitsraum_ist_druck_matrix",
-        "schleusen_ist_druck_matrix",
-        "reinraumstatus_ampel",
-        "reinraum_nutzbar"
-      ]
-    },
-    "materialbereitstellung_primaerpackmittel": {
-      "status": "completed",
-      "ma2Kuerzel": "ert",
-      "ma2Timestamp": "2025-07-22T13:16:33.499Z",
-      "validationOK": true,
-      "validatedQuestions": [
-        "produktbezeichnung_ist",
-        "artikelnummer_ist",
-        "charge_ist",
-        "anzahl_ist",
-        "umverpackung_dicht",
-        "primaerpackmittel_erfasst_kuerzel"
-      ]
-    },
-    "materialbereitstellung_bulk": {
-      "status": "completed",
-      "ma2Kuerzel": "ert",
-      "ma2Timestamp": "2025-07-22T13:16:52.874Z",
-      "validationOK": true,
-      "validatedQuestions": [
-        "produktbezeichnung_bulk_ist",
-        "artikelnr_bulk_ist",
-        "charge_bulk_ist",
-        "verfall_bulk_ist",
-        "bulkgebinde_liste",
-        "bulk_erfasst_kuerzel"
-      ]
-    },
-    "zubehör_schablonen": {
-      "status": "completed",
-      "ma2Kuerzel": "rtz",
-      "ma2Timestamp": "2025-07-22T13:17:06.471Z",
-      "validationOK": true,
-      "validatedQuestions": [
-        "schablonen_eq_ist",
-        "schablonen_charge_ist",
-        "schablonen_anzahl_ist",
-        "schablonen_sollangaben_ok",
-        "schablonen_verpackung_ok"
-      ]
-    },
-    "materialbereitstellung_abschluss": {
-      "status": "completed",
-      "ma2Kuerzel": "rtz",
-      "ma2Timestamp": "2025-07-22T13:17:25.207Z",
-      "validationOK": true,
-      "validatedQuestions": [
-        "materialbereitstellung_bemerkungen",
-        "materialbereitstellung_ma1_kuerzel",
-        "materialbereitstellung_ma2_kuerzel"
-      ]
-    },
-    "line_clearing": {
-      "status": "completed",
-      "ma2Kuerzel": "er",
-      "ma2Timestamp": "2025-07-22T13:17:41.123Z",
-      "validationOK": true,
-      "validatedQuestions": [
-        "raumtemperatur_ist_matrix",
-        "material_entspricht",
-        "line_clearing_erfolgt",
-        "line_clearing_bemerkungen",
-        "line_clearing_erfasst"
-      ]
-    },
-    "vorbereitung_waage": {
-      "status": "completed",
-      "ma2Kuerzel": "ert",
-      "ma2Timestamp": "2025-07-22T13:17:58.188Z",
-      "validationOK": true,
-      "validatedQuestions": [
-        "vorbereitung_waage_matrix",
-        "waage_bemerkungen",
-        "waage_erfasst"
-      ]
-    },
-    "vorbereitung_schweissgeraet": {
-      "status": "completed",
-      "ma2Kuerzel": "ert",
-      "ma2Timestamp": "2025-07-22T13:18:06.803Z",
-      "validationOK": true,
-      "validatedQuestions": [
-        "verschweiss_programm_ist",
-        "schweissgeraet_funktioniert",
-        "schweissgeraet_bemerkungen",
-        "schweissgeraet_erfasst"
-      ]
-    },
-    "kumulierte_restmenge_gacp": {
-      "status": "completed",
-      "ma2Kuerzel": "zrtz",
-      "ma2Timestamp": "2025-07-23T10:05:11.283Z",
-      "validationOK": true,
-      "validatedQuestions": [
-        "restmenge_eingang",
-        "restmenge_bemerkung",
-        "probenzug_ipk_abgefuellt_ma1",
-        "gesamtmenge_probenzug_ipk",
-        "probenzug_freigabe_vorgesehen",
-        "probegebinde_liste",
-        "probegebinde_gekennzeichnet",
-        "anzahl_zwischenprodukte",
-        "bruch_abfuellung_restmenge",
-        "gebinde_abgewogen_verschweisst_ma1"
-      ]
-    },
-    "restmenge_final_gacp": {
-      "status": "completed",
-      "ma2Kuerzel": "ert",
-      "ma2Timestamp": "2025-07-23T11:23:35.190Z",
-      "validationOK": true,
-      "validatedQuestions": [
-        "bruch_aussortiertes_material_ma1",
-        "aussortiertes_material_bruch",
-        "finale_restmenge_gewicht",
-        "bruch_aussortiert_abgefuellt_ma1",
-        "finale_restmenge_abgefuellt_ma1",
-        "blueten_an_qk",
-        "testbeutel_verschweisst_ma1",
-        "primaerpackmittel_uebrig_ma1",
-        "anzahl_primaerpackmittel_uebrig",
-        "restmenge_ende_uhrzeit",
-        "restmenge_bemerkungen",
-        "restmenge_erfasst"
-      ]
-    },
-    "schleusung_eurocontainer": {
-      "status": "completed",
-      "ma2Kuerzel": "ert",
-      "ma2Timestamp": "2025-07-23T12:44:06.018Z",
-      "validationOK": true,
-      "validatedQuestions": [
-        "produktliste",
-        "herstellprozess_ma1_signatur",
-        "herstellprozess_ma2_signatur"
-      ]
-    }
-  },
-  "currentPageNo": 17
+  "validation": {}
 }

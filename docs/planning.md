@@ -6,8 +6,13 @@ Dieses Projekt entwickelt eine tablet-optimierte Webanwendung zur GMP-konformen,
 
 **Scope (MVP):**
 - React SPA mit Node.js/Express Backend für lokale Datenpersistenz
-- SurveyJS für Fragekatalog mit standardisierten Validierungsgruppen
+- SurveyJS für Fragekatalog mit 26 Seiten in 10 Kapiteln und standardisierten Validierungsgruppen
+- Custom Dashboard für Produktionslauf mit Vier-Spalten-Layout
+- Standort-basierte Orientierung (Lager/Reinraum) mit farblicher Hervorhebung
+- MaterialType-spezifische Validierungsgruppen (GACP/GMP)
+- Integrierte Infografiken für Prozessabläufe
 - Audit-Trail und Validierungsgruppen pro Fragengruppe
+- Angepasster SurveyJS-Export mit tabellarischer Darstellung
 - Export als JSON und PDF, clientseitig generiert
 - Multi-User-Unterstützung durch Backend-Datenhaltung
 
@@ -25,9 +30,10 @@ Dieses Projekt entwickelt eine tablet-optimierte Webanwendung zur GMP-konformen,
 ## 3. Systemarchitektur
 
 ### Frontend (React SPA)
-- **Hauptkomponenten:** App, ProductionOrderManager, SurveyComponent, MA2Validation, CompletionScreen
-- **Datenfluss:** Produktionsauftrag → Survey → Validierung → Export
+- **Hauptkomponenten:** App, ProductionOrderManager, SurveyComponent, BulkBeutelDashboard, MA2Validation, CompletionScreen
+- **Datenfluss:** Produktionsauftrag → Survey → Custom Dashboard → Validierung → Export
 - **API-Client:** Kommunikation mit Backend über REST-API
+- **Standort-basierte UI:** Farbliche Unterscheidung zwischen Lager- und Reinraum-Bereichen
 
 ### Backend (Node.js/Express)
 - **Datenpersistenz:** Lokale JSON-Dateien für Aufträge, Surveys und Master-Data
