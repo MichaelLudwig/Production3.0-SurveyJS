@@ -166,6 +166,7 @@
       "finale_restmenge_abgefuellt_ma1",
       "testbeutel_verschweisst_ma1",
       "primaerpackmittel_uebrig_ma1",
+      "anzahl_primaerpackmittel_uebrig",
       "restmenge_ende_uhrzeit",
       "restmenge_bemerkungen",
       "restmenge_erfasst"

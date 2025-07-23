@@ -51,7 +51,9 @@ export async function getSurveyStatus(
     // Check for completed surveys
     const completedFiles = await listSurveyFiles(orderId);
     const completedSurveys = completedFiles.filter(f => 
-      !f.includes('-inprogress.json') && f.includes(`survey-${orderId}-`)
+      !f.includes('-inprogress.json') && 
+      f.includes(`survey-${orderId}-`) &&
+      f.match(/survey-\d+-\d{4}-\d{2}-\d{2}T\d{2}-\d{2}-\d{2}-\d{3}Z\.json$/) // Nur echte abgeschlossene Surveys
     );
     
     if (completedSurveys.length > 0) {

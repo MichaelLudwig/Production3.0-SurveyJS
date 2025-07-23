@@ -280,29 +280,33 @@ const SurveyComponent: React.FC<SurveyComponentProps> = ({
         });
       }
       
-      // Lade produktliste wenn zur Schleusungsseite navigiert wird
+      // ENTFERNT: Laden der produktliste - diese Liste ist falsch und wird nirgendwo verwendet
+      // Die richtige produktliste wird manuell in der Schleusungsseite eingegeben
+      
+      // Übertrage verplombte Eurocontainer in produktliste wenn zur Schleusungsseite navigiert wird
       if (sender.currentPage?.name === 'schleusung_eurocontainer') {
         try {
           const savedData = await readJsonFile(getSurveyInProgressPath());
-          if (savedData?.survey?.schleusung_eurocontainer?.produktliste) {
-            console.log('[Survey] Loading produktliste for schleusung_eurocontainer page:', savedData.survey.schleusung_eurocontainer.produktliste);
+          const verplombteEurocontainer = savedData?.survey?.schleusung_eurocontainer?.verplombteEurocontainer || [];
+          
+          if (verplombteEurocontainer.length > 0) {
+            console.log('[Survey] Übertrage verplombte Eurocontainer in produktliste:', verplombteEurocontainer);
             
-            // Stelle sicher, dass alle art_inhalt Werte korrekt gesetzt sind
-            const produktliste = savedData.survey.schleusung_eurocontainer.produktliste.map((item: any) => ({
-              ...item,
-              art_inhalt: item.art_inhalt || "Hergestellte Zwischenprodukte"
+            // Konvertiere verplombteEurocontainer in produktliste Format
+            const produktliste = verplombteEurocontainer.map((container: any) => ({
+              art_inhalt: "Hergestellte Zwischenprodukte",
+              anzahl_gebinde: container.anzahlGebinde.toString(),
+              plomben_nr: container.plombenNr,
+              plomben_nr_2: container.plombenNr2
             }));
             
+            // Setze produktliste in SurveyJS
             sender.setValue('produktliste', produktliste);
             
-            // Verzögerung für die Anzeige
-            setTimeout(() => {
-              console.log('[Survey] Refreshing produktliste display');
-              sender.render();
-            }, 100);
+            console.log('[Survey] Produktliste gesetzt:', produktliste);
           }
         } catch (error) {
-          console.log('[Survey] No saved produktliste data found');
+          console.log('[Survey] Fehler beim Laden der verplombten Eurocontainer:', error);
         }
       }
       
@@ -389,11 +393,8 @@ const SurveyComponent: React.FC<SurveyComponentProps> = ({
               surveyData.materialType = orderData.materialType;
             }
             
-            // Spezielle Behandlung für produktliste - lade aus schleusung_eurocontainer.produktliste
-            if (saved.survey.schleusung_eurocontainer?.produktliste) {
-              console.log('[Survey] Loading produktliste from schleusung_eurocontainer:', saved.survey.schleusung_eurocontainer.produktliste);
-              surveyData.produktliste = saved.survey.schleusung_eurocontainer.produktliste;
-            }
+            // ENTFERNT: Laden der produktliste aus Survey-Daten - diese Liste ist falsch und wird nirgendwo verwendet
+            // Die richtige produktliste wird manuell in der Schleusungsseite eingegeben
           }
           
           // Setze Survey-Daten
@@ -419,11 +420,8 @@ const SurveyComponent: React.FC<SurveyComponentProps> = ({
               }
             });
             
-            // Spezielle Behandlung für produktliste nach dem Setzen der Daten
-            if (saved.survey?.schleusung_eurocontainer?.produktliste) {
-              console.log('[Survey] Setting produktliste in survey model:', saved.survey.schleusung_eurocontainer.produktliste);
-              surveyModel.setValue('produktliste', saved.survey.schleusung_eurocontainer.produktliste);
-            }
+            // ENTFERNT: Setzen der produktliste im Survey-Model - diese Liste ist falsch und wird nirgendwo verwendet
+            // Die richtige produktliste wird manuell in der Schleusungsseite eingegeben
           }
           
           // Setze aktuelle Seite
@@ -440,7 +438,10 @@ const SurveyComponent: React.FC<SurveyComponentProps> = ({
           // Validierungen laden für MA2-Logik
           if (saved.validation) {
             console.log('[Survey] Loading validation data:', saved.validation);
+            console.log('[Survey] Validation data keys:', Object.keys(saved.validation));
             setValidationData(saved.validation);
+          } else {
+            console.log('[Survey] No validation data found in saved file');
           }
         } else {
           console.log('[Survey] No saved progress for this survey');
@@ -559,27 +560,32 @@ const SurveyComponent: React.FC<SurveyComponentProps> = ({
     const currentPage = survey.visiblePages[survey.currentPageNo];
     if (!currentPage) return [];
 
-    // Function to recursively find all questions in elements (including panels)
-    const getAllQuestionNames = (elements: any[]): string[] => {
+    // Function to recursively find all VISIBLE questions in elements (including panels)
+    const getAllVisibleQuestionNames = (elements: any[]): string[] => {
       const questionNames: string[] = [];
       elements.forEach(element => {
-        if (element.name && element.type !== 'panel' && element.type !== 'html') {
-          questionNames.push(element.name);
+        // Only include questions that are actually visible
+        if (element.name && element.type !== 'panel' && element.type !== 'html' && element.isVisible !== false) {
+          // Check if the question is visible based on materialType conditions
+          const isVisible = survey.getQuestionByName(element.name)?.isVisible;
+          if (isVisible !== false) {
+            questionNames.push(element.name);
+          }
         }
         // Recursively search in panel elements
         if (element.elements && Array.isArray(element.elements)) {
-          questionNames.push(...getAllQuestionNames(element.elements));
+          questionNames.push(...getAllVisibleQuestionNames(element.elements));
         }
         // Also check templateElements for dynamic panels
         if (element.templateElements && Array.isArray(element.templateElements)) {
-          questionNames.push(...getAllQuestionNames(element.templateElements));
+          questionNames.push(...getAllVisibleQuestionNames(element.templateElements));
         }
       });
       return questionNames;
     };
 
-    const allPageQuestions = getAllQuestionNames(currentPage.elements);
-    console.log(`Page ${currentPageIndex} all questions:`, allPageQuestions);
+    const allVisiblePageQuestions = getAllVisibleQuestionNames(currentPage.elements);
+    console.log(`Page ${currentPageIndex} visible questions:`, allVisiblePageQuestions);
 
     const currentMaterialType = survey?.data?.materialType || "ALL";
     const groups = (validationGroups as ValidationGroupWithMaterialType[]).filter(group => {
@@ -588,7 +594,7 @@ const SurveyComponent: React.FC<SurveyComponentProps> = ({
       }
       // Check if any question from this group is on the current page
       const hasQuestionOnPage = group.questions.some(questionName => 
-        allPageQuestions.includes(questionName)
+        allVisiblePageQuestions.includes(questionName)
       );
       
       // Debug logging
@@ -624,6 +630,7 @@ const SurveyComponent: React.FC<SurveyComponentProps> = ({
     
     console.log(`[MA2] Page ${currentPageIndex} - New pending groups:`, newPendingGroups);
     console.log(`[MA2] Current validation data:`, validationData);
+    console.log(`[MA2] Current validation data keys:`, Object.keys(validationData));
     
     if (newPendingGroups.length !== pendingMA2Groups.length || 
         !newPendingGroups.every(name => pendingMA2Groups.includes(name))) {
@@ -746,7 +753,8 @@ const SurveyComponent: React.FC<SurveyComponentProps> = ({
         
         // Aktualisiere auch die lokale Datei für Konsistenz
         try {
-          const surveyAnswers = filterSurveyAnswers(data.survey || {});
+          // Verwende die kompletten Survey-Daten, nicht gefilterte
+          const surveyAnswers = data.survey || {};
           await writeJsonFile(getSurveyInProgressPath(), {
             orderId: productionOrder.id,
             timestamp: new Date().toISOString(),
@@ -798,18 +806,8 @@ const SurveyComponent: React.FC<SurveyComponentProps> = ({
             survey.setValue('restmenge_eingang', kummulierteRestmenge.toFixed(2));
           }
           
-          // Erstelle automatisch die Eurocontainer-Liste für die Schleusungsseite
-          const produktliste = existingProduction.map((entry: any, index: number) => ({
-            art_inhalt: "Hergestellte Zwischenprodukte",
-            anzahl_gebinde: entry.anzahl_gebinde || "0",
-            plomben_nr: (1000000 + index + 1).toString(),
-            plomben_nr_2: null
-          }));
-          
-          if (survey && produktliste.length > 0) {
-            console.log(`[Survey] Setting produktliste with ${produktliste.length} entries for schleusung_eurocontainer`);
-            survey.setValue('produktliste', produktliste);
-          }
+          // ENTFERNT: Automatische Erstellung der produktliste - diese Liste ist falsch und wird nirgendwo verwendet
+          // Die richtige produktliste wird manuell in der Schleusungsseite eingegeben
         }
       }
       

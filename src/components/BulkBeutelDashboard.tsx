@@ -34,11 +34,6 @@ const BulkBeutelDashboard: React.FC<BulkBeutelDashboardProps> = ({
     plombenNr2: ''
   });
   const [ecFormErrors, setEcFormErrors] = useState<{[key: string]: string}>({});
-  const [verplombteContainer, setVerplombteContainer] = useState<Array<{
-    plombenNr: string;
-    anzahlGebinde: number;
-    timestamp: string;
-  }>>([]);
 
   // Initialisiere BulkBeutel aus surveyData oder productionOrder
   useEffect(() => {
@@ -223,13 +218,10 @@ const BulkBeutelDashboard: React.FC<BulkBeutelDashboardProps> = ({
   };
 
   const getGebindeInEurocontainerAnzahl = () => {
-    // Lese aus Survey-JSON-Struktur
-    const produktliste = surveyData?.survey?.schleusung_eurocontainer?.produktliste || [];
-    return produktliste.reduce((total: number, item: any) => {
-      if (item.art_inhalt === "Hergestellte Zwischenprodukte") {
-        return total + (parseInt(item.anzahl_gebinde) || 0);
-      }
-      return total;
+    // Verwende die verplombten Eurocontainer aus der Survey-Datei
+    const verplombteEurocontainer = surveyData?.survey?.schleusung_eurocontainer?.verplombteEurocontainer || [];
+    return verplombteEurocontainer.reduce((total: number, container: any) => {
+      return total + (parseInt(container.anzahlGebinde) || 0);
     }, 0);
   };
 
@@ -350,6 +342,7 @@ const BulkBeutelDashboard: React.FC<BulkBeutelDashboardProps> = ({
     if (validateEcForm()) {
       const newContainer = {
         plombenNr: ecFormData.plombenNr,
+        plombenNr2: ecFormData.plombenNr2 || null,
         anzahlGebinde: ecFormData.anzahlGebinde,
         timestamp: new Date().toLocaleString('de-DE')
       };
@@ -364,25 +357,18 @@ const BulkBeutelDashboard: React.FC<BulkBeutelDashboardProps> = ({
       if (!updatedSurveyData.survey.schleusung_eurocontainer) {
         updatedSurveyData.survey.schleusung_eurocontainer = {};
       }
-      if (!updatedSurveyData.survey.schleusung_eurocontainer.produktliste) {
-        updatedSurveyData.survey.schleusung_eurocontainer.produktliste = [];
+      
+      // Initialisiere verplombte Eurocontainer falls nicht vorhanden
+      if (!updatedSurveyData.survey.schleusung_eurocontainer.verplombteEurocontainer) {
+        updatedSurveyData.survey.schleusung_eurocontainer.verplombteEurocontainer = [];
       }
       
-      // Füge neue Produktliste hinzu
-      const newProduktliste = {
-        art_inhalt: "Hergestellte Zwischenprodukte",
-        anzahl_gebinde: ecFormData.anzahlGebinde.toString(),
-        plomben_nr: ecFormData.plombenNr,
-        plomben_nr_2: ecFormData.plombenNr2 || null
-      };
-      
-      updatedSurveyData.survey.schleusung_eurocontainer.produktliste.push(newProduktliste);
+      // Füge neuen verplombten Eurocontainer hinzu
+      updatedSurveyData.survey.schleusung_eurocontainer.verplombteEurocontainer.push(newContainer);
       
       // Update Survey Data
       onSurveyDataUpdate(updatedSurveyData);
       
-      // Update lokalen State für UI
-      setVerplombteContainer(prev => [...prev, newContainer]);
       handleEcDialogClose();
     }
   };
@@ -665,28 +651,28 @@ const BulkBeutelDashboard: React.FC<BulkBeutelDashboardProps> = ({
         
         {/* Verplombte Container */}
         {(() => {
-          const produktliste = surveyData?.survey?.schleusung_eurocontainer?.produktliste || [];
-          const hergestellteProdukte = produktliste.filter((item: any) => item.art_inhalt === "Hergestellte Zwischenprodukte");
+          const verplombteEurocontainer = surveyData?.survey?.schleusung_eurocontainer?.verplombteEurocontainer || [];
           
-          return hergestellteProdukte.length > 0 ? (
+          return verplombteEurocontainer.length > 0 ? (
             <div className="verplombte-container-list">
-              {hergestellteProdukte.map((container: any, index: number) => (
+              {verplombteEurocontainer.map((container: any, index: number) => (
                 <div key={index} className="verplombte-container-box">
                   <div className="container-header">
                     <span className="container-plomben">
-                      Plomben-Nr.: {container.plomben_nr}
-                      {container.plomben_nr_2 && ` / ${container.plomben_nr_2}`}
+                      Plomben-Nr.: {container.plombenNr}
+                      {container.plombenNr2 && ` / ${container.plombenNr2}`}
                     </span>
                   </div>
                   <div className="container-details">
-                    <span className="container-gebinde">Anzahl Gebinde: {container.anzahl_gebinde}</span>
+                    <span className="container-gebinde">Anzahl Gebinde: {container.anzahlGebinde}</span>
+                    <span className="container-timestamp">Verplombt: {container.timestamp}</span>
                   </div>
                 </div>
               ))}
             </div>
           ) : (
             <div className="placeholder">
-              <p>Platzhalter für zukünftige Funktionen</p>
+              <p>Noch keine Eurocontainer verplombt</p>
             </div>
           );
         })()}
