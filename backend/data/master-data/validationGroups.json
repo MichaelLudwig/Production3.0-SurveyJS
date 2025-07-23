@@ -99,20 +99,79 @@
     "questions": ["pause_beginn", "pause_ende", "pause_bemerkung", "pause_ma1_signatur", "pause_ma2_signatur", "kalibrierung_nach_pause_eq60", "kalibrierung_nach_pause_eq61", "verschweiss_nach_pause_ist", "schweissgeraet_nach_pause_ok", "pause_nachbereitung_bemerkungen", "pause_nachbereitung_erfasst"]
   },
   {
-    "name": "kumulierte_restmenge",
-    "title": "Kumulierte Restmenge und Probenzug",
+    "name": "kumulierte_restmenge_gacp",
+    "title": "Kumulierte Restmenge und Probenzug (GACP)",
     "validationType": "validation",
     "label": "Kürzel Mitarbeiter 2",
-    "materialType": "ALL",
-    "questions": ["restmenge_eingang", "restmenge_bemerkung", "probenzug_ipk_abgefuellt_ma1", "gesamtmenge_probenzug_ipk", "probenzug_freigabe_vorgesehen", "probegebinde_liste", "probegebinde_gekennzeichnet", "anzahl_zwischenprodukte", "bruch_abfuellung_restmenge", "gebinde_abgewogen_verschweisst_ma1"]
+    "materialType": "GACP",
+    "questions": [
+      "restmenge_eingang",
+      "restmenge_bemerkung",
+      "probenzug_ipk_abgefuellt_ma1",
+      "gesamtmenge_probenzug_ipk",
+      "probenzug_freigabe_vorgesehen",
+      "probegebinde_liste",
+      "probegebinde_gekennzeichnet",
+      "anzahl_zwischenprodukte",
+      "bruch_abfuellung_restmenge",
+      "gebinde_abgewogen_verschweisst_ma1"
+    ]
   },
   {
-    "name": "restmenge_final",
-    "title": "Finale Restmenge",
+    "name": "kumulierte_restmenge_gmp",
+    "title": "Kumulierte Restmenge und Probenzug (GMP)",
     "validationType": "validation",
     "label": "Kürzel Mitarbeiter 2",
-    "materialType": "ALL",
-    "questions": ["bruch_finale_restmenge_ma1", "bruch_finale_restmenge_ma2", "finale_restmenge_gewicht", "finale_restmenge_pruefung_ma2", "bruch_aussortiert_abgefuellt_ma1", "bruch_aussortiert_abgefuellt_ma2", "finale_restmenge_abgefuellt_ma1", "finale_restmenge_abgefuellt_ma2", "testbeutel_verschweisst_ma1", "testbeutel_verschweisst_ma2", "primaerpackmittel_uebrig_ma1", "anzahl_primaerpackmittel_uebrig", "primaerpackmittel_uebrig_ma2", "restmenge_ende_uhrzeit", "restmenge_bemerkungen", "restmenge_erfasst", "restmenge_geprueft"]
+    "materialType": "GMP",
+    "questions": [
+      "restmenge_eingang",
+      "restmenge_bemerkung",
+      "probenzug_freigabe_vorgesehen",
+      "probegebinde_liste",
+      "probegebinde_gekennzeichnet",
+      "anzahl_zwischenprodukte",
+      "bruch_abfuellung_restmenge",
+      "gebinde_abgewogen_verschweisst_ma1"
+    ]
+  },
+  {
+    "name": "restmenge_final_gacp",
+    "title": "Finale Restmenge (GACP)",
+    "validationType": "validation",
+    "label": "Kürzel Mitarbeiter 2",
+    "materialType": "GACP",
+    "questions": [
+      "bruch_aussortiertes_material_ma1",
+      "aussortiertes_material_bruch",
+      "finale_restmenge_gewicht",
+      "bruch_aussortiert_abgefuellt_ma1",
+      "finale_restmenge_abgefuellt_ma1",
+      "blueten_an_qk",
+      "testbeutel_verschweisst_ma1",
+      "primaerpackmittel_uebrig_ma1",
+      "anzahl_primaerpackmittel_uebrig",
+      "restmenge_ende_uhrzeit",
+      "restmenge_bemerkungen",
+      "restmenge_erfasst"
+    ]
+  },
+  {
+    "name": "restmenge_final_gmp",
+    "title": "Finale Restmenge (GMP)",
+    "validationType": "validation",
+    "label": "Kürzel Mitarbeiter 2",
+    "materialType": "GMP",
+    "questions": [
+      "bruch_finale_restmenge_ma1",
+      "finale_restmenge_bruch_gewicht",
+      "finale_restmenge_abgefuellt_ma1",
+      "testbeutel_verschweisst_ma1",
+      "primaerpackmittel_uebrig_ma1",
+      "anzahl_primaerpackmittel_uebrig",
+      "restmenge_ende_uhrzeit",
+      "restmenge_bemerkungen",
+      "restmenge_erfasst"
+    ]
   },
   {
     "name": "schleusung_eurocontainer",

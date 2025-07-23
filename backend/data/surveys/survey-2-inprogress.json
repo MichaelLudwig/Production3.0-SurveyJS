@@ -1,6 +1,6 @@
 {
   "orderId": "2",
-  "timestamp": "2025-07-22T15:31:44.559Z",
+  "timestamp": "2025-07-23T09:27:53.758Z",
   "status": "in_progress",
   "survey": {
     "eingangsmaterial_ausgebucht": true,
@@ -101,8 +101,32 @@
       }
     ],
     "probegebinde_liste": [
-      {}
-    ]
+      {
+        "anzahl": 1,
+        "inhalt": 55
+      },
+      {
+        "anzahl": 1,
+        "inhalt": 55
+      }
+    ],
+    "pause_durchgefuehrt": false,
+    "restmenge_eingang": 4555,
+    "restmenge_bemerkung": "4",
+    "probenzug_freigabe_vorgesehen": true,
+    "probegebinde_gekennzeichnet": "Ja",
+    "anzahl_zwischenprodukte": 32,
+    "bruch_abfuellung_restmenge": 0,
+    "gebinde_abgewogen_verschweisst_ma1": true,
+    "bruch_finale_restmenge_ma1": "Ja",
+    "finale_restmenge_bruch_gewicht": 81,
+    "finale_restmenge_abgefuellt_ma1": true,
+    "testbeutel_verschweisst_ma1": true,
+    "primaerpackmittel_uebrig_ma1": true,
+    "anzahl_primaerpackmittel_uebrig": 3,
+    "restmenge_ende_uhrzeit": "11:29",
+    "restmenge_bemerkungen": "-",
+    "restmenge_erfasst": "ert"
   },
   "validation": {
     "eingangsmaterialien_ausbuchen": {
@@ -200,7 +224,40 @@
         "schweissgeraet_bemerkungen",
         "schweissgeraet_erfasst"
       ]
+    },
+    "kumulierte_restmenge_gmp": {
+      "status": "completed",
+      "ma2Kuerzel": "ert",
+      "ma2Timestamp": "2025-07-23T09:26:05.400Z",
+      "validationOK": true,
+      "validatedQuestions": [
+        "restmenge_eingang",
+        "restmenge_bemerkung",
+        "probenzug_freigabe_vorgesehen",
+        "probegebinde_liste",
+        "probegebinde_gekennzeichnet",
+        "anzahl_zwischenprodukte",
+        "bruch_abfuellung_restmenge",
+        "gebinde_abgewogen_verschweisst_ma1"
+      ]
+    },
+    "restmenge_final_gmp": {
+      "status": "completed",
+      "ma2Kuerzel": "ert",
+      "ma2Timestamp": "2025-07-23T09:27:42.094Z",
+      "validationOK": true,
+      "validatedQuestions": [
+        "bruch_finale_restmenge_ma1",
+        "finale_restmenge_bruch_gewicht",
+        "finale_restmenge_abgefuellt_ma1",
+        "testbeutel_verschweisst_ma1",
+        "primaerpackmittel_uebrig_ma1",
+        "anzahl_primaerpackmittel_uebrig",
+        "restmenge_ende_uhrzeit",
+        "restmenge_bemerkungen",
+        "restmenge_erfasst"
+      ]
     }
   },
-  "currentPageNo": 14
+  "currentPageNo": 17
 }

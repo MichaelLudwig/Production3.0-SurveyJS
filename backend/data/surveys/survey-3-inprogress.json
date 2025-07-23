@@ -1,6 +1,6 @@
 {
   "orderId": "3",
-  "timestamp": "2025-07-23T09:13:49.502Z",
+  "timestamp": "2025-07-23T09:28:31.237Z",
   "status": "in_progress",
   "survey": {
     "eingangsmaterial_ausgebucht": true,
@@ -352,7 +352,11 @@
     "blueten_an_qk": "Nicht zutreffend",
     "testbeutel_verschweisst_ma1": true,
     "primaerpackmittel_uebrig_ma1": true,
-    "reinraum_nutzbar_kommentar": "f"
+    "reinraum_nutzbar_kommentar": "f",
+    "anzahl_primaerpackmittel_uebrig": 5,
+    "restmenge_ende_uhrzeit": "11:22",
+    "restmenge_erfasst": "f",
+    "restmenge_bemerkungen": "f"
   },
   "validation": {
     "eingangsmaterialien_ausbuchen": {
@@ -481,7 +485,27 @@
         "bruch_abfuellung_restmenge",
         "gebinde_abgewogen_verschweisst_ma1"
       ]
+    },
+    "restmenge_final_gacp": {
+      "status": "completed",
+      "ma2Kuerzel": "ert",
+      "ma2Timestamp": "2025-07-23T09:27:47.787Z",
+      "validationOK": true,
+      "validatedQuestions": [
+        "bruch_aussortiertes_material_ma1",
+        "aussortiertes_material_bruch",
+        "finale_restmenge_gewicht",
+        "bruch_aussortiert_abgefuellt_ma1",
+        "finale_restmenge_abgefuellt_ma1",
+        "blueten_an_qk",
+        "testbeutel_verschweisst_ma1",
+        "primaerpackmittel_uebrig_ma1",
+        "anzahl_primaerpackmittel_uebrig",
+        "restmenge_ende_uhrzeit",
+        "restmenge_bemerkungen",
+        "restmenge_erfasst"
+      ]
     }
   },
-  "currentPageNo": 16
+  "currentPageNo": 17
 }

@@ -14,11 +14,25 @@ interface MA2ValidationProps {
 
 // Hilfsfunktion für Matrix-Antworten
 function renderMatrixAnswer(answer: any) {
-  if (Array.isArray(answer) && answer.length === 1 && typeof answer[0] === 'object') {
-    // matrixdynamic mit einer Zeile
-    return Object.entries(answer[0])
-      .map(([key, value]) => `${key.toUpperCase()}: ${value}`)
-      .join(', ');
+  if (Array.isArray(answer) && answer.length > 0) {
+    // matrixdynamic mit mehreren Zeilen
+    if (answer.length === 1 && typeof answer[0] === 'object') {
+      // Eine Zeile
+      return Object.entries(answer[0])
+        .map(([key, value]) => `${key.toUpperCase()}: ${value}`)
+        .join(', ');
+    } else {
+      // Mehrere Zeilen - für probegebinde_liste speziell formatieren
+      return answer.map((row: any, index: number) => {
+        if (typeof row === 'object' && row !== null) {
+          const rowValues = Object.entries(row)
+            .map(([key, value]) => `${key}: ${value}`)
+            .join(', ');
+          return `Zeile ${index + 1}: ${rowValues}`;
+        }
+        return `Zeile ${index + 1}: ${row}`;
+      }).join(' | ');
+    }
   }
   if (typeof answer === 'object' && answer !== null) {
     // matrix mit mehreren Zeilen oder andere Objekte
