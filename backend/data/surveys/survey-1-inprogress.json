@@ -1,6 +1,6 @@
 {
   "orderId": "1",
-  "timestamp": "2025-07-23T21:17:36.673Z",
+  "timestamp": "2025-07-23T21:53:07.426Z",
   "status": "in_progress",
   "survey": {
     "eingangsmaterial_ausgebucht": true,
@@ -109,71 +109,279 @@
     "schweissgeraet_funktioniert": true,
     "schweissgeraet_erfasst": "lma",
     "schweissgeraet_bemerkungen": "-",
-    "herstellung_beginn_uhrzeit": "09:40"
+    "herstellung_beginn_uhrzeit": "09:40",
+    "bulk_beutel_production": [
+      {
+        "bulk_nummer": "1",
+        "soll_inhalt": 1000,
+        "ist_inhalt": "978",
+        "anzahl_gebinde": "6",
+        "blueten_unauffaellig": true,
+        "gebinde_korrekt_abgewogen": true,
+        "restmenge": "32",
+        "aussortiertes_material": "322",
+        "probenzug_ipk": "3.94",
+        "bruch": "0",
+        "kommentar": "",
+        "erfasst_kuerzel": "nya",
+        "geprueft_kuerzel": "lma",
+        "schweissnaht_ok": true,
+        "timestamp": "2025-07-23T21:28:12.714Z"
+      },
+      {
+        "bulk_nummer": "2",
+        "soll_inhalt": 1000,
+        "ist_inhalt": "988",
+        "anzahl_gebinde": "7",
+        "blueten_unauffaellig": true,
+        "gebinde_korrekt_abgewogen": true,
+        "restmenge": "34",
+        "aussortiertes_material": "322",
+        "probenzug_ipk": "0",
+        "bruch": "0",
+        "kommentar": "",
+        "erfasst_kuerzel": "nya",
+        "geprueft_kuerzel": "lma",
+        "schweissnaht_ok": true,
+        "timestamp": "2025-07-23T21:28:40.015Z"
+      },
+      {
+        "bulk_nummer": "3",
+        "soll_inhalt": 1000,
+        "ist_inhalt": "977",
+        "anzahl_gebinde": "7",
+        "blueten_unauffaellig": true,
+        "gebinde_korrekt_abgewogen": true,
+        "restmenge": "20",
+        "aussortiertes_material": "350",
+        "probenzug_ipk": "0",
+        "bruch": "0.6",
+        "kommentar": "",
+        "erfasst_kuerzel": "nya",
+        "geprueft_kuerzel": "lma",
+        "schweissnaht_ok": true,
+        "timestamp": "2025-07-23T21:29:17.149Z"
+      },
+      {
+        "bulk_nummer": "4",
+        "soll_inhalt": 1000,
+        "ist_inhalt": "988",
+        "anzahl_gebinde": "7",
+        "blueten_unauffaellig": true,
+        "gebinde_korrekt_abgewogen": true,
+        "restmenge": "43",
+        "aussortiertes_material": "344",
+        "probenzug_ipk": "0",
+        "bruch": "0",
+        "kommentar": "",
+        "erfasst_kuerzel": "nya",
+        "geprueft_kuerzel": "lma",
+        "schweissnaht_ok": true,
+        "timestamp": "2025-07-23T21:29:43.295Z"
+      },
+      {
+        "bulk_nummer": "5",
+        "soll_inhalt": 988,
+        "ist_inhalt": "966",
+        "anzahl_gebinde": "7",
+        "blueten_unauffaellig": true,
+        "gebinde_korrekt_abgewogen": true,
+        "restmenge": "43",
+        "aussortiertes_material": "355",
+        "probenzug_ipk": "0",
+        "bruch": "0",
+        "kommentar": "",
+        "erfasst_kuerzel": "nya",
+        "geprueft_kuerzel": "lma",
+        "schweissnaht_ok": true,
+        "timestamp": "2025-07-23T21:30:05.727Z"
+      },
+      {
+        "bulk_nummer": "6",
+        "soll_inhalt": 988,
+        "ist_inhalt": "988",
+        "anzahl_gebinde": "7",
+        "blueten_unauffaellig": true,
+        "gebinde_korrekt_abgewogen": true,
+        "restmenge": "34",
+        "aussortiertes_material": "333",
+        "probenzug_ipk": "6.5",
+        "bruch": "0",
+        "kommentar": "",
+        "erfasst_kuerzel": "nya",
+        "geprueft_kuerzel": "lma",
+        "schweissnaht_ok": true,
+        "timestamp": "2025-07-23T21:30:45.396Z"
+      },
+      {
+        "bulk_nummer": "7",
+        "soll_inhalt": 988,
+        "ist_inhalt": "999",
+        "anzahl_gebinde": "7",
+        "blueten_unauffaellig": true,
+        "gebinde_korrekt_abgewogen": true,
+        "restmenge": "34",
+        "aussortiertes_material": "233",
+        "probenzug_ipk": "0",
+        "bruch": "0",
+        "kommentar": "",
+        "erfasst_kuerzel": "nya",
+        "geprueft_kuerzel": "lma",
+        "schweissnaht_ok": true,
+        "timestamp": "2025-07-23T21:31:05.790Z"
+      },
+      {
+        "bulk_nummer": "8",
+        "soll_inhalt": 988,
+        "ist_inhalt": "988",
+        "anzahl_gebinde": "6",
+        "blueten_unauffaellig": true,
+        "gebinde_korrekt_abgewogen": true,
+        "restmenge": "34",
+        "aussortiertes_material": "222",
+        "probenzug_ipk": "4.6",
+        "bruch": "0",
+        "kommentar": "",
+        "erfasst_kuerzel": "nya",
+        "geprueft_kuerzel": "lma",
+        "schweissnaht_ok": true,
+        "timestamp": "2025-07-23T21:31:34.996Z"
+      }
+    ],
+    "schleusung_eurocontainer": {
+      "produktliste": [
+        {
+          "art_inhalt": "Hergestellte Zwischenprodukte",
+          "anzahl_gebinde": "32",
+          "plomben_nr": "0408301",
+          "plomben_nr_2": null
+        },
+        {
+          "art_inhalt": "Hergestellte Zwischenprodukte",
+          "anzahl_gebinde": "22",
+          "plomben_nr": "0408302",
+          "plomben_nr_2": null
+        }
+      ]
+    },
+    "restmenge_eingang": "274.00",
+    "produktliste": [
+      {
+        "art_inhalt": "Hergestellte Zwischenprodukte",
+        "anzahl_gebinde": "32",
+        "plomben_nr": "0408301",
+        "plomben_nr_2": null
+      },
+      {
+        "art_inhalt": "Hergestellte Zwischenprodukte",
+        "anzahl_gebinde": "22",
+        "plomben_nr": "0408302",
+        "plomben_nr_2": null
+      }
+    ],
+    "pause_durchgefuehrt": false,
+    "restmenge_bemerkung": "l",
+    "probenzug_ipk_abgefuellt_ma1": "Ja",
+    "gesamtmenge_probenzug_ipk": 10.76,
+    "probenzug_freigabe_vorgesehen": true,
+    "probegebinde_liste": [
+      {
+        "anzahl": 1,
+        "inhalt": 55
+      },
+      {
+        "anzahl": 1,
+        "inhalt": 55
+      }
+    ],
+    "probegebinde_gekennzeichnet": "Ja",
+    "anzahl_zwischenprodukte": 9,
+    "bruch_abfuellung_restmenge": 0,
+    "gebinde_abgewogen_verschweisst_ma1": true,
+    "bruch_aussortiertes_material_ma1": "Ja",
+    "aussortiertes_material_bruch": 6518.11,
+    "finale_restmenge_gewicht": 88.08,
+    "bruch_aussortiert_abgefuellt_ma1": "Ja",
+    "finale_restmenge_abgefuellt_ma1": true,
+    "blueten_an_qk": "Nicht zutreffend",
+    "testbeutel_verschweisst_ma1": true,
+    "primaerpackmittel_uebrig_ma1": false,
+    "restmenge_ende_uhrzeit": "16:00",
+    "restmenge_bemerkungen": "-",
+    "restmenge_erfasst": "lma",
+    "herstellprozess_ma1_signatur": "lma",
+    "herstellprozess_ma2_signatur": "pma",
+    "line_clearing_nachbereitung_ma1": true,
+    "nachbereitung_reinraum_bemerkungen": "-",
+    "nachbereitung_reinraum_erfasst": "mpl",
+    "zwischenprodukte_verpackt_ma1": true,
+    "zwischenprodukte_produktionslager_ma1": true,
+    "proben_gekennzeichnet_ma1": true,
+    "proben_produktionslager_ma1": true,
+    "restmenge_gekennzeichnet_ma1": true,
+    "restmenge_sperrlager_ma1": true,
+    "muell_gekennzeichnet_ma1": true,
+    "muell_sperrlager_ma1": true,
+    "ungeoefffnete_bulkbeutel_ma1": "Nicht zutreffend",
+    "primaerpackmittel_ungeöffnet_ma1": "Nicht zutreffend",
+    "primaerpackmittel_geoeffnet_ma1": "Ja",
+    "eingangsmaterialien_begruendung": "-",
+    "schablonen_entfernt_ma1": true,
+    "nachbereitung_bemerkung": "-",
+    "nachbereitung_erfasst": "mpl",
+    "eurocontainer_bereitgestellt": "Nicht zutreffend",
+    "zwischenreinigung_durchgefuehrt": "Ja",
+    "nachbereitung_reinraum_final_bemerkung": "Für den nächsten Tag ist keine Abfüllung geplant",
+    "geraete_logbuecher_eingetragen": "Ja",
+    "probenzugsplan_ausgefuellt": "Ja",
+    "abschluss_bemerkung": "-",
+    "abschluss_erfasst": "lma"
   },
   "validation": {
+    "eingangsmaterialien_ausbuchen": {
+      "status": "completed",
+      "ma2Kuerzel": "ret",
+      "ma2Timestamp": "2025-07-23T21:25:13.441Z",
+      "validationOK": true,
+      "validatedQuestions": [
+        "eingangsmaterial_ausgebucht"
+      ],
+      "validatedAnswers": {
+        "eingangsmaterial_ausgebucht": true
+      }
+    },
     "raumstatus_pruefen": {
       "status": "completed",
       "ma2Kuerzel": "ert",
-      "ma2Timestamp": "2025-07-23T21:16:03.859Z",
+      "ma2Timestamp": "2025-07-23T21:25:26.793Z",
       "validationOK": true,
       "validatedQuestions": [
         "arbeitsraum_ist_druck_matrix",
         "schleusen_ist_druck_matrix",
         "reinraumstatus_ampel",
         "reinraum_nutzbar"
-      ]
-    },
-    "materialbereitstellung": {
-      "ma1Kuerzel": "nya",
-      "ma1Timestamp": "2025-07-23T21:07:36.057Z",
-      "ma2Kuerzel": "ert",
-      "ma2Timestamp": "2025-07-23T21:07:36.057Z",
-      "ma2Kommentar": "Materialbereitstellung bestätigt",
-      "ma2PruefungOK": true
-    },
-    "line_clearing": {
-      "status": "completed",
-      "ma2Kuerzel": "ert",
-      "ma2Timestamp": "2025-07-23T21:17:20.694Z",
-      "validationOK": true,
-      "validatedQuestions": [
-        "raumtemperatur_ist_matrix",
-        "material_entspricht",
-        "line_clearing_erfolgt",
-        "line_clearing_bemerkungen",
-        "line_clearing_erfasst"
-      ]
-    },
-    "waage_vorbereitung": {
-      "ma1Kuerzel": "nya",
-      "ma1Timestamp": "2025-07-23T21:07:36.057Z",
-      "ma2Kuerzel": "ert",
-      "ma2Timestamp": "2025-07-23T21:07:36.057Z",
-      "ma2Kommentar": "Waage korrekt vorbereitet",
-      "ma2PruefungOK": true
-    },
-    "schweissgeraet": {
-      "ma1Kuerzel": "lma",
-      "ma1Timestamp": "2025-07-23T21:07:36.057Z",
-      "ma2Kuerzel": "ert",
-      "ma2Timestamp": "2025-07-23T21:07:36.057Z",
-      "ma2Kommentar": "Schweißgerät funktioniert einwandfrei",
-      "ma2PruefungOK": true
-    },
-    "eingangsmaterialien_ausbuchen": {
-      "status": "completed",
-      "ma2Kuerzel": "ert",
-      "ma2Timestamp": "2025-07-23T21:15:15.335Z",
-      "validationOK": true,
-      "validatedQuestions": [
-        "eingangsmaterial_ausgebucht"
-      ]
+      ],
+      "validatedAnswers": {
+        "arbeitsraum_ist_druck_matrix": [
+          {
+            "eq52": 31
+          }
+        ],
+        "schleusen_ist_druck_matrix": [
+          {
+            "eq49": 16.2,
+            "eq50": 15.5,
+            "eq51": 15.2
+          }
+        ],
+        "reinraumstatus_ampel": "Grün",
+        "reinraum_nutzbar": true
+      }
     },
     "materialbereitstellung_primaerpackmittel": {
       "status": "completed",
       "ma2Kuerzel": "ert",
-      "ma2Timestamp": "2025-07-23T21:16:26.153Z",
+      "ma2Timestamp": "2025-07-23T21:25:40.422Z",
       "validationOK": true,
       "validatedQuestions": [
         "produktbezeichnung_ist",
@@ -182,12 +390,20 @@
         "anzahl_ist",
         "umverpackung_dicht",
         "primaerpackmittel_erfasst_kuerzel"
-      ]
+      ],
+      "validatedAnswers": {
+        "produktbezeichnung_ist": "Standbodenbeutel 3000ml Weiß, 1 Stk.",
+        "artikelnummer_ist": "O100074",
+        "charge_ist": "O100074-20240726-001",
+        "anzahl_ist": 200,
+        "umverpackung_dicht": true,
+        "primaerpackmittel_erfasst_kuerzel": "nya"
+      }
     },
     "materialbereitstellung_bulk": {
       "status": "completed",
       "ma2Kuerzel": "ert",
-      "ma2Timestamp": "2025-07-23T21:16:34.695Z",
+      "ma2Timestamp": "2025-07-23T21:25:56.323Z",
       "validationOK": true,
       "validatedQuestions": [
         "produktbezeichnung_bulk_ist",
@@ -196,12 +412,33 @@
         "verfall_bulk_ist",
         "bulkgebinde_liste",
         "bulk_erfasst_kuerzel"
-      ]
+      ],
+      "validatedAnswers": {
+        "produktbezeichnung_bulk_ist": "Cannabis Peace Naturals GC 31/1, 1g",
+        "artikelnr_bulk_ist": "18350663",
+        "charge_bulk_ist": "25041378",
+        "verfall_bulk_ist": "2025-07-08",
+        "bulkgebinde_liste": [
+          {
+            "anzahl": 4,
+            "gebindegroesse": 1000,
+            "probenzug_verwendet": false,
+            "dicht_sauber": true
+          },
+          {
+            "anzahl": 4,
+            "gebindegroesse": 988,
+            "probenzug_verwendet": true,
+            "dicht_sauber": true
+          }
+        ],
+        "bulk_erfasst_kuerzel": "nya"
+      }
     },
     "zubehör_schablonen": {
       "status": "completed",
       "ma2Kuerzel": "ert",
-      "ma2Timestamp": "2025-07-23T21:16:38.745Z",
+      "ma2Timestamp": "2025-07-23T21:25:59.862Z",
       "validationOK": true,
       "validatedQuestions": [
         "schablonen_eq_ist",
@@ -209,30 +446,276 @@
         "schablonen_anzahl_ist",
         "schablonen_sollangaben_ok",
         "schablonen_verpackung_ok"
-      ]
+      ],
+      "validatedAnswers": {
+        "schablonen_eq_ist": 68,
+        "schablonen_charge_ist": "R100018-20250605-001",
+        "schablonen_anzahl_ist": 1,
+        "schablonen_sollangaben_ok": true,
+        "schablonen_verpackung_ok": true
+      }
     },
     "materialbereitstellung_abschluss": {
       "status": "completed",
       "ma2Kuerzel": "ert",
-      "ma2Timestamp": "2025-07-23T21:17:14.912Z",
+      "ma2Timestamp": "2025-07-23T21:26:06.370Z",
+      "ma2Kommentar": "ertertretretretretretret",
       "validationOK": true,
       "validatedQuestions": [
         "materialbereitstellung_bemerkungen",
         "materialbereitstellung_ma1_kuerzel",
         "materialbereitstellung_ma2_kuerzel"
-      ]
+      ],
+      "validatedAnswers": {
+        "materialbereitstellung_bemerkungen": "-",
+        "materialbereitstellung_ma1_kuerzel": "nya",
+        "materialbereitstellung_ma2_kuerzel": "ert"
+      }
+    },
+    "line_clearing": {
+      "status": "completed",
+      "ma2Kuerzel": "ert",
+      "ma2Timestamp": "2025-07-23T21:26:24.147Z",
+      "ma2Kommentar": "rterterte",
+      "validationOK": true,
+      "validatedQuestions": [
+        "raumtemperatur_ist_matrix",
+        "material_entspricht",
+        "line_clearing_erfolgt",
+        "line_clearing_bemerkungen",
+        "line_clearing_erfasst"
+      ],
+      "validatedAnswers": {
+        "raumtemperatur_ist_matrix": [
+          {
+            "raumtemperatur_eq47": 19.9,
+            "raumtemperatur_eq48": 20.1
+          }
+        ],
+        "material_entspricht": true,
+        "line_clearing_erfolgt": true,
+        "line_clearing_bemerkungen": "-",
+        "line_clearing_erfasst": "lma"
+      }
     },
     "vorbereitung_waage": {
       "status": "completed",
       "ma2Kuerzel": "ert",
-      "ma2Timestamp": "2025-07-23T21:17:26.290Z",
+      "ma2Timestamp": "2025-07-23T21:26:29.526Z",
       "validationOK": true,
       "validatedQuestions": [
         "vorbereitung_waage_matrix",
         "waage_bemerkungen",
         "waage_erfasst"
-      ]
+      ],
+      "validatedAnswers": {
+        "vorbereitung_waage_matrix": {
+          "ausgerichtet": {
+            "eq73": "Ja",
+            "eq61": "Ja"
+          },
+          "kalibrierung": {
+            "eq73": "Ja",
+            "eq61": "Ja"
+          },
+          "waegung": {
+            "eq73": "Ja",
+            "eq61": "Ja"
+          }
+        },
+        "waage_bemerkungen": "-",
+        "waage_erfasst": "nya"
+      }
+    },
+    "vorbereitung_schweissgeraet": {
+      "status": "completed",
+      "ma2Kuerzel": "ert",
+      "ma2Timestamp": "2025-07-23T21:26:33.177Z",
+      "validationOK": true,
+      "validatedQuestions": [
+        "verschweiss_programm_ist",
+        "schweissgeraet_funktioniert",
+        "schweissgeraet_bemerkungen",
+        "schweissgeraet_erfasst"
+      ],
+      "validatedAnswers": {
+        "verschweiss_programm_ist": "Daklapack Beutel",
+        "schweissgeraet_funktioniert": true,
+        "schweissgeraet_bemerkungen": "-",
+        "schweissgeraet_erfasst": "lma"
+      }
+    },
+    "kumulierte_restmenge_gacp": {
+      "status": "completed",
+      "ma2Kuerzel": "ert",
+      "ma2Timestamp": "2025-07-23T21:42:39.938Z",
+      "validationOK": true,
+      "validatedQuestions": [
+        "restmenge_eingang",
+        "restmenge_bemerkung",
+        "probenzug_ipk_abgefuellt_ma1",
+        "gesamtmenge_probenzug_ipk",
+        "probenzug_freigabe_vorgesehen",
+        "probegebinde_liste",
+        "probegebinde_gekennzeichnet",
+        "anzahl_zwischenprodukte",
+        "bruch_abfuellung_restmenge",
+        "gebinde_abgewogen_verschweisst_ma1"
+      ],
+      "validatedAnswers": {
+        "restmenge_eingang": "274.00",
+        "restmenge_bemerkung": "l",
+        "probenzug_ipk_abgefuellt_ma1": "Ja",
+        "gesamtmenge_probenzug_ipk": 10.76,
+        "probenzug_freigabe_vorgesehen": true,
+        "probegebinde_liste": [
+          {
+            "anzahl": 1,
+            "inhalt": 55
+          },
+          {
+            "anzahl": 1,
+            "inhalt": 55
+          }
+        ],
+        "probegebinde_gekennzeichnet": "Ja",
+        "anzahl_zwischenprodukte": 9,
+        "bruch_abfuellung_restmenge": 0,
+        "gebinde_abgewogen_verschweisst_ma1": true
+      }
+    },
+    "restmenge_final_gacp": {
+      "status": "completed",
+      "ma2Kuerzel": "ert",
+      "ma2Timestamp": "2025-07-23T21:44:07.150Z",
+      "validationOK": true,
+      "validatedQuestions": [
+        "bruch_aussortiertes_material_ma1",
+        "aussortiertes_material_bruch",
+        "finale_restmenge_gewicht",
+        "bruch_aussortiert_abgefuellt_ma1",
+        "finale_restmenge_abgefuellt_ma1",
+        "blueten_an_qk",
+        "testbeutel_verschweisst_ma1",
+        "primaerpackmittel_uebrig_ma1",
+        "restmenge_ende_uhrzeit",
+        "restmenge_bemerkungen",
+        "restmenge_erfasst"
+      ],
+      "validatedAnswers": {
+        "bruch_aussortiertes_material_ma1": "Ja",
+        "aussortiertes_material_bruch": 6518.11,
+        "finale_restmenge_gewicht": 88.08,
+        "bruch_aussortiert_abgefuellt_ma1": "Ja",
+        "finale_restmenge_abgefuellt_ma1": true,
+        "blueten_an_qk": "Nicht zutreffend",
+        "testbeutel_verschweisst_ma1": true,
+        "primaerpackmittel_uebrig_ma1": false,
+        "restmenge_ende_uhrzeit": "16:00",
+        "restmenge_bemerkungen": "-",
+        "restmenge_erfasst": "lma"
+      }
+    },
+    "nachbereitung_reinraum": {
+      "status": "completed",
+      "ma2Kuerzel": "lma",
+      "ma2Timestamp": "2025-07-23T21:45:52.431Z",
+      "validationOK": true,
+      "validatedQuestions": [
+        "line_clearing_nachbereitung_ma1",
+        "nachbereitung_reinraum_bemerkungen",
+        "nachbereitung_reinraum_erfasst"
+      ],
+      "validatedAnswers": {
+        "line_clearing_nachbereitung_ma1": true,
+        "nachbereitung_reinraum_bemerkungen": "-",
+        "nachbereitung_reinraum_erfasst": "mpl"
+      }
+    },
+    "einlagern": {
+      "status": "completed",
+      "ma2Kuerzel": "lma",
+      "ma2Timestamp": "2025-07-23T21:46:15.930Z",
+      "validationOK": true,
+      "validatedQuestions": [
+        "zwischenprodukte_verpackt_ma1",
+        "zwischenprodukte_produktionslager_ma1",
+        "proben_gekennzeichnet_ma1",
+        "proben_produktionslager_ma1",
+        "restmenge_gekennzeichnet_ma1",
+        "restmenge_sperrlager_ma1",
+        "muell_gekennzeichnet_ma1",
+        "muell_sperrlager_ma1"
+      ],
+      "validatedAnswers": {
+        "zwischenprodukte_verpackt_ma1": true,
+        "zwischenprodukte_produktionslager_ma1": true,
+        "proben_gekennzeichnet_ma1": true,
+        "proben_produktionslager_ma1": true,
+        "restmenge_gekennzeichnet_ma1": true,
+        "restmenge_sperrlager_ma1": true,
+        "muell_gekennzeichnet_ma1": true,
+        "muell_sperrlager_ma1": true
+      }
+    },
+    "einlagern_eingangsmaterialien_gacp": {
+      "status": "completed",
+      "ma2Kuerzel": "lma",
+      "ma2Timestamp": "2025-07-23T21:47:04.891Z",
+      "validationOK": true,
+      "validatedQuestions": [
+        "ungeoefffnete_bulkbeutel_ma1",
+        "primaerpackmittel_ungeöffnet_ma1",
+        "primaerpackmittel_geoeffnet_ma1",
+        "eingangsmaterialien_begruendung",
+        "schablonen_entfernt_ma1",
+        "nachbereitung_bemerkung",
+        "nachbereitung_erfasst"
+      ],
+      "validatedAnswers": {
+        "ungeoefffnete_bulkbeutel_ma1": "Nicht zutreffend",
+        "primaerpackmittel_ungeöffnet_ma1": "Nicht zutreffend",
+        "primaerpackmittel_geoeffnet_ma1": "Ja",
+        "eingangsmaterialien_begruendung": "-",
+        "schablonen_entfernt_ma1": true,
+        "nachbereitung_bemerkung": "-",
+        "nachbereitung_erfasst": "mpl"
+      }
+    },
+    "nachbereitung_reinraum_final": {
+      "status": "completed",
+      "ma2Kuerzel": "ert",
+      "ma2Timestamp": "2025-07-23T21:47:28.855Z",
+      "validationOK": true,
+      "validatedQuestions": [
+        "eurocontainer_bereitgestellt",
+        "zwischenreinigung_durchgefuehrt",
+        "nachbereitung_reinraum_final_bemerkung"
+      ],
+      "validatedAnswers": {
+        "eurocontainer_bereitgestellt": "Nicht zutreffend",
+        "zwischenreinigung_durchgefuehrt": "Ja",
+        "nachbereitung_reinraum_final_bemerkung": "Für den nächsten Tag ist keine Abfüllung geplant"
+      }
+    },
+    "abschluss": {
+      "status": "completed",
+      "ma2Kuerzel": "pma",
+      "ma2Timestamp": "2025-07-23T21:47:56.163Z",
+      "validationOK": true,
+      "validatedQuestions": [
+        "geraete_logbuecher_eingetragen",
+        "probenzugsplan_ausgefuellt",
+        "abschluss_bemerkung",
+        "abschluss_erfasst"
+      ],
+      "validatedAnswers": {
+        "geraete_logbuecher_eingetragen": "Ja",
+        "probenzugsplan_ausgefuellt": "Ja",
+        "abschluss_bemerkung": "-",
+        "abschluss_erfasst": "lma"
+      }
     }
   },
-  "currentPageNo": 11
+  "currentPageNo": 0
 }

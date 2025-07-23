@@ -475,6 +475,7 @@ const BulkBeutelDashboard: React.FC<BulkBeutelDashboardProps> = ({
             <BulkBeutelForm
               bulkBeutel={bulkBeutelList.find(bb => bb.id === selectedBulkBeutel)!}
               totalBulkBeutel={bulkBeutelList.length}
+              materialType={productionOrder.materialType}
               onSave={handleBulkBeutelAbgeschlossen}
               onCancel={handleCancelForm}
             />

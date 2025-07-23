@@ -8,6 +8,7 @@ interface MA2ValidationProps {
   onMA2Validation: (groupName: string, ma2Data: { kuerzel: string; kommentar?: string; pruefungOK?: boolean }) => void;
   isCompleted: boolean;
   surveyData: any;
+  validationData?: any; // NEU: Validierungsdaten für abgeschlossene Validierungen
 }
 
 // Kein Extended Interface mehr nötig - ValidationGroup ist jetzt standardisiert
@@ -78,7 +79,8 @@ const MA2Validation: React.FC<MA2ValidationProps> = ({
   groupAnswers,
   onMA2Validation,
   isCompleted,
-  surveyData
+  surveyData,
+  validationData
 }) => {
   const [ma2Kuerzel, setMa2Kuerzel] = useState('');
   const [ma2Kommentar, setMa2Kommentar] = useState('');
@@ -101,6 +103,14 @@ const MA2Validation: React.FC<MA2ValidationProps> = ({
 
   // Check if MA2 validation is already completed
   const ma2ValidationCompleted = isCompleted;
+  
+  // Lade validierte Daten, falls vorhanden
+  const validatedData = validationData?.[group.name];
+  const validatedAnswers = validatedData?.validatedAnswers;
+  const ma2KommentarValidated = validatedData?.ma2Kommentar;
+  const ma2KuerzelValidated = validatedData?.ma2Kuerzel;
+  const validationOKValidated = validatedData?.validationOK;
+  const ma2TimestampValidated = validatedData?.ma2Timestamp;
 
   const handleMA2Submit = () => {
     if (!ma2Kuerzel.trim()) {
@@ -143,12 +153,21 @@ const MA2Validation: React.FC<MA2ValidationProps> = ({
       sollWerte = surveyData?.primaerPackmittel || {};
       mapping = sollMapping;
     }
+    
+    // Verwende validierte Antworten, falls vorhanden, sonst aktuelle Antworten
+    const answersToShow = validatedAnswers || groupAnswers;
+    
     return (
       <div className="ma2-question-summary">
         <h4>Zu prüfende Antworten:</h4>
+        {validatedAnswers && (
+          <div className="validation-info">
+            <p><strong>✓ Validierte Antworten vom {new Date(ma2TimestampValidated).toLocaleString('de-DE')}</strong></p>
+          </div>
+        )}
         <div className="question-answers">
           {group.questions.map(questionName => {
-            const ist = groupAnswers[questionName];
+            const ist = answersToShow[questionName];
             // NEU: MatrixDropdown speziell behandeln
             if (ist && typeof ist === 'object' && !Array.isArray(ist)) {
               // MatrixDropdown: Jede Zelle als eigene Zeile anzeigen
@@ -231,7 +250,7 @@ const MA2Validation: React.FC<MA2ValidationProps> = ({
               <input
                 id="ma2-pruefung-ok-switch"
                 type="checkbox"
-                checked={ma2PruefungOK === true}
+                checked={ma2ValidationCompleted ? validationOKValidated : ma2PruefungOK === true}
                 onChange={e => setMa2PruefungOK(e.target.checked)}
                 disabled={!isEnabled || ma2ValidationCompleted}
               />
@@ -249,7 +268,7 @@ const MA2Validation: React.FC<MA2ValidationProps> = ({
             <input
               id="ma2-kuerzel"
               type="text"
-              value={ma2Kuerzel}
+              value={ma2ValidationCompleted ? ma2KuerzelValidated : ma2Kuerzel}
               onChange={(e) => {
                 setMa2Kuerzel(e.target.value);
                 if (showKuerzelError && e.target.value.trim()) setShowKuerzelError(false);
@@ -272,7 +291,7 @@ const MA2Validation: React.FC<MA2ValidationProps> = ({
             <label htmlFor="ma2-kommentar">Kommentar (optional)</label>
             <textarea
               id="ma2-kommentar"
-              value={ma2Kommentar}
+              value={ma2ValidationCompleted ? ma2KommentarValidated : ma2Kommentar}
               onChange={(e) => setMa2Kommentar(e.target.value)}
               placeholder="Zusätzliche Bemerkungen zur Prüfung..."
               rows={3}

@@ -153,6 +153,10 @@ const SurveyComponent: React.FC<SurveyComponentProps> = ({
       schablone: productionOrder.schablone,
       bulkmaterial: productionOrder.eingangsmaterial // NEU: für Soll-Ist-Vergleich Bulkmaterial
     };
+    
+    // Debug: Überprüfe materialType
+    console.log('[Survey] Production order materialType:', productionOrder.materialType);
+    console.log('[Survey] Order data materialType:', orderData.materialType);
     // Dynamische Soll-Wert-Beschreibungen für relevante Felder setzen
     const sollMappings = [
       // Bulkmaterial
@@ -180,6 +184,29 @@ const SurveyComponent: React.FC<SurveyComponentProps> = ({
     });
     // Initialisiere Survey-Model nur mit Auftragsdaten, nicht mit initialAnswers
     surveyModel.data = { ...orderData };
+    
+    // Debug: Direkte Überprüfung der materialType und Sichtbarkeitsbedingungen
+    console.log('[Survey] Survey initialized with materialType:', surveyModel.data.materialType);
+    
+    // Teste Sichtbarkeitsbedingungen für GACP-spezifische Fragen
+    const testGACPQuestions = [
+      'probenzug_ipk_titel',
+      'probenzug_ipk_abgefuellt_ma1', 
+      'gesamtmenge_probenzug_ipk'
+    ];
+    testGACPQuestions.forEach(questionName => {
+      const question = surveyModel.getQuestionByName(questionName);
+      if (question) {
+        console.log(`[Survey] Initial GACP Question ${questionName}:`, {
+          visible: question.isVisible,
+          materialType: surveyModel.data.materialType,
+          condition: question.visibleIf
+        });
+      } else {
+        console.log(`[Survey] Initial GACP Question ${questionName} not found`);
+      }
+    });
+    
     surveyModel.onComplete.add(async (sender) => {
       const answers = sender.data;
       onSurveyComplete(answers, validationData);
@@ -226,6 +253,32 @@ const SurveyComponent: React.FC<SurveyComponentProps> = ({
     });
     surveyModel.onCurrentPageChanged.add(async (sender) => {
       setCurrentPageIndex(sender.currentPageNo);
+      
+      // Debug: Überprüfe materialType und Sichtbarkeitsbedingungen bei jedem Seitenwechsel
+      console.log('[Survey] Page changed - materialType in survey data:', sender.data.materialType);
+      console.log('[Survey] Page changed - current page name:', sender.currentPage?.name);
+      
+      // Überprüfe GACP-spezifische Fragen auf der aktuellen Seite
+      if (sender.currentPage?.name === 'kumulierte_restmenge_probenzug') {
+        const ipkQuestions = [
+          'probenzug_ipk_titel',
+          'probenzug_ipk_abgefuellt_ma1',
+          'gesamtmenge_probenzug_ipk'
+        ];
+        ipkQuestions.forEach(questionName => {
+          const question = sender.getQuestionByName(questionName);
+          if (question) {
+            console.log(`[Survey] GACP Question ${questionName}:`, {
+              visible: question.isVisible,
+              parentVisible: question.parent?.isVisible,
+              materialType: sender.data.materialType,
+              condition: question.visibleIf
+            });
+          } else {
+            console.log(`[Survey] GACP Question ${questionName} not found`);
+          }
+        });
+      }
       
       // Lade produktliste wenn zur Schleusungsseite navigiert wird
       if (sender.currentPage?.name === 'schleusung_eurocontainer') {
@@ -319,10 +372,22 @@ const SurveyComponent: React.FC<SurveyComponentProps> = ({
           // Neue saubere Struktur: Kombiniere Auftragsdaten mit Survey-Antworten
           let surveyData = { ...orderData }; // Starte mit Auftragsdaten
           
+          // Debug: Überprüfe materialType vor dem Laden der Survey-Antworten
+          console.log('[Survey] Survey data materialType before loading answers:', surveyData.materialType);
+          
           // Lade Survey-Antworten aus dem neuen "survey" Feld
           if (saved.survey && Object.keys(saved.survey).length > 0) {
             console.log('[Survey] Loading survey answers:', saved.survey);
             surveyData = { ...surveyData, ...saved.survey };
+            
+            // Debug: Überprüfe materialType nach dem Laden der Survey-Antworten
+            console.log('[Survey] Survey data materialType after loading answers:', surveyData.materialType);
+            
+            // Stelle sicher, dass materialType nicht überschrieben wurde
+            if (surveyData.materialType !== orderData.materialType) {
+              console.log('[Survey] WARNING: materialType was overwritten, restoring from order data');
+              surveyData.materialType = orderData.materialType;
+            }
             
             // Spezielle Behandlung für produktliste - lade aus schleusung_eurocontainer.produktliste
             if (saved.survey.schleusung_eurocontainer?.produktliste) {
@@ -335,6 +400,24 @@ const SurveyComponent: React.FC<SurveyComponentProps> = ({
           if (Object.keys(surveyData).length > 0) {
             console.log('[Survey] Restoring survey data:', surveyData);
             surveyModel.data = surveyData;
+            
+            // Debug: Überprüfe materialType in SurveyJS-Model
+            console.log('[Survey] SurveyJS model materialType:', surveyModel.data.materialType);
+            
+            // Test: Überprüfe Sichtbarkeitsbedingungen für GACP-spezifische Fragen
+            const ipkQuestions = [
+              'probenzug_ipk_abgefuellt_ma1',
+              'gesamtmenge_probenzug_ipk'
+            ];
+            ipkQuestions.forEach(questionName => {
+              const question = surveyModel.getQuestionByName(questionName);
+              if (question) {
+                console.log(`[Survey] Question ${questionName} visible:`, question.isVisible);
+                console.log(`[Survey] Question ${questionName} parent visible:`, question.parent?.isVisible);
+              } else {
+                console.log(`[Survey] Question ${questionName} not found`);
+              }
+            });
             
             // Spezielle Behandlung für produktliste nach dem Setzen der Daten
             if (saved.survey?.schleusung_eurocontainer?.produktliste) {
@@ -406,6 +489,14 @@ const SurveyComponent: React.FC<SurveyComponentProps> = ({
       currentSaved = { validation: {} };
     }
     
+    // Sammle die validierten Antworten für diese Gruppe
+    const validatedAnswers: { [questionName: string]: any } = {};
+    group.questions.forEach(questionName => {
+      if (survey?.data && survey.data[questionName] !== undefined) {
+        validatedAnswers[questionName] = survey.data[questionName];
+      }
+    });
+    
     // Neue Validierungsstruktur - merge with existing validation data
     const updatedValidationData = {
       ...validationData, // Use current local state as base
@@ -416,7 +507,8 @@ const SurveyComponent: React.FC<SurveyComponentProps> = ({
         ma2Timestamp: timestamp,
         ma2Kommentar: ma2Data.kommentar,
         validationOK: ma2Data.pruefungOK,
-        validatedQuestions: group.questions
+        validatedQuestions: group.questions,
+        validatedAnswers: validatedAnswers // NEU: Speichere die validierten Antworten
       }
     };
     
@@ -627,6 +719,16 @@ const SurveyComponent: React.FC<SurveyComponentProps> = ({
     
     // Speichere die aktualisierten Daten in die Survey JSON
     try {
+      // Lade aktuelle Validierungsdaten aus der Datei, um sie nicht zu verlieren
+      let currentValidationData = {};
+      try {
+        const currentSaved = await readJsonFile(getSurveyInProgressPath());
+        currentValidationData = currentSaved?.validation || {};
+        console.log(`[Dashboard] Loaded current validation data:`, currentValidationData);
+      } catch (error) {
+        console.log(`[Dashboard] No existing validation data found`);
+      }
+      
       const response = await fetch(`/api/surveys/${productionOrder.id}/progress`, {
         method: 'PUT',
         headers: {
@@ -634,12 +736,29 @@ const SurveyComponent: React.FC<SurveyComponentProps> = ({
         },
         body: JSON.stringify({
           ...data,
+          validation: currentValidationData, // Behalte Validierungsdaten bei
           currentPageNo: currentPageIndex
         })
       });
       
       if (response.ok) {
         console.log('[Dashboard] Survey data saved successfully');
+        
+        // Aktualisiere auch die lokale Datei für Konsistenz
+        try {
+          const surveyAnswers = filterSurveyAnswers(data.survey || {});
+          await writeJsonFile(getSurveyInProgressPath(), {
+            orderId: productionOrder.id,
+            timestamp: new Date().toISOString(),
+            status: 'in_progress',
+            survey: surveyAnswers,
+            validation: currentValidationData,
+            currentPageNo: currentPageIndex
+          });
+          console.log('[Dashboard] Local file updated successfully');
+        } catch (error) {
+          console.error('[Dashboard] Error updating local file:', error);
+        }
       } else {
         console.error('[Dashboard] Failed to save survey data:', response.statusText);
       }
@@ -820,6 +939,7 @@ const SurveyComponent: React.FC<SurveyComponentProps> = ({
                       onMA2Validation={handleMA2Validation}
                       isCompleted={validationData[group.name]?.status === 'completed' || false}
                       surveyData={productionOrder}
+                      validationData={validationData}
                     />
                   );
                 })}

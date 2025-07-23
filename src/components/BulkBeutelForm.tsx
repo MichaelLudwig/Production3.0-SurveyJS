@@ -7,11 +7,18 @@ interface BulkBeutelFormProps {
     gebindegroesse: number;
   };
   totalBulkBeutel: number;
+  materialType: 'GACP' | 'GMP'; // NEU: Material-Typ für bedingte Anzeige
   onSave: (data: any) => void;
   onCancel: () => void;
 }
 
-const BulkBeutelForm: React.FC<BulkBeutelFormProps> = ({ bulkBeutel, totalBulkBeutel, onSave, onCancel }) => {
+const BulkBeutelForm: React.FC<BulkBeutelFormProps> = ({ 
+  bulkBeutel, 
+  totalBulkBeutel, 
+  materialType, // NEU: Material-Typ
+  onSave, 
+  onCancel 
+}) => {
   const [formData, setFormData] = useState({
     bulk_nummer: bulkBeutel.id.toString(),
     soll_inhalt: bulkBeutel.gebindegroesse,
@@ -36,9 +43,9 @@ const BulkBeutelForm: React.FC<BulkBeutelFormProps> = ({ bulkBeutel, totalBulkBe
   const isFirstBulkBeutel = bulkBeutel.id === 1;
   const isLastBulkBeutel = bulkBeutel.id === totalBulkBeutel;
 
-  // Prüfe initial die Probenzug-Warnung
+  // Prüfe initial die Probenzug-Warnung (nur bei GACP-Produkten)
   useEffect(() => {
-    if ((isFirstBulkBeutel || isLastBulkBeutel) && formData.probenzug_ipk === '0') {
+    if (materialType === 'GACP' && (isFirstBulkBeutel || isLastBulkBeutel) && formData.probenzug_ipk === '0') {
       const warningMessage = isFirstBulkBeutel 
         ? 'Probe aus dem ersten Bulk Beutel entnehmen!' 
         : 'Probe aus dem letzten Bulk Beutel entnehmen!';
@@ -48,7 +55,7 @@ const BulkBeutelForm: React.FC<BulkBeutelFormProps> = ({ bulkBeutel, totalBulkBe
         probenzug_ipk: warningMessage
       }));
     }
-  }, [isFirstBulkBeutel, isLastBulkBeutel, formData.probenzug_ipk]);
+  }, [isFirstBulkBeutel, isLastBulkBeutel, formData.probenzug_ipk, materialType]);
 
   const handleInputChange = (field: string, value: string) => {
     setFormData(prev => ({
@@ -64,8 +71,8 @@ const BulkBeutelForm: React.FC<BulkBeutelFormProps> = ({ bulkBeutel, totalBulkBe
       }));
     }
 
-    // Prüfe Probenzug-Warnung für den ersten oder letzten Bulk Beutel
-    if (field === 'probenzug_ipk' && (isFirstBulkBeutel || isLastBulkBeutel)) {
+    // Prüfe Probenzug-Warnung für den ersten oder letzten Bulk Beutel (nur bei GACP-Produkten)
+    if (field === 'probenzug_ipk' && materialType === 'GACP' && (isFirstBulkBeutel || isLastBulkBeutel)) {
       const probenzugValue = parseFloat(value) || 0;
       if (probenzugValue === 0) {
         const warningMessage = isFirstBulkBeutel 
@@ -103,12 +110,17 @@ const BulkBeutelForm: React.FC<BulkBeutelFormProps> = ({ bulkBeutel, totalBulkBe
     if (!formData.restmenge) {
       newErrors.restmenge = 'Dieses Feld ist erforderlich';
     }
-    if (!formData.aussortiertes_material) {
-      newErrors.aussortiertes_material = 'Dieses Feld ist erforderlich';
+    
+    // GACP-spezifische Felder nur bei GACP-Produkten validieren
+    if (materialType === 'GACP') {
+      if (!formData.aussortiertes_material) {
+        newErrors.aussortiertes_material = 'Dieses Feld ist erforderlich';
+      }
+      if (!formData.probenzug_ipk) {
+        newErrors.probenzug_ipk = 'Dieses Feld ist erforderlich';
+      }
     }
-    if (!formData.probenzug_ipk) {
-      newErrors.probenzug_ipk = 'Dieses Feld ist erforderlich';
-    }
+    
     if (!formData.bruch) {
       newErrors.bruch = 'Dieses Feld ist erforderlich';
     }
@@ -135,6 +147,13 @@ const BulkBeutelForm: React.FC<BulkBeutelFormProps> = ({ bulkBeutel, totalBulkBe
         gebinde_korrekt_abgewogen: formData.gebinde_korrekt_abgewogen === 'ja',
         schweissnaht_ok: formData.schweissnaht_ok === 'ja'
       };
+      
+      // Bei GMP-Produkten: Setze GACP-spezifische Felder auf Standardwerte
+      if (materialType === 'GMP') {
+        processedData.aussortiertes_material = '0';
+        processedData.probenzug_ipk = '0';
+      }
+      
       onSave(processedData);
     }
   };
@@ -268,38 +287,43 @@ const BulkBeutelForm: React.FC<BulkBeutelFormProps> = ({ bulkBeutel, totalBulkBe
           </div>
         </div>
 
-        <div className="form-row">
-          <div className="form-field">
-            <label className="form-label">
-              Aussortiertes Material (g)
-            </label>
-            <input
-              type="number"
-              className={`form-input ${errors.aussortiertes_material ? 'error' : ''}`}
-              value={formData.aussortiertes_material}
-              onChange={(e) => handleInputChange('aussortiertes_material', e.target.value)}
-              placeholder="Aussortiertes Material in Gramm"
-            />
-            {errors.aussortiertes_material && <div className="error-message">{errors.aussortiertes_material}</div>}
-          </div>
-        </div>
+        {/* GACP-spezifische Felder nur bei GACP-Produkten anzeigen */}
+        {materialType === 'GACP' && (
+          <>
+            <div className="form-row">
+              <div className="form-field">
+                <label className="form-label">
+                  Aussortiertes Material (g)
+                </label>
+                <input
+                  type="number"
+                  className={`form-input ${errors.aussortiertes_material ? 'error' : ''}`}
+                  value={formData.aussortiertes_material}
+                  onChange={(e) => handleInputChange('aussortiertes_material', e.target.value)}
+                  placeholder="Aussortiertes Material in Gramm"
+                />
+                {errors.aussortiertes_material && <div className="error-message">{errors.aussortiertes_material}</div>}
+              </div>
+            </div>
 
-        <div className="form-row">
-          <div className="form-field">
-            <label className="form-label">
-              Probenzug IPK (g)
-            </label>
-            <input
-              type="number"
-              className={`form-input ${errors.probenzug_ipk ? 'error' : ''} ${warnings.probenzug_ipk ? 'warning' : ''}`}
-              value={formData.probenzug_ipk}
-              onChange={(e) => handleInputChange('probenzug_ipk', e.target.value)}
-              placeholder="Probenzug IPK in Gramm"
-            />
-            {errors.probenzug_ipk && <div className="error-message">{errors.probenzug_ipk}</div>}
-            {warnings.probenzug_ipk && <div className="warning-message">{warnings.probenzug_ipk}</div>}
-          </div>
-        </div>
+            <div className="form-row">
+              <div className="form-field">
+                <label className="form-label">
+                  Probenzug IPK (g)
+                </label>
+                <input
+                  type="number"
+                  className={`form-input ${errors.probenzug_ipk ? 'error' : ''} ${warnings.probenzug_ipk ? 'warning' : ''}`}
+                  value={formData.probenzug_ipk}
+                  onChange={(e) => handleInputChange('probenzug_ipk', e.target.value)}
+                  placeholder="Probenzug IPK in Gramm"
+                />
+                {errors.probenzug_ipk && <div className="error-message">{errors.probenzug_ipk}</div>}
+                {warnings.probenzug_ipk && <div className="warning-message">{warnings.probenzug_ipk}</div>}
+              </div>
+            </div>
+          </>
+        )}
 
         <div className="form-row">
           <div className="form-field">

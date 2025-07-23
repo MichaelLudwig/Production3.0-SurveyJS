@@ -413,10 +413,14 @@
       "status": "completed",
       "ma2Kuerzel": "wer",
       "ma2Timestamp": "2025-07-16T12:39:57.933Z",
+      "ma2Kommentar": "Eingangsmaterial erfolgreich ausgebucht",
       "validationOK": true,
       "validatedQuestions": [
         "eingangsmaterial_ausgebucht"
-      ]
+      ],
+      "validatedAnswers": {
+        "eingangsmaterial_ausgebucht": true
+      }
     },
     "raumstatus_pruefen": {
       "status": "completed",
@@ -448,6 +452,7 @@
       "status": "completed",
       "ma2Kuerzel": "1",
       "ma2Timestamp": "2025-07-16T12:40:55.147Z",
+      "ma2Kommentar": "Bulkmaterial korrekt bereitgestellt",
       "validationOK": true,
       "validatedQuestions": [
         "produktbezeichnung_bulk_ist",
@@ -456,7 +461,34 @@
         "verfall_bulk_ist",
         "bulkgebinde_liste",
         "bulk_erfasst_kuerzel"
-      ]
+      ],
+      "validatedAnswers": {
+        "produktbezeichnung_bulk_ist": "1",
+        "artikelnr_bulk_ist": "1",
+        "charge_bulk_ist": "1",
+        "verfall_bulk_ist": "2025-07-17",
+        "bulkgebinde_liste": [
+          {
+            "anzahl": 10,
+            "gebindegroesse": 1000,
+            "probenzug_verwendet": false,
+            "dicht_sauber": true
+          },
+          {
+            "anzahl": 1,
+            "gebindegroesse": 988,
+            "probenzug_verwendet": true,
+            "dicht_sauber": true
+          },
+          {
+            "anzahl": 1,
+            "gebindegroesse": 979.76,
+            "probenzug_verwendet": true,
+            "dicht_sauber": true
+          }
+        ],
+        "bulk_erfasst_kuerzel": "1"
+      }
     },
     "zubehör_schablonen": {
       "status": "completed",

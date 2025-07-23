@@ -1,228 +1,169 @@
 {
   "orderId": "2",
-  "timestamp": "2025-07-23T17:53:12.923Z",
+  "timestamp": "2025-07-23T22:16:06.270Z",
   "status": "in_progress",
   "survey": {
     "eingangsmaterial_ausgebucht": true,
     "mitarbeiter_liste": [
       {
-        "name": "d",
-        "kuerzel": "d"
+        "name": "Marius",
+        "kuerzel": "mpl"
       },
       {
-        "name": "d",
-        "kuerzel": "d"
+        "name": "michel",
+        "kuerzel": "mgö"
+      },
+      {
+        "name": "sven",
+        "kuerzel": "skn"
       }
     ],
-    "beginn_datum": "2025-07-27",
-    "beginn_uhrzeit": "14:46",
+    "beginn_datum": "2025-02-23",
+    "beginn_uhrzeit": "08:46",
     "kennzeichnung_matrix_allgemein": {
       "eurocontainer": "ja",
       "proben_freigabe": "ja",
       "restmenge": "ja"
     },
-    "reinraumstatus_ampel": "Grün",
-    "reinraum_nutzbar": true,
-    "schleusen_ist_druck_matrix": [
-      {
-        "eq49": 2,
-        "eq50": 2,
-        "eq51": 2
-      }
-    ],
     "arbeitsraum_ist_druck_matrix": [
       {
-        "eq52": 2
+        "eq52": 30.5
       }
     ],
-    "produktbezeichnung_ist": "2",
-    "artikelnummer_ist": "2",
-    "charge_ist": "2",
-    "anzahl_ist": 2,
+    "schleusen_ist_druck_matrix": [
+      {
+        "eq49": 16,
+        "eq50": 14,
+        "eq51": 14.9
+      }
+    ],
+    "reinraumstatus_ampel": "Grün",
+    "reinraum_nutzbar": true,
+    "produktbezeichnung_ist": "Standbodenbeutel 3000ml Weiß Matt, 1 Stk.",
+    "artikelnummer_ist": "0100074",
+    "charge_ist": "0100074-20240726-001",
+    "anzahl_ist": 100,
     "umverpackung_dicht": true,
-    "primaerpackmittel_erfasst_kuerzel": "2",
-    "produktbezeichnung_bulk_ist": "2",
-    "artikelnr_bulk_ist": "2",
-    "charge_bulk_ist": "2",
+    "primaerpackmittel_erfasst_kuerzel": "skn",
+    "produktbezeichnung_bulk_ist": "Cannabis Holigen T30 BL, 1g",
+    "artikelnr_bulk_ist": "19602049",
+    "charge_bulk_ist": "25031329",
+    "verfall_bulk_ist": "2025-03-27",
     "bulkgebinde_liste": [
       {
-        "anzahl": 2,
-        "gebindegroesse": 2,
+        "anzahl": 8,
+        "gebindegroesse": 500,
+        "probenzug_verwendet": false,
+        "dicht_sauber": true
+      },
+      {
+        "anzahl": 1,
+        "gebindegroesse": 412,
         "probenzug_verwendet": true,
         "dicht_sauber": true
       }
     ],
-    "bulk_erfasst_kuerzel": "2",
-    "bulk_bemerkungen": "2",
-    "verfall_bulk_ist": "2025-07-19",
-    "materialbereitstellung_bemerkungen": "2",
-    "materialbereitstellung_ma1_kuerzel": "2s",
-    "materialbereitstellung_ma2_kuerzel": "2e",
+    "bulk_erfasst_kuerzel": "skn",
+    "bulk_bemerkungen": "ert",
+    "materialbereitstellung_bemerkungen": "-",
+    "materialbereitstellung_ma1_kuerzel": "skn",
+    "materialbereitstellung_ma2_kuerzel": "lma",
+    "material_entspricht": true,
     "raumtemperatur_ist_matrix": [
       {
-        "raumtemperatur_eq47": 3,
-        "raumtemperatur_eq48": 3
+        "raumtemperatur_eq47": 20,
+        "raumtemperatur_eq48": 19.9
       }
     ],
     "line_clearing_erfolgt": true,
-    "material_entspricht": true,
-    "line_clearing_erfasst": "3",
-    "line_clearing_bemerkungen": "e",
-    "waage_erfasst": "x",
+    "line_clearing_bemerkungen": "-",
+    "line_clearing_erfasst": "lma",
     "vorbereitung_waage_matrix": {
       "ausgerichtet": {
-        "eq73": "Nein",
+        "eq73": "Ja",
         "eq61": "Ja"
       },
       "kalibrierung": {
-        "eq73": "Nicht zutreffend",
-        "eq61": "Nein"
+        "eq73": "Ja",
+        "eq61": "Ja"
       },
       "waegung": {
-        "eq73": "Nein",
+        "eq73": "Ja",
         "eq61": "Ja"
       }
     },
-    "waage_bemerkungen": "d",
-    "verschweiss_programm_ist": "sdf",
-    "schweissgeraet_bemerkungen": "sdf",
+    "waage_bemerkungen": "-",
+    "waage_erfasst": "lma",
+    "verschweiss_programm_ist": "b",
     "schweissgeraet_funktioniert": true,
-    "schweissgeraet_erfasst": "sdf",
-    "herstellung_beginn_uhrzeit": "14:21",
+    "schweissgeraet_bemerkungen": "-",
+    "schweissgeraet_erfasst": "mgö",
+    "herstellung_beginn_uhrzeit": "09:57",
     "bulk_beutel_production": [
       {
         "bulk_nummer": "1",
-        "soll_inhalt": 1000,
-        "ist_inhalt": 988,
-        "anzahl_gebinde": 7,
+        "soll_inhalt": 500,
+        "ist_inhalt": "499",
+        "anzahl_gebinde": "4",
         "blueten_unauffaellig": true,
         "gebinde_korrekt_abgewogen": true,
-        "restmenge": 32.82
-      },
-      {
-        "bulk_nummer": "2",
-        "soll_inhalt": 2,
-        "ist_inhalt": "1000",
-        "anzahl_gebinde": "7",
-        "blueten_unauffaellig": true,
-        "gebinde_korrekt_abgewogen": true,
-        "restmenge": "45",
-        "aussortiertes_material": "34",
-        "probenzug_ipk": "5",
+        "restmenge": "78",
+        "aussortiertes_material": "0",
+        "probenzug_ipk": "0",
         "bruch": "0",
-        "kommentar": "n",
+        "kommentar": "",
         "erfasst_kuerzel": "ert",
         "geprueft_kuerzel": "ert",
         "schweissnaht_ok": true,
-        "timestamp": "2025-07-23T10:02:08.484Z"
+        "timestamp": "2025-07-23T22:16:05.860Z"
       }
-    ],
-    "probegebinde_liste": [
-      {
-        "anzahl": 1,
-        "inhalt": 55
-      },
-      {
-        "anzahl": 1,
-        "inhalt": 55
-      }
-    ],
-    "pause_durchgefuehrt": false,
-    "restmenge_eingang": "77.82",
-    "restmenge_bemerkung": "4",
-    "probenzug_freigabe_vorgesehen": true,
-    "probegebinde_gekennzeichnet": "Ja",
-    "anzahl_zwischenprodukte": 32,
-    "bruch_abfuellung_restmenge": 0,
-    "gebinde_abgewogen_verschweisst_ma1": true,
-    "bruch_finale_restmenge_ma1": "Ja",
-    "finale_restmenge_bruch_gewicht": 81,
-    "finale_restmenge_abgefuellt_ma1": true,
-    "testbeutel_verschweisst_ma1": true,
-    "primaerpackmittel_uebrig_ma1": true,
-    "anzahl_primaerpackmittel_uebrig": 3,
-    "restmenge_ende_uhrzeit": "11:29",
-    "restmenge_bemerkungen": "-",
-    "restmenge_erfasst": "ert",
-    "schleusung_eurocontainer": {
-      "produktliste": [
-        {
-          "art_inhalt": "Hergestellte Zwischenprodukte",
-          "anzahl_gebinde": "14",
-          "plomben_nr": "1234567",
-          "plomben_nr_2": "1234568"
-        }
-      ]
-    },
-    "produktliste": [
-      {
-        "art_inhalt": "Hergestellte Zwischenprodukte",
-        "anzahl_gebinde": 7,
-        "plomben_nr": "1000001"
-      },
-      {
-        "art_inhalt": "Hergestellte Zwischenprodukte",
-        "anzahl_gebinde": 7,
-        "plomben_nr": "1000002"
-      }
-    ],
-    "herstellprozess_ma1_signatur": "ert",
-    "herstellprozess_ma2_signatur": "ert",
-    "line_clearing_nachbereitung_ma1": true,
-    "nachbereitung_reinraum_bemerkungen": "f",
-    "nachbereitung_reinraum_erfasst": "f",
-    "zwischenprodukte_verpackt_ma1": true,
-    "zwischenprodukte_produktionslager_ma1": true,
-    "proben_gekennzeichnet_ma1": true,
-    "proben_produktionslager_ma1": true,
-    "restmenge_gekennzeichnet_ma1": true,
-    "restmenge_sperrlager_ma1": true,
-    "muell_gekennzeichnet_ma1": true,
-    "muell_sperrlager_ma1": true,
-    "ungeoefffnete_bulkbeutel_ma1": "Ja",
-    "primaerpackmittel_ungeöffnet_ma1": "Ja",
-    "primaerpackmittel_geoeffnet_ma1": "Ja",
-    "eingangsmaterialien_begruendung": "fdg",
-    "nachbereitung_bemerkung": "df",
-    "nachbereitung_erfasst": "dfg",
-    "eurocontainer_bereitgestellt": "Ja",
-    "zwischenreinigung_durchgefuehrt": "Ja",
-    "nachbereitung_reinraum_final_bemerkung": "-",
-    "geraete_logbuecher_eingetragen": "Ja",
-    "probenzugsplan_ausgefuellt": "Ja",
-    "abschluss_bemerkung": "g",
-    "abschluss_erfasst": "g",
-    "mitarbeiter_signaturen": [
-      {},
-      {}
     ]
   },
   "validation": {
     "eingangsmaterialien_ausbuchen": {
       "status": "completed",
       "ma2Kuerzel": "ert",
-      "ma2Timestamp": "2025-07-21T10:18:32.973Z",
+      "ma2Timestamp": "2025-07-23T21:54:05.259Z",
       "validationOK": true,
       "validatedQuestions": [
         "eingangsmaterial_ausgebucht"
-      ]
+      ],
+      "validatedAnswers": {
+        "eingangsmaterial_ausgebucht": true
+      }
     },
     "raumstatus_pruefen": {
       "status": "completed",
       "ma2Kuerzel": "ert",
-      "ma2Timestamp": "2025-07-21T10:18:41.425Z",
+      "ma2Timestamp": "2025-07-23T21:55:43.640Z",
       "validationOK": true,
       "validatedQuestions": [
         "arbeitsraum_ist_druck_matrix",
         "schleusen_ist_druck_matrix",
         "reinraumstatus_ampel",
         "reinraum_nutzbar"
-      ]
+      ],
+      "validatedAnswers": {
+        "arbeitsraum_ist_druck_matrix": [
+          {
+            "eq52": 30.5
+          }
+        ],
+        "schleusen_ist_druck_matrix": [
+          {
+            "eq49": 16,
+            "eq50": 14,
+            "eq51": 14.9
+          }
+        ],
+        "reinraumstatus_ampel": "Grün",
+        "reinraum_nutzbar": true
+      }
     },
     "materialbereitstellung_primaerpackmittel": {
       "status": "completed",
-      "ma2Kuerzel": "ert",
-      "ma2Timestamp": "2025-07-21T10:18:46.706Z",
+      "ma2Kuerzel": "lma",
+      "ma2Timestamp": "2025-07-23T21:56:39.261Z",
       "validationOK": true,
       "validatedQuestions": [
         "produktbezeichnung_ist",
@@ -231,12 +172,20 @@
         "anzahl_ist",
         "umverpackung_dicht",
         "primaerpackmittel_erfasst_kuerzel"
-      ]
+      ],
+      "validatedAnswers": {
+        "produktbezeichnung_ist": "Standbodenbeutel 3000ml Weiß Matt, 1 Stk.",
+        "artikelnummer_ist": "0100074",
+        "charge_ist": "0100074-20240726-001",
+        "anzahl_ist": 100,
+        "umverpackung_dicht": true,
+        "primaerpackmittel_erfasst_kuerzel": "skn"
+      }
     },
     "materialbereitstellung_bulk": {
       "status": "completed",
-      "ma2Kuerzel": "ret",
-      "ma2Timestamp": "2025-07-21T10:18:54.746Z",
+      "ma2Kuerzel": "lma",
+      "ma2Timestamp": "2025-07-23T21:57:46.659Z",
       "validationOK": true,
       "validatedQuestions": [
         "produktbezeichnung_bulk_ist",
@@ -245,23 +194,49 @@
         "verfall_bulk_ist",
         "bulkgebinde_liste",
         "bulk_erfasst_kuerzel"
-      ]
+      ],
+      "validatedAnswers": {
+        "produktbezeichnung_bulk_ist": "Cannabis Holigen T30 BL, 1g",
+        "artikelnr_bulk_ist": "19602049",
+        "charge_bulk_ist": "25031329",
+        "verfall_bulk_ist": "2025-03-27",
+        "bulkgebinde_liste": [
+          {
+            "anzahl": 8,
+            "gebindegroesse": 500,
+            "probenzug_verwendet": false,
+            "dicht_sauber": true
+          },
+          {
+            "anzahl": 1,
+            "gebindegroesse": 412,
+            "probenzug_verwendet": true,
+            "dicht_sauber": true
+          }
+        ],
+        "bulk_erfasst_kuerzel": "skn"
+      }
     },
     "materialbereitstellung_abschluss": {
       "status": "completed",
-      "ma2Kuerzel": "rte",
-      "ma2Timestamp": "2025-07-21T10:19:06.559Z",
+      "ma2Kuerzel": "ert",
+      "ma2Timestamp": "2025-07-23T21:58:33.393Z",
       "validationOK": true,
       "validatedQuestions": [
         "materialbereitstellung_bemerkungen",
         "materialbereitstellung_ma1_kuerzel",
         "materialbereitstellung_ma2_kuerzel"
-      ]
+      ],
+      "validatedAnswers": {
+        "materialbereitstellung_bemerkungen": "-",
+        "materialbereitstellung_ma1_kuerzel": "skn",
+        "materialbereitstellung_ma2_kuerzel": "lma"
+      }
     },
     "line_clearing": {
       "status": "completed",
-      "ma2Kuerzel": "er",
-      "ma2Timestamp": "2025-07-21T10:33:26.142Z",
+      "ma2Kuerzel": "skn",
+      "ma2Timestamp": "2025-07-23T21:59:09.882Z",
       "validationOK": true,
       "validatedQuestions": [
         "raumtemperatur_ist_matrix",
@@ -269,128 +244,67 @@
         "line_clearing_erfolgt",
         "line_clearing_bemerkungen",
         "line_clearing_erfasst"
-      ]
+      ],
+      "validatedAnswers": {
+        "raumtemperatur_ist_matrix": [
+          {
+            "raumtemperatur_eq47": 20,
+            "raumtemperatur_eq48": 19.9
+          }
+        ],
+        "material_entspricht": true,
+        "line_clearing_erfolgt": true,
+        "line_clearing_bemerkungen": "-",
+        "line_clearing_erfasst": "lma"
+      }
     },
     "vorbereitung_waage": {
       "status": "completed",
-      "ma2Kuerzel": "345",
-      "ma2Timestamp": "2025-07-21T10:36:45.664Z",
+      "ma2Kuerzel": "ert",
+      "ma2Timestamp": "2025-07-23T22:00:00.268Z",
       "validationOK": true,
       "validatedQuestions": [
         "vorbereitung_waage_matrix",
         "waage_bemerkungen",
         "waage_erfasst"
-      ]
+      ],
+      "validatedAnswers": {
+        "vorbereitung_waage_matrix": {
+          "ausgerichtet": {
+            "eq73": "Ja",
+            "eq61": "Ja"
+          },
+          "kalibrierung": {
+            "eq73": "Ja",
+            "eq61": "Ja"
+          },
+          "waegung": {
+            "eq73": "Ja",
+            "eq61": "Ja"
+          }
+        },
+        "waage_bemerkungen": "-",
+        "waage_erfasst": "lma"
+      }
     },
     "vorbereitung_schweissgeraet": {
       "status": "completed",
-      "ma2Kuerzel": "sdf",
-      "ma2Timestamp": "2025-07-21T11:31:39.398Z",
+      "ma2Kuerzel": "ert",
+      "ma2Timestamp": "2025-07-23T22:00:24.471Z",
       "validationOK": true,
       "validatedQuestions": [
         "verschweiss_programm_ist",
         "schweissgeraet_funktioniert",
         "schweissgeraet_bemerkungen",
         "schweissgeraet_erfasst"
-      ]
-    },
-    "kumulierte_restmenge_gmp": {
-      "status": "completed",
-      "ma2Kuerzel": "ert",
-      "ma2Timestamp": "2025-07-23T09:26:05.400Z",
-      "validationOK": true,
-      "validatedQuestions": [
-        "restmenge_eingang",
-        "restmenge_bemerkung",
-        "probenzug_freigabe_vorgesehen",
-        "probegebinde_liste",
-        "probegebinde_gekennzeichnet",
-        "anzahl_zwischenprodukte",
-        "bruch_abfuellung_restmenge",
-        "gebinde_abgewogen_verschweisst_ma1"
-      ]
-    },
-    "restmenge_final_gmp": {
-      "status": "completed",
-      "ma2Kuerzel": "ert",
-      "ma2Timestamp": "2025-07-23T09:27:42.094Z",
-      "validationOK": true,
-      "validatedQuestions": [
-        "bruch_finale_restmenge_ma1",
-        "finale_restmenge_bruch_gewicht",
-        "finale_restmenge_abgefuellt_ma1",
-        "testbeutel_verschweisst_ma1",
-        "primaerpackmittel_uebrig_ma1",
-        "anzahl_primaerpackmittel_uebrig",
-        "restmenge_ende_uhrzeit",
-        "restmenge_bemerkungen",
-        "restmenge_erfasst"
-      ]
-    },
-    "nachbereitung_reinraum": {
-      "status": "completed",
-      "ma2Kuerzel": "dfg",
-      "ma2Timestamp": "2025-07-23T15:06:47.318Z",
-      "validationOK": true,
-      "validatedQuestions": [
-        "line_clearing_nachbereitung_ma1",
-        "nachbereitung_reinraum_bemerkungen",
-        "nachbereitung_reinraum_erfasst"
-      ]
-    },
-    "einlagern": {
-      "status": "completed",
-      "ma2Kuerzel": "dfg",
-      "ma2Timestamp": "2025-07-23T15:07:30.242Z",
-      "validationOK": true,
-      "validatedQuestions": [
-        "zwischenprodukte_verpackt_ma1",
-        "zwischenprodukte_produktionslager_ma1",
-        "proben_gekennzeichnet_ma1",
-        "proben_produktionslager_ma1",
-        "restmenge_gekennzeichnet_ma1",
-        "restmenge_sperrlager_ma1",
-        "muell_gekennzeichnet_ma1",
-        "muell_sperrlager_ma1"
-      ]
-    },
-    "einlagern_eingangsmaterialien_gmp": {
-      "status": "completed",
-      "ma2Kuerzel": "dfg",
-      "ma2Timestamp": "2025-07-23T15:08:06.933Z",
-      "validationOK": true,
-      "validatedQuestions": [
-        "ungeoefffnete_bulkbeutel_ma1",
-        "primaerpackmittel_ungeöffnet_ma1",
-        "primaerpackmittel_geoeffnet_ma1",
-        "eingangsmaterialien_begruendung",
-        "nachbereitung_bemerkung",
-        "nachbereitung_erfasst"
-      ]
-    },
-    "nachbereitung_reinraum_final": {
-      "status": "completed",
-      "ma2Kuerzel": "ert",
-      "ma2Timestamp": "2025-07-23T15:14:37.160Z",
-      "validationOK": true,
-      "validatedQuestions": [
-        "eurocontainer_bereitgestellt",
-        "zwischenreinigung_durchgefuehrt",
-        "nachbereitung_reinraum_final_bemerkung"
-      ]
-    },
-    "abschluss": {
-      "status": "completed",
-      "ma2Kuerzel": "fgh",
-      "ma2Timestamp": "2025-07-23T15:17:10.846Z",
-      "validationOK": true,
-      "validatedQuestions": [
-        "geraete_logbuecher_eingetragen",
-        "probenzugsplan_ausgefuellt",
-        "abschluss_bemerkung",
-        "abschluss_erfasst"
-      ]
+      ],
+      "validatedAnswers": {
+        "verschweiss_programm_ist": "b",
+        "schweissgeraet_funktioniert": true,
+        "schweissgeraet_bemerkungen": "-",
+        "schweissgeraet_erfasst": "mgö"
+      }
     }
   },
-  "currentPageNo": 22
+  "currentPageNo": 13
 }
