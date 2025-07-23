@@ -13,7 +13,7 @@ import { readJsonFile, writeJsonFile } from '../utils/exportUtils';
 interface SurveyComponentProps {
   productionOrder: ProductionOrder;
   initialAnswers: SurveyAnswer;
-  onSurveyComplete: (answers: SurveyAnswer) => void;
+  onSurveyComplete: (answers: SurveyAnswer, validation?: Record<string, any>) => void;
   onBackToOrder: () => void;
 }
 
@@ -182,7 +182,7 @@ const SurveyComponent: React.FC<SurveyComponentProps> = ({
     surveyModel.data = { ...orderData };
     surveyModel.onComplete.add(async (sender) => {
       const answers = sender.data;
-      onSurveyComplete(answers);
+      onSurveyComplete(answers, validationData);
       
       try {
         // Speichere als abgeschlossenes Survey - neue saubere Struktur

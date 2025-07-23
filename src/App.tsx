@@ -28,12 +28,13 @@ const App: React.FC = () => {
     setAppState('survey');
   };
 
-  const handleSurveyComplete = (answers: SurveyAnswer) => {
+  const handleSurveyComplete = (answers: SurveyAnswer, validation?: Record<string, any>) => {
     setSurveyAnswers(answers);
     const exportData: ExportData = {
       productionOrder: currentOrder!,
       answers,
-      completedAt: new Date().toISOString()
+      completedAt: new Date().toISOString(),
+      validation
     };
     setExportData(exportData);
     setAppState('completed');

@@ -339,6 +339,43 @@ const generatePDFContent = (data: ExportData): string => {
                 border-radius: 4px;
                 margin-bottom: 1rem;
             }
+            .validation-section {
+                background: #f8f9fa;
+                border-left: 4px solid #28a745;
+                padding: 1rem;
+                margin-top: 1rem;
+                border-radius: 4px;
+            }
+            .validation-section h4 {
+                color: #28a745;
+                margin-top: 0;
+                margin-bottom: 1rem;
+                font-size: 1rem;
+            }
+            .validation-data {
+                background: white;
+                padding: 0.5rem;
+                border-radius: 3px;
+                border: 1px solid #dee2e6;
+            }
+            .subsection {
+                margin-bottom: 1rem;
+                padding-left: 1rem;
+            }
+            .subsection h4 {
+                color: #34495e;
+                margin-bottom: 0.5rem;
+                font-size: 0.95rem;
+                border-left: 3px solid #3498db;
+                padding-left: 0.5rem;
+            }
+            .panel-data {
+                background: #f8f9fa;
+                padding: 1rem;
+                border-radius: 4px;
+                margin-bottom: 1rem;
+                border: 1px solid #e9ecef;
+            }
             .footer {
                 margin-top: 2rem;
                 padding-top: 1rem;
@@ -347,12 +384,48 @@ const generatePDFContent = (data: ExportData): string => {
                 color: #666;
                 font-size: 0.9rem;
             }
+            .table-container {
+                margin: 1rem 0;
+                overflow-x: auto;
+            }
+            .data-table {
+                width: 100%;
+                border-collapse: collapse;
+                margin: 0.5rem 0;
+                font-size: 0.9rem;
+            }
+            .data-table th {
+                background-color: #f8f9fa;
+                border: 1px solid #dee2e6;
+                padding: 0.5rem;
+                text-align: left;
+                font-weight: bold;
+                color: #495057;
+            }
+            .data-table td {
+                border: 1px solid #dee2e6;
+                padding: 0.5rem;
+                text-align: left;
+            }
+            .data-table tr:nth-child(even) {
+                background-color: #f8f9fa;
+            }
+            .data-table tr:hover {
+                background-color: #e9ecef;
+            }
             @media print {
                 .no-print {
                     display: none;
                 }
                 body {
                     font-size: 12px;
+                }
+                .data-table {
+                    font-size: 10px;
+                }
+                .data-table th,
+                .data-table td {
+                    padding: 0.25rem;
                 }
             }
         </style>
@@ -394,9 +467,7 @@ const generatePDFContent = (data: ExportData): string => {
             </div>
         </div>
         
-        ${generateSectionContent(fullAnswers)}
-        
-        ${validation ? generateValidationContent(validation) : ''}
+        ${generateSectionContent(fullAnswers, validation)}
         
         <div class="footer">
             <p>Erstellt am: ${formatDateForDisplay(completedAt)}</p>
@@ -407,211 +478,716 @@ const generatePDFContent = (data: ExportData): string => {
   `;
 };
 
-const generateSectionContent = (answers: any): string => {
-  const sections = [
-    {
-      title: 'Vorbereitung',
-      items: [
-        { key: 'eingangsmaterial_ausgebucht', label: 'Eingangsmaterialien ausgebucht' },
-        { key: 'leiter_herstellung_kuerzel', label: 'Leiter der Herstellung' },
-        { key: 'beginn_datum', label: 'Datum der Herstellung' },
-        { key: 'beginn_uhrzeit', label: 'Uhrzeit Beginn' }
-      ]
-    },
-    {
-      title: 'Kennzeichnung',
-      items: [
-        { key: 'eurocontainer_vorhanden', label: 'Eurocontainer vorhanden' },
-        { key: 'probenbehälter_freigabe_vorhanden', label: 'Probenbehälter (Freigabe) vorhanden' },
-        { key: 'probenbehälter_ipk_vorhanden', label: 'Probenbehälter (IPK) vorhanden' },
-        { key: 'gebinde_rueckfragen_vorhanden', label: 'Gebinde für Rückfragen vorhanden' },
-        { key: 'gebinde_restmenge_vorhanden', label: 'Gebinde für Restmenge vorhanden' },
-        { key: 'behälter_bruch_vorhanden', label: 'Behälter für Bruch vorhanden' }
-      ]
-    },
-    {
-      title: 'Reinraum Vorbereitung',
-      items: [
-        { key: 'line_clearing_ma1', label: 'Line Clearing MA1' },
-        { key: 'line_clearing_ma2', label: 'Line Clearing MA2' },
-        { key: 'line_clearing_erfasst', label: 'Line Clearing erfasst durch' },
-        { key: 'line_clearing_geprueft', label: 'Line Clearing geprüft durch' },
-        { key: 'reinigung_ma1', label: 'Reinigung MA1' },
-        { key: 'reinigung_ma2', label: 'Reinigung MA2' },
-        { key: 'reinigung_erfasst', label: 'Reinigung erfasst durch' },
-        { key: 'reinigung_geprueft', label: 'Reinigung geprüft durch' }
-      ]
-    },
-    {
-      title: 'Materialbereitstellung',
-      items: [
-        { key: 'identität_geprüft', label: 'Identität geprüft' },
-        { key: 'unversehrtheit_geprüft', label: 'Unversehrtheit geprüft' },
-        { key: 'haltbarkeit_geprüft', label: 'Haltbarkeit geprüft' },
-        { key: 'kennzeichnung_geprüft', label: 'Kennzeichnung geprüft' },
-        { key: 'materialkontrolle_erfasst', label: 'Materialkontrolle erfasst durch' },
-        { key: 'materialkontrolle_geprueft', label: 'Materialkontrolle geprüft durch' }
-      ]
-    },
-    {
-      title: 'Pause',
-      items: [
-        { key: 'pause_durchgeführt', label: 'Pause durchgeführt' },
-        { key: 'pause_beginn', label: 'Pause Beginn' },
-        { key: 'pause_ende', label: 'Pause Ende' },
-        { key: 'pause_kontrolle_ma1', label: 'Pause Kontrolle MA1' },
-        { key: 'pause_kontrolle_ma2', label: 'Pause Kontrolle MA2' }
-      ]
-    },
-    {
-      title: 'Probenzug und Restmenge',
-      items: [
-        { key: 'kumulierte_restmenge', label: 'Kumulierte Restmenge (g)' },
-        { key: 'probe1_menge', label: 'Probe 1 Menge (g)' },
-        { key: 'probe2_menge', label: 'Probe 2 Menge (g)' },
-        { key: 'probenzug_erfasst', label: 'Probenzug erfasst durch' },
-        { key: 'probenzug_geprueft', label: 'Probenzug geprüft durch' }
-      ]
-    },
-    {
-      title: 'Abschluss',
-      items: [
-        { key: 'ende_datum', label: 'Ende Datum' },
-        { key: 'ende_uhrzeit', label: 'Ende Uhrzeit' },
-        { key: 'abschließende_bemerkung', label: 'Abschließende Bemerkung' },
-        { key: 'abschluss_erfasst', label: 'Abschluss erfasst durch' },
-        { key: 'abschluss_geprueft', label: 'Abschluss geprüft durch' }
-      ]
-    }
-  ];
-
+const generateSectionContent = (answers: any, validation?: Record<string, any>): string => {
   let content = '';
   
-  sections.forEach(section => {
-    content += `<div class="section">
-      <h3>${section.title}</h3>`;
+  // Funktion zum sicheren Abrufen von Werten
+  const getValue = (obj: any, path: string) => {
+    return path.split('.').reduce((current, key) => {
+      return current && current[key] !== undefined ? current[key] : undefined;
+    }, obj);
+  };
+  
+  // Funktion zum Formatieren von Werten
+  const formatValue = (value: any): string => {
+    if (value === undefined || value === null || value === '') {
+      return '';
+    }
     
-    section.items.forEach(item => {
-      const value = answers[item.key];
+    if (typeof value === 'boolean') {
+      return value ? '<span class="checkbox-yes">✓ Ja</span>' : '<span class="checkbox-no">✗ Nein</span>';
+    }
+    
+    if (typeof value === 'object') {
+      return JSON.stringify(value);
+    }
+    
+    return String(value);
+  };
+
+  // Funktion zum Erstellen von Tabellen für Matrix-Daten
+  const createTable = (data: any[], headers: string[], title?: string): string => {
+    if (!data || data.length === 0) return '';
+    
+    let tableHtml = '';
+    if (title) {
+      tableHtml += `<div class="subsection"><h4>${title}</h4>`;
+    }
+    
+    tableHtml += `
+      <div class="table-container">
+        <table class="data-table">
+          <thead>
+            <tr>`;
+    
+    headers.forEach(header => {
+      tableHtml += `<th>${header}</th>`;
+    });
+    
+    tableHtml += `
+            </tr>
+          </thead>
+          <tbody>`;
+    
+    data.forEach((row, index) => {
+      tableHtml += `<tr>`;
+      headers.forEach(header => {
+        // Verwende den exakten Header-Namen als Schlüssel
+        const value = row[header] || '';
+        tableHtml += `<td>${formatValue(value)}</td>`;
+      });
+      tableHtml += `</tr>`;
+    });
+    
+    tableHtml += `
+          </tbody>
+        </table>
+      </div>`;
+    
+    if (title) {
+      tableHtml += `</div>`;
+    }
+    
+    return tableHtml;
+  };
+
+  // Funktion zum Erstellen von Sektionen mit Validierung und Matrix-Daten
+  const createSection = (title: string, items: Array<{key: string, label: string}>, validationGroupName?: string, validationData?: Record<string, any>): string => {
+    let sectionContent = `<div class="section"><h3>${title}</h3>`;
+    let hasItems = false;
+    
+    // Hauptantworten (aber nicht für Matrix-Daten, die in Tabellen dargestellt werden)
+    items.forEach(item => {
+      const value = getValue(answers, item.key);
       if (value !== undefined && value !== null && value !== '') {
-        let displayValue = value;
+        // Überspringe Matrix-Daten, die in Tabellen dargestellt werden
+        const skipForTable = [
+          'mitarbeiter_liste',
+          'schleusen_ist_druck_matrix',
+          'arbeitsraum_ist_druck_matrix',
+          'kennzeichnung_matrix_allgemein',
+          'bulkgebinde_liste',
+          'raumtemperatur_ist_matrix',
+          'vorbereitung_waage_matrix',
+          'bulk_beutel_production',
+          'probegebinde_liste',
+          'produktliste',
+          'schleusung_eurocontainer',
+          'mitarbeiter_signaturen'
+        ];
         
-        if (typeof value === 'boolean') {
-          displayValue = value ? 
-            '<span class="checkbox-yes">✓ Ja</span>' : 
-            '<span class="checkbox-no">✗ Nein</span>';
+        if (!skipForTable.includes(item.key)) {
+          hasItems = true;
+          sectionContent += `
+            <div class="answer-item">
+              <span class="answer-question">${item.label}:</span>
+              <span class="answer-value">${formatValue(value)}</span>
+            </div>`;
         }
+      }
+    });
+
+    // Spezielle Behandlung für Matrix-Daten in den jeweiligen Sektionen
+    if (title === '1.2 Beteiligte Mitarbeiter' && answers.mitarbeiter_liste) {
+      const headers = ['Name', 'Kürzel'];
+      const tableData = answers.mitarbeiter_liste.map((mitarbeiter: any, index: number) => ({
+        'Name': mitarbeiter.name || `Mitarbeiter ${index + 1}`,
+        'Kürzel': mitarbeiter.kuerzel || 'Kein Kürzel'
+      }));
+      sectionContent += createTable(tableData, headers, 'Liste beteiligte Mitarbeiter');
+      hasItems = true;
+    }
+
+    if (title === '1.5 Raumstatus überprüfen') {
+      // Schleusen-Druck-Matrix
+      if (answers.schleusen_ist_druck_matrix && answers.schleusen_ist_druck_matrix.length > 0) {
+        const headers = ['EQ', 'Druck (mbar)'];
+        const tableData: any[] = [];
         
-        content += `
+        answers.schleusen_ist_druck_matrix.forEach((druck: any, index: number) => {
+          Object.entries(druck).forEach(([key, value]) => {
+            if (value !== undefined && value !== null && value !== '') {
+              tableData.push({
+                'EQ': key.replace('eq', 'EQ '),
+                'Druck (mbar)': value
+              });
+            }
+          });
+        });
+        
+        if (tableData.length > 0) {
+          sectionContent += createTable(tableData, headers, 'Schleusen-Druck-Messungen');
+          hasItems = true;
+        }
+      }
+
+      // Arbeitsraum-Druck-Matrix
+      if (answers.arbeitsraum_ist_druck_matrix && answers.arbeitsraum_ist_druck_matrix.length > 0) {
+        const headers = ['EQ', 'Druck (mbar)'];
+        const tableData: any[] = [];
+        
+        answers.arbeitsraum_ist_druck_matrix.forEach((druck: any, index: number) => {
+          Object.entries(druck).forEach(([key, value]) => {
+            if (value !== undefined && value !== null && value !== '') {
+              tableData.push({
+                'EQ': key.replace('eq', 'EQ '),
+                'Druck (mbar)': value
+              });
+            }
+          });
+        });
+        
+        if (tableData.length > 0) {
+          sectionContent += createTable(tableData, headers, 'Arbeitsraum-Druck-Messungen');
+          hasItems = true;
+        }
+      }
+    }
+
+    if (title === '1.4 Vorbereitung Kennzeichnung' && answers.kennzeichnung_matrix_allgemein) {
+      const headers = ['Kennzeichnung', 'Status'];
+      const tableData = Object.entries(answers.kennzeichnung_matrix_allgemein).map(([key, value]) => ({
+        'Kennzeichnung': key.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase()),
+        'Status': formatValue(value)
+      }));
+      sectionContent += createTable(tableData, headers, 'Kennzeichnungs-Übersicht');
+      hasItems = true;
+    }
+
+    if (title === '2.2 Materialbereitstellung - Bulkmaterial' && answers.bulkgebinde_liste) {
+      const headers = ['Gebinde', 'Anzahl', 'Gebindegröße', 'Probenzug verwendet', 'Dicht/Sauber'];
+      const tableData = answers.bulkgebinde_liste.map((gebinde: any, index: number) => ({
+        'Gebinde': `Gebinde ${index + 1}`,
+        'Anzahl': gebinde.anzahl || '',
+        'Gebindegröße': gebinde.gebindegroesse || gebinde.gebindeGroesse || '',
+        'Probenzug verwendet': formatValue(gebinde.probenzug_verwendet || gebinde.probenzugVerwendet || false),
+        'Dicht/Sauber': formatValue(gebinde.dicht_sauber || gebinde.dichtSauber || false)
+      }));
+      sectionContent += createTable(tableData, headers, 'Bulkgebinde-Übersicht');
+      hasItems = true;
+    }
+
+    if (title === '3.1 Vorbereitung Reinraum - Line Clearing' && answers.raumtemperatur_ist_matrix) {
+      const headers = ['EQ', 'Temperatur (°C)'];
+      const tableData: any[] = [];
+      
+      answers.raumtemperatur_ist_matrix.forEach((temp: any, index: number) => {
+        Object.entries(temp).forEach(([key, value]) => {
+          if (value !== undefined && value !== null && value !== '') {
+            tableData.push({
+              'EQ': key.replace('raumtemperatur_', 'Raumtemperatur ').replace('eq', 'EQ '),
+              'Temperatur (°C)': value
+            });
+          }
+        });
+      });
+      
+      if (tableData.length > 0) {
+        sectionContent += createTable(tableData, headers, 'Raumtemperatur-Messungen');
+        hasItems = true;
+      }
+    }
+
+    if (title === '3.2 Vorbereitung Waage' && answers.vorbereitung_waage_matrix) {
+      const headers = ['Kategorie', 'Gerät', 'Status'];
+      const tableData: any[] = [];
+      
+      Object.entries(answers.vorbereitung_waage_matrix).forEach(([kategorie, geraete]) => {
+        if (typeof geraete === 'object' && geraete !== null) {
+          Object.entries(geraete).forEach(([geraet, status]) => {
+            if (status !== undefined && status !== null && status !== '') {
+              tableData.push({
+                'Kategorie': kategorie.charAt(0).toUpperCase() + kategorie.slice(1),
+                'Gerät': geraet.replace('eq', 'EQ '),
+                'Status': formatValue(status)
+              });
+            }
+          });
+        }
+      });
+      
+      if (tableData.length > 0) {
+        sectionContent += createTable(tableData, headers, 'Waage-Vorbereitung');
+        hasItems = true;
+      }
+    }
+
+
+
+    if (title === '4.5 Kumulierte Restmenge und Probenzug' && answers.probegebinde_liste) {
+      const headers = ['Probegebinde', 'Anzahl', 'Inhalt'];
+      const tableData = answers.probegebinde_liste.map((gebinde: any, index: number) => ({
+        'Probegebinde': `Probegebinde ${index + 1}`,
+        'Anzahl': gebinde.anzahl || '',
+        'Inhalt': gebinde.inhalt || ''
+      }));
+      sectionContent += createTable(tableData, headers, 'Probegebinde-Übersicht');
+      hasItems = true;
+    }
+
+    if (title === '6.1 Schleusung - Eurocontainer') {
+      // Verwende die Haupt-Produktliste, falls vorhanden, sonst die Schleusung-Produktliste
+      let produktliste = null;
+      let tableTitle = '';
+      
+      if (answers.produktliste && answers.produktliste.length > 0) {
+        produktliste = answers.produktliste;
+        tableTitle = 'Eurocontainer Produktliste';
+      } else if (answers.schleusung_eurocontainer && answers.schleusung_eurocontainer.produktliste) {
+        produktliste = answers.schleusung_eurocontainer.produktliste;
+        tableTitle = 'Schleusung Eurocontainer';
+      }
+      
+      if (produktliste && produktliste.length > 0) {
+        const headers = ['Produkt', 'Art Inhalt', 'Anzahl Gebinde', 'Plomben Nr.', 'Plomben Nr. 2'];
+        const tableData = produktliste.map((produkt: any, index: number) => ({
+          'Produkt': `Produkt ${index + 1}`,
+          'Art Inhalt': produkt.art_inhalt || produkt.artInhalt || '',
+          'Anzahl Gebinde': produkt.anzahl_gebinde || produkt.anzahlGebinde || '',
+          'Plomben Nr.': produkt.plomben_nr || produkt.plombenNr || '',
+          'Plomben Nr. 2': produkt.plomben_nr_2 || produkt.plombenNr2 || ''
+        }));
+        sectionContent += createTable(tableData, headers, tableTitle);
+        hasItems = true;
+      }
+    }
+
+    if (title === '10.2 Herstellung abgeschlossen' && answers.mitarbeiter_signaturen) {
+      const headers = ['Mitarbeiter', 'Signatur'];
+      const tableData = answers.mitarbeiter_signaturen.map((mitarbeiter: any, index: number) => ({
+        'Mitarbeiter': mitarbeiter.name || `Mitarbeiter ${index + 1}`,
+        'Signatur': mitarbeiter.signatur || 'Keine Signatur'
+      }));
+      sectionContent += createTable(tableData, headers, 'Mitarbeiter-Signaturen');
+      hasItems = true;
+    }
+    
+    // Vier-Augen-Validierung hinzufügen, falls vorhanden
+    if (validationGroupName && validationData && validationData[validationGroupName]) {
+      const validationGroupData = validationData[validationGroupName];
+      sectionContent += `<div class="validation-section">
+        <h4>✓ Vier-Augen-Validierung: ${title}</h4>
+        <div class="validation-data">`;
+      
+      if (validationGroupData.ma2Kuerzel) {
+        sectionContent += `
           <div class="answer-item">
-            <span class="answer-question">${item.label}:</span>
-            <span class="answer-value">${displayValue}</span>
+            <span class="answer-question">Geprüft durch:</span>
+            <span class="answer-value">${validationGroupData.ma2Kuerzel}</span>
           </div>`;
       }
-    });
-    
-    content += `</div>`;
-  });
-
-  // Add dynamic panel data
-  if (answers.mitarbeiter_liste && answers.mitarbeiter_liste.length > 0) {
-    content += `<div class="section">
-      <h3>Beteiligte Mitarbeiter</h3>
-      <div class="panel-data">`;
-    
-    answers.mitarbeiter_liste.forEach((mitarbeiter: any, index: number) => {
-      content += `
-        <div class="answer-item">
-          <span class="answer-question">Mitarbeiter ${index + 1}:</span>
-          <span class="answer-value">${mitarbeiter.name} (${mitarbeiter.kuerzel})</span>
-        </div>`;
-    });
-    
-    content += `</div></div>`;
-  }
-
-  if (answers.bulk_beutel_production && answers.bulk_beutel_production.length > 0) {
-    content += `<div class="section">
-      <h3>Bulk-Beutel Produktion</h3>`;
-    
-    answers.bulk_beutel_production.forEach((bulk: any, index: number) => {
-      content += `
-        <div class="subsection">
-          <h4>Bulk-Beutel ${index + 1}</h4>
-          <div class="panel-data">
-            <div class="answer-item">
-              <span class="answer-question">Bulk-Nummer:</span>
-              <span class="answer-value">${bulk.bulk_nummer || 'Nicht angegeben'}</span>
-            </div>
-            <div class="answer-item">
-              <span class="answer-question">Ist-Inhalt (g):</span>
-              <span class="answer-value">${bulk.ist_inhalt || 'Nicht angegeben'}</span>
-            </div>
-            <div class="answer-item">
-              <span class="answer-question">Anzahl Gebinde:</span>
-              <span class="answer-value">${bulk.anzahl_gebinde || 'Nicht angegeben'}</span>
-            </div>
-            <div class="answer-item">
-              <span class="answer-question">Füllmenge gesamt (g):</span>
-              <span class="answer-value">${bulk.fuellmenge_gesamt || 'Nicht angegeben'}</span>
-            </div>
-            <div class="answer-item">
-              <span class="answer-question">Restmenge Bulk (g):</span>
-              <span class="answer-value">${bulk.restmenge_bulk || 'Nicht angegeben'}</span>
-            </div>
-          </div>
-        </div>`;
-    });
-    
-    content += `</div>`;
-  }
-
-  return content;
-};
-
-const generateValidationContent = (validation: Record<string, any>): string => {
-  let content = '<div class="section"><h3>Vier-Augen-Validierungen</h3>';
-  
-  Object.entries(validation).forEach(([groupName, groupData]) => {
-    if (groupData && typeof groupData === 'object') {
-      content += `<div class="subsection">
-        <h4>${groupName}</h4>
-        <div class="panel-data">`;
       
-      if (groupData.ma2Kuerzel) {
-        content += `<div class="answer-item">
-          <span class="answer-question">Geprüft durch:</span>
-          <span class="answer-value">${groupData.ma2Kuerzel}</span>
-        </div>`;
+      if (validationGroupData.ma2Timestamp) {
+        sectionContent += `
+          <div class="answer-item">
+            <span class="answer-question">Prüfungszeitpunkt:</span>
+            <span class="answer-value">${formatDateForDisplay(validationGroupData.ma2Timestamp)}</span>
+          </div>`;
       }
       
-      if (groupData.ma2Timestamp) {
-        content += `<div class="answer-item">
-          <span class="answer-question">Prüfungszeitpunkt:</span>
-          <span class="answer-value">${formatDateForDisplay(groupData.ma2Timestamp)}</span>
-        </div>`;
-      }
-      
-      if (groupData.ma2Kommentar) {
-        content += `<div class="answer-item">
-          <span class="answer-question">Kommentar:</span>
-          <span class="answer-value">${groupData.ma2Kommentar}</span>
-        </div>`;
-      }
-      
-      if (groupData.ma2PruefungOK !== undefined) {
-        content += `<div class="answer-item">
-          <span class="answer-question">Prüfung OK:</span>
-          <span class="answer-value">${groupData.ma2PruefungOK ? 
+      if (validationGroupData.validationOK !== undefined) {
+        sectionContent += `
+          <div class="answer-item">
+            <span class="answer-question">Prüfung OK:</span>
+            <span class="answer-value">${validationGroupData.validationOK ? 
             '<span class="checkbox-yes">✓ Ja</span>' : 
-            '<span class="checkbox-no">✗ Nein</span>'}</span>
-        </div>`;
+              '<span class="checkbox-no">✗ Nein</span>'}</span>
+          </div>`;
+        }
+        
+      if (validationGroupData.ma2Kommentar) {
+        sectionContent += `
+          <div class="answer-item">
+            <span class="answer-question">Kommentar:</span>
+            <span class="answer-value">${validationGroupData.ma2Kommentar}</span>
+          </div>`;
       }
       
-      content += `</div></div>`;
+      sectionContent += `</div></div>`;
+    }
+
+    // Spezielle Behandlung für Produktionslauf-Daten (alle Antworten zu den Bulk-Beuteln)
+    if (title === '4.2 Primärverpackung - Produktionslauf' && answers.bulk_beutel_production) {
+      // Detaillierte Produktionslauf-Tabelle mit allen Feldern
+      const headers = ['Beutel', 'Bulk Nummer', 'Soll Inhalt', 'Ist Inhalt', 'Anzahl Gebinde', 'Blüten unauffällig', 'Gebinde korrekt abgewogen', 'Restmenge'];
+      const tableData = answers.bulk_beutel_production.map((bulk: any, index: number) => ({
+        'Beutel': `Beutel ${index + 1}`,
+        'Bulk Nummer': bulk.bulk_nummer || bulk.bulkNummer || '',
+        'Soll Inhalt': bulk.soll_inhalt || bulk.sollInhalt || '',
+        'Ist Inhalt': bulk.ist_inhalt || bulk.istInhalt || '',
+        'Anzahl Gebinde': bulk.anzahl_gebinde || bulk.anzahlGebinde || '',
+        'Blüten unauffällig': formatValue(bulk.blueten_unauffaellig || bulk.bluetenUnauffaellig || false),
+        'Gebinde korrekt abgewogen': formatValue(bulk.gebinde_korrekt_abgewogen || bulk.gebindeKorrektAbgewogen || false),
+        'Restmenge': bulk.restmenge || bulk.restMenge || ''
+      }));
+      sectionContent += createTable(tableData, headers, 'Detaillierter Produktionslauf - Bulk-Beutel');
+      hasItems = true;
+    }
+    
+    if (hasItems) {
+      sectionContent += '</div>';
+    }
+    
+    return sectionContent;
+  };
+  
+  // Mapping von Feldnamen zu lesbaren Labels
+  const fieldLabels: Record<string, string> = {
+    // Allgemeine Felder
+    'eingangsmaterial_ausgebucht': 'Eingangsmaterialien ausgebucht',
+    'mitarbeiter_liste': 'Mitarbeiter Liste',
+    'beginn_datum': 'Datum der Herstellung',
+    'beginn_uhrzeit': 'Uhrzeit Beginn',
+    'kennzeichnung_matrix_allgemein': 'Kennzeichnung Matrix Allgemein',
+    'schleusen_ist_druck_matrix': 'Schleusen Ist Druck Matrix',
+    'arbeitsraum_ist_druck_matrix': 'Arbeitsraum Ist Druck Matrix',
+    'reinraumstatus_ampel': 'Reinraumstatus Ampel',
+    'reinraum_nutzbar': 'Reinraum nutzbar',
+    'reinraum_nutzbar_kommentar': 'Reinraum nutzbar Kommentar',
+    'bulkprodukt_name_rot': 'Bulkprodukt Name (bei rot)',
+    
+    // Materialbereitstellung
+    'produktbezeichnung_ist': 'Produktbezeichnung Ist',
+    'artikelnummer_ist': 'Artikelnummer Ist',
+    'charge_ist': 'Charge Ist',
+    'anzahl_ist': 'Anzahl Ist',
+    'umverpackung_dicht': 'Umverpackung dicht',
+    'umverpackung_dicht_kommentar': 'Umverpackung dicht Kommentar',
+    'primaerpackmittel_erfasst_kuerzel': 'Primärpackmittel erfasst Kürzel',
+    'bemerkungen': 'Bemerkungen',
+    'produktbezeichnung_bulk_ist': 'Produktbezeichnung Bulk Ist',
+    'artikelnr_bulk_ist': 'Artikelnummer Bulk Ist',
+    'charge_bulk_ist': 'Charge Bulk Ist',
+    'verfall_bulk_ist': 'Verfall Bulk Ist',
+    'bulkgebinde_liste': 'Bulkgebinde Liste',
+    'bulk_erfasst_kuerzel': 'Bulk erfasst Kürzel',
+    'bulk_bemerkungen': 'Bulk Bemerkungen',
+    'schablonen_eq_ist': 'Schablonen EQ Ist',
+    'schablonen_charge_ist': 'Schablonen Charge Ist',
+    'schablonen_anzahl_ist': 'Schablonen Anzahl Ist',
+    'schablonen_sollangaben_ok': 'Schablonen Sollangaben OK',
+    'schablonen_verpackung_ok': 'Schablonen Verpackung OK',
+    'schablonen_bemerkung': 'Schablonen Bemerkung',
+    'materialbereitstellung_bemerkungen': 'Materialbereitstellung Bemerkungen',
+    'materialbereitstellung_ma1_kuerzel': 'Materialbereitstellung MA1 Kürzel',
+    'materialbereitstellung_ma2_kuerzel': 'Materialbereitstellung MA2 Kürzel',
+    
+    // Reinraum Vorbereitung
+    'material_entspricht': 'Material entspricht',
+    'raumtemperatur_ist_matrix': 'Raumtemperatur Ist Matrix',
+    'line_clearing_erfolgt': 'Line Clearing erfolgt',
+    'line_clearing_bemerkungen': 'Line Clearing Bemerkungen',
+    'line_clearing_erfasst': 'Line Clearing erfasst',
+    'vorbereitung_waage_matrix': 'Vorbereitung Waage Matrix',
+    'waage_bemerkungen': 'Waage Bemerkungen',
+    'waage_erfasst': 'Waage erfasst',
+    'verschweiss_programm_ist': 'Verschweißprogramm Ist',
+    'schweissgeraet_funktioniert': 'Schweißgerät funktioniert',
+    'schweissgeraet_bemerkungen': 'Schweißgerät Bemerkungen',
+    'schweissgeraet_erfasst': 'Schweißgerät erfasst',
+    
+    // Produktion
+    'herstellung_beginn_uhrzeit': 'Herstellung Beginn Uhrzeit',
+    'bulk_beutel_production': 'Bulk Beutel Production',
+    'pause_durchgefuehrt': 'Pause durchgeführt',
+    'pause_beginn': 'Pause Beginn',
+    'pause_ende': 'Pause Ende',
+    'pause_bemerkung': 'Pause Bemerkung',
+    'pause_ma1_signatur': 'Pause MA1 Signatur',
+    'pause_ma2_signatur': 'Pause MA2 Signatur',
+    'kalibrierung_nach_pause_eq60': 'Kalibrierung nach Pause EQ60',
+    'kalibrierung_nach_pause_eq61': 'Kalibrierung nach Pause EQ61',
+    'verschweiss_nach_pause_ist': 'Verschweiß nach Pause Ist',
+    'schweissgeraet_nach_pause_ok': 'Schweißgerät nach Pause OK',
+    'pause_nachbereitung_bemerkungen': 'Pause Nachbereitung Bemerkungen',
+    'pause_nachbereitung_erfasst': 'Pause Nachbereitung erfasst',
+    'restmenge_eingang': 'Restmenge Eingang',
+    'restmenge_bemerkung': 'Restmenge Bemerkung',
+    'probenzug_ipk_abgefuellt_ma1': 'Probenzug IPK abgefüllt MA1',
+    'gesamtmenge_probenzug_ipk': 'Gesamtmenge Probenzug IPK',
+    'probenzug_freigabe_vorgesehen': 'Probenzug Freigabe vorgesehen',
+    'probegebinde_liste': 'Probegebinde Liste',
+    'probegebinde_gekennzeichnet': 'Probegebinde gekennzeichnet',
+    'anzahl_zwischenprodukte': 'Anzahl Zwischenprodukte',
+    'bruch_abfuellung_restmenge': 'Bruch Abfüllung Restmenge',
+    'gebinde_abgewogen_verschweisst_ma1': 'Gebinde abgewogen verschweißt MA1',
+    'bruch_aussortiertes_material_ma1': 'Bruch aussortiertes Material MA1',
+    'aussortiertes_material_bruch': 'Aussortiertes Material Bruch',
+    'finale_restmenge_gewicht': 'Finale Restmenge Gewicht',
+    'bruch_aussortiert_abgefuellt_ma1': 'Bruch aussortiert abgefüllt MA1',
+    'finale_restmenge_abgefuellt_ma1': 'Finale Restmenge abgefüllt MA1',
+    'blueten_an_qk': 'Blüten an QK',
+    'testbeutel_verschweisst_ma1': 'Testbeutel verschweißt MA1',
+    'primaerpackmittel_uebrig_ma1': 'Primärpackmittel übrig MA1',
+    'anzahl_primaerpackmittel_uebrig': 'Anzahl Primärpackmittel übrig',
+    'restmenge_ende_uhrzeit': 'Restmenge Ende Uhrzeit',
+    'restmenge_bemerkungen': 'Restmenge Bemerkungen',
+    'restmenge_erfasst': 'Restmenge erfasst',
+    'bruch_finale_restmenge_ma1': 'Bruch finale Restmenge MA1',
+    'finale_restmenge_bruch_gewicht': 'Finale Restmenge Bruch Gewicht',
+    
+    // Schleusung
+    'produktliste': 'Produktliste',
+    'herstellprozess_ma1_signatur': 'Herstellprozess MA1 Signatur',
+    'herstellprozess_ma2_signatur': 'Herstellprozess MA2 Signatur',
+    'schleusung_eurocontainer': 'Schleusung Eurocontainer',
+    
+    // Nachbereitung
+    'line_clearing_nachbereitung_ma1': 'Line Clearing Nachbereitung MA1',
+    'nachbereitung_reinraum_bemerkungen': 'Nachbereitung Reinraum Bemerkungen',
+    'nachbereitung_reinraum_erfasst': 'Nachbereitung Reinraum erfasst',
+    
+    // Einlagern
+    'zwischenprodukte_verpackt_ma1': 'Zwischenprodukte verpackt MA1',
+    'zwischenprodukte_produktionslager_ma1': 'Zwischenprodukte Produktionslager MA1',
+    'proben_gekennzeichnet_ma1': 'Proben gekennzeichnet MA1',
+    'proben_produktionslager_ma1': 'Proben Produktionslager MA1',
+    'restmenge_gekennzeichnet_ma1': 'Restmenge gekennzeichnet MA1',
+    'restmenge_sperrlager_ma1': 'Restmenge Sperrlager MA1',
+    'muell_gekennzeichnet_ma1': 'Müll gekennzeichnet MA1',
+    'muell_sperrlager_ma1': 'Müll Sperrlager MA1',
+    'ungeoefffnete_bulkbeutel_ma1': 'Ungeöffnete Bulkbeutel MA1',
+    'primaerpackmittel_ungeöffnet_ma1': 'Primärpackmittel ungeöffnet MA1',
+    'primaerpackmittel_geoeffnet_ma1': 'Primärpackmittel geöffnet MA1',
+    'eingangsmaterialien_begruendung': 'Eingangsmaterialien Begründung',
+    'schablonen_entfernt_ma1': 'Schablonen entfernt MA1',
+    'schablonen_begruendung': 'Schablonen Begründung',
+    'nachbereitung_bemerkung': 'Nachbereitung Bemerkung',
+    'nachbereitung_erfasst': 'Nachbereitung erfasst',
+    
+    // Nachbereitung Final
+    'eurocontainer_bereitgestellt': 'Eurocontainer bereitgestellt',
+    'zwischenreinigung_durchgefuehrt': 'Zwischenreinigung durchgeführt',
+    'nachbereitung_reinraum_final_bemerkung': 'Nachbereitung Reinraum Final Bemerkung',
+    
+    // Abschluss
+    'geraete_logbuecher_eingetragen': 'Geräte Logbücher eingetragen',
+    'probenzugsplan_ausgefuellt': 'Probenzugsplan ausgefüllt',
+    'abschluss_bemerkung': 'Abschluss Bemerkung',
+    'abschluss_erfasst': 'Abschluss erfasst',
+    'mitarbeiter_signaturen': 'Mitarbeiter Signaturen'
+  };
+  
+  // Mapping von Feldnamen zu Survey-Seiten
+  const fieldToPageMapping: Record<string, string> = {
+    // 1.1 Information Produktionsauftrag
+    'eingangsmaterial_ausgebucht': '1.1 Information Produktionsauftrag',
+    
+    // 1.2 Beteiligte Mitarbeiter
+    'mitarbeiter_liste': '1.2 Beteiligte Mitarbeiter',
+    
+    // 1.3 Datum + Uhrzeit Beginn
+    'beginn_datum': '1.3 Datum + Uhrzeit Beginn',
+    'beginn_uhrzeit': '1.3 Datum + Uhrzeit Beginn',
+    
+    // 1.4 Vorbereitung Kennzeichnung
+    'kennzeichnung_matrix_allgemein': '1.4 Vorbereitung Kennzeichnung',
+    
+    // 1.5 Raumstatus überprüfen
+    'schleusen_ist_druck_matrix': '1.5 Raumstatus überprüfen',
+    'arbeitsraum_ist_druck_matrix': '1.5 Raumstatus überprüfen',
+    'reinraumstatus_ampel': '1.5 Raumstatus überprüfen',
+    'reinraum_nutzbar': '1.5 Raumstatus überprüfen',
+    'reinraum_nutzbar_kommentar': '1.5 Raumstatus überprüfen',
+    'bulkprodukt_name_rot': '1.5 Raumstatus überprüfen',
+    
+    // 2.1 Materialbereitstellung - Primärpackmittel
+    'produktbezeichnung_ist': '2.1 Materialbereitstellung - Primärpackmittel',
+    'artikelnummer_ist': '2.1 Materialbereitstellung - Primärpackmittel',
+    'charge_ist': '2.1 Materialbereitstellung - Primärpackmittel',
+    'anzahl_ist': '2.1 Materialbereitstellung - Primärpackmittel',
+    'umverpackung_dicht': '2.1 Materialbereitstellung - Primärpackmittel',
+    'umverpackung_dicht_kommentar': '2.1 Materialbereitstellung - Primärpackmittel',
+    'primaerpackmittel_erfasst_kuerzel': '2.1 Materialbereitstellung - Primärpackmittel',
+    'bemerkungen': '2.1 Materialbereitstellung - Primärpackmittel',
+    
+    // 2.2 Materialbereitstellung - Bulkmaterial
+    'produktbezeichnung_bulk_ist': '2.2 Materialbereitstellung - Bulkmaterial',
+    'artikelnr_bulk_ist': '2.2 Materialbereitstellung - Bulkmaterial',
+    'charge_bulk_ist': '2.2 Materialbereitstellung - Bulkmaterial',
+    'verfall_bulk_ist': '2.2 Materialbereitstellung - Bulkmaterial',
+    'bulkgebinde_liste': '2.2 Materialbereitstellung - Bulkmaterial',
+    'bulk_erfasst_kuerzel': '2.2 Materialbereitstellung - Bulkmaterial',
+    'bulk_bemerkungen': '2.2 Materialbereitstellung - Bulkmaterial',
+    
+    // 2.3 Zubehör - Schablonen/GMP
+    'schablonen_eq_ist': '2.3 Zubehör - Schablonen/GMP',
+    'schablonen_charge_ist': '2.3 Zubehör - Schablonen/GMP',
+    'schablonen_anzahl_ist': '2.3 Zubehör - Schablonen/GMP',
+    'schablonen_sollangaben_ok': '2.3 Zubehör - Schablonen/GMP',
+    'schablonen_verpackung_ok': '2.3 Zubehör - Schablonen/GMP',
+    'schablonen_bemerkung': '2.3 Zubehör - Schablonen/GMP',
+    
+    // 2.4 Materialbereitstellung - Abschluss
+    'materialbereitstellung_bemerkungen': '2.4 Materialbereitstellung - Abschluss',
+    'materialbereitstellung_ma1_kuerzel': '2.4 Materialbereitstellung - Abschluss',
+    'materialbereitstellung_ma2_kuerzel': '2.4 Materialbereitstellung - Abschluss',
+    
+    // 3.1 Vorbereitung Reinraum - Line Clearing
+    'material_entspricht': '3.1 Vorbereitung Reinraum - Line Clearing',
+    'raumtemperatur_ist_matrix': '3.1 Vorbereitung Reinraum - Line Clearing',
+    'line_clearing_erfolgt': '3.1 Vorbereitung Reinraum - Line Clearing',
+    'line_clearing_bemerkungen': '3.1 Vorbereitung Reinraum - Line Clearing',
+    'line_clearing_erfasst': '3.1 Vorbereitung Reinraum - Line Clearing',
+    
+    // 3.2 Vorbereitung Waage
+    'vorbereitung_waage_matrix': '3.2 Vorbereitung Waage',
+    'waage_bemerkungen': '3.2 Vorbereitung Waage',
+    'waage_erfasst': '3.2 Vorbereitung Waage',
+    
+    // 3.3 Vorbereitung Kammerschweißgerät
+    'verschweiss_programm_ist': '3.3 Vorbereitung Kammerschweißgerät',
+    'schweissgeraet_funktioniert': '3.3 Vorbereitung Kammerschweißgerät',
+    'schweissgeraet_bemerkungen': '3.3 Vorbereitung Kammerschweißgerät',
+    'schweissgeraet_erfasst': '3.3 Vorbereitung Kammerschweißgerät',
+    
+    // 4.1 Herstellprozess - Beginn
+    'herstellung_beginn_uhrzeit': '4.1 Herstellprozess - Beginn',
+    
+    // 4.2 Primärverpackung - Produktionslauf
+    'bulk_beutel_production': '4.2 Primärverpackung - Produktionslauf',
+    
+    // 4.3 Pause
+    'pause_durchgefuehrt': '4.3 Pause',
+    
+    // 4.4 Pause Details
+    'pause_beginn': '4.4 Pause Details',
+    'pause_ende': '4.4 Pause Details',
+    'pause_bemerkung': '4.4 Pause Details',
+    'pause_ma1_signatur': '4.4 Pause Details',
+    'pause_ma2_signatur': '4.4 Pause Details',
+    'kalibrierung_nach_pause_eq60': '4.4 Pause Details',
+    'kalibrierung_nach_pause_eq61': '4.4 Pause Details',
+    'verschweiss_nach_pause_ist': '4.4 Pause Details',
+    'schweissgeraet_nach_pause_ok': '4.4 Pause Details',
+    'pause_nachbereitung_bemerkungen': '4.4 Pause Details',
+    'pause_nachbereitung_erfasst': '4.4 Pause Details',
+    
+    // 4.5 Kumulierte Restmenge und Probenzug
+    'restmenge_eingang': '4.5 Kumulierte Restmenge und Probenzug',
+    'restmenge_bemerkung': '4.5 Kumulierte Restmenge und Probenzug',
+    'probenzug_ipk_abgefuellt_ma1': '4.5 Kumulierte Restmenge und Probenzug',
+    'gesamtmenge_probenzug_ipk': '4.5 Kumulierte Restmenge und Probenzug',
+    'probenzug_freigabe_vorgesehen': '4.5 Kumulierte Restmenge und Probenzug',
+    'probegebinde_liste': '4.5 Kumulierte Restmenge und Probenzug',
+    'probegebinde_gekennzeichnet': '4.5 Kumulierte Restmenge und Probenzug',
+    'anzahl_zwischenprodukte': '4.5 Kumulierte Restmenge und Probenzug',
+    'bruch_abfuellung_restmenge': '4.5 Kumulierte Restmenge und Probenzug',
+    'gebinde_abgewogen_verschweisst_ma1': '4.5 Kumulierte Restmenge und Probenzug',
+    
+    // 5.1 Restmenge
+    'bruch_aussortiertes_material_ma1': '5.1 Restmenge',
+    'aussortiertes_material_bruch': '5.1 Restmenge',
+    'finale_restmenge_gewicht': '5.1 Restmenge',
+    'bruch_aussortiert_abgefuellt_ma1': '5.1 Restmenge',
+    'bruch_finale_restmenge_ma1': '5.1 Restmenge',
+    'finale_restmenge_bruch_gewicht': '5.1 Restmenge',
+    'finale_restmenge_abgefuellt_ma1': '5.1 Restmenge',
+    'blueten_an_qk': '5.1 Restmenge',
+    'testbeutel_verschweisst_ma1': '5.1 Restmenge',
+    'primaerpackmittel_uebrig_ma1': '5.1 Restmenge',
+    'anzahl_primaerpackmittel_uebrig': '5.1 Restmenge',
+    'restmenge_ende_uhrzeit': '5.1 Restmenge',
+    'restmenge_bemerkungen': '5.1 Restmenge',
+    'restmenge_erfasst': '5.1 Restmenge',
+    
+    // 6.1 Schleusung - Eurocontainer
+    'produktliste': '6.1 Schleusung - Eurocontainer',
+    'herstellprozess_ma1_signatur': '6.1 Schleusung - Eurocontainer',
+    'herstellprozess_ma2_signatur': '6.1 Schleusung - Eurocontainer',
+    'schleusung_eurocontainer': '6.1 Schleusung - Eurocontainer',
+    
+    // 7.1 Schleusung und Nachbereitung Reinraum
+    'line_clearing_nachbereitung_ma1': '7.1 Schleusung und Nachbereitung Reinraum',
+    'nachbereitung_reinraum_bemerkungen': '7.1 Schleusung und Nachbereitung Reinraum',
+    'nachbereitung_reinraum_erfasst': '7.1 Schleusung und Nachbereitung Reinraum',
+    
+    // 8.1 Einlagern
+    'zwischenprodukte_verpackt_ma1': '8.1 Einlagern',
+    'zwischenprodukte_produktionslager_ma1': '8.1 Einlagern',
+    'proben_gekennzeichnet_ma1': '8.1 Einlagern',
+    'proben_produktionslager_ma1': '8.1 Einlagern',
+    'restmenge_gekennzeichnet_ma1': '8.1 Einlagern',
+    'restmenge_sperrlager_ma1': '8.1 Einlagern',
+    'muell_gekennzeichnet_ma1': '8.1 Einlagern',
+    'muell_sperrlager_ma1': '8.1 Einlagern',
+    
+    // 8.2 Einlagern - Nicht genutzte Eingangsmaterialien
+    'ungeoefffnete_bulkbeutel_ma1': '8.2 Einlagern - Nicht genutzte Eingangsmaterialien',
+    'primaerpackmittel_ungeöffnet_ma1': '8.2 Einlagern - Nicht genutzte Eingangsmaterialien',
+    'primaerpackmittel_geoeffnet_ma1': '8.2 Einlagern - Nicht genutzte Eingangsmaterialien',
+    'eingangsmaterialien_begruendung': '8.2 Einlagern - Nicht genutzte Eingangsmaterialien',
+    'schablonen_entfernt_ma1': '8.2 Einlagern - Nicht genutzte Eingangsmaterialien',
+    'schablonen_begruendung': '8.2 Einlagern - Nicht genutzte Eingangsmaterialien',
+    'nachbereitung_bemerkung': '8.2 Einlagern - Nicht genutzte Eingangsmaterialien',
+    'nachbereitung_erfasst': '8.2 Einlagern - Nicht genutzte Eingangsmaterialien',
+    
+    // 9.1 Nachbereitung Reinraum - Final
+    'eurocontainer_bereitgestellt': '9.1 Nachbereitung Reinraum - Final',
+    'zwischenreinigung_durchgefuehrt': '9.1 Nachbereitung Reinraum - Final',
+    'nachbereitung_reinraum_final_bemerkung': '9.1 Nachbereitung Reinraum - Final',
+    
+    // 10.1 Abschluss
+    'geraete_logbuecher_eingetragen': '10.1 Abschluss',
+    'probenzugsplan_ausgefuellt': '10.1 Abschluss',
+    'abschluss_bemerkung': '10.1 Abschluss',
+    'abschluss_erfasst': '10.1 Abschluss',
+    
+    // 10.2 Herstellung abgeschlossen
+    'mitarbeiter_signaturen': '10.2 Herstellung abgeschlossen'
+  };
+  
+  // Gruppiere Felder nach Survey-Seiten
+  const pageGroups: Record<string, Array<{key: string, label: string}>> = {};
+  
+  Object.keys(answers).forEach(field => {
+    const pageTitle = fieldToPageMapping[field];
+    if (pageTitle) {
+      if (!pageGroups[pageTitle]) {
+        pageGroups[pageTitle] = [];
+      }
+      const label = fieldLabels[field] || field.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase());
+      pageGroups[pageTitle].push({ key: field, label });
     }
   });
   
-  content += '</div>';
+  // Mapping von Seitentiteln zu ValidationGroup-Namen
+  const validationGroupMapping: Record<string, string> = {
+    '1.1 Information Produktionsauftrag': 'eingangsmaterialien_ausbuchen',
+    '1.2 Beteiligte Mitarbeiter': 'eingangsmaterialien_ausbuchen',
+    '1.3 Datum + Uhrzeit Beginn': 'eingangsmaterialien_ausbuchen',
+    '1.4 Vorbereitung Kennzeichnung': 'eingangsmaterialien_ausbuchen',
+    '1.5 Raumstatus überprüfen': 'raumstatus_pruefen',
+    '2.1 Materialbereitstellung - Primärpackmittel': 'materialbereitstellung_primaerpackmittel',
+    '2.2 Materialbereitstellung - Bulkmaterial': 'materialbereitstellung_bulk',
+    '2.3 Zubehör - Schablonen/GMP': 'zubehör_schablonen',
+    '2.4 Materialbereitstellung - Abschluss': 'materialbereitstellung_abschluss',
+    '3.1 Vorbereitung Reinraum - Line Clearing': 'line_clearing',
+    '3.2 Vorbereitung Waage': 'vorbereitung_waage',
+    '3.3 Vorbereitung Kammerschweißgerät': 'vorbereitung_schweissgeraet',
+    '4.1 Herstellprozess - Beginn': 'bulk_beutel_production',
+    '4.2 Primärverpackung - Produktionslauf': 'bulk_beutel_production',
+    '4.3 Pause': 'pause_details',
+    '4.4 Pause Details': 'pause_details',
+    '4.5 Kumulierte Restmenge und Probenzug': 'kumulierte_restmenge_gmp',
+    '5.1 Restmenge': 'restmenge_final_gmp',
+    '6.1 Schleusung - Eurocontainer': 'bulk_beutel_production',
+    '7.1 Schleusung und Nachbereitung Reinraum': 'nachbereitung_reinraum',
+    '8.1 Einlagern': 'einlagern',
+    '8.2 Einlagern - Nicht genutzte Eingangsmaterialien': 'einlagern_eingangsmaterialien_gmp',
+    '9.1 Nachbereitung Reinraum - Final': 'nachbereitung_reinraum_final',
+    '10.1 Abschluss': 'abschluss',
+    '10.2 Herstellung abgeschlossen': 'abschluss'
+  };
+  
+  // Erstelle Sektionen für alle Seiten mit Inhalt
+  Object.entries(pageGroups).forEach(([pageTitle, items]) => {
+    if (items.length > 0) {
+      const validationGroupName = validationGroupMapping[pageTitle];
+      content += createSection(pageTitle, items, validationGroupName, validation);
+    }
+  });
+
   return content;
 };
+

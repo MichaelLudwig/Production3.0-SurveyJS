@@ -22,7 +22,7 @@
     },
     {
       "name": "beteiligte_mitarbeiter",
-      "title": "1.3 Beteiligte Mitarbeiter",
+      "title": "1.2 Beteiligte Mitarbeiter",
       "elements": [
         {
           "type": "paneldynamic",
@@ -53,7 +53,7 @@
     },
     {
       "name": "datum_uhrzeit_beginn",
-      "title": "1.4 Datum + Uhrzeit Beginn",
+      "title": "1.3 Datum + Uhrzeit Beginn",
       "elements": [
         {
           "type": "text",
@@ -73,7 +73,7 @@
     },
     {
       "name": "kennzeichnung_vorbereitung",
-      "title": "1.5 Vorbereitung Kennzeichnung",
+      "title": "1.4 Vorbereitung Kennzeichnung",
       "elements": [
         {
           "type": "html",
@@ -117,7 +117,7 @@
     },
     {
       "name": "raumstatus_pruefen",
-      "title": "1.6 Raumstatus überprüfen",
+      "title": "1.5 Raumstatus überprüfen",
       "elements": [
         {
           "type": "html",
@@ -1179,7 +1179,7 @@
     },
     {
       "name": "einlagern_eingangsmaterialien",
-      "title": "8.5 Einlagern - Nicht genutzte Eingangsmaterialien",
+      "title": "8.2 Einlagern - Nicht genutzte Eingangsmaterialien",
       "elements": [
         {
           "type": "radiogroup",
