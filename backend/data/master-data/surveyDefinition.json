@@ -745,6 +745,7 @@
           "name": "kalibrierung_nach_pause_eq60",
           "title": "Kalibrierung nach Pause [EQ-60]",
           "choices": ["Ja", "Nein", "Nicht zutreffend"],
+          "colCount": 3,
           "isRequired": true
         },
         {
@@ -752,6 +753,7 @@
           "name": "kalibrierung_nach_pause_eq61",
           "title": "Kalibrierung nach Pause [EQ-61]",
           "choices": ["Ja", "Nein", "Nicht zutreffend"],
+          "colCount": 3,
           "isRequired": true
         },
         {
@@ -802,19 +804,20 @@
           "title": "Bemerkung"
         },
         {
-          "type": "radiogroup",
-          "name": "probenzug_ipk_abgefuellt_ma1",
-          "title": "Probenzug IPK abgefüllt und gekennzeichnet (MA1)",
-          "choices": ["Ja", "Nein", "Nicht zutreffend"],
+          "type": "html",
+          "name": "probenzug_ipk_titel",
+          "html": "<h4>Nachbereitung und ggf. Probenzug IPK</h4>",
           "visibleIf": "{materialType} = 'GACP'"
         },
         {
           "type": "radiogroup",
-          "name": "probenzug_ipk_abgefuellt_ma2",
-          "title": "Probenzug IPK abgefüllt und gekennzeichnet (MA2)",
+          "name": "probenzug_ipk_abgefuellt_ma1",
+          "title": "Blüten aus Probenzug IPK in separates Behältnis abgefüllt, gekennzeichnet und in separaten Eurocontainer platziert?",
           "choices": ["Ja", "Nein", "Nicht zutreffend"],
+          "colCount": 3,
           "visibleIf": "{materialType} = 'GACP'"
         },
+
         {
           "type": "text",
           "name": "gesamtmenge_probenzug_ipk",
@@ -823,11 +826,9 @@
           "visibleIf": "{materialType} = 'GACP'"
         },
         {
-          "type": "radiogroup",
-          "name": "probenzug_ipk_bestaetigung_ma2",
-          "title": "Gesamtmenge Probenzug IPK - Bestätigung MA2",
-          "choices": ["Ja", "Nein", "Nicht zutreffend"],
-          "visibleIf": "{materialType} = 'GACP'"
+          "type": "html",
+          "name": "probenzug_Analytik_titel",
+          "html": "<h4>Probenzug Analytik</h4>"
         },
         {
           "type": "boolean",
@@ -836,36 +837,32 @@
           "isRequired": true
         },
         {
-          "type": "paneldynamic",
+          "type": "matrixdynamic",
           "name": "probegebinde_liste",
           "title": "Abgefüllte Probegebinde",
           "visibleIf": "{probenzug_freigabe_vorgesehen} = true",
-          "templateElements": [
-            {
-              "type": "text",
-              "name": "anzahl",
-              "title": "Anzahl",
-              "inputType": "number",
-              "isRequired": true
-            },
-            {
-              "type": "text",
-              "name": "inhalt",
-              "title": "Inhalt (g)",
-              "inputType": "number",
-              "isRequired": true
-            }
+          "columns": [
+            { "name": "anzahl", "title": "Anzahl", "cellType": "text", "inputType": "number", "isRequired": true },
+            { "name": "inhalt", "title": "Inhalt (g)", "cellType": "text", "inputType": "number", "step": 0.01, "isRequired": true }
           ],
-          "panelCount": 1,
-          "minPanelCount": 1,
-          "maxPanelCount": 5
+          "rowCount": 2,
+          "minRowCount": 2,
+          "maxRowCount": 2,
+          "addRowText": "Probe hinzufügen",
+          "removeRowText": "Entfernen"
         },
         {
           "type": "radiogroup",
           "name": "probegebinde_gekennzeichnet",
           "title": "Probegebinde gekennzeichnet und in separaten Eurocontainer platziert",
           "choices": ["Ja", "Nein", "Nicht zutreffend"],
+          "colCount": 3,
           "isRequired": true
+        },
+        {
+          "type": "html",
+          "name": "restmenge_titel",
+          "html": "<h4>Abfüllung Restmenge</h4>"
         },
         {
           "type": "text",
@@ -874,12 +871,7 @@
           "inputType": "number",
           "isRequired": true
         },
-        {
-          "type": "boolean",
-          "name": "zwischenprodukte_ueberpruefung_ma2",
-          "title": "Überprüfung Zwischenprodukte MA2",
-          "isRequired": true
-        },
+
         {
           "type": "text",
           "name": "bruch_abfuellung_restmenge",
@@ -890,14 +882,8 @@
         {
           "type": "boolean",
           "name": "gebinde_abgewogen_verschweisst_ma1",
-          "title": "Gebinde ordnungsgemäß abgewogen und verschweißt? (MA1)",
-          "isRequired": true
-        },
-        {
-          "type": "boolean",
-          "name": "gebinde_abgewogen_verschweisst_ma2",
-          "title": "Gebinde ordnungsgemäß abgewogen und verschweißt? (MA2)",
-          "isRequired": true
+          "title": "Gebinde ordnungsgemäß abgewogen und verschweißt?",
+                    "isRequired": true
         }
       ]
     },
@@ -907,87 +893,100 @@
       "elements": [
         {
           "type": "radiogroup",
-          "name": "bruch_finale_restmenge_ma1",
-          "title": "Gesamtmenge Bruch zur finalen Restmenge beigefügt (MA1)",
+          "name": "bruch_aussortiertes_material_ma1",
+          "title": "Gesamtmenge Bruch zum aussortierten Material hinzugefügt",
           "choices": ["Ja", "Nein", "Nicht zutreffend"],
-          "isRequired": true
+          "colCount": 3,
+          "isRequired": true,
+          "visibleIf": "{materialType} = 'GACP'"
         },
         {
-          "type": "radiogroup",
-          "name": "bruch_finale_restmenge_ma2",
-          "title": "Gesamtmenge Bruch zur finalen Restmenge beigefügt (MA2)",
-          "choices": ["Ja", "Nein", "Nicht zutreffend"],
-          "isRequired": true
+          "type": "text",
+          "name": "aussortiertes_material_bruch",
+          "title": "Aussortiertes Material inkl. Bruch (g)",
+          "inputType": "number",
+          "isRequired": true,
+          "visibleIf": "{materialType} = 'GACP'"
         },
         {
           "type": "text",
           "name": "finale_restmenge_gewicht",
-          "title": "Finale Restmenge (g) inkl. Bruch",
+          "title": "Finale Restmenge (g)",
           "inputType": "number",
-          "isRequired": true
-        },
-        {
-          "type": "boolean",
-          "name": "finale_restmenge_pruefung_ma2",
-          "title": "Finale Restmenge - Prüfung MA2",
-          "isRequired": true
+          "isRequired": true,
+          "visibleIf": "{materialType} = 'GACP'"
         },
         {
           "type": "radiogroup",
           "name": "bruch_aussortiert_abgefuellt_ma1",
-          "title": "Bruch und aussortiertes Material abgefüllt und gekennzeichnet (MA1)",
+          "title": "Bruch und aussortiertes Material in separates Behältnis abgefüllt und gekennzeichnet",
           "choices": ["Ja", "Nein", "Nicht zutreffend"],
+          "colCount": 3,
           "visibleIf": "{materialType} = 'GACP'"
         },
+
+
         {
           "type": "radiogroup",
-          "name": "bruch_aussortiert_abgefuellt_ma2",
-          "title": "Bruch und aussortiertes Material abgefüllt und gekennzeichnet (MA2)",
+          "name": "bruch_finale_restmenge_ma1",
+          "title": "Gesamtmenge Bruch zur finalen Restmenge beigefügt",
           "choices": ["Ja", "Nein", "Nicht zutreffend"],
-          "visibleIf": "{materialType} = 'GACP'"
-        },
-        {
-          "type": "boolean",
-          "name": "finale_restmenge_abgefuellt_ma1",
-          "title": "Finale Restmenge abgefüllt und gekennzeichnet (MA1)",
-          "isRequired": true
-        },
-        {
-          "type": "boolean",
-          "name": "finale_restmenge_abgefuellt_ma2",
-          "title": "Finale Restmenge abgefüllt und gekennzeichnet (MA2)",
-          "isRequired": true
-        },
-        {
-          "type": "boolean",
-          "name": "testbeutel_verschweisst_ma1",
-          "title": "Testbeutel verschweißt und Schweißnaht geprüft (MA1)",
-          "isRequired": true
-        },
-        {
-          "type": "boolean",
-          "name": "testbeutel_verschweisst_ma2",
-          "title": "Testbeutel verschweißt und Schweißnaht geprüft (MA2)",
-          "isRequired": true
-        },
-        {
-          "type": "boolean",
-          "name": "primaerpackmittel_uebrig_ma1",
-          "title": "Primärpackmittel mit ungeöffneter Umverpackung übrig? (MA1)",
-          "isRequired": true
+          "colCount": 3,
+          "isRequired": true,
+          "visibleIf": "{materialType} = 'GMP'"
         },
         {
           "type": "text",
-          "name": "anzahl_primaerpackmittel_uebrig",
-          "title": "Anzahl Primärpackmittel übrig",
+          "name": "finale_restmenge_bruch_gewicht",
+          "title": "Finale Restmenge (g) inkl. Bruch",
           "inputType": "number",
-          "visibleIf": "{primaerpackmittel_uebrig_ma1} = true"
+          "isRequired": true,
+          "visibleIf": "{materialType} = 'GMP'"
         },
+
+
         {
           "type": "boolean",
-          "name": "primaerpackmittel_uebrig_ma2",
-          "title": "Primärpackmittel übrig - Prüfung MA2",
+          "name": "finale_restmenge_abgefuellt_ma1",
+          "title": "Finale Restmenge in separates Behältnis abgefüllt und gekennzeichnet",
           "isRequired": true
+        },
+
+        {
+          "type": "radiogroup",
+          "name": "blueten_an_qk",
+          "title": "Blüten zur Rückfrage an QK in separates Behältnis überführt und gekennzeichnet",
+          "choices": ["Ja", "Nein", "Nicht zutreffend"],
+          "colCount": 3,
+          "visibleIf": "{materialType} = 'GACP'"
+        },
+
+        {
+          "type": "boolean",
+          "name": "testbeutel_verschweisst_ma1",
+          "title": "Einen leeren Testbeutel verschweißt, Prüfung der Schweißnaht optisch und durch Zug",
+          "isRequired": true
+        },
+        {
+          "type": "panel",
+          "name": "primaerpackmittel_uebrig_panel",
+          "elements": [
+            {
+              "type": "boolean",
+              "name": "primaerpackmittel_uebrig_ma1",
+              "title": "Primärpackmittel mit ungeöffneter Umverpackung übrig?",
+              "isRequired": true
+            },
+            {
+              "type": "text",
+              "name": "anzahl_primaerpackmittel_uebrig",
+              "title": "Anzahl Primärpackmittel übrig",
+              "inputType": "number",
+              "visibleIf": "{primaerpackmittel_uebrig_ma1} = true",
+              "isRequired": true,
+              "startWithNewLine": false
+            }
+          ]
         },
         {
           "type": "text",
@@ -1005,12 +1004,6 @@
           "type": "text",
           "name": "restmenge_erfasst",
           "title": "Mitarbeiterkürzel \"Erfasst\"",
-          "isRequired": true
-        },
-        {
-          "type": "text",
-          "name": "restmenge_geprueft",
-          "title": "Mitarbeiterkürzel \"Geprüft\"",
           "isRequired": true
         }
       ]
@@ -1247,6 +1240,7 @@
           "name": "ungeoefffnete_bulkbeutel_ma1",
           "title": "Ungeöffnete Bulkbeutel auf ursprünglichen Lagerplatz überführt (MA1)",
           "choices": ["Ja", "Nein", "Nicht zutreffend"],
+          "colCount": 3,
           "isRequired": true
         },
         {
@@ -1254,6 +1248,7 @@
           "name": "ungeoefffnete_bulkbeutel_ma2",
           "title": "Ungeöffnete Bulkbeutel auf ursprünglichen Lagerplatz überführt (MA2)",
           "choices": ["Ja", "Nein", "Nicht zutreffend"],
+          "colCount": 3,
           "isRequired": true
         },
         {
@@ -1261,6 +1256,7 @@
           "name": "primaerpackmittel_ungeöffnet_ma1",
           "title": "Primärpackmittel ungeöffnet auf ursprünglichen Lagerplatz überführt (MA1)",
           "choices": ["Ja", "Nein", "Nicht zutreffend"],
+          "colCount": 3,
           "isRequired": true
         },
         {
@@ -1268,6 +1264,7 @@
           "name": "primaerpackmittel_ungeöffnet_ma2",
           "title": "Primärpackmittel ungeöffnet auf ursprünglichen Lagerplatz überführt (MA2)",
           "choices": ["Ja", "Nein", "Nicht zutreffend"],
+          "colCount": 3,
           "isRequired": true
         },
         {
@@ -1275,6 +1272,7 @@
           "name": "primaerpackmittel_geoeffnet_ma1",
           "title": "Primärpackmittel geöffnet vernichtet (MA1)",
           "choices": ["Ja", "Nein", "Nicht zutreffend"],
+          "colCount": 3,
           "isRequired": true
         },
         {
@@ -1282,6 +1280,7 @@
           "name": "primaerpackmittel_geoeffnet_ma2",
           "title": "Primärpackmittel geöffnet vernichtet (MA2)",
           "choices": ["Ja", "Nein", "Nicht zutreffend"],
+          "colCount": 3,
           "isRequired": true
         },
         {
@@ -1337,6 +1336,7 @@
           "name": "eurocontainer_bereitgestellt",
           "title": "Leere, gereinigte Eurocontainer bereitgestellt",
           "choices": ["Ja", "Nein", "Nicht zutreffend"],
+          "colCount": 3,
           "isRequired": true
         },
         {
@@ -1344,6 +1344,7 @@
           "name": "zwischenreinigung_durchgefuehrt",
           "title": "Zwischenreinigung durchgeführt und dokumentiert",
           "choices": ["Ja", "Nein", "Nicht zutreffend"],
+          "colCount": 3,
           "isRequired": true
         }
       ]
@@ -1357,6 +1358,7 @@
           "name": "geraete_logbuecher_eingetragen",
           "title": "Nutzung aller eingesetzten Geräte in Logbücher eingetragen",
           "choices": ["Ja", "Nein", "Keine Geräte verwendet"],
+          "colCount": 3,
           "isRequired": true
         },
         {
@@ -1364,6 +1366,7 @@
           "name": "probenzugsplan_ausgefuellt",
           "title": "Probenzugsplan ausgefüllt",
           "choices": ["Ja", "Nein", "Nicht zutreffend"],
+          "colCount": 3,
           "isRequired": true
         },
         {

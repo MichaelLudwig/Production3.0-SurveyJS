@@ -104,7 +104,7 @@
     "validationType": "validation",
     "label": "Kürzel Mitarbeiter 2",
     "materialType": "ALL",
-    "questions": ["restmenge_eingang", "restmenge_bemerkung", "probenzug_ipk_abgefuellt_ma1", "probenzug_ipk_abgefuellt_ma2", "gesamtmenge_probenzug_ipk", "probenzug_ipk_bestaetigung_ma2", "probenzug_freigabe_vorgesehen", "probegebinde_liste", "probegebinde_gekennzeichnet", "anzahl_zwischenprodukte", "zwischenprodukte_ueberpruefung_ma2", "bruch_abfuellung_restmenge", "gebinde_abgewogen_verschweisst_ma1", "gebinde_abgewogen_verschweisst_ma2"]
+    "questions": ["restmenge_eingang", "restmenge_bemerkung", "probenzug_ipk_abgefuellt_ma1", "gesamtmenge_probenzug_ipk", "probenzug_freigabe_vorgesehen", "probegebinde_liste", "probegebinde_gekennzeichnet", "anzahl_zwischenprodukte", "bruch_abfuellung_restmenge", "gebinde_abgewogen_verschweisst_ma1"]
   },
   {
     "name": "restmenge_final",
