@@ -201,30 +201,55 @@ export async function completeSurvey(
 ): Promise<void> {
   try {
     const { orderId } = req.params;
-    const { answers, auditTrail } = req.body;
+    const { answers, auditTrail, productionOrder, completedAt } = req.body;
     
-    console.log(`[Surveys] POST /api/surveys/${orderId}/complete`);
+    console.log(`[Surveys] PUT /api/surveys/${orderId}/complete`);
+    console.log(`[Surveys] Received data:`, { 
+      hasAnswers: !!answers, 
+      hasAuditTrail: !!auditTrail,
+      hasProductionOrder: !!productionOrder,
+      completedAt 
+    });
     
-    const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+    const timestamp = completedAt || new Date().toISOString().replace(/[:.]/g, '-');
     const completedPath = getSurveyFilePath(orderId, 'completed', timestamp);
     const inProgressPath = getSurveyFilePath(orderId, 'inprogress');
     
-    // Create completed survey file
+    // Create completed survey file with full data structure
     const completedSurvey: SurveyFile = {
       orderId,
       timestamp: new Date().toISOString(),
       status: 'completed',
-      answers,
-      auditTrail
+      survey: answers, // Frontend sends as 'answers', we store as 'survey'
+      validation: auditTrail, // Frontend sends as 'auditTrail', we store as 'validation'
+      productionOrder: productionOrder // Include production order data
     };
     
     await writeJsonFile(completedPath, completedSurvey);
+    console.log(`[Surveys] Saved completed survey to: ${completedPath}`);
     
     // Remove in-progress file
     try {
       await deleteSurveyFile(`survey-${orderId}-inprogress.json`);
+      console.log(`[Surveys] Deleted in-progress file for order ${orderId}`);
     } catch (error) {
       console.warn(`[Surveys] Could not delete in-progress file: ${error}`);
+    }
+    
+    // Update order status to completed
+    try {
+      const ordersPath = 'data/orders/orders.json';
+      const orders = await readJsonFile(ordersPath);
+      const orderIndex = orders.findIndex((order: any) => order.id === parseInt(orderId));
+      
+      if (orderIndex !== -1) {
+        orders[orderIndex].status = 'completed';
+        orders[orderIndex].completedAt = new Date().toISOString();
+        await writeJsonFile(ordersPath, orders);
+        console.log(`[Surveys] Updated order ${orderId} status to completed`);
+      }
+    } catch (error) {
+      console.warn(`[Surveys] Could not update order status: ${error}`);
     }
     
     console.log(`[Surveys] Completed survey for order ${orderId}`);
@@ -234,6 +259,7 @@ export async function completeSurvey(
       message: 'Survey completed successfully'
     });
   } catch (error) {
+    console.error(`[Surveys] Error completing survey:`, error);
     next(error);
   }
 }

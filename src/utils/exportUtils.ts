@@ -135,8 +135,31 @@ export async function deleteSurveyFile(filename: string): Promise<void> {
 
 export const exportToJSON = async (data: ExportData): Promise<void> => {
   try {
+    // Versuche, die vollständigen Daten aus der Backend-Datei zu laden
+    let fullData = data;
+    
+    try {
+      // Lade die vollständigen Survey-Daten vom Backend
+      const response = await fetch(`http://localhost:3001/api/surveys/${data.productionOrder.id}/data`);
+      if (response.ok) {
+        const backendData = await response.json();
+        if (backendData.data) {
+          // Kombiniere Backend-Daten mit Frontend-Daten
+          fullData = {
+            ...data,
+            survey: backendData.data.survey || data.answers,
+            validation: backendData.data.validation || {},
+            productionOrder: backendData.data.productionOrder || data.productionOrder
+          };
+          console.log('[Export] Loaded full data from backend:', fullData);
+        }
+      }
+    } catch (error) {
+      console.warn('[Export] Could not load backend data, using frontend data only:', error);
+    }
+    
     const fileName = `Protokoll_${data.productionOrder.id}_${formatDateForFilename(data.completedAt)}.json`;
-    const jsonString = JSON.stringify(data, null, 2);
+    const jsonString = JSON.stringify(fullData, null, 2);
     
     const blob = new Blob([jsonString], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
@@ -209,7 +232,9 @@ const formatDateForDisplay = (dateString: string): string => {
 };
 
 const generatePDFContent = (data: ExportData): string => {
-  const { productionOrder, answers, completedAt } = data;
+  const { productionOrder, answers, completedAt, survey, validation } = data;
+  // Verwende die vollständigen Survey-Daten falls verfügbar
+  const fullAnswers = survey || answers;
   
   return `
     <!DOCTYPE html>
@@ -369,7 +394,9 @@ const generatePDFContent = (data: ExportData): string => {
             </div>
         </div>
         
-        ${generateSectionContent(answers)}
+        ${generateSectionContent(fullAnswers)}
+        
+        ${validation ? generateValidationContent(validation) : ''}
         
         <div class="footer">
             <p>Erstellt am: ${formatDateForDisplay(completedAt)}</p>

@@ -74,6 +74,8 @@ export interface ExportData {
   productionOrder: ProductionOrder;
   answers: SurveyAnswer;
   completedAt: string;
+  survey?: Record<string, any>; // Vollständige Survey-Daten vom Backend
+  validation?: Record<string, any>; // Validierungsdaten vom Backend
 }
 
 export type AppState = 'order-selection' | 'survey' | 'completed';

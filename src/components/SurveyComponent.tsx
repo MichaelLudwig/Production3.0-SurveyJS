@@ -183,18 +183,46 @@ const SurveyComponent: React.FC<SurveyComponentProps> = ({
     surveyModel.onComplete.add(async (sender) => {
       const answers = sender.data;
       onSurveyComplete(answers);
-      // Speichere als abgeschlossenes Survey - neue saubere Struktur
-      const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
-      const surveyAnswers = filterSurveyAnswers(answers);
-      await writeJsonFile(getSurveyCompletedPath(timestamp), {
-        orderId: productionOrder.id,
-        timestamp,
-        status: 'completed',
-        survey: surveyAnswers, // Nur Survey-Antworten
-        validation: validationData // Validierungsgruppen (finaler Stand)
-      });
-      // Lösche den in-progress-Stand
-      await writeJsonFile(getSurveyInProgressPath(), {});
+      
+      try {
+        // Speichere als abgeschlossenes Survey - neue saubere Struktur
+        const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+        const surveyAnswers = filterSurveyAnswers(answers);
+        
+        // Speichere lokal
+        await writeJsonFile(getSurveyCompletedPath(timestamp), {
+          orderId: productionOrder.id,
+          timestamp,
+          status: 'completed',
+          survey: surveyAnswers, // Nur Survey-Antworten
+          validation: validationData // Validierungsgruppen (finaler Stand)
+        });
+        
+        // Rufe Backend API auf
+        const response = await fetch(`/api/surveys/${productionOrder.id}/complete`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            answers: surveyAnswers,
+            auditTrail: validationData,
+            productionOrder: productionOrder,
+            completedAt: timestamp
+          })
+        });
+        
+        if (response.ok) {
+          console.log('[Survey] Backend completion API called successfully');
+        } else {
+          console.error('[Survey] Backend completion API failed:', response.statusText);
+        }
+        
+        // Lösche den in-progress-Stand
+        await writeJsonFile(getSurveyInProgressPath(), {});
+      } catch (error) {
+        console.error('[Survey] Error during survey completion:', error);
+      }
     });
     surveyModel.onCurrentPageChanged.add(async (sender) => {
       setCurrentPageIndex(sender.currentPageNo);

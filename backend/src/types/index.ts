@@ -79,6 +79,7 @@ export interface SurveyFile {
   // Neue saubere Struktur
   survey?: Record<string, any>; // Survey-Antworten
   validation?: Record<string, any>; // Validierungsgruppen
+  productionOrder?: ProductionOrder; // Produktionsauftrag-Daten
   
   // Legacy-Felder für Kompatibilität
   answers?: Record<string, SurveyAnswerItem>;
@@ -123,4 +124,6 @@ export interface SaveSurveyProgressRequest {
 export interface CompleteSurveyRequest {
   answers: SurveyAnswer;
   auditTrail: Record<string, any>;
+  productionOrder?: ProductionOrder;
+  completedAt?: string;
 }
