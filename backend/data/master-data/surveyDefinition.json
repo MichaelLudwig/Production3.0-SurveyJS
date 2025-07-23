@@ -1184,15 +1184,7 @@
         {
           "type": "radiogroup",
           "name": "ungeoefffnete_bulkbeutel_ma1",
-          "title": "Ungeöffnete Bulkbeutel auf ursprünglichen Lagerplatz überführt (MA1)",
-          "choices": ["Ja", "Nein", "Nicht zutreffend"],
-          "colCount": 3,
-          "isRequired": true
-        },
-        {
-          "type": "radiogroup",
-          "name": "ungeoefffnete_bulkbeutel_ma2",
-          "title": "Ungeöffnete Bulkbeutel auf ursprünglichen Lagerplatz überführt (MA2)",
+          "title": "Ungeöffnete Bulkbeutel auf ursprünglichen Lagerplatz überführt",
           "choices": ["Ja", "Nein", "Nicht zutreffend"],
           "colCount": 3,
           "isRequired": true
@@ -1200,15 +1192,7 @@
         {
           "type": "radiogroup",
           "name": "primaerpackmittel_ungeöffnet_ma1",
-          "title": "Primärpackmittel ungeöffnet auf ursprünglichen Lagerplatz überführt (MA1)",
-          "choices": ["Ja", "Nein", "Nicht zutreffend"],
-          "colCount": 3,
-          "isRequired": true
-        },
-        {
-          "type": "radiogroup",
-          "name": "primaerpackmittel_ungeöffnet_ma2",
-          "title": "Primärpackmittel ungeöffnet auf ursprünglichen Lagerplatz überführt (MA2)",
+          "title": "Primärpackmittel mit ungeöffneter Umverpackung: Auf ursprünglichen Lagerplatz überführt",
           "choices": ["Ja", "Nein", "Nicht zutreffend"],
           "colCount": 3,
           "isRequired": true
@@ -1216,15 +1200,7 @@
         {
           "type": "radiogroup",
           "name": "primaerpackmittel_geoeffnet_ma1",
-          "title": "Primärpackmittel geöffnet vernichtet (MA1)",
-          "choices": ["Ja", "Nein", "Nicht zutreffend"],
-          "colCount": 3,
-          "isRequired": true
-        },
-        {
-          "type": "radiogroup",
-          "name": "primaerpackmittel_geoeffnet_ma2",
-          "title": "Primärpackmittel geöffnet vernichtet (MA2)",
+          "title": "Primärpackmittel mit geöffneter Umverpackung: Vernichtet",
           "choices": ["Ja", "Nein", "Nicht zutreffend"],
           "colCount": 3,
           "isRequired": true
@@ -1235,16 +1211,15 @@
           "title": "Falls nein, bitte begründen"
         },
         {
-          "type": "boolean",
-          "name": "schablonen_entfernt_ma1",
-          "title": "Verwendete Schablonen entfernt und eingelagert (MA1)",
-          "visibleIf": "{materialType} = 'GACP'",
-          "isRequired": true
+          "type": "html",
+          "name": "sonstige_materialien_titel",
+          "html": "<h4>Sonstige Materialien</h4>",
+          "visibleIf": "{materialType} = 'GACP'"
         },
         {
           "type": "boolean",
-          "name": "schablonen_entfernt_ma2",
-          "title": "Verwendete Schablonen entfernt und eingelagert (MA2)",
+          "name": "schablonen_entfernt_ma1",
+          "title": "Verwendete Schablonen aus dem Reinraum entfernt und an der Sammelstelle für verunreinigte Schablonen eingelagert",
           "visibleIf": "{materialType} = 'GACP'",
           "isRequired": true
         },
@@ -1252,7 +1227,7 @@
           "type": "comment",
           "name": "schablonen_begruendung",
           "title": "Falls nein, bitte begründen",
-          "visibleIf": "{materialType} = 'GACP'"
+          "visibleIf": "{materialType} = 'GACP' and {schablonen_entfernt_ma1} = false"
         },
         {
           "type": "comment",
@@ -1262,13 +1237,7 @@
         {
           "type": "text",
           "name": "nachbereitung_erfasst",
-          "title": "Mitarbeiterkürzel \"Erfasst\"",
-          "isRequired": true
-        },
-        {
-          "type": "text",
-          "name": "nachbereitung_geprueft",
-          "title": "Mitarbeiterkürzel \"Geprüft\"",
+          "title": "Mitarbeiterkürzel",
           "isRequired": true
         }
       ]
@@ -1292,6 +1261,11 @@
           "choices": ["Ja", "Nein", "Nicht zutreffend"],
           "colCount": 3,
           "isRequired": true
+        },
+        {
+          "type": "comment",
+          "name": "nachbereitung_reinraum_final_bemerkung",
+          "title": "Bemerkung"
         }
       ]
     },
@@ -1323,13 +1297,7 @@
         {
           "type": "text",
           "name": "abschluss_erfasst",
-          "title": "Mitarbeiterkürzel \"Erfasst\"",
-          "isRequired": true
-        },
-        {
-          "type": "text",
-          "name": "abschluss_geprueft",
-          "title": "Mitarbeiterkürzel \"Geprüft\"",
+          "title": "Mitarbeiterkürzel",
           "isRequired": true
         }
       ]
@@ -1344,26 +1312,26 @@
           "html": "<h4>Liste der an der Produktion beteiligten Mitarbeiter</h4><p>Alle beteiligten Mitarbeiter bestätigen mit ihrer Signatur die ordnungsgemäße Durchführung des Produktionsprozesses.</p>"
         },
         {
-          "type": "paneldynamic",
+          "type": "matrixdynamic",
           "name": "mitarbeiter_signaturen",
           "title": "Mitarbeiter-Signaturen",
-          "templateElements": [
+          "columns": [
             {
-              "type": "text",
               "name": "name",
-              "title": "Name",
+              "title": "Mitarbeiter",
+              "cellType": "text",
               "isRequired": true
             },
             {
-              "type": "text",
               "name": "signatur",
               "title": "Signatur",
+              "cellType": "text",
               "isRequired": true
             }
           ],
-          "panelCount": 2,
-          "minPanelCount": 2,
-          "maxPanelCount": 10
+          "rowCount": 2,
+          "minRowCount": 2,
+          "maxRowCount": 10
         },
         {
           "type": "html",

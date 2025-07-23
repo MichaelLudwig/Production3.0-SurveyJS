@@ -1,6 +1,6 @@
 {
   "orderId": "2",
-  "timestamp": "2025-07-23T12:51:59.111Z",
+  "timestamp": "2025-07-23T15:19:43.307Z",
   "status": "in_progress",
   "survey": {
     "eingangsmaterial_ausgebucht": true,
@@ -163,7 +163,35 @@
       }
     ],
     "herstellprozess_ma1_signatur": "ert",
-    "herstellprozess_ma2_signatur": "ert"
+    "herstellprozess_ma2_signatur": "ert",
+    "line_clearing_nachbereitung_ma1": true,
+    "nachbereitung_reinraum_bemerkungen": "f",
+    "nachbereitung_reinraum_erfasst": "f",
+    "zwischenprodukte_verpackt_ma1": true,
+    "zwischenprodukte_produktionslager_ma1": true,
+    "proben_gekennzeichnet_ma1": true,
+    "proben_produktionslager_ma1": true,
+    "restmenge_gekennzeichnet_ma1": true,
+    "restmenge_sperrlager_ma1": true,
+    "muell_gekennzeichnet_ma1": true,
+    "muell_sperrlager_ma1": true,
+    "ungeoefffnete_bulkbeutel_ma1": "Ja",
+    "primaerpackmittel_ungeöffnet_ma1": "Ja",
+    "primaerpackmittel_geoeffnet_ma1": "Ja",
+    "eingangsmaterialien_begruendung": "fdg",
+    "nachbereitung_bemerkung": "df",
+    "nachbereitung_erfasst": "dfg",
+    "eurocontainer_bereitgestellt": "Ja",
+    "zwischenreinigung_durchgefuehrt": "Ja",
+    "nachbereitung_reinraum_final_bemerkung": "-",
+    "geraete_logbuecher_eingetragen": "Ja",
+    "probenzugsplan_ausgefuellt": "Ja",
+    "abschluss_bemerkung": "g",
+    "abschluss_erfasst": "g",
+    "mitarbeiter_signaturen": [
+      {},
+      {}
+    ]
   },
   "validation": {
     "eingangsmaterialien_ausbuchen": {
@@ -294,7 +322,71 @@
         "restmenge_bemerkungen",
         "restmenge_erfasst"
       ]
+    },
+    "nachbereitung_reinraum": {
+      "status": "completed",
+      "ma2Kuerzel": "dfg",
+      "ma2Timestamp": "2025-07-23T15:06:47.318Z",
+      "validationOK": true,
+      "validatedQuestions": [
+        "line_clearing_nachbereitung_ma1",
+        "nachbereitung_reinraum_bemerkungen",
+        "nachbereitung_reinraum_erfasst"
+      ]
+    },
+    "einlagern": {
+      "status": "completed",
+      "ma2Kuerzel": "dfg",
+      "ma2Timestamp": "2025-07-23T15:07:30.242Z",
+      "validationOK": true,
+      "validatedQuestions": [
+        "zwischenprodukte_verpackt_ma1",
+        "zwischenprodukte_produktionslager_ma1",
+        "proben_gekennzeichnet_ma1",
+        "proben_produktionslager_ma1",
+        "restmenge_gekennzeichnet_ma1",
+        "restmenge_sperrlager_ma1",
+        "muell_gekennzeichnet_ma1",
+        "muell_sperrlager_ma1"
+      ]
+    },
+    "einlagern_eingangsmaterialien_gmp": {
+      "status": "completed",
+      "ma2Kuerzel": "dfg",
+      "ma2Timestamp": "2025-07-23T15:08:06.933Z",
+      "validationOK": true,
+      "validatedQuestions": [
+        "ungeoefffnete_bulkbeutel_ma1",
+        "primaerpackmittel_ungeöffnet_ma1",
+        "primaerpackmittel_geoeffnet_ma1",
+        "eingangsmaterialien_begruendung",
+        "nachbereitung_bemerkung",
+        "nachbereitung_erfasst"
+      ]
+    },
+    "nachbereitung_reinraum_final": {
+      "status": "completed",
+      "ma2Kuerzel": "ert",
+      "ma2Timestamp": "2025-07-23T15:14:37.160Z",
+      "validationOK": true,
+      "validatedQuestions": [
+        "eurocontainer_bereitgestellt",
+        "zwischenreinigung_durchgefuehrt",
+        "nachbereitung_reinraum_final_bemerkung"
+      ]
+    },
+    "abschluss": {
+      "status": "completed",
+      "ma2Kuerzel": "fgh",
+      "ma2Timestamp": "2025-07-23T15:17:10.846Z",
+      "validationOK": true,
+      "validatedQuestions": [
+        "geraete_logbuecher_eingetragen",
+        "probenzugsplan_ausgefuellt",
+        "abschluss_bemerkung",
+        "abschluss_erfasst"
+      ]
     }
   },
-  "currentPageNo": 18
+  "currentPageNo": 23
 }

@@ -188,12 +188,28 @@
     "questions": ["zwischenprodukte_verpackt_ma1", "zwischenprodukte_produktionslager_ma1", "proben_gekennzeichnet_ma1", "proben_produktionslager_ma1", "restmenge_gekennzeichnet_ma1",  "restmenge_sperrlager_ma1", "muell_gekennzeichnet_ma1", "muell_sperrlager_ma1"]
   },
   {
-    "name": "einlagern_eingangsmaterialien",
-    "title": "Einlagern Eingangsmaterialien",
+    "name": "einlagern_eingangsmaterialien_gacp",
+    "title": "Einlagern Eingangsmaterialien (GACP)",
+    "validationType": "validation",
+    "label": "Kürzel Mitarbeiter 2",
+    "materialType": "GACP",
+    "questions": ["ungeoefffnete_bulkbeutel_ma1", "primaerpackmittel_ungeöffnet_ma1", "primaerpackmittel_geoeffnet_ma1", "eingangsmaterialien_begruendung", "schablonen_entfernt_ma1", "nachbereitung_bemerkung", "nachbereitung_erfasst"]
+  },
+  {
+    "name": "einlagern_eingangsmaterialien_gmp",
+    "title": "Einlagern Eingangsmaterialien (GMP)",
+    "validationType": "validation",
+    "label": "Kürzel Mitarbeiter 2",
+    "materialType": "GMP",
+    "questions": ["ungeoefffnete_bulkbeutel_ma1", "primaerpackmittel_ungeöffnet_ma1", "primaerpackmittel_geoeffnet_ma1", "eingangsmaterialien_begruendung", "nachbereitung_bemerkung", "nachbereitung_erfasst"]
+  },
+  {
+    "name": "nachbereitung_reinraum_final",
+    "title": "Nachbereitung Reinraum - Final",
     "validationType": "validation",
     "label": "Kürzel Mitarbeiter 2",
     "materialType": "ALL",
-    "questions": ["ungeoefffnete_bulkbeutel_ma1", "ungeoefffnete_bulkbeutel_ma2", "primaerpackmittel_ungeöffnet_ma1", "primaerpackmittel_ungeöffnet_ma2", "primaerpackmittel_geoeffnet_ma1", "primaerpackmittel_geoeffnet_ma2", "eingangsmaterialien_begruendung", "schablonen_entfernt_ma1", "schablonen_entfernt_ma2", "schablonen_begruendung", "nachbereitung_bemerkung", "nachbereitung_erfasst", "nachbereitung_geprueft"]
+    "questions": ["eurocontainer_bereitgestellt", "zwischenreinigung_durchgefuehrt", "nachbereitung_reinraum_final_bemerkung"]
   },
   {
     "name": "abschluss",
@@ -201,6 +217,6 @@
     "validationType": "validation",
     "label": "Kürzel Mitarbeiter 2",
     "materialType": "ALL",
-    "questions": ["geraete_logbuecher_eingetragen", "probenzugsplan_ausgefuellt", "abschluss_bemerkung", "abschluss_erfasst", "abschluss_geprueft"]
+    "questions": ["geraete_logbuecher_eingetragen", "probenzugsplan_ausgefuellt", "abschluss_bemerkung", "abschluss_erfasst"]
   }
 ]
