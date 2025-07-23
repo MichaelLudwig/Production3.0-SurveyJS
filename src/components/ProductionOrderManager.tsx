@@ -20,6 +20,7 @@ const ProductionOrderManager: React.FC<ProductionOrderManagerProps> = ({
   const [editingOrder, setEditingOrder] = useState<ProductionOrder | null>(null);
   const [viewMode, setViewMode] = useState<'list' | 'details' | 'edit' | 'create'>('list');
   const [orderStatuses, setOrderStatuses] = useState<Record<string, string>>({});
+  const [surveyData, setSurveyData] = useState<Record<string, any>>({});
   const [newOrder, setNewOrder] = useState<Partial<ProductionOrder>>({
     produktionsauftragsnummer: '',
     produktName: '',
@@ -95,11 +96,28 @@ const ProductionOrderManager: React.FC<ProductionOrderManagerProps> = ({
     // This function is kept for compatibility but orders are saved individually
   };
 
-  const handleViewOrder = (orderId: string) => {
+  const handleViewOrder = async (orderId: string) => {
     const order = orders.find(o => o.id === orderId);
     if (order) {
       setEditingOrder(order);
       setViewMode('details');
+      
+      // Lade Survey-Daten falls vorhanden
+      try {
+        const statusResponse = await fetch(`${API_BASE_URL}/surveys/${orderId}/status`);
+        if (statusResponse.ok) {
+          const statusResult = await statusResponse.json();
+          if (statusResult.data?.exists) {
+            const surveyResponse = await fetch(`${API_BASE_URL}/surveys/${orderId}`);
+            if (surveyResponse.ok) {
+              const surveyResult = await surveyResponse.json();
+              setSurveyData(prev => ({ ...prev, [orderId]: surveyResult.data }));
+            }
+          }
+        }
+      } catch (error) {
+        console.warn(`Fehler beim Laden der Survey-Daten für Auftrag ${orderId}:`, error);
+      }
     }
   };
 
@@ -387,62 +405,108 @@ const ProductionOrderManager: React.FC<ProductionOrderManagerProps> = ({
           </div>
           
           <div className="details-content">
-            <div className="details-section">
-              <h3>Grunddaten</h3>
-              <div className="details-grid">
-                <div><strong>Produktname:</strong> {editingOrder.produktName}</div>
-                <div><strong>Auftragsnummer:</strong> {editingOrder.produktionsauftragsnummer || 'NA'}</div>
-                <div><strong>Material-Typ:</strong> {editingOrder.materialType}</div>
-                <div><strong>Erstellt am:</strong> {new Date(editingOrder.createdAt).toLocaleDateString('de-DE')}</div>
-
-              </div>
-            </div>
-
-            <div className="details-section">
-              <h3>Eingangsmaterial</h3>
-              <div className="details-grid">
-                <div><strong>Artikelnummer:</strong> {editingOrder.eingangsmaterial.artikelNummer}</div>
-                <div><strong>Charge:</strong> {editingOrder.eingangsmaterial.charge}</div>
-                <div><strong>Verfallsdatum:</strong> {editingOrder.eingangsmaterial.verfallsdatum}</div>
-                <div><strong>Eingangsmenge:</strong> {editingOrder.eingangsmaterial.eingangsMenge} g</div>
-              </div>
-            </div>
-
-            {editingOrder.schablone && (
-              <div className="details-section">
-                <h3>Schablone</h3>
-                <div className="details-grid">
-                  <div><strong>EQ-Nummer:</strong> {editingOrder.schablone.eqNummer}</div>
-                  <div><strong>Charge:</strong> {editingOrder.schablone.charge}</div>
-                  <div><strong>Anzahl:</strong> {editingOrder.schablone.anzahl}</div>
+            <div className="details-cards-grid">
+              <div className="detail-card">
+                <div className="detail-card-header">
+                  <h3>Grunddaten</h3>
+                </div>
+                <div className="detail-card-body">
+                  <p><strong>Produktname:</strong></p>
+                  <p>{editingOrder.produktName}</p>
+                  <p><strong>Auftragsnummer:</strong></p>
+                  <p>{editingOrder.produktionsauftragsnummer || 'NA'}</p>
+                  <p><strong>Material-Typ:</strong></p>
+                  <p>{editingOrder.materialType}</p>
+                  <p><strong>Erstellt am:</strong></p>
+                  <p>{new Date(editingOrder.createdAt).toLocaleDateString('de-DE')}</p>
                 </div>
               </div>
-            )}
 
-            <div className="details-section">
-              <h3>Primärpackmittel</h3>
-              <div className="details-grid">
-                <div><strong>Artikelnummer:</strong> {editingOrder.primaerPackmittel.artikelNummer}</div>
-                <div><strong>Charge:</strong> {editingOrder.primaerPackmittel.charge}</div>
-                <div><strong>Anzahl:</strong> {editingOrder.primaerPackmittel.anzahl}</div>
+              <div className="detail-card">
+                <div className="detail-card-header">
+                  <h3>Eingangsmaterial</h3>
+                </div>
+                <div className="detail-card-body">
+                  <p><strong>Produktbezeichnung:</strong></p>
+                  <p>{editingOrder.eingangsmaterial.produktbezeichnung || 'NA'}</p>
+                  <p><strong>Artikelnummer:</strong></p>
+                  <p>{editingOrder.eingangsmaterial.artikelNummer}</p>
+                  <p><strong>Charge:</strong></p>
+                  <p>{editingOrder.eingangsmaterial.charge}</p>
+                  <p><strong>Verfallsdatum:</strong></p>
+                  <p>{editingOrder.eingangsmaterial.verfall || editingOrder.eingangsmaterial.verfallsdatum || 'NA'}</p>
+                  <p><strong>Menge:</strong></p>
+                  <p>{editingOrder.eingangsmaterial.menge || editingOrder.eingangsmaterial.eingangsMenge} g</p>
+                </div>
               </div>
-            </div>
 
-            <div className="details-section">
-              <h3>Zwischenprodukt</h3>
-              <div className="details-grid">
-                <div><strong>Artikelnummer:</strong> {editingOrder.zwischenprodukt.artikelNummer}</div>
-                <div><strong>Gebinde-Nummer:</strong> {editingOrder.zwischenprodukt.gebindeNummer}</div>
-              </div>
-            </div>
+              {editingOrder.schablone && (
+                <div className="detail-card">
+                  <div className="detail-card-header">
+                    <h3>Schablone</h3>
+                  </div>
+                  <div className="detail-card-body">
+                    <p><strong>EQ-Nummer:</strong></p>
+                    <p>{editingOrder.schablone.eqNummer}</p>
+                    <p><strong>Charge:</strong></p>
+                    <p>{editingOrder.schablone.charge}</p>
+                    <p><strong>Anzahl:</strong></p>
+                    <p>{editingOrder.schablone.anzahl}</p>
+                  </div>
+                </div>
+              )}
 
-            <div className="details-section">
-              <h3>Probenzug</h3>
-              <div className="details-grid">
-                <div><strong>Plan:</strong> {editingOrder.probenzug.plan}</div>
-                <div><strong>Anzahl:</strong> {editingOrder.probenzug.anzahl}</div>
-                <div><strong>Füllmenge:</strong> {editingOrder.probenzug.fuellmenge} g</div>
+              <div className="detail-card">
+                <div className="detail-card-header">
+                  <h3>Primärpackmittel</h3>
+                </div>
+                <div className="detail-card-body">
+                  <p><strong>Artikelnummer:</strong></p>
+                  <p>{editingOrder.primaerPackmittel.artikelNummer}</p>
+                  <p><strong>Charge:</strong></p>
+                  <p>{editingOrder.primaerPackmittel.charge}</p>
+                  <p><strong>Anzahl:</strong></p>
+                  <p>{editingOrder.primaerPackmittel.anzahl}</p>
+                </div>
               </div>
+
+              <div className="detail-card">
+                <div className="detail-card-header">
+                  <h3>Zwischenprodukt</h3>
+                </div>
+                <div className="detail-card-body">
+                  <p><strong>Artikelnummer:</strong></p>
+                  <p>{editingOrder.zwischenprodukt.artikelNummer}</p>
+                  <p><strong>Gebinde-Nummer:</strong></p>
+                  <p>{editingOrder.zwischenprodukt.gebindeNummer}</p>
+                  <p><strong>Vorgesehene Gebindezahl:</strong></p>
+                  <p>{editingOrder.zwischenprodukt.vorgGebindezahl || 'NA'}</p>
+                  {surveyData[editingOrder.id]?.survey?.bulkgebinde_liste && (
+                    <>
+                      <p><strong>Erfasste Bulk-Beutel:</strong></p>
+                      <p>{surveyData[editingOrder.id].survey.bulkgebinde_liste.reduce((sum: number, bulk: any) => sum + bulk.anzahl, 0)}</p>
+                    </>
+                  )}
+                </div>
+              </div>
+
+              <div className="detail-card">
+                <div className="detail-card-header">
+                  <h3>Probenzug</h3>
+                </div>
+                <div className="detail-card-body">
+                  <p><strong>Plan:</strong></p>
+                  <p>{editingOrder.probenzug.plan}</p>
+                  <p><strong>Anzahl:</strong></p>
+                  <p>{editingOrder.probenzug.anzahl}</p>
+                  <p><strong>Füllmenge 1:</strong></p>
+                  <p>{editingOrder.probenzug.fuellmenge1 || editingOrder.probenzug.fuellmenge} g</p>
+                  <p><strong>Füllmenge 2:</strong></p>
+                  <p>{editingOrder.probenzug.fuellmenge2} g</p>
+                </div>
+              </div>
+
+
             </div>
           </div>
         </div>

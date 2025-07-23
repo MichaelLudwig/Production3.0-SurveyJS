@@ -264,8 +264,15 @@ const SurveyComponent: React.FC<SurveyComponentProps> = ({
           const currentSaved = await readJsonFile(getSurveyInProgressPath());
           currentValidationData = currentSaved?.validation || {};
           console.log(`[Survey] Loaded current validation data for page change:`, currentValidationData);
+          
+          // Prüfe ob Validierungsdaten gültig sind (nicht leer)
+          if (Object.keys(currentValidationData).length === 0) {
+            console.log(`[Survey] Empty validation data found, using current state instead`);
+            currentValidationData = validationData; // Verwende aktuellen State
+          }
         } catch (error) {
-          console.log(`[Survey] No existing validation data found for page change`);
+          console.log(`[Survey] No existing validation data found for page change, using current state`);
+          currentValidationData = validationData; // Verwende aktuellen State
         }
         
         await writeJsonFile(getSurveyInProgressPath(), {
@@ -337,10 +344,14 @@ const SurveyComponent: React.FC<SurveyComponentProps> = ({
           }
           
           // Setze aktuelle Seite
-          if (saved.currentPageNo !== undefined && saved.currentPageNo < surveyModel.pageCount) {
+          if (saved.currentPageNo !== undefined && saved.currentPageNo >= 0 && saved.currentPageNo < surveyModel.pageCount) {
             console.log(`[Survey] Setting current page to: ${saved.currentPageNo}`);
             surveyModel.currentPageNo = saved.currentPageNo;
             setCurrentPageIndex(saved.currentPageNo);
+          } else if (saved.currentPageNo === -1 || saved.currentPageNo === undefined) {
+            console.log(`[Survey] Invalid currentPageNo (${saved.currentPageNo}), starting from page 0`);
+            surveyModel.currentPageNo = 0;
+            setCurrentPageIndex(0);
           }
           
           // Validierungen laden für MA2-Logik

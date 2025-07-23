@@ -1,0 +1,238 @@
+{
+  "orderId": "1",
+  "timestamp": "2025-07-23T21:17:36.673Z",
+  "status": "in_progress",
+  "survey": {
+    "eingangsmaterial_ausgebucht": true,
+    "mitarbeiter_liste": [
+      {
+        "name": "Nebahat Yanar",
+        "kuerzel": "NYA"
+      },
+      {
+        "name": "Marius Pleimfeldner",
+        "kuerzel": "MPL"
+      },
+      {
+        "name": "Lukas  Mann",
+        "kuerzel": "LMA"
+      }
+    ],
+    "beginn_datum": "2025-06-24",
+    "beginn_uhrzeit": "08:42",
+    "kennzeichnung_matrix_allgemein": {
+      "eurocontainer": "ja",
+      "proben_freigabe": "ja",
+      "restmenge": "ja"
+    },
+    "kennzeichnung_matrix_gacp": {
+      "proben_ipk": "ja",
+      "gebinde_rueckfragen": "ja",
+      "bruch": "ja"
+    },
+    "arbeitsraum_ist_druck_matrix": [
+      {
+        "eq52": 31
+      }
+    ],
+    "schleusen_ist_druck_matrix": [
+      {
+        "eq49": 16.2,
+        "eq50": 15.5,
+        "eq51": 15.2
+      }
+    ],
+    "reinraumstatus_ampel": "Grün",
+    "reinraum_nutzbar": true,
+    "produktbezeichnung_ist": "Standbodenbeutel 3000ml Weiß, 1 Stk.",
+    "artikelnummer_ist": "O100074",
+    "charge_ist": "O100074-20240726-001",
+    "anzahl_ist": 200,
+    "umverpackung_dicht": true,
+    "primaerpackmittel_erfasst_kuerzel": "nya",
+    "bemerkungen": "-",
+    "produktbezeichnung_bulk_ist": "Cannabis Peace Naturals GC 31/1, 1g",
+    "artikelnr_bulk_ist": "18350663",
+    "charge_bulk_ist": "25041378",
+    "verfall_bulk_ist": "2025-07-08",
+    "bulkgebinde_liste": [
+      {
+        "anzahl": 4,
+        "gebindegroesse": 1000,
+        "probenzug_verwendet": false,
+        "dicht_sauber": true
+      },
+      {
+        "anzahl": 4,
+        "gebindegroesse": 988,
+        "probenzug_verwendet": true,
+        "dicht_sauber": true
+      }
+    ],
+    "bulk_erfasst_kuerzel": "nya",
+    "schablonen_eq_ist": 68,
+    "schablonen_charge_ist": "R100018-20250605-001",
+    "schablonen_anzahl_ist": 1,
+    "schablonen_sollangaben_ok": true,
+    "schablonen_verpackung_ok": true,
+    "schablonen_bemerkung": "Aufgrund von Krankheit nehmen wir nur eine Schablone mit in den RR.",
+    "materialbereitstellung_bemerkungen": "-",
+    "materialbereitstellung_ma1_kuerzel": "nya",
+    "materialbereitstellung_ma2_kuerzel": "ert",
+    "material_entspricht": true,
+    "raumtemperatur_ist_matrix": [
+      {
+        "raumtemperatur_eq47": 19.9,
+        "raumtemperatur_eq48": 20.1
+      }
+    ],
+    "line_clearing_erfolgt": true,
+    "line_clearing_bemerkungen": "-",
+    "line_clearing_erfasst": "lma",
+    "vorbereitung_waage_matrix": {
+      "ausgerichtet": {
+        "eq73": "Ja",
+        "eq61": "Ja"
+      },
+      "kalibrierung": {
+        "eq73": "Ja",
+        "eq61": "Ja"
+      },
+      "waegung": {
+        "eq73": "Ja",
+        "eq61": "Ja"
+      }
+    },
+    "waage_erfasst": "nya",
+    "waage_bemerkungen": "-",
+    "verschweiss_programm_ist": "Daklapack Beutel",
+    "schweissgeraet_funktioniert": true,
+    "schweissgeraet_erfasst": "lma",
+    "schweissgeraet_bemerkungen": "-",
+    "herstellung_beginn_uhrzeit": "09:40"
+  },
+  "validation": {
+    "raumstatus_pruefen": {
+      "status": "completed",
+      "ma2Kuerzel": "ert",
+      "ma2Timestamp": "2025-07-23T21:16:03.859Z",
+      "validationOK": true,
+      "validatedQuestions": [
+        "arbeitsraum_ist_druck_matrix",
+        "schleusen_ist_druck_matrix",
+        "reinraumstatus_ampel",
+        "reinraum_nutzbar"
+      ]
+    },
+    "materialbereitstellung": {
+      "ma1Kuerzel": "nya",
+      "ma1Timestamp": "2025-07-23T21:07:36.057Z",
+      "ma2Kuerzel": "ert",
+      "ma2Timestamp": "2025-07-23T21:07:36.057Z",
+      "ma2Kommentar": "Materialbereitstellung bestätigt",
+      "ma2PruefungOK": true
+    },
+    "line_clearing": {
+      "status": "completed",
+      "ma2Kuerzel": "ert",
+      "ma2Timestamp": "2025-07-23T21:17:20.694Z",
+      "validationOK": true,
+      "validatedQuestions": [
+        "raumtemperatur_ist_matrix",
+        "material_entspricht",
+        "line_clearing_erfolgt",
+        "line_clearing_bemerkungen",
+        "line_clearing_erfasst"
+      ]
+    },
+    "waage_vorbereitung": {
+      "ma1Kuerzel": "nya",
+      "ma1Timestamp": "2025-07-23T21:07:36.057Z",
+      "ma2Kuerzel": "ert",
+      "ma2Timestamp": "2025-07-23T21:07:36.057Z",
+      "ma2Kommentar": "Waage korrekt vorbereitet",
+      "ma2PruefungOK": true
+    },
+    "schweissgeraet": {
+      "ma1Kuerzel": "lma",
+      "ma1Timestamp": "2025-07-23T21:07:36.057Z",
+      "ma2Kuerzel": "ert",
+      "ma2Timestamp": "2025-07-23T21:07:36.057Z",
+      "ma2Kommentar": "Schweißgerät funktioniert einwandfrei",
+      "ma2PruefungOK": true
+    },
+    "eingangsmaterialien_ausbuchen": {
+      "status": "completed",
+      "ma2Kuerzel": "ert",
+      "ma2Timestamp": "2025-07-23T21:15:15.335Z",
+      "validationOK": true,
+      "validatedQuestions": [
+        "eingangsmaterial_ausgebucht"
+      ]
+    },
+    "materialbereitstellung_primaerpackmittel": {
+      "status": "completed",
+      "ma2Kuerzel": "ert",
+      "ma2Timestamp": "2025-07-23T21:16:26.153Z",
+      "validationOK": true,
+      "validatedQuestions": [
+        "produktbezeichnung_ist",
+        "artikelnummer_ist",
+        "charge_ist",
+        "anzahl_ist",
+        "umverpackung_dicht",
+        "primaerpackmittel_erfasst_kuerzel"
+      ]
+    },
+    "materialbereitstellung_bulk": {
+      "status": "completed",
+      "ma2Kuerzel": "ert",
+      "ma2Timestamp": "2025-07-23T21:16:34.695Z",
+      "validationOK": true,
+      "validatedQuestions": [
+        "produktbezeichnung_bulk_ist",
+        "artikelnr_bulk_ist",
+        "charge_bulk_ist",
+        "verfall_bulk_ist",
+        "bulkgebinde_liste",
+        "bulk_erfasst_kuerzel"
+      ]
+    },
+    "zubehör_schablonen": {
+      "status": "completed",
+      "ma2Kuerzel": "ert",
+      "ma2Timestamp": "2025-07-23T21:16:38.745Z",
+      "validationOK": true,
+      "validatedQuestions": [
+        "schablonen_eq_ist",
+        "schablonen_charge_ist",
+        "schablonen_anzahl_ist",
+        "schablonen_sollangaben_ok",
+        "schablonen_verpackung_ok"
+      ]
+    },
+    "materialbereitstellung_abschluss": {
+      "status": "completed",
+      "ma2Kuerzel": "ert",
+      "ma2Timestamp": "2025-07-23T21:17:14.912Z",
+      "validationOK": true,
+      "validatedQuestions": [
+        "materialbereitstellung_bemerkungen",
+        "materialbereitstellung_ma1_kuerzel",
+        "materialbereitstellung_ma2_kuerzel"
+      ]
+    },
+    "vorbereitung_waage": {
+      "status": "completed",
+      "ma2Kuerzel": "ert",
+      "ma2Timestamp": "2025-07-23T21:17:26.290Z",
+      "validationOK": true,
+      "validatedQuestions": [
+        "vorbereitung_waage_matrix",
+        "waage_bemerkungen",
+        "waage_erfasst"
+      ]
+    }
+  },
+  "currentPageNo": 11
+}

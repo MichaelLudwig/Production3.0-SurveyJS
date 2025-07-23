@@ -8,8 +8,10 @@ export interface ProductionOrder {
     produktbezeichnung?: string;
     artikelNummer: string;
     charge: string;
-    verfallsdatum: string;
-    eingangsMenge: number;
+    verfall?: string;
+    verfallsdatum?: string;
+    menge?: string;
+    eingangsMenge?: number;
   };
   schablone?: {
     eqNummer: string;
@@ -32,7 +34,9 @@ export interface ProductionOrder {
   probenzug: {
     plan: string;
     anzahl: number;
-    fuellmenge: number;
+    fuellmenge?: number;
+    fuellmenge1?: number;
+    fuellmenge2?: number;
   };
   createdAt: string;
 }
