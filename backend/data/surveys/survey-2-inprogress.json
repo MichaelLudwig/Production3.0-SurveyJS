@@ -1,6 +1,6 @@
 {
   "orderId": "2",
-  "timestamp": "2025-07-23T09:27:53.758Z",
+  "timestamp": "2025-07-23T10:10:25.360Z",
   "status": "in_progress",
   "survey": {
     "eingangsmaterial_ausgebucht": true,
@@ -98,6 +98,23 @@
         "blueten_unauffaellig": true,
         "gebinde_korrekt_abgewogen": true,
         "restmenge": 32.82
+      },
+      {
+        "bulk_nummer": "2",
+        "soll_inhalt": 2,
+        "ist_inhalt": "1000",
+        "anzahl_gebinde": "7",
+        "blueten_unauffaellig": true,
+        "gebinde_korrekt_abgewogen": true,
+        "restmenge": "45",
+        "aussortiertes_material": "34",
+        "probenzug_ipk": "5",
+        "bruch": "0",
+        "kommentar": "n",
+        "erfasst_kuerzel": "ert",
+        "geprueft_kuerzel": "ert",
+        "schweissnaht_ok": true,
+        "timestamp": "2025-07-23T10:02:08.484Z"
       }
     ],
     "probegebinde_liste": [
@@ -111,7 +128,7 @@
       }
     ],
     "pause_durchgefuehrt": false,
-    "restmenge_eingang": 4555,
+    "restmenge_eingang": "77.82",
     "restmenge_bemerkung": "4",
     "probenzug_freigabe_vorgesehen": true,
     "probegebinde_gekennzeichnet": "Ja",
@@ -126,7 +143,25 @@
     "anzahl_primaerpackmittel_uebrig": 3,
     "restmenge_ende_uhrzeit": "11:29",
     "restmenge_bemerkungen": "-",
-    "restmenge_erfasst": "ert"
+    "restmenge_erfasst": "ert",
+    "schleusung_eurocontainer": {
+      "produktliste": [
+        {
+          "art_inhalt": "Hergestellte Zwischenprodukte",
+          "anzahl_gebinde": "14",
+          "plomben_nr": "1234567",
+          "plomben_nr_2": "1234568"
+        }
+      ]
+    },
+    "produktliste": [
+      {
+        "art_inhalt": "Hergestellte Zwischenprodukte",
+        "anzahl_gebinde": "14",
+        "plomben_nr": "1234567",
+        "plomben_nr_2": "1234568"
+      }
+    ]
   },
   "validation": {
     "eingangsmaterialien_ausbuchen": {

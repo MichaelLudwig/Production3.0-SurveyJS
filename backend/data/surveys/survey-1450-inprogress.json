@@ -1,6 +1,6 @@
 {
   "orderId": "1450",
-  "timestamp": "2025-07-22T15:30:03.355Z",
+  "timestamp": "2025-07-23T10:09:02.248Z",
   "status": "in_progress",
   "survey": {
     "eingangsmaterial_ausgebucht": true,
@@ -201,10 +201,32 @@
     },
     "restmenge_eingang": "241.00",
     "probegebinde_liste": [
-      {}
+      {
+        "anzahl": 1,
+        "inhalt": 1
+      },
+      {
+        "anzahl": 1,
+        "inhalt": 1
+      }
     ],
     "pause_durchgefuehrt": false,
-    "probenzug_freigabe_vorgesehen": true
+    "probenzug_freigabe_vorgesehen": true,
+    "produktliste": [
+      {
+        "art_inhalt": "Hergestellte Zwischenprodukte",
+        "anzahl_gebinde": "32",
+        "plomben_nr": "1000003",
+        "plomben_nr_2": "1000004"
+      }
+    ],
+    "restmenge_bemerkung": "z",
+    "probenzug_ipk_abgefuellt_ma1": "Ja",
+    "gesamtmenge_probenzug_ipk": 55,
+    "probegebinde_gekennzeichnet": "Ja",
+    "anzahl_zwischenprodukte": 6,
+    "bruch_abfuellung_restmenge": 5,
+    "gebinde_abgewogen_verschweisst_ma1": true
   },
   "validation": {
     "eingangsmaterialien_ausbuchen": {
@@ -315,7 +337,25 @@
         "schweissgeraet_bemerkungen",
         "schweissgeraet_erfasst"
       ]
+    },
+    "kumulierte_restmenge_gacp": {
+      "status": "completed",
+      "ma2Kuerzel": "zrtz",
+      "ma2Timestamp": "2025-07-23T10:05:11.283Z",
+      "validationOK": true,
+      "validatedQuestions": [
+        "restmenge_eingang",
+        "restmenge_bemerkung",
+        "probenzug_ipk_abgefuellt_ma1",
+        "gesamtmenge_probenzug_ipk",
+        "probenzug_freigabe_vorgesehen",
+        "probegebinde_liste",
+        "probegebinde_gekennzeichnet",
+        "anzahl_zwischenprodukte",
+        "bruch_abfuellung_restmenge",
+        "gebinde_abgewogen_verschweisst_ma1"
+      ]
     }
   },
-  "currentPageNo": 12
+  "currentPageNo": 16
 }

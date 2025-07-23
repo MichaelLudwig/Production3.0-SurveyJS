@@ -199,6 +199,32 @@ const SurveyComponent: React.FC<SurveyComponentProps> = ({
     surveyModel.onCurrentPageChanged.add(async (sender) => {
       setCurrentPageIndex(sender.currentPageNo);
       
+      // Lade produktliste wenn zur Schleusungsseite navigiert wird
+      if (sender.currentPage?.name === 'schleusung_eurocontainer') {
+        try {
+          const savedData = await readJsonFile(getSurveyInProgressPath());
+          if (savedData?.survey?.schleusung_eurocontainer?.produktliste) {
+            console.log('[Survey] Loading produktliste for schleusung_eurocontainer page:', savedData.survey.schleusung_eurocontainer.produktliste);
+            
+            // Stelle sicher, dass alle art_inhalt Werte korrekt gesetzt sind
+            const produktliste = savedData.survey.schleusung_eurocontainer.produktliste.map((item: any) => ({
+              ...item,
+              art_inhalt: item.art_inhalt || "Hergestellte Zwischenprodukte"
+            }));
+            
+            sender.setValue('produktliste', produktliste);
+            
+            // Verzögerung für die Anzeige
+            setTimeout(() => {
+              console.log('[Survey] Refreshing produktliste display');
+              sender.render();
+            }, 100);
+          }
+        } catch (error) {
+          console.log('[Survey] No saved produktliste data found');
+        }
+      }
+      
       // Speichere Fortschritt bei Seitenwechsel
       try {
         console.log(`[Survey] Saving progress on page change to page ${sender.currentPageNo}`);
@@ -262,12 +288,24 @@ const SurveyComponent: React.FC<SurveyComponentProps> = ({
           if (saved.survey && Object.keys(saved.survey).length > 0) {
             console.log('[Survey] Loading survey answers:', saved.survey);
             surveyData = { ...surveyData, ...saved.survey };
+            
+            // Spezielle Behandlung für produktliste - lade aus schleusung_eurocontainer.produktliste
+            if (saved.survey.schleusung_eurocontainer?.produktliste) {
+              console.log('[Survey] Loading produktliste from schleusung_eurocontainer:', saved.survey.schleusung_eurocontainer.produktliste);
+              surveyData.produktliste = saved.survey.schleusung_eurocontainer.produktliste;
+            }
           }
           
           // Setze Survey-Daten
           if (Object.keys(surveyData).length > 0) {
             console.log('[Survey] Restoring survey data:', surveyData);
             surveyModel.data = surveyData;
+            
+            // Spezielle Behandlung für produktliste nach dem Setzen der Daten
+            if (saved.survey?.schleusung_eurocontainer?.produktliste) {
+              console.log('[Survey] Setting produktliste in survey model:', saved.survey.schleusung_eurocontainer.produktliste);
+              surveyModel.setValue('produktliste', saved.survey.schleusung_eurocontainer.produktliste);
+            }
           }
           
           // Setze aktuelle Seite
@@ -607,6 +645,19 @@ const SurveyComponent: React.FC<SurveyComponentProps> = ({
           if (survey && kummulierteRestmenge > 0) {
             console.log(`[Survey] Setting restmenge_eingang to ${kummulierteRestmenge} after completing all bulk beutels`);
             survey.setValue('restmenge_eingang', kummulierteRestmenge.toFixed(2));
+          }
+          
+          // Erstelle automatisch die Eurocontainer-Liste für die Schleusungsseite
+          const produktliste = existingProduction.map((entry: any, index: number) => ({
+            art_inhalt: "Hergestellte Zwischenprodukte",
+            anzahl_gebinde: entry.anzahl_gebinde || "0",
+            plomben_nr: (1000000 + index + 1).toString(),
+            plomben_nr_2: null
+          }));
+          
+          if (survey && produktliste.length > 0) {
+            console.log(`[Survey] Setting produktliste with ${produktliste.length} entries for schleusung_eurocontainer`);
+            survey.setValue('produktliste', produktliste);
           }
         }
       }

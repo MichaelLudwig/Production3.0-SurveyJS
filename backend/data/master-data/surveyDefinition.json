@@ -1015,42 +1015,41 @@
         {
           "type": "html",
           "name": "eurocontainer_info",
-          "html": "<h4>Kennzeichnen der EC</h4><p>Dymo Etikett, Farbkennzeichnung, Menge angeben</p><h4>Verplomben der EC</h4><p>Eurocontainer ordnungsgemäß verplomben</p>"
+          "html": "<h4>Eurocontainer</h4><div style='text-align:center;'><img src='/images/eurocontainer.png' alt='eurocontainer' style='max-width: 100%; margin-top: 10px;'></div>"
         },
         {
-          "type": "paneldynamic",
+          "type": "matrixdynamic",
           "name": "produktliste",
           "title": "Produktliste",
-          "templateElements": [
+          "columns": [
             {
-              "type": "dropdown",
               "name": "art_inhalt",
               "title": "Art des Inhalts",
-              "choices": ["Hergestellte Zwischenprodukte", "Proben Freigabeanalytik", "Finale Restmenge", "Bruch und aussortiertes Material"],
-              "isRequired": true
+              "cellType": "dropdown",
+              "isRequired": true,
+              "choices": ["Hergestellte Zwischenprodukte", "Proben Freigabeanalytik", "Finale Restmenge", "Bruch und aussortiertes Material"]
             },
             {
-              "type": "text",
               "name": "anzahl_gebinde",
               "title": "Anzahl Gebinde",
-              "inputType": "number",
-              "isRequired": true
+              "cellType": "text",
+              "inputType": "number"
             },
             {
-              "type": "text",
               "name": "plomben_nr",
               "title": "Plomben-Nr.",
-              "isRequired": true
+              "cellType": "text"
             },
             {
-              "type": "text",
               "name": "plomben_nr_2",
-              "title": "Plomben-Nr. 2:",
-              "isRequired": false
+              "title": "Plomben-Nr. 2",
+              "cellType": "text"
             }
           ],
-          "panelCount": 0,
-          "minPanelCount": 0
+          "rowCount": 0,
+          "minRowCount": 0,
+          "addRowText": "Zeile hinzufügen",
+          "removeRowText": "Entfernen"
         },
         {
           "type": "text",
