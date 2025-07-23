@@ -568,3 +568,50 @@ const generateSectionContent = (answers: any): string => {
 
   return content;
 };
+
+const generateValidationContent = (validation: Record<string, any>): string => {
+  let content = '<div class="section"><h3>Vier-Augen-Validierungen</h3>';
+  
+  Object.entries(validation).forEach(([groupName, groupData]) => {
+    if (groupData && typeof groupData === 'object') {
+      content += `<div class="subsection">
+        <h4>${groupName}</h4>
+        <div class="panel-data">`;
+      
+      if (groupData.ma2Kuerzel) {
+        content += `<div class="answer-item">
+          <span class="answer-question">Geprüft durch:</span>
+          <span class="answer-value">${groupData.ma2Kuerzel}</span>
+        </div>`;
+      }
+      
+      if (groupData.ma2Timestamp) {
+        content += `<div class="answer-item">
+          <span class="answer-question">Prüfungszeitpunkt:</span>
+          <span class="answer-value">${formatDateForDisplay(groupData.ma2Timestamp)}</span>
+        </div>`;
+      }
+      
+      if (groupData.ma2Kommentar) {
+        content += `<div class="answer-item">
+          <span class="answer-question">Kommentar:</span>
+          <span class="answer-value">${groupData.ma2Kommentar}</span>
+        </div>`;
+      }
+      
+      if (groupData.ma2PruefungOK !== undefined) {
+        content += `<div class="answer-item">
+          <span class="answer-question">Prüfung OK:</span>
+          <span class="answer-value">${groupData.ma2PruefungOK ? 
+            '<span class="checkbox-yes">✓ Ja</span>' : 
+            '<span class="checkbox-no">✗ Nein</span>'}</span>
+        </div>`;
+      }
+      
+      content += `</div></div>`;
+    }
+  });
+  
+  content += '</div>';
+  return content;
+};
