@@ -17,13 +17,15 @@ interface BulkBeutelDashboardProps {
   surveyData: any;
   onSurveyDataUpdate: (data: any) => void;
   surveyDefinition?: any;
+  survey?: any; // SurveyJS Model für direkten Datenzugriff
 }
 
 const BulkBeutelDashboard: React.FC<BulkBeutelDashboardProps> = ({
   productionOrder,
   surveyData,
   onSurveyDataUpdate,
-  surveyDefinition
+  surveyDefinition,
+  survey
 }) => {
   const [selectedBulkBeutel, setSelectedBulkBeutel] = useState<number | null>(null);
   const [bulkBeutelList, setBulkBeutelList] = useState<BulkBeutel[]>([]);
@@ -43,10 +45,12 @@ const BulkBeutelDashboard: React.FC<BulkBeutelDashboardProps> = ({
     console.log('[Dashboard] bulk_beutel_production:', surveyData?.survey?.bulk_beutel_production);
     
     const produktionslauf = surveyData?.produktionslauf;
-    const existingProduction = surveyData?.survey?.bulk_beutel_production || [];
+    // PRIORISIERE SURVEY.DATA ÜBER SURVEYDATA.SURVEY FÜR BULK_BEUTEL_PRODUCTION
+    const existingProduction = survey?.data?.bulk_beutel_production || surveyData?.survey?.bulk_beutel_production || [];
     
     // Erstelle BulkBeutel-Liste basierend auf bulkgebinde_liste
-    const bulkgebinde = surveyData?.survey?.bulkgebinde_liste || [];
+    // PRIORISIERE SURVEY.DATA ÜBER SURVEYDATA.SURVEY ÜBER PRODUCTIONORDER
+    const bulkgebinde = survey?.data?.bulkgebinde_liste || surveyData?.survey?.bulkgebinde_liste || (productionOrder as any)?.bulkgebinde_liste || [];
     console.log('[Dashboard] bulkgebinde array:', bulkgebinde);
     
     const newBulkBeutel: BulkBeutel[] = [] as BulkBeutel[];
@@ -204,24 +208,28 @@ const BulkBeutelDashboard: React.FC<BulkBeutelDashboardProps> = ({
   };
 
   const getVerarbeiteteAnzahl = () => {
-    return bulkBeutelList.filter(bb => bb.status === 'abgeschlossen').length;
+    // PRIORISIERE SURVEY.DATA ÜBER SURVEYDATA.SURVEY FÜR BULK_BEUTEL_PRODUCTION
+    const existingProduction = survey?.data?.bulk_beutel_production || surveyData?.survey?.bulk_beutel_production || [];
+    return existingProduction.filter((entry: any) => entry.bulk_nummer && entry.bulk_nummer !== "").length;
   };
 
   const getGesamtAnzahl = () => bulkBeutelList.length;
 
   const getErzeugteGebindeAnzahl = () => {
-    const existingProduction = surveyData?.survey?.bulk_beutel_production || [];
+    // PRIORISIERE SURVEY.DATA ÜBER SURVEYDATA.SURVEY FÜR BULK_BEUTEL_PRODUCTION
+    const existingProduction = survey?.data?.bulk_beutel_production || surveyData?.survey?.bulk_beutel_production || [];
     return existingProduction.reduce((total: number, entry: any) => {
-      const anzahl = parseInt(entry.anzahl_gebinde) || 0;
-      return total + anzahl;
+      const anzahlGebinde = parseInt(entry.anzahl_gebinde) || 0;
+      return total + anzahlGebinde;
     }, 0);
   };
 
   const getGebindeInEurocontainerAnzahl = () => {
-    // Verwende die verplombten Eurocontainer aus der Survey-Datei
-    const verplombteEurocontainer = surveyData?.survey?.schleusung_eurocontainer?.verplombteEurocontainer || [];
-    return verplombteEurocontainer.reduce((total: number, container: any) => {
-      return total + (parseInt(container.anzahlGebinde) || 0);
+    // PRIORISIERE SURVEY.DATA ÜBER SURVEYDATA.SURVEY FÜR BULK_BEUTEL_PRODUCTION
+    const existingProduction = survey?.data?.bulk_beutel_production || surveyData?.survey?.bulk_beutel_production || [];
+    return existingProduction.reduce((total: number, entry: any) => {
+      const inEurocontainer = parseInt(entry.in_eurocontainer) || 0;
+      return total + inEurocontainer;
     }, 0);
   };
 
@@ -229,25 +237,27 @@ const BulkBeutelDashboard: React.FC<BulkBeutelDashboardProps> = ({
     return getErzeugteGebindeAnzahl() - getGebindeInEurocontainerAnzahl();
   };
 
-  // Soll-Wert für zu erzeugende Gebinde aus dem Produktionsauftrag
   const getSollGebindeAnzahl = () => {
-    return productionOrder.zwischenprodukt.vorgGebindezahl || 0;
+    return bulkBeutelList.reduce((total, bb) => total + bb.gebindegroesse, 0);
   };
 
   const getProbenzugAnzahl = () => {
-    const existingProduction = surveyData?.survey?.bulk_beutel_production || [];
+    // PRIORISIERE SURVEY.DATA ÜBER SURVEYDATA.SURVEY FÜR BULK_BEUTEL_PRODUCTION
+    const existingProduction = survey?.data?.bulk_beutel_production || surveyData?.survey?.bulk_beutel_production || [];
     return existingProduction.filter((entry: any) => entry.probenzug_ipk && parseFloat(entry.probenzug_ipk) > 0).length;
   };
 
   const getProbenzugListe = () => {
-    const existingProduction = surveyData?.survey?.bulk_beutel_production || [];
+    // PRIORISIERE SURVEY.DATA ÜBER SURVEYDATA.SURVEY FÜR BULK_BEUTEL_PRODUCTION
+    const existingProduction = survey?.data?.bulk_beutel_production || surveyData?.survey?.bulk_beutel_production || [];
     return existingProduction
       .filter((entry: any) => entry.probenzug_ipk && parseFloat(entry.probenzug_ipk) > 0)
       .map((entry: any) => parseFloat(entry.probenzug_ipk).toFixed(2));
   };
 
   const getKummulierteRestmenge = () => {
-    const existingProduction = surveyData?.survey?.bulk_beutel_production || [];
+    // PRIORISIERE SURVEY.DATA ÜBER SURVEYDATA.SURVEY FÜR BULK_BEUTEL_PRODUCTION
+    const existingProduction = survey?.data?.bulk_beutel_production || surveyData?.survey?.bulk_beutel_production || [];
     return existingProduction.reduce((total: number, entry: any) => {
       const restmenge = parseFloat(entry.restmenge) || 0;
       return total + restmenge;
@@ -255,7 +265,8 @@ const BulkBeutelDashboard: React.FC<BulkBeutelDashboardProps> = ({
   };
 
   const getBruchSumme = () => {
-    const existingProduction = surveyData?.survey?.bulk_beutel_production || [];
+    // PRIORISIERE SURVEY.DATA ÜBER SURVEYDATA.SURVEY FÜR BULK_BEUTEL_PRODUCTION
+    const existingProduction = survey?.data?.bulk_beutel_production || surveyData?.survey?.bulk_beutel_production || [];
     return existingProduction.reduce((total: number, entry: any) => {
       const bruch = parseFloat(entry.bruch) || 0;
       return total + bruch;
@@ -263,7 +274,8 @@ const BulkBeutelDashboard: React.FC<BulkBeutelDashboardProps> = ({
   };
 
   const getAussortiertesMaterial = () => {
-    const existingProduction = surveyData?.survey?.bulk_beutel_production || [];
+    // PRIORISIERE SURVEY.DATA ÜBER SURVEYDATA.SURVEY FÜR BULK_BEUTEL_PRODUCTION
+    const existingProduction = survey?.data?.bulk_beutel_production || surveyData?.survey?.bulk_beutel_production || [];
     return existingProduction.reduce((total: number, entry: any) => {
       const aussortiert = parseFloat(entry.aussortiertes_material) || 0;
       return total + aussortiert;

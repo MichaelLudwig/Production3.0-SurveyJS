@@ -1,21 +1,21 @@
 {
   "orderId": "3",
-  "timestamp": "2025-07-23T23:13:53.985Z",
+  "timestamp": "2025-07-24T20:52:51.001Z",
   "status": "in_progress",
   "survey": {
     "eingangsmaterial_ausgebucht": true,
     "mitarbeiter_liste": [
       {
-        "name": "e",
-        "kuerzel": "e"
+        "name": "2",
+        "kuerzel": "2"
       },
       {
-        "name": "e",
-        "kuerzel": "e"
+        "name": "2",
+        "kuerzel": "2"
       }
     ],
-    "beginn_datum": "2025-07-26",
-    "beginn_uhrzeit": "01:14",
+    "beginn_datum": "2025-07-27",
+    "beginn_uhrzeit": "22:27",
     "kennzeichnung_matrix_allgemein": {
       "eurocontainer": "ja",
       "proben_freigabe": "ja",
@@ -25,13 +25,222 @@
       "proben_ipk": "ja",
       "gebinde_rueckfragen": "ja",
       "bruch": "ja"
-    }
+    },
+    "arbeitsraum_ist_druck_matrix": [
+      {
+        "eq52": 2
+      }
+    ],
+    "schleusen_ist_druck_matrix": [
+      {
+        "eq49": 2,
+        "eq50": 2,
+        "eq51": 2
+      }
+    ],
+    "reinraumstatus_ampel": "Grün",
+    "reinraum_nutzbar": true,
+    "produktbezeichnung_ist": "2",
+    "artikelnummer_ist": "2",
+    "charge_ist": "2",
+    "umverpackung_dicht": true,
+    "anzahl_ist": 2,
+    "primaerpackmittel_erfasst_kuerzel": "2",
+    "bemerkungen": "2",
+    "produktbezeichnung_bulk_ist": "2",
+    "artikelnr_bulk_ist": "2",
+    "charge_bulk_ist": "2",
+    "verfall_bulk_ist": "2025-07-19",
+    "bulkgebinde_liste": [
+      {
+        "anzahl": 4,
+        "gebindegroesse": 1000,
+        "probenzug_verwendet": true,
+        "dicht_sauber": true
+      }
+    ],
+    "bulk_erfasst_kuerzel": "2",
+    "bulk_bemerkungen": "2",
+    "schablonen_eq_ist": 2,
+    "schablonen_charge_ist": "2",
+    "schablonen_anzahl_ist": 2,
+    "schablonen_sollangaben_ok": true,
+    "schablonen_verpackung_ok": true,
+    "schablonen_bemerkung": "2",
+    "materialbereitstellung_bemerkungen": "2",
+    "materialbereitstellung_ma1_kuerzel": "2",
+    "materialbereitstellung_ma2_kuerzel": "2",
+    "material_entspricht": true,
+    "raumtemperatur_ist_matrix": [
+      {
+        "raumtemperatur_eq47": 2,
+        "raumtemperatur_eq48": 2
+      }
+    ],
+    "line_clearing_erfolgt": true,
+    "line_clearing_bemerkungen": "2",
+    "line_clearing_erfasst": "2",
+    "vorbereitung_waage_matrix": {
+      "ausgerichtet": {
+        "eq73": "Ja",
+        "eq61": "Ja"
+      },
+      "kalibrierung": {
+        "eq73": "Ja",
+        "eq61": "Ja"
+      },
+      "waegung": {
+        "eq73": "Ja",
+        "eq61": "Ja"
+      }
+    },
+    "waage_bemerkungen": "2",
+    "waage_erfasst": "2",
+    "verschweiss_programm_ist": "2",
+    "schweissgeraet_funktioniert": true,
+    "schweissgeraet_bemerkungen": "2",
+    "schweissgeraet_erfasst": "2",
+    "herstellung_beginn_uhrzeit": "22:27",
+    "bulk_beutel_production": [
+      {
+        "bulk_nummer": "1",
+        "soll_inhalt": 1000,
+        "ist_inhalt": "654",
+        "anzahl_gebinde": "88",
+        "blueten_unauffaellig": true,
+        "gebinde_korrekt_abgewogen": true,
+        "restmenge": "3453",
+        "aussortiertes_material": "34",
+        "probenzug_ipk": "4",
+        "bruch": "4",
+        "kommentar": "",
+        "erfasst_kuerzel": "4",
+        "geprueft_kuerzel": "4",
+        "schweissnaht_ok": true,
+        "timestamp": "2025-07-24T20:26:32.389Z"
+      },
+      {
+        "bulk_nummer": "2",
+        "soll_inhalt": 1000,
+        "ist_inhalt": "345",
+        "anzahl_gebinde": "54",
+        "blueten_unauffaellig": true,
+        "gebinde_korrekt_abgewogen": true,
+        "restmenge": "3456",
+        "aussortiertes_material": "45",
+        "probenzug_ipk": "45",
+        "bruch": "54",
+        "kommentar": "",
+        "erfasst_kuerzel": "4",
+        "geprueft_kuerzel": "4",
+        "schweissnaht_ok": true,
+        "timestamp": "2025-07-24T20:26:48.498Z"
+      },
+      {
+        "bulk_nummer": "3",
+        "soll_inhalt": 1000,
+        "ist_inhalt": "877",
+        "anzahl_gebinde": "67",
+        "blueten_unauffaellig": true,
+        "gebinde_korrekt_abgewogen": true,
+        "restmenge": "6789",
+        "aussortiertes_material": "67",
+        "probenzug_ipk": "67",
+        "bruch": "67",
+        "kommentar": "",
+        "erfasst_kuerzel": "6",
+        "geprueft_kuerzel": "67",
+        "schweissnaht_ok": true,
+        "timestamp": "2025-07-24T20:43:14.877Z"
+      },
+      {
+        "bulk_nummer": "4",
+        "soll_inhalt": 1000,
+        "ist_inhalt": "345",
+        "anzahl_gebinde": "45",
+        "blueten_unauffaellig": true,
+        "gebinde_korrekt_abgewogen": true,
+        "restmenge": "5666",
+        "aussortiertes_material": "45",
+        "probenzug_ipk": "45",
+        "bruch": "45",
+        "kommentar": "",
+        "erfasst_kuerzel": "45",
+        "geprueft_kuerzel": "45",
+        "schweissnaht_ok": true,
+        "timestamp": "2025-07-24T20:49:33.423Z"
+      }
+    ],
+    "schleusung_eurocontainer": {
+      "verplombteEurocontainer": [
+        {
+          "plombenNr": "1111111",
+          "plombenNr2": "2222222",
+          "anzahlGebinde": 32,
+          "timestamp": "24.7.2025, 22:26:54"
+        },
+        {
+          "plombenNr": "3333333",
+          "plombenNr2": "4444444",
+          "anzahlGebinde": 32,
+          "timestamp": "24.7.2025, 22:26:58"
+        }
+      ]
+    },
+    "pause_durchgefuehrt": false,
+    "restmenge_eingang": 435,
+    "restmenge_bemerkung": "4",
+    "probenzug_ipk_abgefuellt_ma1": "Ja",
+    "gesamtmenge_probenzug_ipk": 45,
+    "probenzug_freigabe_vorgesehen": true,
+    "probegebinde_liste": [
+      {
+        "anzahl": 4,
+        "inhalt": 4
+      },
+      {
+        "anzahl": 4,
+        "inhalt": 4
+      }
+    ],
+    "probegebinde_gekennzeichnet": "Ja",
+    "anzahl_zwischenprodukte": 4,
+    "bruch_abfuellung_restmenge": 4,
+    "gebinde_abgewogen_verschweisst_ma1": true,
+    "bruch_aussortiertes_material_ma1": "Ja",
+    "aussortiertes_material_bruch": 4,
+    "finale_restmenge_gewicht": 4,
+    "bruch_aussortiert_abgefuellt_ma1": "Ja",
+    "finale_restmenge_abgefuellt_ma1": true,
+    "blueten_an_qk": "Ja",
+    "testbeutel_verschweisst_ma1": true,
+    "primaerpackmittel_uebrig_ma1": true,
+    "restmenge_ende_uhrzeit": "22:55",
+    "restmenge_bemerkungen": "4",
+    "restmenge_erfasst": "4",
+    "anzahl_primaerpackmittel_uebrig": 4,
+    "produktliste": [
+      {
+        "art_inhalt": "Hergestellte Zwischenprodukte",
+        "anzahl_gebinde": 32,
+        "plomben_nr": "1111111",
+        "plomben_nr_2": "2222222"
+      },
+      {
+        "art_inhalt": "Hergestellte Zwischenprodukte",
+        "anzahl_gebinde": 32,
+        "plomben_nr": "3333333",
+        "plomben_nr_2": "4444444"
+      }
+    ],
+    "herstellprozess_ma1_signatur": "4",
+    "herstellprozess_ma2_signatur": "4"
   },
   "validation": {
     "eingangsmaterialien_ausbuchen": {
       "status": "completed",
-      "ma2Kuerzel": "ert",
-      "ma2Timestamp": "2025-07-23T23:13:16.220Z",
+      "ma2Kuerzel": "2",
+      "ma2Timestamp": "2025-07-24T20:24:44.361Z",
       "validationOK": true,
       "validatedQuestions": [
         "eingangsmaterial_ausgebucht"
@@ -39,7 +248,265 @@
       "validatedAnswers": {
         "eingangsmaterial_ausgebucht": true
       }
+    },
+    "raumstatus_pruefen": {
+      "status": "completed",
+      "ma2Kuerzel": "2",
+      "ma2Timestamp": "2025-07-24T20:25:03.260Z",
+      "validationOK": true,
+      "validatedQuestions": [
+        "arbeitsraum_ist_druck_matrix",
+        "schleusen_ist_druck_matrix",
+        "reinraumstatus_ampel",
+        "reinraum_nutzbar"
+      ],
+      "validatedAnswers": {
+        "arbeitsraum_ist_druck_matrix": [
+          {
+            "eq52": 2
+          }
+        ],
+        "schleusen_ist_druck_matrix": [
+          {
+            "eq49": 2,
+            "eq50": 2,
+            "eq51": 2
+          }
+        ],
+        "reinraumstatus_ampel": "Grün",
+        "reinraum_nutzbar": true
+      }
+    },
+    "materialbereitstellung_primaerpackmittel": {
+      "status": "completed",
+      "ma2Kuerzel": "2",
+      "ma2Timestamp": "2025-07-24T20:25:11.026Z",
+      "validationOK": true,
+      "validatedQuestions": [
+        "produktbezeichnung_ist",
+        "artikelnummer_ist",
+        "charge_ist",
+        "anzahl_ist",
+        "umverpackung_dicht",
+        "primaerpackmittel_erfasst_kuerzel"
+      ],
+      "validatedAnswers": {
+        "produktbezeichnung_ist": "2",
+        "artikelnummer_ist": "2",
+        "charge_ist": "2",
+        "anzahl_ist": 2,
+        "umverpackung_dicht": true,
+        "primaerpackmittel_erfasst_kuerzel": "2"
+      }
+    },
+    "materialbereitstellung_bulk": {
+      "status": "completed",
+      "ma2Kuerzel": "2",
+      "ma2Timestamp": "2025-07-24T20:25:26.204Z",
+      "validationOK": true,
+      "validatedQuestions": [
+        "produktbezeichnung_bulk_ist",
+        "artikelnr_bulk_ist",
+        "charge_bulk_ist",
+        "verfall_bulk_ist",
+        "bulkgebinde_liste",
+        "bulk_erfasst_kuerzel"
+      ],
+      "validatedAnswers": {
+        "produktbezeichnung_bulk_ist": "2",
+        "artikelnr_bulk_ist": "2",
+        "charge_bulk_ist": "2",
+        "verfall_bulk_ist": "2025-07-19",
+        "bulkgebinde_liste": [
+          {
+            "anzahl": 4,
+            "gebindegroesse": 1000,
+            "probenzug_verwendet": true,
+            "dicht_sauber": true
+          }
+        ],
+        "bulk_erfasst_kuerzel": "2"
+      }
+    },
+    "zubehör_schablonen": {
+      "status": "completed",
+      "ma2Kuerzel": "2",
+      "ma2Timestamp": "2025-07-24T20:25:33.802Z",
+      "validationOK": true,
+      "validatedQuestions": [
+        "schablonen_eq_ist",
+        "schablonen_charge_ist",
+        "schablonen_anzahl_ist",
+        "schablonen_sollangaben_ok",
+        "schablonen_verpackung_ok"
+      ],
+      "validatedAnswers": {
+        "schablonen_eq_ist": 2,
+        "schablonen_charge_ist": "2",
+        "schablonen_anzahl_ist": 2,
+        "schablonen_sollangaben_ok": true,
+        "schablonen_verpackung_ok": true
+      }
+    },
+    "materialbereitstellung_abschluss": {
+      "status": "completed",
+      "ma2Kuerzel": "2",
+      "ma2Timestamp": "2025-07-24T20:25:38.400Z",
+      "validationOK": true,
+      "validatedQuestions": [
+        "materialbereitstellung_bemerkungen",
+        "materialbereitstellung_ma1_kuerzel",
+        "materialbereitstellung_ma2_kuerzel"
+      ],
+      "validatedAnswers": {
+        "materialbereitstellung_bemerkungen": "2",
+        "materialbereitstellung_ma1_kuerzel": "2",
+        "materialbereitstellung_ma2_kuerzel": "2"
+      }
+    },
+    "line_clearing": {
+      "status": "completed",
+      "ma2Kuerzel": "2",
+      "ma2Timestamp": "2025-07-24T20:25:48.873Z",
+      "validationOK": true,
+      "validatedQuestions": [
+        "raumtemperatur_ist_matrix",
+        "material_entspricht",
+        "line_clearing_erfolgt",
+        "line_clearing_bemerkungen",
+        "line_clearing_erfasst"
+      ],
+      "validatedAnswers": {
+        "raumtemperatur_ist_matrix": [
+          {
+            "raumtemperatur_eq47": 2,
+            "raumtemperatur_eq48": 2
+          }
+        ],
+        "material_entspricht": true,
+        "line_clearing_erfolgt": true,
+        "line_clearing_bemerkungen": "2",
+        "line_clearing_erfasst": "2"
+      }
+    },
+    "vorbereitung_waage": {
+      "status": "completed",
+      "ma2Kuerzel": "2",
+      "ma2Timestamp": "2025-07-24T20:26:01.253Z",
+      "validationOK": true,
+      "validatedQuestions": [
+        "vorbereitung_waage_matrix",
+        "waage_bemerkungen",
+        "waage_erfasst"
+      ],
+      "validatedAnswers": {
+        "vorbereitung_waage_matrix": {
+          "ausgerichtet": {
+            "eq73": "Ja",
+            "eq61": "Ja"
+          },
+          "kalibrierung": {
+            "eq73": "Ja",
+            "eq61": "Ja"
+          },
+          "waegung": {
+            "eq73": "Ja",
+            "eq61": "Ja"
+          }
+        },
+        "waage_bemerkungen": "2",
+        "waage_erfasst": "2"
+      }
+    },
+    "vorbereitung_schweissgeraet": {
+      "status": "completed",
+      "ma2Kuerzel": "2",
+      "ma2Timestamp": "2025-07-24T20:26:08.086Z",
+      "validationOK": true,
+      "validatedQuestions": [
+        "verschweiss_programm_ist",
+        "schweissgeraet_funktioniert",
+        "schweissgeraet_bemerkungen",
+        "schweissgeraet_erfasst"
+      ],
+      "validatedAnswers": {
+        "verschweiss_programm_ist": "2",
+        "schweissgeraet_funktioniert": true,
+        "schweissgeraet_bemerkungen": "2",
+        "schweissgeraet_erfasst": "2"
+      }
+    },
+    "kumulierte_restmenge_gacp": {
+      "status": "completed",
+      "ma2Kuerzel": "4",
+      "ma2Timestamp": "2025-07-24T20:52:22.088Z",
+      "validationOK": true,
+      "validatedQuestions": [
+        "restmenge_eingang",
+        "restmenge_bemerkung",
+        "probenzug_ipk_abgefuellt_ma1",
+        "gesamtmenge_probenzug_ipk",
+        "probenzug_freigabe_vorgesehen",
+        "probegebinde_liste",
+        "probegebinde_gekennzeichnet",
+        "anzahl_zwischenprodukte",
+        "bruch_abfuellung_restmenge",
+        "gebinde_abgewogen_verschweisst_ma1"
+      ],
+      "validatedAnswers": {
+        "restmenge_eingang": 435,
+        "restmenge_bemerkung": "4",
+        "probenzug_ipk_abgefuellt_ma1": "Ja",
+        "gesamtmenge_probenzug_ipk": 45,
+        "probenzug_freigabe_vorgesehen": true,
+        "probegebinde_liste": [
+          {
+            "anzahl": 4,
+            "inhalt": 4
+          },
+          {
+            "anzahl": 4,
+            "inhalt": 4
+          }
+        ],
+        "probegebinde_gekennzeichnet": "Ja",
+        "anzahl_zwischenprodukte": 4,
+        "bruch_abfuellung_restmenge": 4,
+        "gebinde_abgewogen_verschweisst_ma1": true
+      }
+    },
+    "restmenge_final_gacp": {
+      "status": "completed",
+      "ma2Kuerzel": "4",
+      "ma2Timestamp": "2025-07-24T20:52:36.517Z",
+      "validationOK": true,
+      "validatedQuestions": [
+        "bruch_aussortiertes_material_ma1",
+        "aussortiertes_material_bruch",
+        "finale_restmenge_gewicht",
+        "bruch_aussortiert_abgefuellt_ma1",
+        "finale_restmenge_abgefuellt_ma1",
+        "blueten_an_qk",
+        "testbeutel_verschweisst_ma1",
+        "primaerpackmittel_uebrig_ma1",
+        "restmenge_ende_uhrzeit",
+        "restmenge_bemerkungen",
+        "restmenge_erfasst"
+      ],
+      "validatedAnswers": {
+        "bruch_aussortiertes_material_ma1": "Ja",
+        "aussortiertes_material_bruch": 4,
+        "finale_restmenge_gewicht": 4,
+        "bruch_aussortiert_abgefuellt_ma1": "Ja",
+        "finale_restmenge_abgefuellt_ma1": true,
+        "blueten_an_qk": "Ja",
+        "testbeutel_verschweisst_ma1": true,
+        "primaerpackmittel_uebrig_ma1": true,
+        "restmenge_ende_uhrzeit": "22:55",
+        "restmenge_bemerkungen": "4",
+        "restmenge_erfasst": "4"
+      }
     }
   },
-  "currentPageNo": 4
+  "currentPageNo": 18
 }

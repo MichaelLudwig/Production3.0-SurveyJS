@@ -313,7 +313,32 @@ const SurveyComponent: React.FC<SurveyComponentProps> = ({
       // Speichere Fortschritt bei Seitenwechsel
       try {
         console.log(`[Survey] Saving progress on page change to page ${sender.currentPageNo}`);
+        console.log('[DEBUG] sender.data.restmenge_eingang in handlePageChange:', sender.data.restmenge_eingang);
+        
+        // RESTMENGE-PROBLEM LÖSUNG: Setze Restmenge direkt in sender.data, falls sie fehlt
+        if (sender.data.restmenge_eingang === undefined) {
+          // Prüfe ob Bulk Beutel abgefüllt wurden (Restmenge sollte vorhanden sein)
+          const existingProduction = sender.data.bulk_beutel_production || [];
+          const completedBulkBeutel = existingProduction.filter((entry: any) => entry.bulk_nummer && entry.bulk_nummer !== "").length;
+          
+          if (completedBulkBeutel > 0) {
+            // Berechne kummulierte Restmenge aus abgefüllten Bulk Beuteln
+            const kummulierteRestmenge = existingProduction
+              .filter((entry: any) => entry.bulk_nummer && entry.bulk_nummer !== "")
+              .reduce((total: number, entry: any) => {
+                const restmenge = parseFloat(entry.restmenge) || 0;
+                return total + restmenge;
+              }, 0);
+            
+            if (kummulierteRestmenge > 0) {
+              sender.data.restmenge_eingang = kummulierteRestmenge.toFixed(2);
+              console.log(`[handlePageChange] Restmenge korrigiert: ${kummulierteRestmenge.toFixed(2)} kg`);
+            }
+          }
+        }
+        
         const surveyAnswers = filterSurveyAnswers(sender.data);
+        console.log('[DEBUG] surveyAnswers.restmenge_eingang nach filterSurveyAnswers:', surveyAnswers.restmenge_eingang);
         
         // Lade aktuelle Validierungsdaten aus der Datei (nicht aus dem State)
         let currentValidationData = {};
@@ -719,9 +744,16 @@ const SurveyComponent: React.FC<SurveyComponentProps> = ({
   const handleDashboardDataUpdate = async (data: any) => {
     setSurveyData(data);
     
-    // Aktualisiere auch das Survey-Model für Konsistenz
-    if (survey && data.survey) {
-      survey.data = data.survey;
+    // SICHERE DATENFUSION: Kombiniere Dashboard-Daten mit SurveyJS-Daten
+    if (survey) {
+      const currentSurveyData = survey.data || {};
+      const mergedData = {
+        ...currentSurveyData,  // ← BEHALTE ALLE SURVEYJS-DATEN
+        ...data.survey         // ← FÜGE DASHBOARD-ÄNDERUNGEN HINZU
+      };
+      
+      // Aktualisiere SurveyJS mit fusionierten Daten
+      survey.data = mergedData;
     }
     
     // Speichere die aktualisierten Daten in die Survey JSON
@@ -753,13 +785,13 @@ const SurveyComponent: React.FC<SurveyComponentProps> = ({
         
         // Aktualisiere auch die lokale Datei für Konsistenz
         try {
-          // Verwende die kompletten Survey-Daten, nicht gefilterte
-          const surveyAnswers = data.survey || {};
+          // VERWENDE FUSIONIERTE DATEN STATT NUR data.survey
+          const surveyAnswers = survey?.data || data.survey || {};
           await writeJsonFile(getSurveyInProgressPath(), {
             orderId: productionOrder.id,
             timestamp: new Date().toISOString(),
             status: 'in_progress',
-            survey: surveyAnswers,
+            survey: surveyAnswers,  // ← FUSIONIERTE DATEN
             validation: currentValidationData,
             currentPageNo: currentPageIndex
           });
@@ -776,64 +808,86 @@ const SurveyComponent: React.FC<SurveyComponentProps> = ({
   };
 
   // Navigation Handler für Dashboard
-  const handleDashboardNavigation = (direction: 'prev' | 'next') => {
+  const handleDashboardNavigation = async (direction: 'prev' | 'next') => {
     if (direction === 'prev' && currentPageIndex > 0) {
       survey?.prevPage();
     } else if (direction === 'next' && currentPageIndex < getTotalPages() - 1) {
       // Prüfe, ob alle Bulk Beutel abgeschlossen sind und setze restmenge_eingang
       if (isDashboardPage()) {
-        const existingProduction = surveyData?.survey?.bulk_beutel_production || [];
-        const totalBulkBeutel = surveyData?.survey?.bulkgebinde_liste?.reduce((total: number, item: any) => total + item.anzahl, 0) || 0;
+        // PRIORISIERE SURVEY.DATA ÜBER SURVEYDATA.SURVEY FÜR BULK_BEUTEL_PRODUCTION
+        const existingProduction = survey?.data?.bulk_beutel_production || surveyData?.survey?.bulk_beutel_production || [];
+        const totalBulkBeutel = survey?.data?.bulkgebinde_liste?.reduce((total: number, item: any) => total + item.anzahl, 0) || 
+                                surveyData?.survey?.bulkgebinde_liste?.reduce((total: number, item: any) => total + item.anzahl, 0) || 0;
         
-        // Zähle nur die tatsächlich ausgefüllten BulkBeutel (mit bulk_nummer)
-        const completedBulkBeutel = existingProduction.filter((entry: any) => 
-          entry.bulk_nummer && entry.bulk_nummer !== ""
-        ).length;
+        // Zähle abgeschlossene Bulk Beutel (mit Bulk-Nummer)
+        const completedBulkBeutel = existingProduction.filter((entry: any) => entry.bulk_nummer && entry.bulk_nummer !== "").length;
         
-        console.log(`[Navigation] Total bulk beutel: ${totalBulkBeutel}, Completed: ${completedBulkBeutel}`);
-        
-        // Wenn alle Bulk Beutel abgeschlossen sind
-        if (completedBulkBeutel === totalBulkBeutel && totalBulkBeutel > 0) {
-          // Berechne kummulierte Restmenge
-          const kummulierteRestmenge = existingProduction.reduce((total: number, entry: any) => {
-            const restmenge = parseFloat(entry.restmenge) || 0;
-            return total + restmenge;
-          }, 0);
+        // RESTMENGE-BERECHNUNG: Auch bei teilweiser Abfüllung (mindestens 1 Bulk Beutel abgefüllt)
+        if (completedBulkBeutel > 0) {
+          console.log(`[Dashboard] Berechne Restmenge: ${completedBulkBeutel}/${totalBulkBeutel} Bulk Beutel abgefüllt`);
           
-          // Setze den Wert in das restmenge_eingang Feld
-          if (survey && kummulierteRestmenge > 0) {
-            console.log(`[Survey] Setting restmenge_eingang to ${kummulierteRestmenge} after completing all bulk beutels`);
-            survey.setValue('restmenge_eingang', kummulierteRestmenge.toFixed(2));
+          // Berechne kummulierte Restmenge aus allen abgefüllten Bulk Beuteln
+          const kummulierteRestmenge = existingProduction
+            .filter((entry: any) => entry.bulk_nummer && entry.bulk_nummer !== "")
+            .reduce((total: number, entry: any) => {
+              const restmenge = parseFloat(entry.restmenge) || 0;
+              return total + restmenge;
+            }, 0);
+          
+          // Setze restmenge_eingang mit der berechneten kummulierten Restmenge
+          if (survey) {
+            survey.data.restmenge_eingang = kummulierteRestmenge.toFixed(2);
+            console.log(`[Dashboard] Restmenge gesetzt: ${kummulierteRestmenge.toFixed(2)} kg`);
+            console.log('[DEBUG] survey.data.restmenge_eingang nach Setzen:', survey.data.restmenge_eingang);
+            
+            // SPEICHERE DIE RESTMENGE SOFORT IN DIE JSON-DATEI
+            try {
+              const currentValidationData = await readJsonFile(getSurveyInProgressPath()).then(data => data?.validation || {}).catch(() => ({}));
+              await writeJsonFile(getSurveyInProgressPath(), {
+                orderId: productionOrder.id,
+                timestamp: new Date().toISOString(),
+                status: 'in_progress',
+                survey: survey.data,  // ← SPEICHERE ALLE SURVEY-DATEN INKL. RESTMENGE
+                validation: currentValidationData,
+                currentPageNo: currentPageIndex
+              });
+              console.log(`[Dashboard] Restmenge ${kummulierteRestmenge.toFixed(2)} kg in JSON-Datei gespeichert`);
+            } catch (error) {
+              console.error('[Dashboard] Fehler beim Speichern der Restmenge:', error);
+            }
           }
           
-          // ENTFERNT: Automatische Erstellung der produktliste - diese Liste ist falsch und wird nirgendwo verwendet
-          // Die richtige produktliste wird manuell in der Schleusungsseite eingegeben
-        }
-      }
-      
-      // Stelle sicher, dass SurveyJS die Seite als valid betrachtet
-      if (survey) {
-        // Setze alle required fields der paneldynamic als "beantwortet"
-        const currentPage = survey.currentPage;
-        if (currentPage && currentPage.elements) {
-          currentPage.elements.forEach((element: any) => {
-            if (element.type === 'paneldynamic' && element.name === 'bulk_beutel_production') {
-              // Markiere das paneldynamic als valid
-              survey.setValue(element.name, surveyData?.survey?.bulk_beutel_production || []);
-            }
-          });
+          // Automatische Navigation zur nächsten Seite nur bei vollständiger Abfüllung
+          if (completedBulkBeutel === totalBulkBeutel) {
+            // ENTFERNT: Automatische Erstellung der produktliste - diese Liste ist falsch und wird nirgendwo verwendet
+            // Die richtige produktliste wird manuell in der Schleusungsseite eingegeben
+          }
         }
         
-        console.log('[Navigation] Attempting to navigate to next page...');
-        
-        // Direkte Navigation umgeht SurveyJS-Validierung
-        const nextPageIndex = currentPageIndex + 1;
-        if (nextPageIndex < getTotalPages()) {
-          console.log(`[Navigation] Direct navigation to page ${nextPageIndex}`);
-          survey.currentPageNo = nextPageIndex;
-          setCurrentPageIndex(nextPageIndex);
-        } else {
-          console.log('[Navigation] Already on last page');
+        // Stelle sicher, dass SurveyJS die Seite als valid betrachtet
+        if (survey) {
+          // Setze alle required fields der paneldynamic als "beantwortet"
+          const currentPage = survey.currentPage;
+          if (currentPage && currentPage.elements) {
+            currentPage.elements.forEach((element: any) => {
+              if (element.type === 'paneldynamic' && element.name === 'bulk_beutel_production') {
+                // Markiere das paneldynamic als valid
+                survey.setValue(element.name, surveyData?.survey?.bulk_beutel_production || []);
+              }
+            });
+          }
+          
+          console.log('[Navigation] Attempting to navigate to next page...');
+          
+          // Direkte Navigation umgeht SurveyJS-Validierung
+          const nextPageIndex = currentPageIndex + 1;
+          if (nextPageIndex < getTotalPages()) {
+            console.log(`[Navigation] Direct navigation to page ${nextPageIndex}`);
+            survey.currentPageNo = nextPageIndex;
+            setCurrentPageIndex(nextPageIndex);
+          } else {
+            console.log('[Navigation] Already on last page');
+          }
         }
       }
     }
@@ -891,12 +945,13 @@ const SurveyComponent: React.FC<SurveyComponentProps> = ({
               surveyData={surveyData}
               onSurveyDataUpdate={handleDashboardDataUpdate}
               surveyDefinition={surveyDefinition}
+              survey={survey}
             />
             {/* Navigation für Dashboard */}
             <div className="dashboard-navigation">
               <button 
                 className="nav-btn nav-prev"
-                onClick={() => handleDashboardNavigation('prev')}
+                onClick={() => handleDashboardNavigation('prev').catch(console.error)}
                 disabled={currentPageIndex === 0}
               >
                 ← Zurück
